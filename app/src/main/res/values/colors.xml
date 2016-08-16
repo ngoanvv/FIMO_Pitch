@@ -1,0 +1,76 @@
+<resources>
+    <color name="colorBackGroundCustomMyShipment">#1f2a3a</color>
+    <color name="colorImageButtonNotes">#66FF99</color>
+    <color name="colorTabHostMyJob">#344762</color>
+    <color name="colorBackGroundExpandListView">#8C000000</color>
+    <color name="colorActivation">#D2691E</color>
+    <color name="colorBackGroundFragmentTabHost">#344762</color>
+    <color name="colorBackgroundTextLocation">#33000000</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorBackGroundCheckedExpand">#40000000</color>
+    <color name="coloWhite">#FFFFFF</color>
+    <color name="colorBackGroundChildExpand">#1f2a3a</color>
+    <color name="colorResetPassSucces">#228B22</color>
+    <color name="colorReturnLogin">#F57C00</color>
+    <color name="colorBackGroundBtnConfirmPassWord">#F57C00</color>
+    <color name="colorBackGroundTxtConfirmPassWord">#778899</color>
+    <color name="colorBackGroundChat">#d6d6d6</color>
+    <color name="colorTextChatGroup">#fff</color>
+    <color name="colorTabhost">#e6ecf3</color>
+    <color name="bluesetting">#66000000</color>
+    <color name="coloWhite_Tranfurun">#B3FFFFFF</color>
+    <color name="coloWhite_Tranfurun_either">#00FFFFFF</color>
+    <color name="colorDarkorange">#FF8C00</color>
+    <color name="coloWhite_Tranfurun_details">#1AFFFFFF</color>
+    <color name="blue">#664FC3F7</color>
+    <color name="bluehistory">#A64FC3F7</color>
+    <color name="coloWhile2">#1AFFFFFF</color>
+    <color name="asa">#73778899</color>
+    <color name="blueGray">#78909C</color>
+    <color name="coloTranfarun2">#1A000000</color>
+    <color name="colorTranfarunListview">#4D000000</color>
+    <color name="colorTranfaruntextviewTabhost">#73000000</color>
+    <color name="colorTranfaruntxtchanlanguage">#80000000</color>
+    <color name="colorTranfaruntextviewsetting">#40000000</color>
+    <color name="colorWhiteTranfarun">#40FFFFFF</color>
+    <color name="colorGroupExListMyNewoffers">#8C000000</color>
+    <color name="colorOrange">#ff9400</color>
+    <color name="colorOrange50">#ff9400</color>
+    <color name="colorDarkDivider">#1a2330</color>
+    <color name="colorTransparent80">#80000000</color>
+    <color name="color_myaccount_title_bg">#CC213046</color>
+    <color name="colorTitleTv">#828892</color>
+    <color name="colorTransparent40">#66000000</color>
+    <color name="colorHistoryTimeStamp">#33000000</color>
+    <color name="colorCurrentRating">#5c7a94</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="lightGreen">#43973A</color>
+    <color name="colorlightGreen">#43973A</color>
+
+    <color name="colorGreen203">#58C14D</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorRed">#901212</color>
+    <color name="colorGray">#959595</color>
+    <color name="color70Gray">#A4A4A4</color>
+    <color name="myPrimaryColor">#00BCD4</color>
+    <color name="myPrimaryDarkColor">#0097A7</color>
+    <color name="myAccentColor">#CDDC39</color>
+    <color name="myDrawerBackground">#FFF</color>
+    <color name="colorTransparent">#FFFFFF</color>
+    <color name="myTextPrimaryColor">#212121</color>
+    <color name="myNavigationColor">#000000</color>
+
+    <color name="selected_gray">#ffdbdbdb</color>
+    <color name="color70White">#D2D2D2</color>
+    <color name="color80White">#E1E1E1</color>
+    <color name="color80Gray">#DFDFDF</color>
+    <color name="colorGreen">#01579b</color>
+    <color name="colorBlack">#000000</color>
+    <color name="color80Black">#313131</color>
+    <color name="colorMenuLeft">#444444</color>
+    <color name="color90White">#F3F3F3</color>
+    <color name="colorBrown">#939393</color>
+</resources>
+
+
