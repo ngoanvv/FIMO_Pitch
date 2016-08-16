@@ -51,9 +51,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 							.setText(mSectionsPagerAdapter.getPageTitle(i))
 							.setTabListener(this));
 		}
-
-
-
 	}
 
 	@Override
