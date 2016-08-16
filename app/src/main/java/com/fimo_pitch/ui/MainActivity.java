@@ -16,8 +16,6 @@ import android.view.Window;
 import com.fimo_pitch.R;
 import com.fimo_pitch.fragments.MapFragment;
 import com.fimo_pitch.fragments.MatchsFragment;
-import com.fimo_pitch.fragments.SpecsFragment;
-import com.fimo_pitch.fragments.VideoFragment;
 
 import java.util.Locale;
 
@@ -25,20 +23,18 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 	private ViewPager mViewPager;
 	private MapFragment mapFragment;
 	private MatchsFragment matchsFragment;
-	private SpecsFragment specsFragment;
-	private VideoFragment videoFragment;
-
 	private SectionsPagerAdapter mSectionsPagerAdapter;
+	private ActionBar actionBar;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		setContentView(R.layout.activity_main);
 
-		final ActionBar actionBar = getSupportActionBar();
+		actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setHomeButtonEnabled(true);
-		actionBar.setDisplayHomeAsUpEnabled(true);
+//		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -51,16 +47,17 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 			}
 		});
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			actionBar.addTab(
-					actionBar.newTab()
+			actionBar.addTab(actionBar.newTab()
 							.setText(mSectionsPagerAdapter.getPageTitle(i))
 							.setTabListener(this));
 		}
+
+
 	}
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-		
+
 	}
 
 	@Override
@@ -90,16 +87,8 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 					if (matchsFragment == null)
 						matchsFragment = matchsFragment.newInstance("1", "2");
 					return matchsFragment;
-				case 2://Benchmark
-					if (specsFragment == null)
-						specsFragment = specsFragment.newInstance("1", "2");
-					return specsFragment;
-				case 3://Benchmark
-					if (videoFragment == null)
-						videoFragment = videoFragment.newInstance("1", "2");
-					return videoFragment;
 				default:
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   					return PlaceholderFragment.newInstance(position + 1);
+					return PlaceholderFragment.newInstance(position + 1);
 
 			}
 
@@ -109,21 +98,18 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 		@Override
 		public int getCount() {
 			// Show 4 total pages.
-			return 4;
+			return 2;
 		}
 
 		@Override
 		public CharSequence getPageTitle(int position) {
 			Locale l = Locale.getDefault();
 			switch (position) {
-				case 0:
-					return "Reviews".toUpperCase(l);
+				case 0: {
+					return "Map".toUpperCase(l);
+				}
 				case 1:
-					return "Benchmarks".toUpperCase(l);
-				case 2:
-					return "Specs".toUpperCase(l);
-				case 3:
-					return "Videos".toUpperCase(l);
+					return "Match".toUpperCase(l);
 			}
 			return null;
 		}

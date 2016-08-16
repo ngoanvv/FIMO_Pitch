@@ -8,9 +8,16 @@
         <item name="colorAccent">@color/myAccentColor</item>
         <item name="android:textColorPrimary">@color/myTextPrimaryColor</item>
         <item name="android:windowBackground">@color/colorWhite</item>
+
     </style>
     <style name="tabTheme" parent="android:style/Theme">
         <item name="android:tabWidgetStyle">@style/Widget.TabWidget</item>
+        <item name="android:isRepeatable">true</item>
+        <item name="android:visibility">invisible</item>
+        <item name="android:textSize">15dp</item>
+
+
+
     </style>
 
     <style name="Widget.TabWidget" parent="android:Theme">
