@@ -14,14 +14,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 
 import com.fimo_pitch.R;
-import com.fimo_pitch.fragments.MapFragment;
 import com.fimo_pitch.fragments.MatchsFragment;
 
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 	private ViewPager mViewPager;
-	private MapFragment mapFragment;
 	private MatchsFragment matchsFragment;
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 	private ActionBar actionBar;
@@ -34,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 		actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setHomeButtonEnabled(true);
-//		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -80,9 +77,10 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 		public Fragment getItem(int position) {
 			switch (position) {
 				case 0://Review fragment
-					if (mapFragment == null)
-						mapFragment = mapFragment.newInstance("1", "2");
-					return mapFragment;
+//					if (mapFragment == null)
+//						mapFragment = mapFragment.newInstance("1", "2");
+//					return mapFragment;
+					return PlaceholderFragment.newInstance(position + 1);
 				case 1://Benchmark
 					if (matchsFragment == null)
 						matchsFragment = matchsFragment.newInstance("1", "2");
@@ -106,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 			Locale l = Locale.getDefault();
 			switch (position) {
 				case 0: {
-					return "Map".toUpperCase(l);
+					return "Something".toUpperCase(l);
 				}
 				case 1:
 					return "Match".toUpperCase(l);
@@ -115,16 +113,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 		}
 	}
 	public static class PlaceholderFragment extends Fragment {
-		/**
-		 * The fragment argument representing the section number for this
-		 * fragment.
-		 */
 		private static final String ARG_SECTION_NUMBER = "section_number";
-
-		/**
-		 * Returns a new instance of this fragment for the given section
-		 * number.
-		 */
 		public static PlaceholderFragment newInstance(int sectionNumber) {
 			PlaceholderFragment fragment = new PlaceholderFragment();
 			Bundle args = new Bundle();
@@ -139,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
 								 Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.activity_map, container, false);
+			View rootView = inflater.inflate(R.layout.activity_main, container, false);
 			return rootView;
 		}
 	}
