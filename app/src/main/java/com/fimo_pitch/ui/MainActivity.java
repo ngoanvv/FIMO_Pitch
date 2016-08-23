@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 						matchsFragment = matchsFragment.newInstance("1", "2");
 					return matchsFragment;
 				case 2://Benchmark
+
 					if (specsFragment == null)
 						specsFragment = specsFragment.newInstance("1", "2");
 					return specsFragment;
