@@ -22,6 +22,7 @@ import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -32,7 +33,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 public class SearchActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnMapClickListener, GoogleMap.OnMarkerClickListener,
-        LocationSource.OnLocationChangedListener{
+        LocationSource.OnLocationChangedListener, GoogleMap.OnCameraChangeListener {
     private static String TAG="SearchActivity";
     private GoogleMap map;
     private MapFragment fragment;
@@ -173,8 +174,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         circleOptions.center(latLng)
                 .center(latLng)
                 .clickable(true)
-                .strokeColor(Color.parseColor("#664FC3F7"))
-                .fillColor(Color.parseColor("#664FC3F7"))
+                .strokeColor(Color.parseColor("#1A000000"))
+                .fillColor(Color.parseColor("#1A000000"))
                 .radius(radius);
         map.addCircle(circleOptions);
         MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_flag)).position(latLng);
@@ -190,23 +191,30 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         {
             getGPS();
         }
-
         map.setOnMapClickListener(this);
         map.setOnMarkerClickListener(this);
+        map.setOnCameraChangeListener(this);
     }
 
     @Override
     public void onMapClick(LatLng latLng) {
-        showCircle(latLng,5000);
     }
 
     @Override
     public void onLocationChanged(Location location) {
+//        showCircle(latLng,5000);
 
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
         return false;
+    }
+
+    @Override
+    public void onCameraChange(CameraPosition cameraPosition) {
+        Log.d(TAG,"lat :"+cameraPosition.target.latitude+" long : "+cameraPosition.target.longitude);
+        showCircle(cameraPosition.target,5000);
+
     }
 }

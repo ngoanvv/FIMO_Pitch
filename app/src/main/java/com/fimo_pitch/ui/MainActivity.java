@@ -15,12 +15,17 @@ import android.view.Window;
 
 import com.fimo_pitch.R;
 import com.fimo_pitch.fragments.MatchsFragment;
+import com.fimo_pitch.fragments.SpecsFragment;
+import com.fimo_pitch.fragments.VideoFragment;
 
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 	private ViewPager mViewPager;
 	private MatchsFragment matchsFragment;
+	private SpecsFragment specsFragment;
+	private VideoFragment videoFragment;
+
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 	private ActionBar actionBar;
 	@Override
@@ -85,9 +90,19 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 					if (matchsFragment == null)
 						matchsFragment = matchsFragment.newInstance("1", "2");
 					return matchsFragment;
-				default:
-					return PlaceholderFragment.newInstance(position + 1);
+				case 2://Benchmark
+					if (specsFragment == null)
+						specsFragment = specsFragment.newInstance("1", "2");
+					return specsFragment;
+				case 3://Benchmark
 
+					if (videoFragment == null)
+						videoFragment = videoFragment.newInstance("1", "2");
+					return videoFragment;
+				default: {
+					matchsFragment = matchsFragment.newInstance("1", "2");
+					return matchsFragment;
+				}
 			}
 
 
@@ -96,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 		@Override
 		public int getCount() {
 			// Show 4 total pages.
-			return 2;
+			return 4;
 		}
 
 		@Override
@@ -108,6 +123,11 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 				}
 				case 1:
 					return "Match".toUpperCase(l);
+				case 2: {
+					return "Videos".toUpperCase(l);
+				}
+				case 3:
+					return "Pleu".toUpperCase(l);
 			}
 			return null;
 		}

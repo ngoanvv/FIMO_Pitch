@@ -12,17 +12,6 @@
         android:layout_height="match_parent"
         android:name="com.google.android.gms.maps.MapFragment"
         class="com.google.android.gms.maps.MapFragment"
-        android:layout_below="@+id/textView" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/textView"
-        android:textSize="50dp"
-        android:textColor="@color/lightGreen"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        />
 
 </RelativeLayout>

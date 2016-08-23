@@ -51,7 +51,7 @@ public class TabHostActivivty extends TabActivity {
         tabHost.getTabWidget().getChildAt(1).setLayoutParams(new LinearLayout.LayoutParams(width/4,width/6));
         tabHost.getTabWidget().getChildAt(2).setLayoutParams(new LinearLayout.LayoutParams(width/4,width/6));
         tabHost.getTabWidget().getChildAt(3).setLayoutParams(new LinearLayout.LayoutParams(width/4,width/6));
-        tabHost.setCurrentTab(1);
+        tabHost.setCurrentTab(0);
     }
 
 }
