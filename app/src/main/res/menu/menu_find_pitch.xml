@@ -4,13 +4,11 @@
 
     <item android:id="@+id/typeViewB"
          android:title="B"
-        android:icon="@drawable/staggered_view"
          android:orderInCategory="100"
          app:showAsAction="always" />
 
     <item android:id="@+id/typeViewA"
         android:title="A"
-        android:icon="@drawable/linear_view"
         android:orderInCategory="100"
         app:showAsAction="always"/>
 
