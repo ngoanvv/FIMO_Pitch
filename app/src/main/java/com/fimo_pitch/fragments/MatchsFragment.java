@@ -3,11 +3,15 @@ package com.fimo_pitch.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+
 import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.MatchFragmentAdapter;
 import com.fimo_pitch.object.Pitch;
@@ -25,6 +29,12 @@ public class MatchsFragment extends Fragment {
     RecyclerView recyclerView;
 
     MatchFragmentAdapter adapter;
+
+    ImageButton buttonView1;
+    ImageButton buttonView2;
+    ImageButton buttonView3;
+    ImageButton buttonView4;
+
     ArrayList<Pitch> data = new ArrayList<>();
 
     public MatchsFragment() {
@@ -35,6 +45,7 @@ public class MatchsFragment extends Fragment {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -51,11 +62,13 @@ public class MatchsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        addListenerOnButton(v);
+
         return v;
     }
 
 
-    private  void makeData()    {
+    private  void makeData() {
 
 
         Pitch pitch1 = new Pitch();
@@ -75,7 +88,58 @@ public class MatchsFragment extends Fragment {
 
         data.add(pitch1);
         data.add(pitch2);
-        data.add(pitch3);
+
+    }
+
+    private void addListenerOnButton(View v) {
+
+        buttonView1 = (ImageButton) v.findViewById(R.id.view1);
+
+        buttonView1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                LinearLayoutManager mLinearLayoutManagerHorizontal = new LinearLayoutManager(getActivity()); // (Context context)
+                mLinearLayoutManagerHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
+                recyclerView.setLayoutManager(mLinearLayoutManagerHorizontal);
+            }
+
+        });
+
+        buttonView2 = (ImageButton) v.findViewById(R.id.view2);
+
+        buttonView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
+                mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+            }
+        });
+
+        buttonView3 = (ImageButton) v.findViewById(R.id.view3);
+
+        buttonView3.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                GridLayoutManager mGridLayoutManager = new GridLayoutManager(getActivity(), 3); // (Context context, int spanCount)
+                recyclerView.setLayoutManager(mGridLayoutManager);
+            }
+
+        });
+
+        buttonView4 = (ImageButton) v.findViewById(R.id.view4);
+
+        buttonView4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
+                recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
+            }
+        });
+
+
     }
 
 }

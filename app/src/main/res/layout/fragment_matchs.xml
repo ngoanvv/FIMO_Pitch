@@ -5,17 +5,34 @@
 
     <ImageButton
         android:id="@+id/view1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentRight="true"
-        android:src="@drawable/linear_view"/>
+        android:text="LH"
+        android:onClick="addListenerOnButton"/>
 
     <ImageButton
         android:id="@+id/view2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_toLeftOf="@+id/view1"
-        android:src="@drawable/staggered_view"/>
+        android:text="LV"
+        android:onClick="addListenerOnButton"/>
+    <ImageButton
+        android:id="@+id/view3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_toLeftOf="@+id/view2"
+        android:text="G"
+        android:onClick="addListenerOnButton"/>
+    <ImageButton
+        android:id="@+id/view4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_toLeftOf="@+id/view3"
+        android:text="S"
+        android:onClick="addListenerOnButton"/>
+
 
 <android.support.v7.widget.RecyclerView
     android:id="@+id/recycler_view"

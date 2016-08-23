@@ -52,7 +52,8 @@ public class MatchFragmentAdapter extends RecyclerView.Adapter<MatchFragmentAdap
         holder.textviewname.setText(data.get(position).getName());
         holder.textviewaddress.setText(data.get(position).getAddress());
 
-        Log.d("pos", position + " 2");
+        Log.d("Name", data.get(position).getName());
+        Log.d("Address", data.get(position).getAddress());
         previousPosition = position;
     }
 
