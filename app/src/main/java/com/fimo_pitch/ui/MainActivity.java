@@ -16,6 +16,8 @@ import android.view.Window;
 import com.fimo_pitch.R;
 import com.fimo_pitch.fragments.MapFragment;
 import com.fimo_pitch.fragments.MatchsFragment;
+import com.fimo_pitch.fragments.SpecsFragment;
+import com.fimo_pitch.fragments.VideoFragment;
 
 import java.util.Locale;
 
@@ -23,6 +25,9 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 	private ViewPager mViewPager;
 	private MapFragment mapFragment;
 	private MatchsFragment matchsFragment;
+	private SpecsFragment specsFragment;
+	private VideoFragment videoFragment;
+
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +90,16 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 					if (matchsFragment == null)
 						matchsFragment = matchsFragment.newInstance("1", "2");
 					return matchsFragment;
+				case 2://Benchmark
+					if (specsFragment == null)
+						specsFragment = specsFragment.newInstance("1", "2");
+					return specsFragment;
+				case 3://Benchmark
+					if (videoFragment == null)
+						videoFragment = videoFragment.newInstance("1", "2");
+					return videoFragment;
 				default:
-					return PlaceholderFragment.newInstance(position + 1);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   					return PlaceholderFragment.newInstance(position + 1);
 
 			}
 
