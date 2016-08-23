@@ -9,6 +9,7 @@
 
     <item android:id="@+id/typeViewA"
         android:title="A"
+
         android:orderInCategory="100"
         app:showAsAction="always"/>
 
