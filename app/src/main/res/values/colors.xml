@@ -71,6 +71,9 @@
     <color name="colorMenuLeft">#444444</color>
     <color name="color90White">#F3F3F3</color>
     <color name="colorBrown">#939393</color>
+    
+    
+    <color name="Grey">#E0E0E0</color>
 </resources>
 
 

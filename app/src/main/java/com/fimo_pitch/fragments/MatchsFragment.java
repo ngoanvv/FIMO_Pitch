@@ -20,12 +20,12 @@ import android.widget.RelativeLayout;
 
 
 import com.fimo_pitch.R;
-import com.fimo_pitch.adapter.MatchFragmentAdapter;
+import com.fimo_pitch.adapter.MatchsFragmentAdapter;
 import com.fimo_pitch.object.Pitch;
 import java.util.ArrayList;
 
 
-public class MatchsFragment extends Fragment {
+public class MatchsFragment extends Fragment  {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -37,7 +37,7 @@ public class MatchsFragment extends Fragment {
 
     RelativeLayout menuView;
 
-    MatchFragmentAdapter adapter;
+    MatchsFragmentAdapter adapter;
 
     Button buttonView1;
     Button buttonView2;
@@ -68,7 +68,7 @@ public class MatchsFragment extends Fragment {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
-        adapter = new MatchFragmentAdapter(getActivity(), data);
+        adapter = new MatchsFragmentAdapter(getActivity(), data);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 

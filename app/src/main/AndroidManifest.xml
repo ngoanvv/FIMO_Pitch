@@ -39,7 +39,8 @@
         <activity android:name=".ui.SearchActivity" />
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.SettingActivity" />
-        <activity android:name=".ui.NotificationActivity"/>
+        <activity android:name=".ui.NotificationActivity" />
+        <activity android:name=".sub_activity.MatchActivity"></activity>
     </application>
 
 </manifest>

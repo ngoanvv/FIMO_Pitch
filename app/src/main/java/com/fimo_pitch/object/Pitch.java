@@ -1,12 +1,11 @@
 package com.fimo_pitch.object;
 
-import android.widget.ImageView;
-import android.widget.TextView;
+import java.io.Serializable;
 
 /**
  * Created by TranManhTien on 21/08/2016.
  */
-public class Pitch {
+public class Pitch implements Serializable {
     int image;
     String name;
     String address;
@@ -53,4 +52,6 @@ public class Pitch {
     public void setNumberPoint(float numberPoint) {
         this.numberPoint = numberPoint;
     }
+
+
 }
