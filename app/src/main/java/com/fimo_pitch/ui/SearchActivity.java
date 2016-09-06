@@ -1,5 +1,6 @@
 package com.fimo_pitch.ui;
 
+import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.fimo_pitch.R;
 import com.fimo_pitch.support.GPSTracker;
@@ -124,11 +126,15 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         GPSTracker gpsTracker = new GPSTracker(this);
         if (gpsTracker.canGetLocation())
         {
-            Log.d(TAG,"GPS: "+ gpsTracker.getLatitude()+" -- "+gpsTracker.getLongitude());
+            Log.d(TAG,"in GPS(): GPS: "+ gpsTracker.getLatitude()+" -- "+gpsTracker.getLongitude());
             myLocation=gpsTracker.getLocation();
             LatLng currentLatLng = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
             showCircle(currentLatLng,7000);
             moveCamera(currentLatLng,12);
+        }
+        else
+        {
+            Toast.makeText(SearchActivity.this, "Cannot get Location", Toast.LENGTH_SHORT).show();
         }
     }
     public boolean isGPSEnabled(Context context) {
@@ -174,8 +180,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         circleOptions.center(latLng)
                 .center(latLng)
                 .clickable(true)
-                .strokeColor(Color.parseColor("#1A000000"))
-                .fillColor(Color.parseColor("#1A000000"))
+                .strokeColor(Color.parseColor("#81F7F3"))
+                .fillColor(Color.CYAN)
                 .radius(radius);
         map.addCircle(circleOptions);
         MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_flag)).position(latLng);
@@ -202,8 +208,7 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public void onLocationChanged(Location location) {
-//        showCircle(latLng,5000);
-
+//        showCircle(new LatLng(location.getLatitude(),location.getLongitude()),10000);
     }
 
     @Override
@@ -213,8 +218,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
-        Log.d(TAG,"lat :"+cameraPosition.target.latitude+" long : "+cameraPosition.target.longitude);
-        showCircle(cameraPosition.target,5000);
+//        Log.d(TAG,"lat :"+cameraPosition.target.latitude+" long : "+cameraPosition.target.longitude);
+//        showCircle(cameraPosition.target,10000);
 
     }
 }

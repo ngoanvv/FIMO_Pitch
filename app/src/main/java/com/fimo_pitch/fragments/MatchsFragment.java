@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,55 +28,74 @@ import java.util.ArrayList;
 
 public class MatchsFragment extends Fragment  {
     private static final String ARG_PARAM1 = "param1";
+    private static final String TAG = "MatchsFragment";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    RecyclerView recyclerView;
-
-    RelativeLayout menuView;
-
-    MatchsFragmentAdapter adapter;
-
-    Button buttonView1;
-    Button buttonView2;
-    Button buttonView3;
-    Button buttonView4;
-
-    ArrayList<Pitch> data = new ArrayList<>();
-
-    public MatchsFragment() {
-    }
-    public static MatchsFragment newInstance(String param1, String param2) {
-        MatchsFragment fragment = new MatchsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-
-        return fragment;
-    }
-
+    private RecyclerView recyclerView;
+    private RelativeLayout menuView;
+    private MatchsFragmentAdapter adapter;
+    private Button buttonView1;
+    private Button buttonView2;
+    private Button buttonView3;
+    private Button buttonView4;
+    private ArrayList<Pitch> data = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_matchs, container, false);
+        Log.d(TAG,"OncreateView");
+        initView(view);
+        return view;
+    }
 
-        makeData();
+    
+    private int pxToDp(int px) {
+        DisplayMetrics dm = this.getResources().getDisplayMetrics();
+        int dp = Math.round(px / (dm.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
+        return dp;
+    }
+    private void hideMenu() {
+
+        AnimatorSet animSet = new AnimatorSet();
+
+        ObjectAnimator anim1 = ObjectAnimator.ofFloat(menuView, View.TRANSLATION_Y, -menuView.getHeight());
+
+        animSet.playTogether(anim1);
+        animSet.setDuration(300);
+        animSet.start();
+    }
+    private void showMenu() {
+        AnimatorSet animSet = new AnimatorSet();
+
+        ObjectAnimator anim1 = ObjectAnimator.ofFloat(menuView, View.TRANSLATION_Y, 0);
+
+        animSet.playTogether(anim1);
+        animSet.setDuration(300);
+        animSet.start();
+    }
+    private void initView(View view)
+    {
         menuView = (RelativeLayout) view.findViewById(R.id.menu_view);
-
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        buttonView1 = (Button) view.findViewById(R.id.view1);
+        buttonView2 = (Button) view.findViewById(R.id.view2);
+        buttonView3 = (Button) view.findViewById(R.id.view3);
+        buttonView4 = (Button) view.findViewById(R.id.view4);
+
         recyclerView.setHasFixedSize(true);
         adapter = new MatchsFragmentAdapter(getActivity(), data);
-        recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
+        addOnTouchListener();
 
+        makeData();
         addListenerOnButton(view);
 
-        //
+    }
 
+    private void addOnTouchListener()
+    {
         recyclerView.setOnTouchListener(new View.OnTouchListener(){
             final int DISTANCE = 3;
 
@@ -93,11 +113,9 @@ public class MatchsFragment extends Fragment  {
 
                     if((pxToDp((int)dist) <= -DISTANCE) && !isMenuHide) {
                         isMenuHide = true;
-
                         hideMenu();
                     } else if((pxToDp((int)dist) > DISTANCE) && isMenuHide) {
                         isMenuHide = false;
-
                         showMenu();
                     }
 
@@ -113,43 +131,47 @@ public class MatchsFragment extends Fragment  {
             }
 
         });
-
-        return view;
     }
+    private void addListenerOnButton(View v) {
 
-    
 
-    private int pxToDp(int px) {
-        DisplayMetrics dm = this.getResources().getDisplayMetrics();
-        int dp = Math.round(px / (dm.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
-        return dp;
+        buttonView1.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                LinearLayoutManager mLinearLayoutManagerHorizontal = new LinearLayoutManager(getActivity()); // (Context context)
+                mLinearLayoutManagerHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
+                recyclerView.setLayoutManager(mLinearLayoutManagerHorizontal);
+            }
+
+        });
+        buttonView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
+                mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+            }
+        });
+        buttonView3.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                GridLayoutManager mGridLayoutManager = new GridLayoutManager(getActivity(), 3); // (Context context, int spanCount)
+                recyclerView.setLayoutManager(mGridLayoutManager);
+            }
+
+        });
+        buttonView4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
+
+                recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
+            }
+        });
     }
-
-    private void hideMenu() {
-
-        AnimatorSet animSet = new AnimatorSet();
-
-        ObjectAnimator anim1 = ObjectAnimator.ofFloat(menuView, View.TRANSLATION_Y, -menuView.getHeight());
-
-        animSet.playTogether(anim1);
-        animSet.setDuration(300);
-        animSet.start();
-
-    }
-
-    private void showMenu() {
-        AnimatorSet animSet = new AnimatorSet();
-
-        ObjectAnimator anim1 = ObjectAnimator.ofFloat(menuView, View.TRANSLATION_Y, 0);
-
-        animSet.playTogether(anim1);
-        animSet.setDuration(300);
-        animSet.start();
-    }
-
     private  void makeData() {
-
-
         Pitch pitch1 = new Pitch();
         pitch1.setImage(R.drawable.san1);
         pitch1.setName("San PVV");
@@ -188,60 +210,18 @@ public class MatchsFragment extends Fragment  {
         data.add(pitch6);
 
     }
-
-    private void addListenerOnButton(View v) {
-
-        buttonView1 = (Button) v.findViewById(R.id.view1);
-
-        buttonView1.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                LinearLayoutManager mLinearLayoutManagerHorizontal = new LinearLayoutManager(getActivity()); // (Context context)
-                mLinearLayoutManagerHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
-                recyclerView.setLayoutManager(mLinearLayoutManagerHorizontal);
-            }
-
-        });
-
-        buttonView2 = (Button) v.findViewById(R.id.view2);
-
-        buttonView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
-                mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
-                recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
-            }
-        });
-
-        buttonView3 = (Button) v.findViewById(R.id.view3);
-
-        buttonView3.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                GridLayoutManager mGridLayoutManager = new GridLayoutManager(getActivity(), 3); // (Context context, int spanCount)
-                recyclerView.setLayoutManager(mGridLayoutManager);
-            }
-
-        });
-
-        buttonView4 = (Button) v.findViewById(R.id.view4);
-
-        buttonView4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
-
-                recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
-            }
-        });
-
+    public MatchsFragment() {
 
     }
+    public static MatchsFragment newInstance(String param1, String param2) {
+        MatchsFragment fragment = new MatchsFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
 
-
+        return fragment;
+    }
 
 
 }

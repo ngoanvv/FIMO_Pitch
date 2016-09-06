@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 	private ViewPager mViewPager;
+	private static String TAG="MainActivity";
 	private MatchsFragment matchsFragment;
 	private SpecsFragment specsFragment;
 	private VideoFragment videoFragment;
@@ -59,7 +61,8 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-
+		Log.d(TAG,tab.getPosition()+"");
+        mViewPager.setCurrentItem(tab.getPosition());
 	}
 
 	@Override
