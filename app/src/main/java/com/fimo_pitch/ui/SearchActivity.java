@@ -141,7 +141,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
         boolean network_enabled = false;
-
         try
         {
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -180,8 +179,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         circleOptions.center(latLng)
                 .center(latLng)
                 .clickable(true)
-                .strokeColor(Color.parseColor("#81F7F3"))
-                .fillColor(Color.CYAN)
+                .strokeColor(Color.parseColor("#AEEDE4"))
+                .fillColor(Color.parseColor("#AEEDE4"))
                 .radius(radius);
         map.addCircle(circleOptions);
         MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_flag)).position(latLng);
@@ -218,8 +217,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
-//        Log.d(TAG,"lat :"+cameraPosition.target.latitude+" long : "+cameraPosition.target.longitude);
-//        showCircle(cameraPosition.target,10000);
+        Log.d(TAG,"lat :"+cameraPosition.target.latitude+" long : "+cameraPosition.target.longitude);
+        showCircle(cameraPosition.target,10000);
+//        moveCamera(cameraPosition.target,12);
 
     }
 }

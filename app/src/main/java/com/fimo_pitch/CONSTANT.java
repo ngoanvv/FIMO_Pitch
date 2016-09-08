@@ -4,7 +4,7 @@ package com.fimo_pitch;
  * Created by Diep_Chelsea on 15/08/2016.
  */
 public class CONSTANT {
-    public  static String TAB_MAP ="tabhostMap";
-    public  static String TAB_MATCH ="tabhostMatch";
-
+    public static String KEY_USER = "userModel";
+    public static String USER_TYPE = "usertype";
+    public static String MATCH = "match";
 }

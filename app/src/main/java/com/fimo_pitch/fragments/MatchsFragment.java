@@ -26,7 +26,7 @@ import com.fimo_pitch.object.Pitch;
 import java.util.ArrayList;
 
 
-public class MatchsFragment extends Fragment  {
+public class MatchsFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String TAG = "MatchsFragment";
     private static final String ARG_PARAM2 = "param2";
@@ -58,9 +58,7 @@ public class MatchsFragment extends Fragment  {
     private void hideMenu() {
 
         AnimatorSet animSet = new AnimatorSet();
-
         ObjectAnimator anim1 = ObjectAnimator.ofFloat(menuView, View.TRANSLATION_Y, -menuView.getHeight());
-
         animSet.playTogether(anim1);
         animSet.setDuration(300);
         animSet.start();
@@ -82,7 +80,6 @@ public class MatchsFragment extends Fragment  {
         buttonView2 = (Button) view.findViewById(R.id.view2);
         buttonView3 = (Button) view.findViewById(R.id.view3);
         buttonView4 = (Button) view.findViewById(R.id.view4);
-
         recyclerView.setHasFixedSize(true);
         adapter = new MatchsFragmentAdapter(getActivity(), data);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -134,42 +131,10 @@ public class MatchsFragment extends Fragment  {
     }
     private void addListenerOnButton(View v) {
 
-
-        buttonView1.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                LinearLayoutManager mLinearLayoutManagerHorizontal = new LinearLayoutManager(getActivity()); // (Context context)
-                mLinearLayoutManagerHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
-                recyclerView.setLayoutManager(mLinearLayoutManagerHorizontal);
-            }
-
-        });
-        buttonView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
-                mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
-                recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
-            }
-        });
-        buttonView3.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                GridLayoutManager mGridLayoutManager = new GridLayoutManager(getActivity(), 3); // (Context context, int spanCount)
-                recyclerView.setLayoutManager(mGridLayoutManager);
-            }
-
-        });
-        buttonView4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
-
-                recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
-            }
-        });
+        buttonView1.setOnClickListener(this);
+        buttonView2.setOnClickListener(this);
+        buttonView3.setOnClickListener(this);
+        buttonView4 .setOnClickListener(this);
     }
     private  void makeData() {
         Pitch pitch1 = new Pitch();
@@ -224,4 +189,36 @@ public class MatchsFragment extends Fragment  {
     }
 
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.view1:
+            {
+                LinearLayoutManager mLinearLayoutManagerHorizontal = new LinearLayoutManager(getActivity()); // (Context context)
+                mLinearLayoutManagerHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
+                recyclerView.setLayoutManager(mLinearLayoutManagerHorizontal);
+                break;
+            }
+            case R.id.view2:
+            {
+                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
+                mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+                break;
+            }
+            case R.id.view3:
+            {
+                GridLayoutManager mGridLayoutManager = new GridLayoutManager(getActivity(), 3); // (Context context, int spanCount)
+                recyclerView.setLayoutManager(mGridLayoutManager);
+                break;
+            }
+            case R.id.view4:
+            {
+                StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
+                recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
+                break;
+            }
+        }
+    }
 }

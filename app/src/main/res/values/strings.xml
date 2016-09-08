@@ -1,7 +1,78 @@
 <resources>
-    <string name="app_name">FIMO Pitch</string>
+    <string name="app_name">FIMO PITCH</string>
+    <string name="drawer_open">Menu opened</string>
+    <string name="drawer_close">Menu closed</string>
+    <string name="action_settings">Cài đặt</string>
+    <string name="nhankeo">Tìm kèo để nhận</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="logout2">Bạn có muốn đăng xuất khỏi ứng dụng không ?</string>
+    <string name="giovang">Sân đẹp giờ vàng</string>
+    <string name="themsan">Thêm sân</string>
+    <string name="dangtintimdoi">Đăng tin tìm đối</string>
+
+    <string name="mypitch">Quản lý sân bóng</string>
+    <string name="book">Đặt sân</string>
+    <string name="vs">Tìm đối thủ</string>
+    <string name="pass_length">Độ dài mật khẩu từ 4-10 kí tự</string>
+    <string name="invalid_email">Email không hợp lệ</string>
+    <string name="name_length">Độ dài cần lớn hơn 4 ký tự</string>
+    <string name="invalid_repassword">Mật khẩu xác nhận không khớp</string>
+    <string name="invalid_phone">Số điện thoại không hợp lệ (9-12 ký tự )</string>
+    <string name="upload_later">Bạn có thể cập nhật ảnh đại diện cho đội bóng sau này ở mục Cài đặt</string>
+
+
+
+
+
+    <string name="login">Đăng nhập</string>
+    <string name="link_signUp">Chưa có tài khoản ? Đăng ký ngay</string>
+    <string name="forgot">Quên mật khẩu ?</string>
+    <string name="settings">Cài đặt</string>
+
+    <string name="chusan">Chủ sân</string>
+    <string name="khachang">Đội bóng</string>
+    <string name="edt_input_search">Nhập vào bất kỳ bạn muốn tìm</string>
+
+
+    <string name="signup">Đăng ký</string>
+    <string name="link_login">Đã có tài khoản ? Đăng nhập ngay</string>
+
+    <string name="search">Tìm kiếm</string>
+    <string name="action_search">Tìm kiếm</string>
+    <string name="action_info">Thông tin</string>
+    <string name="title_activity_maps">Sân bóng của tôi</string>
+    <string name="txt_yes">Tìm kiếm</string>
+    <string name="txt_no">Hủy</string>
+    <string name="ok">Đồng ý</string>
+    <string name="failed">Thất bại</string>
+    <string name="processing">Đang xử lý</string>
+
+    <string name="invalid_length">Độ dài cần lớn hơn 6 ký tự để đảm bảo không có quá ít thông tin</string>
+
+
+    <string name="chon_diadiem">Chọn khu vực</string>
+    <string name="chon_loaisan">Chọn loại sân</string>
+    <string name="chon_gio">Chọn thời gian</string>
+
+    <string name="input">Name</string>
+    <string name="title_activity_login2">Sign in</string>
+    <string name="exit_dialog">Bạn có muốn đóng khỏi ứng dụng không ?</string>
+    <string name="accept_match">Bạn có thật sự muốn nhận kèo bóng này không ? Hãy chắc chắn về việc nhận kèo và ra sân thi đấu !</string>
+    <string name="order_pitch">Bạn có thật sự muốn đặt sân bóng này không ? Hãy chắc chắn về việc đặt sân và bạn cần có đặt cọc một khoản phí nhỏ để đảm bảo việc đặt sân của bạn !</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
 </resources>
