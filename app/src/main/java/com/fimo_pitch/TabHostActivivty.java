@@ -4,6 +4,7 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -16,6 +17,7 @@ import com.fimo_pitch.ui.SearchActivity;
 import com.fimo_pitch.ui.SettingActivity;
 
 public class TabHostActivivty extends TabActivity {
+    public static String TAG ="TabHostActivivty";
     private TabHost tabHost;
     private RoundedImageView roundedImageView;
     @Override
@@ -23,7 +25,7 @@ public class TabHostActivivty extends TabActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_host);
         initTabhost();
-
+        Log.d(TAG,"oncreate");
     }
     public void initTabhost()
     {
@@ -51,7 +53,6 @@ public class TabHostActivivty extends TabActivity {
         tabHost.getTabWidget().getChildAt(1).setLayoutParams(new LinearLayout.LayoutParams(width/4,width/6));
         tabHost.getTabWidget().getChildAt(2).setLayoutParams(new LinearLayout.LayoutParams(width/4,width/6));
         tabHost.getTabWidget().getChildAt(3).setLayoutParams(new LinearLayout.LayoutParams(width/4,width/6));
-        tabHost.setCurrentTab(0);
     }
 
 }

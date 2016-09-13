@@ -33,13 +33,11 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_ACTION_BAR);
 		setContentView(R.layout.activity_main);
-
+		Log.d(TAG,"oncreate");
 		actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setHomeButtonEnabled(true);
-
 		mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -123,15 +121,15 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 			Locale l = Locale.getDefault();
 			switch (position) {
 				case 0: {
-					return "Something".toUpperCase(l);
+					return "Something";
 				}
 				case 1:
-					return "Match".toUpperCase(l);
+					return "Match";
 				case 2: {
-					return "Videos".toUpperCase(l);
+					return "Videos";
 				}
 				case 3:
-					return "Pleu".toUpperCase(l);
+					return "Pleu";
 			}
 			return null;
 		}

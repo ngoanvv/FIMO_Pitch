@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -29,8 +29,14 @@
         <activity android:name=".ui.SearchActivity" />
         <activity android:name=".ui.MainActivity" />
         <activity android:name=".ui.SettingActivity" />
+        <activity android:name=".ui.SignUpActivity"></activity>
+        <activity android:name=".ui.ForgotPasswordActivity"></activity>
         <activity android:name=".ui.NotificationActivity" />
         <activity android:name=".sub_activity.MatchActivity"></activity>
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>
