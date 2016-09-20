@@ -16,13 +16,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 
 
 import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.MatchsFragmentAdapter;
-import com.fimo_pitch.object.Pitch;
+import com.fimo_pitch.model.Pitch;
+
 import java.util.ArrayList;
 
 
@@ -35,16 +38,13 @@ public class MatchsFragment extends Fragment implements View.OnClickListener {
     private RecyclerView recyclerView;
     private RelativeLayout menuView;
     private MatchsFragmentAdapter adapter;
-    private Button buttonView1;
-    private Button buttonView2;
-    private Button buttonView3;
-    private Button buttonView4;
+    private ImageButton buttonView2;
+    private ImageButton buttonView4;
     private ArrayList<Pitch> data = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_matchs, container, false);
-        Log.d(TAG,"OncreateView");
         initView(view);
         return view;
     }
@@ -76,19 +76,17 @@ public class MatchsFragment extends Fragment implements View.OnClickListener {
     {
         menuView = (RelativeLayout) view.findViewById(R.id.menu_view);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        buttonView1 = (Button) view.findViewById(R.id.view1);
-        buttonView2 = (Button) view.findViewById(R.id.view2);
-        buttonView3 = (Button) view.findViewById(R.id.view3);
-        buttonView4 = (Button) view.findViewById(R.id.view4);
+        buttonView2 = (ImageButton) view.findViewById(R.id.view2);
+        buttonView4 = (ImageButton) view.findViewById(R.id.view4);
         recyclerView.setHasFixedSize(true);
         adapter = new MatchsFragmentAdapter(getActivity(), data);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
         addOnTouchListener();
-
         makeData();
         addListenerOnButton(view);
-
+        StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
+        recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
     }
 
     private void addOnTouchListener()
@@ -131,10 +129,27 @@ public class MatchsFragment extends Fragment implements View.OnClickListener {
     }
     private void addListenerOnButton(View v) {
 
-        buttonView1.setOnClickListener(this);
         buttonView2.setOnClickListener(this);
-        buttonView3.setOnClickListener(this);
         buttonView4 .setOnClickListener(this);
+    }
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.view2:
+            {
+                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
+                mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+                break;
+            }
+            case R.id.view4:
+            {
+                StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
+                recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
+                break;
+            }
+        }
     }
     private  void makeData() {
         Pitch pitch1 = new Pitch();
@@ -186,39 +201,5 @@ public class MatchsFragment extends Fragment implements View.OnClickListener {
         fragment.setArguments(args);
 
         return fragment;
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        switch (id) {
-            case R.id.view1:
-            {
-                LinearLayoutManager mLinearLayoutManagerHorizontal = new LinearLayoutManager(getActivity()); // (Context context)
-                mLinearLayoutManagerHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
-                recyclerView.setLayoutManager(mLinearLayoutManagerHorizontal);
-                break;
-            }
-            case R.id.view2:
-            {
-                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
-                mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
-                recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
-                break;
-            }
-            case R.id.view3:
-            {
-                GridLayoutManager mGridLayoutManager = new GridLayoutManager(getActivity(), 3); // (Context context, int spanCount)
-                recyclerView.setLayoutManager(mGridLayoutManager);
-                break;
-            }
-            case R.id.view4:
-            {
-                StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
-                recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
-                break;
-            }
-        }
     }
 }

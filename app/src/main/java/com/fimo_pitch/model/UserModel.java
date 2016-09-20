@@ -16,10 +16,6 @@ public class UserModel implements Serializable {
     public String imageURL;
     public String password;
 
-    public String getPassword() {
-        return password;
-    }
-
     @Override
     public String toString() {
         return "UserModel{" +
@@ -31,6 +27,10 @@ public class UserModel implements Serializable {
                 ", imageURL='" + imageURL + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {
@@ -84,4 +84,6 @@ public class UserModel implements Serializable {
     public void setUserType(String userType) {
         this.userType = userType;
     }
+
+
 }

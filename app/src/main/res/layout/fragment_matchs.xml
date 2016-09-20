@@ -5,37 +5,24 @@
 
     <RelativeLayout
         android:id="@+id/menu_view"
-        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/Grey"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/view1"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:text="LH"
-            android:onClick="addListenerOnButton"/>
-
-        <Button
+        <ImageButton
             android:id="@+id/view2"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_toLeftOf="@+id/view1"
-            android:text="LV"
+            android:src="@drawable/ic_list"
+            android:layout_alignParentRight="true"
             android:onClick="addListenerOnButton"/>
-        <Button
-            android:id="@+id/view3"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_toLeftOf="@+id/view2"
-            android:text="G"
-            android:onClick="addListenerOnButton"/>
-        <Button
+        <ImageButton
             android:id="@+id/view4"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_toLeftOf="@+id/view3"
-            android:text="S"
+            android:src="@drawable/ic_grid"
+            android:layout_toLeftOf="@+id/view2"
             android:onClick="addListenerOnButton"/>
     </RelativeLayout>
 
@@ -43,6 +30,7 @@
     android:id="@+id/recycler_view"
     android:layout_below="@+id/menu_view"
     android:layout_width="match_parent"
+    android:background="@color/Grey"
     android:layout_height="wrap_content"
     android:scrollbars="vertical" />
 

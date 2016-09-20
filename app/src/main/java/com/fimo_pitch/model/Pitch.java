@@ -1,17 +1,35 @@
-package com.fimo_pitch.object;
+package com.fimo_pitch.model;
 
 import java.io.Serializable;
 
 /**
- * Created by TranManhTien on 21/08/2016.
+ * Created by diep1_000 on 9/19/2016.
  */
 public class Pitch implements Serializable {
-    int image;
-    String name;
-    String address;
-    int numberComment;
-    float numberPoint;
+    private int image;
+    private String name;
+    private String address;
+    private int numberComment;
+    private float rating;
 
+    public float getRating() {
+        return rating;
+    }
+    public Pitch()
+    {
+
+    }
+    public Pitch(int image, String name, String address, int numberComment, float rating) {
+        this.image = image;
+        this.name = name;
+        this.address = address;
+        this.numberComment = numberComment;
+        this.rating = rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
 
     public int getImage() {
         return image;
@@ -45,13 +63,6 @@ public class Pitch implements Serializable {
         this.numberComment = numberComment;
     }
 
-    public float getNumberPoint() {
-        return numberPoint;
-    }
-
-    public void setNumberPoint(float numberPoint) {
-        this.numberPoint = numberPoint;
-    }
 
 
 }

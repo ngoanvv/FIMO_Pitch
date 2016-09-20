@@ -1,4 +1,4 @@
-package com.fimo_pitch.sub_activity;
+package com.fimo_pitch.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fimo_pitch.R;
-import com.fimo_pitch.object.Pitch;
+import com.fimo_pitch.model.Pitch;
+import com.fimo_pitch.model.UserModel;
 
 public class MatchActivity extends AppCompatActivity {
 

@@ -10,8 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fimo_pitch.R;
-import com.fimo_pitch.object.Pitch;
-import com.fimo_pitch.sub_activity.MatchActivity;
+import com.fimo_pitch.model.Pitch;
+import com.fimo_pitch.ui.MatchActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -46,20 +47,12 @@ public class MatchsFragmentAdapter extends RecyclerView.Adapter<MatchsFragmentAd
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-
-        holder.imageView.setImageResource(data.get(position).getImage());
-        holder.textviewname.setText(data.get(position).getName());
-        holder.textviewaddress.setText(data.get(position).getAddress());
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(context, MatchActivity.class);
-                intent.putExtra("ObjMatch",data.get(position));
-                context.startActivity(intent);
-            }
-        });
+        if(position==0) Picasso.with(context).load(R.drawable.ic_pitch).resize(0,400).into(holder.imageView);
+        if(position==1) Picasso.with(context).load(R.drawable.ic_pitch2).resize(0,650).into(holder.imageView);
+        if(position==2) Picasso.with(context).load(R.drawable.ic_pitch2).resize(0,650).into(holder.imageView);
+        if(position==3) Picasso.with(context).load(R.drawable.ic_pitch2).resize(0,650).into(holder.imageView);
+        if(position==4) Picasso.with(context).load(R.drawable.ic_pitch).resize(0,400).into(holder.imageView);
+        if(position==5) Picasso.with(context).load(R.drawable.ic_pitch2).resize(0,650).into(holder.imageView);
     }
 
     @Override
@@ -86,11 +79,9 @@ public class MatchsFragmentAdapter extends RecyclerView.Adapter<MatchsFragmentAd
 
         public MyViewHolder(View itemView) {
             super(itemView);
-
-
-            textviewname = (TextView) itemView.findViewById(R.id.name);
-            imageView = (ImageView) itemView.findViewById(R.id.img_match);
-            textviewaddress = (TextView) itemView.findViewById(R.id.address);
+            textviewname = (TextView) itemView.findViewById(R.id.item_name);
+            imageView = (ImageView) itemView.findViewById(R.id.item_img);
+            textviewaddress = (TextView) itemView.findViewById(R.id.item_address);
         }
 
 

@@ -1,22 +1,27 @@
 package com.fimo_pitch.ui;
 
+import android.Manifest;
 import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.fimo_pitch.R;
-import com.fimo_pitch.support.GPSTracker;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -40,7 +45,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private GoogleMap map;
     private MapFragment fragment;
     private Location myLocation;
-
+    private int LOCATION=1;
+    GoogleApiClient client;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,13 +109,9 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     public void onResume() {
         super.onResume();
         Log.d(TAG,"onResume");
-        if(map==null)
-            Log.d(TAG,"map null");
-        else
+        if(map!=null)
         {
             if(isGPSEnabled(this)) {
-                Log.d(TAG,"map not null");
-                getGPS();
 
             }
         }
@@ -121,22 +123,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         map.animateCamera(cameraUpdate);
     }
 
-    public void getGPS() {
-
-        GPSTracker gpsTracker = new GPSTracker(this);
-        if (gpsTracker.canGetLocation())
-        {
-            Log.d(TAG,"in GPS(): GPS: "+ gpsTracker.getLatitude()+" -- "+gpsTracker.getLongitude());
-            myLocation=gpsTracker.getLocation();
-            LatLng currentLatLng = new LatLng(myLocation.getLatitude(),myLocation.getLongitude());
-            showCircle(currentLatLng,7000);
-            moveCamera(currentLatLng,12);
-        }
-        else
-        {
-            Toast.makeText(SearchActivity.this, "Cannot get Location", Toast.LENGTH_SHORT).show();
-        }
-    }
     public boolean isGPSEnabled(Context context) {
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
@@ -171,7 +157,20 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         super.onPause();
         Log.d(TAG,"onPause");
     }
+    private void askForPermission(String permission, Integer requestCode) {
+        if (ContextCompat.checkSelfPermission(SearchActivity.this, permission) != PackageManager.PERMISSION_GRANTED) {
 
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(SearchActivity.this, permission)) {
+                ActivityCompat.requestPermissions(SearchActivity.this, new String[]{permission}, requestCode);
+            } else {
+
+                ActivityCompat.requestPermissions(SearchActivity.this, new String[]{permission}, requestCode);
+            }
+        } else {
+            Toast.makeText(this, "" + permission + " is already granted.", Toast.LENGTH_SHORT).show();
+        }
+    }
     public void showCircle(LatLng latLng, double radius)
     {
         map.clear();
@@ -192,13 +191,17 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        if(isGPSEnabled(this))
-        {
-            getGPS();
+//        if(isGPSEnabled(this))
+//        {
+//            getGPS();
+//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,LOCATION);
         }
         map.setOnMapClickListener(this);
         map.setOnMarkerClickListener(this);
         map.setOnCameraChangeListener(this);
+        moveCamera(new LatLng(21.029977644, 105.8634160),11);
     }
 
     @Override
@@ -217,9 +220,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
-        Log.d(TAG,"lat :"+cameraPosition.target.latitude+" long : "+cameraPosition.target.longitude);
-        showCircle(cameraPosition.target,10000);
-//        moveCamera(cameraPosition.target,12);
-
+//        Log.d(TAG,"lat :"+cameraPosition.target.latitude+" long : "+cameraPosition.target.longitude);
+//        showCircle(cameraPosition.target,10000);
     }
+
 }
