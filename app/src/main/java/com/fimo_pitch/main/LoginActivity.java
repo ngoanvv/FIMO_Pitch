@@ -1,4 +1,4 @@
-package com.fimo_pitch.ui;
+package com.fimo_pitch.main;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -26,6 +26,7 @@ import com.fimo_pitch.R;
 import com.fimo_pitch.TabHostActivivty;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.ShowToast;
+import com.fimo_pitch.support.Utils;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -304,7 +305,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             moveToHomeScreen();
 
         } else {
-            ShowToast.showToastLong(LoginActivity.this,"Google login failed");
+            Utils.openDialog(LoginActivity.this,"Đăng nhập Google thất bại");
+
         }
     }
     @Override

@@ -1,4 +1,4 @@
-package com.fimo_pitch.ui;
+package com.fimo_pitch.main;
 
 import android.app.Dialog;
 import android.content.Intent;

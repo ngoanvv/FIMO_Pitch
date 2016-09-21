@@ -19,7 +19,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".ui.LoginActivity">
+        <activity android:name=".main.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -29,23 +29,23 @@
             android:windowSoftInputMode="adjustPan|adjustResize"
 
             />
-        <activity android:name=".ui.SearchActivity"
+        <activity android:name=".main.SearchActivity"
             android:windowSoftInputMode="adjustPan|adjustResize"
             />
-        <activity android:name=".ui.MainActivity"
-            android:windowSoftInputMode="adjustPan|adjustResize"
-
-            />
-        <activity android:name=".ui.SettingActivity"
+        <activity android:name=".main.MainActivity"
             android:windowSoftInputMode="adjustPan|adjustResize"
 
             />
-        <activity android:name=".ui.SignUpActivity"
+        <activity android:name=".main.SettingActivity"
+            android:windowSoftInputMode="adjustPan|adjustResize"
+
+            />
+        <activity android:name=".main.SignUpActivity"
 
             ></activity>
-        <activity android:name=".ui.ForgotPasswordActivity"></activity>
-        <activity android:name=".ui.NotificationActivity" />
-        <activity android:name=".ui.MatchActivity"
+        <activity android:name=".main.ForgotPasswordActivity"></activity>
+        <activity android:name=".main.NotificationActivity" />
+        <activity android:name=".main.MatchActivity"
             android:windowSoftInputMode="adjustPan|adjustResize"
 
             ></activity>

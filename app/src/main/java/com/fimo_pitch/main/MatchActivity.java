@@ -1,4 +1,4 @@
-package com.fimo_pitch.ui;
+package com.fimo_pitch.main;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

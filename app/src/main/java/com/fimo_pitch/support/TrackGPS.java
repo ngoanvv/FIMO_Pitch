@@ -51,22 +51,18 @@ public class TrackGPS {
         try {
             locationManager = (LocationManager) mContext
                     .getSystemService(Context.LOCATION_SERVICE);
-
-            // getting GPS status
             checkGPS = locationManager
                     .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-            // getting network status
             checkNetwork = locationManager
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
             if (!checkGPS && !checkNetwork) {
-                Toast.makeText(mContext, "No Service Provider Available", Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            else {
                 this.canGetLocation = true;
                 // First get location from Network Provider
                 if (checkNetwork) {
-                    Toast.makeText(mContext, "Network", Toast.LENGTH_SHORT).show();
 
                     try {
                         locationManager.requestLocationUpdates(
@@ -75,22 +71,16 @@ public class TrackGPS {
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, new LocationListener() {
                                     @Override
                                     public void onLocationChanged(Location location) {
-
                                     }
-
                                     @Override
                                     public void onStatusChanged(String provider, int status, Bundle extras) {
-
                                     }
-
                                     @Override
                                     public void onProviderEnabled(String provider) {
-
                                     }
 
                                     @Override
                                     public void onProviderDisabled(String provider) {
-
                                     }
                                 });
                         if (locationManager != null) {
@@ -107,17 +97,18 @@ public class TrackGPS {
 
                     }
                 }
+                else
+                {
+                }
             }
             // if GPS Enabled get lat/long using GPS Services
             if (checkGPS) {
-                Toast.makeText(mContext, "GPS", Toast.LENGTH_SHORT).show();
                 if (loc == null) {
                     try {
                         locationManager.requestLocationUpdates(
                                 LocationManager.GPS_PROVIDER,
                                 MIN_TIME_BW_UPDATES,
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, (LocationListener) this);
-                        Log.d("GPS Enabled", "GPS Enabled");
                         if (locationManager != null) {
                             loc = locationManager
                                     .getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -130,6 +121,9 @@ public class TrackGPS {
 
                     }
                 }
+            }
+            else
+            {
             }
 
         } catch (Exception e) {

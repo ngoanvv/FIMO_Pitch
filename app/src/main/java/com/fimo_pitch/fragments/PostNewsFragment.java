@@ -110,7 +110,7 @@ public class PostNewsFragment extends Fragment {
     public void moveCamera(LatLng latLng,int zoom) {
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoom  );
         map.animateCamera(cameraUpdate);
-
+        map.addMarker(new MarkerOptions().position(latLng));
     }
     public void showCircle(LatLng latLng, double radius)
     {
@@ -119,8 +119,8 @@ public class PostNewsFragment extends Fragment {
         circleOptions.center(latLng)
                 .center(latLng)
                 .clickable(true)
-                .strokeColor(Color.parseColor("#AEEDE4"))
-                .fillColor(Color.parseColor("#AEEDE4"))
+                .strokeColor(Color.parseColor("#F6CECE"))
+                .fillColor(Color.parseColor("#F6CECE"))
                 .radius(radius);
         map.addCircle(circleOptions);
         MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_flag)).position(latLng);

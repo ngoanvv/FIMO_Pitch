@@ -1,19 +1,20 @@
 package com.fimo_pitch;
 
+import android.annotation.TargetApi;
 import android.app.TabActivity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 
 import com.fimo_pitch.custom.view.RoundedImageView;
-import com.fimo_pitch.ui.MainActivity;
-import com.fimo_pitch.ui.NotificationActivity;
-import com.fimo_pitch.ui.SearchActivity;
-import com.fimo_pitch.ui.SettingActivity;
+import com.fimo_pitch.main.MainActivity;
+import com.fimo_pitch.main.NotificationActivity;
+import com.fimo_pitch.main.SearchActivity;
+import com.fimo_pitch.main.SettingActivity;
 
 public class TabHostActivivty extends TabActivity {
     public static String TAG ="TabHostActivivty";
@@ -28,6 +29,7 @@ public class TabHostActivivty extends TabActivity {
     }
 
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void initTabhost()
     {
 
@@ -55,7 +57,7 @@ public class TabHostActivivty extends TabActivity {
         tabHost.getTabWidget().getChildAt(2).setLayoutParams(new LinearLayout.LayoutParams(width/4,width/6));
         tabHost.getTabWidget().getChildAt(3).setLayoutParams(new LinearLayout.LayoutParams(width/4,width/6));
 
-
+        mainActivity.setIndicator("Home",getDrawable(R.drawable.ic_home));
     }
 
 
