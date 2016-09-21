@@ -34,7 +34,10 @@ dependencies {
     compile 'com.github.medyo:fancybuttons:1.8.1'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.google.android.gms:play-services-auth:9.2.1'
-    compile 'com.etsy.android.grid:library:1.0.5' // see changelog
+    compile 'com.etsy.android.grid:library:1.0.5'
+    compile 'com.google.android.gms:play-services-location:9.2.1'
+
+    // see changelog
 
 }
 apply plugin: 'com.google.gms.google-services'

@@ -15,9 +15,11 @@
         <item name="android:isRepeatable">true</item>
         <item name="android:visibility">invisible</item>
         <item name="android:textSize">15dp</item>
-
-
-
+    </style>
+    <style name="transparent_bottom_line" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorControlNormal">@color/colorTransparent</item>
+        <item name="colorControlActivated">@color/colorTransparent</item>
+        <item name="colorControlHighlight">@color/colorTransparent</item>
     </style>
 
     <style name="Widget.TabWidget" parent="android:Theme">

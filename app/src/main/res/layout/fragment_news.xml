@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+
+        <EditText
+            android:id="@+id/edt_input"
+            android:hint="@string/edt_input_search"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:theme="@style/transparent_bottom_line"
+
+            />
+    </LinearLayout>
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/recyclerView"
+    android:layout_width="match_parent"
+    android:background="#00000000"
+    android:clickable="true"
+    android:layout_height="match_parent">
+</android.support.v7.widget.RecyclerView>
+</LinearLayout>

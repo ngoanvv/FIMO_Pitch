@@ -2,16 +2,13 @@ package com.fimo_pitch;
 
 import android.app.TabActivity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 
-import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.ui.MainActivity;
 import com.fimo_pitch.ui.NotificationActivity;
@@ -27,10 +24,10 @@ public class TabHostActivivty extends TabActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_tab_host);
-
         initTabhost();
-        Log.d(TAG,"oncreate");
     }
+
+
     public void initTabhost()
     {
 
@@ -57,6 +54,9 @@ public class TabHostActivivty extends TabActivity {
         tabHost.getTabWidget().getChildAt(1).setLayoutParams(new LinearLayout.LayoutParams(width/4,width/6));
         tabHost.getTabWidget().getChildAt(2).setLayoutParams(new LinearLayout.LayoutParams(width/4,width/6));
         tabHost.getTabWidget().getChildAt(3).setLayoutParams(new LinearLayout.LayoutParams(width/4,width/6));
+
+
     }
+
 
 }

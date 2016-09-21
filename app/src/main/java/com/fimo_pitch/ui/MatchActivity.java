@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import com.fimo_pitch.R;
 import com.fimo_pitch.model.Pitch;
-import com.fimo_pitch.model.UserModel;
 
 public class MatchActivity extends AppCompatActivity {
 

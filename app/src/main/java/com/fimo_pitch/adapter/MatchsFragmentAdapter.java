@@ -1,7 +1,6 @@
 package com.fimo_pitch.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,10 +10,10 @@ import android.widget.TextView;
 
 import com.fimo_pitch.R;
 import com.fimo_pitch.model.Pitch;
-import com.fimo_pitch.ui.MatchActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by TranManhTien on 22/08/2016.
@@ -47,12 +46,11 @@ public class MatchsFragmentAdapter extends RecyclerView.Adapter<MatchsFragmentAd
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        if(position==0) Picasso.with(context).load(R.drawable.ic_pitch).resize(0,400).into(holder.imageView);
-        if(position==1) Picasso.with(context).load(R.drawable.ic_pitch2).resize(0,650).into(holder.imageView);
-        if(position==2) Picasso.with(context).load(R.drawable.ic_pitch2).resize(0,650).into(holder.imageView);
-        if(position==3) Picasso.with(context).load(R.drawable.ic_pitch2).resize(0,650).into(holder.imageView);
-        if(position==4) Picasso.with(context).load(R.drawable.ic_pitch).resize(0,400).into(holder.imageView);
-        if(position==5) Picasso.with(context).load(R.drawable.ic_pitch2).resize(0,650).into(holder.imageView);
+
+        Random random =new Random();
+        int x = random.nextInt(10 - 1 + 1) + 1;
+        if(x%2==0)  Picasso.with(context).load(R.drawable.ic_pitch).resize(0,400).into(holder.imageView);
+        else Picasso.with(context).load(R.drawable.ic_pitch2).resize(0,650).into(holder.imageView);
     }
 
     @Override

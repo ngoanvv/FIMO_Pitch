@@ -19,24 +19,36 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".ui.LoginActivity"
-            >
-
+        <activity android:name=".ui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".TabHostActivivty"
+            android:windowSoftInputMode="adjustPan|adjustResize"
+
             />
-        <activity android:name=".ui.SearchActivity" />
+        <activity android:name=".ui.SearchActivity"
+            android:windowSoftInputMode="adjustPan|adjustResize"
+            />
         <activity android:name=".ui.MainActivity"
+            android:windowSoftInputMode="adjustPan|adjustResize"
+
             />
-        <activity android:name=".ui.SettingActivity" />
-        <activity android:name=".ui.SignUpActivity"></activity>
+        <activity android:name=".ui.SettingActivity"
+            android:windowSoftInputMode="adjustPan|adjustResize"
+
+            />
+        <activity android:name=".ui.SignUpActivity"
+
+            ></activity>
         <activity android:name=".ui.ForgotPasswordActivity"></activity>
         <activity android:name=".ui.NotificationActivity" />
-        <activity android:name=".ui.MatchActivity"></activity>
+        <activity android:name=".ui.MatchActivity"
+            android:windowSoftInputMode="adjustPan|adjustResize"
+
+            ></activity>
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            >
+            <!--money-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_height="35dp">
+                <com.fimo_pitch.custom.view.RoundedImageView
+                    android:layout_width="15dp"
+                    android:background="@drawable/ic_money"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="15dp"/>
+                <EditText
+                    android:id="@+id/edt_money"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/accent_material_light"
+                    android:hint="Chi phí cho trận đấu ?"
+                    android:textColorHint="@color/blueGray"
+                    />
+            </LinearLayout>
+            <!--time-->
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="35dp">
+                <com.fimo_pitch.custom.view.RoundedImageView
+                    android:layout_width="15dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/ic_clock"
+                    android:layout_height="15dp"/>
+                <EditText
+                    android:id="@+id/edt_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:textSize="12sp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/accent_material_light"
+                    android:hint="Thời gian diễn ra trận đấu ?"
+                    android:textColorHint="@color/blueGray"
+                    />
+
+                />
+            </LinearLayout>
+            <!--location-->
+            <LinearLayout
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:layout_height="35dp">
+                <com.fimo_pitch.custom.view.RoundedImageView
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="15dp"
+                    android:background="@drawable/ic_location"
+                    android:layout_height="15dp"/>
+                <EditText
+                    android:id="@+id/edt_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="3"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_gravity="center_vertical"
+                    android:inputType="textMultiLine"
+                    android:enabled="false"
+                    android:textColor="@color/accent_material_light"
+                    android:hint="Chọn vị trí của bạn ở bản đồ bên dưới"
+                    android:textColorHint="@color/blueGray" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginLeft="15dp"
+                android:layout_marginBottom="5dp"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:layout_height="35dp">
+                <com.fimo_pitch.custom.view.RoundedImageView
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="15dp"
+                    android:background="@drawable/ic_note"
+                    android:layout_height="15dp"/>
+                <EditText
+                    android:id="@+id/edt_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="3"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_gravity="center_vertical"
+                    android:inputType="textMultiLine"
+                    android:textColor="@color/accent_material_light"
+                    android:hint="Miêu tả về trận đấu này"
+                    android:textColorHint="@color/blueGray" />
+            </LinearLayout>
+        </LinearLayout>
+        <FrameLayout
+            android:id="@+id/mapfragment"
+            android:layout_weight="7"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="20dp"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Post tin"
+            android:layout_gravity="center_horizontal"
+            />
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -55,6 +55,24 @@ public class MatchsFragment extends Fragment implements View.OnClickListener {
         int dp = Math.round(px / (dm.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
         return dp;
     }
+
+    private void initView(View view)
+    {
+        menuView = (RelativeLayout) view.findViewById(R.id.menu_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        buttonView2 = (ImageButton) view.findViewById(R.id.view2);
+        buttonView4 = (ImageButton) view.findViewById(R.id.view4);
+        recyclerView.setHasFixedSize(true);
+        adapter = new MatchsFragmentAdapter(getActivity(), data);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
+
+        addOnTouchListener();
+        makeData();
+        addListenerOnButton(view);
+        StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
+        recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
+    }
     private void hideMenu() {
 
         AnimatorSet animSet = new AnimatorSet();
@@ -72,23 +90,6 @@ public class MatchsFragment extends Fragment implements View.OnClickListener {
         animSet.setDuration(300);
         animSet.start();
     }
-    private void initView(View view)
-    {
-        menuView = (RelativeLayout) view.findViewById(R.id.menu_view);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        buttonView2 = (ImageButton) view.findViewById(R.id.view2);
-        buttonView4 = (ImageButton) view.findViewById(R.id.view4);
-        recyclerView.setHasFixedSize(true);
-        adapter = new MatchsFragmentAdapter(getActivity(), data);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adapter);
-        addOnTouchListener();
-        makeData();
-        addListenerOnButton(view);
-        StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
-        recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
-    }
-
     private void addOnTouchListener()
     {
         recyclerView.setOnTouchListener(new View.OnTouchListener(){
@@ -120,6 +121,7 @@ public class MatchsFragment extends Fragment implements View.OnClickListener {
                     }
                 } else if(action == MotionEvent.ACTION_UP) {
                     startY = 0;
+
                 }
 
                 return false;
@@ -199,7 +201,6 @@ public class MatchsFragment extends Fragment implements View.OnClickListener {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
-
         return fragment;
     }
 }

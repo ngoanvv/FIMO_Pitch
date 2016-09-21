@@ -8,7 +8,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,8 @@ import android.view.Window;
 
 import com.fimo_pitch.R;
 import com.fimo_pitch.fragments.MatchsFragment;
-import com.fimo_pitch.fragments.SpecsFragment;
-import com.fimo_pitch.fragments.VideoFragment;
+import com.fimo_pitch.fragments.NewsFragment;
+import com.fimo_pitch.fragments.PostNewsFragment;
 
 import java.util.Locale;
 
@@ -25,9 +24,8 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 	private ViewPager mViewPager;
 	private static String TAG="MainActivity";
 	private MatchsFragment matchsFragment;
-	private SpecsFragment specsFragment;
-	private VideoFragment videoFragment;
-
+	private PostNewsFragment postNewsFragment;
+	private NewsFragment newsFragment;
 	private SectionsPagerAdapter mSectionsPagerAdapter;
 	private ActionBar actionBar;
 	@Override
@@ -59,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
 	@Override
 	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-		Log.d(TAG,tab.getPosition()+"");
         mViewPager.setCurrentItem(tab.getPosition());
 	}
 
@@ -83,24 +80,18 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 		public Fragment getItem(int position) {
 			switch (position) {
 				case 0://Review fragment
-//					if (mapFragment == null)
-//						mapFragment = mapFragment.newInstance("1", "2");
-//					return mapFragment;
-					return PlaceholderFragment.newInstance(position + 1);
-				case 1://Benchmark
 					if (matchsFragment == null)
-						matchsFragment = matchsFragment.newInstance("1", "2");
+					matchsFragment = matchsFragment.newInstance("1", "2");
 					return matchsFragment;
+				case 1:
+					if (newsFragment == null)
+						newsFragment = newsFragment.newInstance("1", "2");
+					return newsFragment;
 				case 2://Benchmark
 
-					if (specsFragment == null)
-						specsFragment = specsFragment.newInstance("1", "2");
-					return specsFragment;
-				case 3://Benchmark
-
-					if (videoFragment == null)
-						videoFragment = videoFragment.newInstance("1", "2");
-					return videoFragment;
+					if (postNewsFragment == null)
+						postNewsFragment = postNewsFragment.newInstance("1", "2");
+					return postNewsFragment;
 				default: {
 					matchsFragment = matchsFragment.newInstance("1", "2");
 					return matchsFragment;
@@ -113,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 		@Override
 		public int getCount() {
 			// Show 4 total pages.
-			return 4;
+			return 3;
 		}
 
 		@Override
@@ -121,15 +112,13 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 			Locale l = Locale.getDefault();
 			switch (position) {
 				case 0: {
-					return "Something";
+					return "Pitchs";
 				}
 				case 1:
-					return "Match";
+					return "News";
 				case 2: {
-					return "Videos";
+					return "Something";
 				}
-				case 3:
-					return "Pleu";
 			}
 			return null;
 		}

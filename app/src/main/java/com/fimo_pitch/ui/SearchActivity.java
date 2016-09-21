@@ -1,7 +1,6 @@
 package com.fimo_pitch.ui;
 
 import android.Manifest;
-import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,7 +10,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -21,6 +19,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.fimo_pitch.R;
+import com.fimo_pitch.support.TrackGPS;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -47,6 +46,8 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     private Location myLocation;
     private int LOCATION=1;
     GoogleApiClient client;
+    private TrackGPS gps;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,8 +185,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
         map.addCircle(circleOptions);
         MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_flag)).position(latLng);
         map.addMarker(markerOptions);
-
-
     }
 
     @Override
@@ -196,12 +195,29 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
 //            getGPS();
 //        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            askForPermission(Manifest.permission.ACCESS_FINE_LOCATION,LOCATION);
+            gps = new TrackGPS(SearchActivity.this);
+            if(gps.canGetLocation()){
+
+
+                double longitude = gps.getLongitude();
+                double latitude = gps .getLatitude();
+
+                Toast.makeText(getApplicationContext(),"Longitude:"+Double.toString(longitude)+"\nLatitude:"+Double.toString(latitude),Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+
+                gps.showSettingsAlert();
+            }
         }
         map.setOnMapClickListener(this);
         map.setOnMarkerClickListener(this);
         map.setOnCameraChangeListener(this);
         moveCamera(new LatLng(21.029977644, 105.8634160),11);
+
+
+
+
     }
 
     @Override
