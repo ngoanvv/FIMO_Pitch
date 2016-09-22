@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Display;
+import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 
 import com.fimo_pitch.custom.view.RoundedImageView;
+import com.fimo_pitch.main.AboutActivity;
 import com.fimo_pitch.main.MainActivity;
 import com.fimo_pitch.main.NotificationActivity;
 import com.fimo_pitch.main.SearchActivity;
@@ -26,39 +28,51 @@ public class TabHostActivivty extends TabActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_tab_host);
         initTabhost();
+
     }
 
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public void initTabhost()
-    {
+    public void initTabhost() {
 
         tabHost = getTabHost();
 
-        TabHost.TabSpec mainActivity = tabHost.newTabSpec("Home");
-        TabHost.TabSpec searchActivity = tabHost.newTabSpec("Search");
-        TabHost.TabSpec notificationActivity = tabHost.newTabSpec("Notification");
-        TabHost.TabSpec settingActivity = tabHost.newTabSpec("Settings");
+        TabHost.TabSpec mainActivity = tabHost.newTabSpec("home");
+        TabHost.TabSpec searchActivity = tabHost.newTabSpec("search");
+        TabHost.TabSpec notificationActivity = tabHost.newTabSpec("notify");
+        TabHost.TabSpec settingActivity = tabHost.newTabSpec("settings");
+        TabHost.TabSpec aboutActivity = tabHost.newTabSpec("about");
 
-        mainActivity.setContent(new Intent(this, MainActivity.class)).setIndicator("Home");
-        searchActivity.setContent(new Intent(this, SearchActivity.class)).setIndicator("Search");
-        notificationActivity.setContent(new Intent(this, NotificationActivity.class)).setIndicator("Notification");
-        settingActivity.setContent(new Intent(this, SettingActivity.class)).setIndicator("Settings");
+        mainActivity.setContent(new Intent(this, MainActivity.class)).setIndicator("",getResources().getDrawable(R.drawable.tab_home));
+        searchActivity.setContent(new Intent(this, SearchActivity.class)).setIndicator("",getResources().getDrawable(R.drawable.tab_search));
+        notificationActivity.setContent(new Intent(this, NotificationActivity.class)).setIndicator("",getResources().getDrawable(R.drawable.tab_notification));
+        settingActivity.setContent(new Intent(this, SettingActivity.class)).setIndicator("",getResources().getDrawable(R.drawable.tab_settings));
+        aboutActivity.setContent(new Intent(this, AboutActivity.class)).setIndicator("",getResources().getDrawable(R.drawable.tab_info));
+
         Display display = getWindowManager().getDefaultDisplay();
 
-        tabHost.addTab(mainActivity);
-        tabHost.addTab(searchActivity);
+
         tabHost.addTab(notificationActivity);
+        tabHost.addTab(searchActivity);
+        tabHost.addTab(mainActivity);
         tabHost.addTab(settingActivity);
+        tabHost.addTab(aboutActivity);
         // resize tabhost widget
+
         int width = display.getWidth();
-        tabHost.getTabWidget().getChildAt(0).setLayoutParams(new LinearLayout.LayoutParams(width/4,width/6));
-        tabHost.getTabWidget().getChildAt(1).setLayoutParams(new LinearLayout.LayoutParams(width/4,width/6));
-        tabHost.getTabWidget().getChildAt(2).setLayoutParams(new LinearLayout.LayoutParams(width/4,width/6));
-        tabHost.getTabWidget().getChildAt(3).setLayoutParams(new LinearLayout.LayoutParams(width/4,width/6));
 
-        mainActivity.setIndicator("Home",getDrawable(R.drawable.ic_home));
+        tabHost.getTabWidget().getChildAt(0).setLayoutParams(new LinearLayout.LayoutParams(width / 5, width / 7));
+        tabHost.getTabWidget().getChildAt(1).setLayoutParams(new LinearLayout.LayoutParams(width / 5, width / 7));
+        tabHost.getTabWidget().getChildAt(2).setLayoutParams(new LinearLayout.LayoutParams(width / 5, width / 7));
+        tabHost.getTabWidget().getChildAt(3).setLayoutParams(new LinearLayout.LayoutParams(width / 5, width / 7));
+        tabHost.getTabWidget().getChildAt(4).setLayoutParams(new LinearLayout.LayoutParams(width / 5, width / 7));
+
+        tabHost.getTabWidget().getChildAt(0).setPadding(10,10,10,10);
+        tabHost.getTabWidget().getChildAt(1).setPadding(10,10,10,10);
+        tabHost.getTabWidget().getChildAt(2).setPadding(10,10,10,10);
+        tabHost.getTabWidget().getChildAt(3).setPadding(10,10,10,10);
+        tabHost.getTabWidget().getChildAt(4).setPadding(10,10,10,10);
+
+        tabHost.setCurrentTab(2);
+
     }
-
-
 }

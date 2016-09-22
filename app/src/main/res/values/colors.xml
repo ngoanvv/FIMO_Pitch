@@ -1,6 +1,10 @@
 <resources>
-    <color name="colorBackGroundCustomMyShipment">#1f2a3a</color>
-    <color name="colorImageButtonNotes">#66FF99</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="dark_grey">#424242</color>
+    <color name="medium_grey">#9E9E9E</color>
+    <color name="button_grey">#757575</color>
+
     <color name="colorTabHostMyJob">#344762</color>
     <color name="colorBackGroundExpandListView">#8C000000</color>
     <color name="colorActivation">#D2691E</color>
@@ -49,15 +53,15 @@
     <color name="colorlightGreen">#43973A</color>
 
     <color name="colorGreen203">#58C14D</color>
-    <color name="colorWhite">#ffffff</color>
     <color name="colorRed">#901212</color>
     <color name="colorGray">#959595</color>
     <color name="color70Gray">#A4A4A4</color>
     <color name="myPrimaryColor">#00BCD4</color>
     <color name="myPrimaryDarkColor">#0097A7</color>
     <color name="myAccentColor">#CDDC39</color>
-    <color name="myDrawerBackground">#FFF</color>
-    <color name="colorTransparent">#FFFFFF</color>
+    <color name="colorWhite">#FFF</color>
+    <color name="colorTransparent">#FFF</color>
+
     <color name="myTextPrimaryColor">#212121</color>
     <color name="myNavigationColor">#000000</color>
 

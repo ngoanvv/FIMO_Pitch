@@ -74,6 +74,31 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     public void onResume() {
         super.onResume();
         Log.d(TAG,"onResume");
+//        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        checkNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+//        checkGPS = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+//        if(!checkNetwork) Utils.showInternetSettingsAlert(SearchActivity.this);
+//        else {
+//            if(!checkGPS)
+//                Utils.showGpsSettingsAlert(SearchActivity.this);
+//            else
+//            {
+//                gps = new TrackGPS(SearchActivity.this);
+//                if(gps.canGetLocation()){
+//                    double longitude = gps.getLongitude();
+//                    double latitude = gps .getLatitude();
+//                    LatLng latLng = new LatLng(latitude,longitude);
+//                    Log.d(TAG,"lat : " + latitude +" lng :"+longitude);
+//                    moveCamera(new LatLng(gps.getLatitude(),gps.getLongitude()),12);
+//                    showCircle(latLng,5000);
+//                }
+//                else
+//                {
+//                    Utils.openDialog(SearchActivity.this,"Không định vị được vị trí của bạn");
+//                }
+//            }
+//        }
+
     }
 
     public void moveCamera(LatLng latLng,int zoom) {
@@ -89,30 +114,6 @@ public class SearchActivity extends AppCompatActivity implements OnMapReadyCallb
     public void onPause() {
         super.onPause();
         Log.d(TAG,"onPause");
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        checkNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-        checkGPS = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if(!checkNetwork) Utils.showInternetSettingsAlert(SearchActivity.this);
-        else {
-            if(!checkGPS)
-            Utils.showGpsSettingsAlert(SearchActivity.this);
-            else
-            {
-                gps = new TrackGPS(SearchActivity.this);
-                if(gps.canGetLocation()){
-                    double longitude = gps.getLongitude();
-                    double latitude = gps .getLatitude();
-                    LatLng latLng = new LatLng(latitude,longitude);
-                    Log.d(TAG,"lat : " + latitude +" lng :"+longitude);
-                    moveCamera(new LatLng(gps.getLatitude(),gps.getLongitude()),12);
-                    showCircle(latLng,5000);
-                }
-                else
-                {
-                    Utils.openDialog(SearchActivity.this,"Không định vị được vị trí của bạn");
-                }
-            }
-        }
 
     }
     public void showCircle(LatLng latLng, double radius)

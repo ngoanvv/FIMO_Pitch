@@ -75,7 +75,7 @@ public class PostNewsFragment extends Fragment {
                                         String cityName = addresses.get(0).getAddressLine(0);
                                         String stateName = addresses.get(0).getAddressLine(1);
                                         Log.d(TAG,addresses.toString()+"");
-                                        edt_location.setText(cityName+","+stateName);
+                                        edt_location.setText(stateName);
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
