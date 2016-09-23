@@ -32,9 +32,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -87,6 +89,12 @@ public class NavigationActivity extends AppCompatActivity {
             indicator.setTint(ResourcesCompat.getColor(getResources(),R.color.white,getTheme()));
             supportActionBar.setHomeAsUpIndicator(indicator);
             supportActionBar.setDisplayHomeAsUpEnabled(true);
+            toolbar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDrawerLayout.openDrawer(Gravity.LEFT);
+                }
+            });
         }
         fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
@@ -102,6 +110,10 @@ public class NavigationActivity extends AppCompatActivity {
     
     public void replaceFragment(Fragment fragment,String tag)
     {
+
+//        ViewGroup.LayoutParams layoutParams = frameLayout.getLayoutParams();
+//        layoutParams.height = layoutParams.height-100;
+//        frameLayout.setLayoutParams(layoutParams);
         tabs.setVisibility(View.GONE);
         viewPager.setVisibility(View.GONE);
         frameLayout.setVisibility(View.VISIBLE);
@@ -120,17 +132,21 @@ public class NavigationActivity extends AppCompatActivity {
                         @Override
                         public boolean onNavigationItemSelected(MenuItem menuItem) {
                             menuItem.setChecked(true);
+                            navigationView.setCheckedItem(menuItem.getItemId());
+
                             switch (menuItem.getItemId()) {
                                 case R.id.menu_home :
                                 {
                                     frameLayout.setVisibility(View.GONE);
+                                    viewPager.setVisibility(View.VISIBLE);
                                     tabs.setVisibility(View.VISIBLE);
                                     mDrawerLayout.closeDrawers();
                                     break;
                                 }
                                 case R.id.menu_notification :
                                 {
-                                    replaceFragment(new NotifcationFragment(),NotifcationFragment.class.getName());
+
+                                    replaceFragment(NotifcationFragment.newInstance("",""),NotifcationFragment.class.getName());
                                     mDrawerLayout.closeDrawers();
                                     break;
                                 }

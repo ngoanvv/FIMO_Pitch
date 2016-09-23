@@ -8,15 +8,15 @@
         android:id="@+id/notification_avatar"
         android:layout_marginBottom="20dp"
         android:layout_marginTop="24dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_below="@+id/divider"
         android:layout_marginLeft="10dp"
         android:layout_alignParentLeft="true"
         android:src="@drawable/ic_avatar"/>
 <RelativeLayout
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

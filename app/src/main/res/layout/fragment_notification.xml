@@ -7,12 +7,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.fimo_pitch.main.NotificationActivity">
+    >
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="40dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/listview_notification"
+            android:id="@+id/recyclerView_notification"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"/>
 
