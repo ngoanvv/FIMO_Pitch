@@ -16,12 +16,19 @@
 
 package com.fimo_pitch.main;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -32,19 +39,34 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fimo_pitch.R;
+import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.fragments.MatchsFragment;
 import com.fimo_pitch.fragments.NewsFragment;
 import com.fimo_pitch.fragments.NotifcationFragment;
 import com.fimo_pitch.fragments.PostNewsFragment;
+import com.fimo_pitch.fragments.SearchFragment;
+import com.fimo_pitch.model.UserModel;
+import com.fimo_pitch.support.TrackGPS;
+import com.fimo_pitch.support.Utils;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +75,8 @@ import java.util.List;
 /**
  * Provides UI for the main screen.
  */
-public class NavigationActivity extends AppCompatActivity {
-
+public class NavigationActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+    private String TAG="NavigationActivity";
     private DrawerLayout mDrawerLayout;
     private TabLayout tabs;
     private ViewPager viewPager;
@@ -62,17 +84,78 @@ public class NavigationActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private Toolbar toolbar;
     private FrameLayout frameLayout;
+    private int permissionCode=1111;
+    private TrackGPS gps;
+    private LatLng currentLatLng;
+    private GoogleApiClient mGoogleApiClient;
+    private Bundle data;
+    private UserModel userModel;
+    private TextView tv_userName,tv_email;
+    private RoundedImageView userAvatar;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+        getData();
         initView();
         initNavMenu();
+        initGoogleAPI();
+
+
+        ActivityCompat.requestPermissions(NavigationActivity.this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
+        gps = new TrackGPS(NavigationActivity.this,NavigationActivity.this);
+
+        if(gps.canGetLocation()){
+            double longitude = gps.getLongitude();
+            double latitude = gps .getLatitude();
+            Log.d(TAG,"lat : " + latitude +" lng :"+longitude);
+            currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
+        }
+        else
+        {
+            Utils.openDialog(NavigationActivity.this,"Không định vị được vị trí của bạn");
+        }
+
+    }
+    private void getData()
+    {
+        userModel = new UserModel();
+        data = getIntent().getBundleExtra("data");
+        if(data !=null)
+        {
+            userModel.setEmail(data.getString("email"));
+            userModel.setImageURL(data.getString("photo"));
+            userModel.setName(data.getString("name"));
+            Log.d(TAG,userModel.toString());
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults[0]== PackageManager.PERMISSION_GRANTED) {
+            gps = new TrackGPS(NavigationActivity.this,NavigationActivity.this);
+
+            if(gps.canGetLocation()){
+                double longitude = gps.getLongitude();
+                double latitude = gps .getLatitude();
+                Log.d(TAG,"lat : " + latitude +" lng :"+longitude);
+                currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
+            }
+            else
+            {
+                Utils.openDialog(NavigationActivity.this,"Không định vị được vị trí của bạn");
+            }
+        }
 
     }
 
     public void initView()
     {
+
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -101,7 +184,6 @@ public class NavigationActivity extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                 }
             });
         }
@@ -111,9 +193,6 @@ public class NavigationActivity extends AppCompatActivity {
     public void replaceFragment(Fragment fragment,String tag)
     {
 
-//        ViewGroup.LayoutParams layoutParams = frameLayout.getLayoutParams();
-//        layoutParams.height = layoutParams.height-100;
-//        frameLayout.setLayoutParams(layoutParams);
         tabs.setVisibility(View.GONE);
         viewPager.setVisibility(View.GONE);
         frameLayout.setVisibility(View.VISIBLE);
@@ -152,6 +231,7 @@ public class NavigationActivity extends AppCompatActivity {
                                 }
                                 case R.id.menu_search :
                                 {
+                                    replaceFragment(new SearchFragment().newInstance("",""),NotifcationFragment.class.getName());
                                     mDrawerLayout.closeDrawers();
                                     break;
                                 }
@@ -167,6 +247,7 @@ public class NavigationActivity extends AppCompatActivity {
                                 }
                                 case R.id.menu_logout :
                                 {
+                                    logoutDialog();
                                     mDrawerLayout.closeDrawers();
                                     break;
                                 }
@@ -177,6 +258,40 @@ public class NavigationActivity extends AppCompatActivity {
                     });
         }
     }
+    private void signOut() {
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.clearDefaultAccountAndReconnect();
+            mGoogleApiClient.disconnect();
+            mGoogleApiClient.connect();
+        }
+    }
+    public void initGoogleAPI()
+    {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this,this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+    }
+    private void logoutDialog()
+    {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(NavigationActivity.this);
+        builder.setMessage(R.string.logout2);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                signOut();
+                startActivity(new Intent(NavigationActivity.this,LoginActivity.class));
+                }
+        });
+        builder.create().show();
+    }
+
     // Add Fragments to Tabs
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
@@ -184,6 +299,11 @@ public class NavigationActivity extends AppCompatActivity {
         adapter.addFragment(NewsFragment.newInstance("",""), "Tin tức");
         adapter.addFragment(PostNewsFragment.newInstance("",""), "Đăng tin");
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 
     static class Adapter extends FragmentPagerAdapter {

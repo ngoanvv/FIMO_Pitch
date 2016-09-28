@@ -4,10 +4,19 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.LocationManager;
 import android.provider.Settings;
+import android.support.annotation.Nullable;
 
-import com.fimo_pitch.main.SearchActivity;
+import com.fimo_pitch.R;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * Created by Diep_Chelsea on 15/07/2016.
@@ -49,6 +58,11 @@ public class Utils {
         // Showing Alert Message
         alertDialog.show();
     }
+    public static void getCurrentLocation(GoogleMap map,TrackGPS gps,Context context,String tag)
+    {
+
+    }
+
     public static void showInternetSettingsAlert(final Context context){
         android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(context);
         alertDialog.setTitle("Network settings");
@@ -65,6 +79,27 @@ public class Utils {
             }
         });
         alertDialog.show();
+    }
+    public static void moveCamera(LatLng latLng, int zoom, GoogleMap map) {
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoom  );
+        map.animateCamera(cameraUpdate);
+        map.addMarker(new MarkerOptions().position(latLng));
+    }
+    public static void showCircle(LatLng latLng, double radius,GoogleMap map)
+    {
+        map.clear();
+        CircleOptions circleOptions = new CircleOptions();
+        circleOptions.center(latLng)
+                .center(latLng)
+                .clickable(true)
+                .strokeColor(Color.parseColor("#F6CECE"))
+                .fillColor(Color.parseColor("#F6CECE"))
+                .radius(radius);
+        map.addCircle(circleOptions);
+        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_flag)).position(latLng);
+        map.addMarker(markerOptions);
+        moveCamera(latLng,12,map);
+
     }
     public boolean isGPSEnabled(Context context) {
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);

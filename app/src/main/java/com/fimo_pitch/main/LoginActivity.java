@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     public void moveToHomeScreen()
     {
-        startActivity(new Intent(LoginActivity.this, TabHostActivivty.class));
+        startActivity(new Intent(LoginActivity.this, NavigationActivity.class));
         this.finish();
     }
 
@@ -117,6 +117,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 getFacebookData(object);
                                 saveUserData(email,password,UserModel.TYPE_TEAM);
                                 moveToHomeScreen();
+
                             }
                         });
                         Bundle parameters = new Bundle();
@@ -298,11 +299,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Log.d(TAG,"id "+acct.getId());
             Log.d(TAG,"token "+acct.getIdToken());
             Log.d(TAG,"photo "+acct.getPhotoUrl().toString());
+            Bundle bundle = new Bundle();
+            bundle.putString("email",acct.getEmail());
+            bundle.putString("id",acct.getId());
+            bundle.putString("token",acct.getIdToken());
+            bundle.putString("photo",acct.getPhotoUrl().toString());
+            bundle.putString("name",acct.getGivenName().toString());
 
             email = acct.getEmail();
             password = acct.getId();
             saveUserData(email,password,UserModel.TYPE_TEAM);
-            moveToHomeScreen();
+
+            Intent intent = new Intent(LoginActivity.this,NavigationActivity.class);
+            intent.putExtra("data",bundle);
+            startActivity(intent);
+
 
         } else {
             Utils.openDialog(LoginActivity.this,"Đăng nhập Google thất bại");

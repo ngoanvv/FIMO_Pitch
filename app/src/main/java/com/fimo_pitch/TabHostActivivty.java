@@ -11,7 +11,6 @@ import android.widget.TabHost;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.main.AboutActivity;
 import com.fimo_pitch.main.MainActivity;
-import com.fimo_pitch.main.SearchActivity;
 import com.fimo_pitch.main.SettingActivity;
 
 public class TabHostActivivty extends TabActivity {
@@ -33,19 +32,16 @@ public class TabHostActivivty extends TabActivity {
         tabHost = getTabHost();
 
         TabHost.TabSpec mainActivity = tabHost.newTabSpec("home");
-        TabHost.TabSpec searchActivity = tabHost.newTabSpec("search");
         TabHost.TabSpec settingActivity = tabHost.newTabSpec("settings");
         TabHost.TabSpec aboutActivity = tabHost.newTabSpec("about");
 
         mainActivity.setContent(new Intent(this, MainActivity.class)).setIndicator("",getResources().getDrawable(R.drawable.tab_home));
-        searchActivity.setContent(new Intent(this, SearchActivity.class)).setIndicator("",getResources().getDrawable(R.drawable.tab_search));
         settingActivity.setContent(new Intent(this, SettingActivity.class)).setIndicator("",getResources().getDrawable(R.drawable.tab_settings));
         aboutActivity.setContent(new Intent(this, AboutActivity.class)).setIndicator("",getResources().getDrawable(R.drawable.tab_info));
 
         Display display = getWindowManager().getDefaultDisplay();
 
 
-        tabHost.addTab(searchActivity);
         tabHost.addTab(mainActivity);
         tabHost.addTab(settingActivity);
         tabHost.addTab(aboutActivity);
@@ -56,12 +52,10 @@ public class TabHostActivivty extends TabActivity {
         tabHost.getTabWidget().getChildAt(0).setLayoutParams(new LinearLayout.LayoutParams(width / 5, width / 7));
         tabHost.getTabWidget().getChildAt(1).setLayoutParams(new LinearLayout.LayoutParams(width / 5, width / 7));
         tabHost.getTabWidget().getChildAt(2).setLayoutParams(new LinearLayout.LayoutParams(width / 5, width / 7));
-        tabHost.getTabWidget().getChildAt(3).setLayoutParams(new LinearLayout.LayoutParams(width / 5, width / 7));
 
         tabHost.getTabWidget().getChildAt(0).setPadding(10,10,10,10);
         tabHost.getTabWidget().getChildAt(1).setPadding(10,10,10,10);
         tabHost.getTabWidget().getChildAt(2).setPadding(10,10,10,10);
-        tabHost.getTabWidget().getChildAt(3).setPadding(10,10,10,10);
 
         tabHost.setCurrentTab(2);
 

@@ -1,6 +1,7 @@
 package com.fimo_pitch.support;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,19 +17,18 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.fimo_pitch.main.MainActivity;
+
 /**
  * Created by diep1_000 on 9/21/2016.
  */
 public class TrackGPS {
     private final Context mContext;
-
-
     boolean checkGPS = false;
-
-
     boolean checkNetwork = false;
 
     boolean canGetLocation = false;
+    private final Activity activity;
 
     Location loc;
     double latitude;
@@ -40,22 +40,41 @@ public class TrackGPS {
 
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
     protected LocationManager locationManager;
+    private LocationListener locationListener;
+    private String TAG=TrackGPS.class.getName();
 
-    public TrackGPS(Context mContext) {
+    public TrackGPS(Context mContext, Activity activityCompat) {
+        this.activity = activityCompat;
         this.mContext = mContext;
         getLocation();
+        this.locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
     }
-
     private Location getLocation() {
-
         try {
             locationManager = (LocationManager) mContext
                     .getSystemService(Context.LOCATION_SERVICE);
-            checkGPS = locationManager
-                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+            checkGPS = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-            checkNetwork = locationManager
-                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            checkNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
             if (!checkGPS && !checkNetwork) {
             }
@@ -63,7 +82,6 @@ public class TrackGPS {
                 this.canGetLocation = true;
                 // First get location from Network Provider
                 if (checkNetwork) {
-
                     try {
                         locationManager.requestLocationUpdates(
                                 LocationManager.NETWORK_PROVIDER,
@@ -84,16 +102,22 @@ public class TrackGPS {
                                     }
                                 });
                         if (locationManager != null) {
-                            loc = locationManager
-                                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
+                            loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                            if (loc != null) {
+                                latitude = loc.getLatitude();
+                                longitude = loc.getLongitude();
+                            }
+                            else
+                            {
+                            }
+                        }
+                        else
+                        {
                         }
 
-                        if (loc != null) {
-                            latitude = loc.getLatitude();
-                            longitude = loc.getLongitude();
-                        }
+
                     } catch (SecurityException e) {
+                        Log.d(TAG,e.getMessage());
 
                     }
                 }
@@ -103,21 +127,50 @@ public class TrackGPS {
             }
             // if GPS Enabled get lat/long using GPS Services
             if (checkGPS) {
+
                 if (loc == null) {
                     try {
                         locationManager.requestLocationUpdates(
                                 LocationManager.GPS_PROVIDER,
                                 MIN_TIME_BW_UPDATES,
-                                MIN_DISTANCE_CHANGE_FOR_UPDATES, (LocationListener) this);
+                                MIN_DISTANCE_CHANGE_FOR_UPDATES, new LocationListener() {
+                                    @Override
+                                    public void onLocationChanged(Location location) {
+
+                                    }
+
+                                    @Override
+                                    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                                    }
+
+                                    @Override
+                                    public void onProviderEnabled(String provider) {
+
+                                    }
+
+                                    @Override
+                                    public void onProviderDisabled(String provider) {
+
+                                    }
+                                });
                         if (locationManager != null) {
-                            loc = locationManager
-                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
                             if (loc != null) {
                                 latitude = loc.getLatitude();
                                 longitude = loc.getLongitude();
                             }
+                            else
+                            {
+
+                            }
+                        }
+                        else
+                        {
                         }
                     } catch (SecurityException e) {
+                        Log.d(TAG,e.getMessage());
 
                     }
                 }

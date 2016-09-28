@@ -1,17 +1,18 @@
 <resources>
 
     <!-- Base application theme. -->
-        <!-- Base application theme. -->
-        <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
-            <!-- Customize your theme here. -->
-            <item name="colorPrimary">#3F51B5</item>
-            <!-- Light Indigo -->
-            <item name="colorPrimaryDark">#3949AB</item>
-            <!-- Dark Indigo -->
-            <item name="colorAccent">#00B0FF</item>
-            <!-- Blue -->
-        </style>
-        <style name="AppTheme" parent="AppTheme.Base"></style>
+    <!-- Base application theme. -->
+    <style name="AppTheme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#3F51B5</item>
+        <!-- Light Indigo -->
+        <item name="colorPrimaryDark">#3949AB</item>
+        <!-- Dark Indigo -->
+        <item name="colorAccent">#00B0FF</item>
+        <!-- Blue -->
+    </style>
+
+    <style name="AppTheme" parent="AppTheme.Base"></style>
 
     <style name="tabTheme" parent="android:style/Theme">
         <item name="android:tabWidgetStyle">@style/Widget.TabWidget</item>
@@ -19,6 +20,7 @@
         <item name="android:visibility">invisible</item>
         <item name="android:textSize">15dp</item>
     </style>
+
     <style name="transparent_bottom_line" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorControlNormal">@color/colorTransparent</item>
         <item name="colorControlActivated">@color/colorTransparent</item>
@@ -28,5 +30,9 @@
     <style name="Widget.TabWidget" parent="android:Theme">
         <item name="android:tabStripEnabled">false</item>
     </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>
