@@ -25,12 +25,15 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import static com.fimo_pitch.R.id.edt_location;
 
@@ -53,13 +56,31 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
     private boolean checkGPS=false;
     private LatLng xuanthuy = new LatLng(21.036654,105.78218);
     private int permissionCode=9999;
+    private ArrayList<LatLng> latLngs;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search,container,false);
         Log.d(TAG,"mapFragment null");
 
+        {
+            latLngs = new ArrayList<>();
+            latLngs.add(new LatLng(xuanthuy.latitude+0.001,xuanthuy.longitude+0.001));
+            latLngs.add(new LatLng(xuanthuy.latitude+0.011,xuanthuy.longitude+0.001));
+            latLngs.add(new LatLng(xuanthuy.latitude+0.021,xuanthuy.longitude+0.001));
+            latLngs.add(new LatLng(xuanthuy.latitude+0.031,xuanthuy.longitude+0.001));
+            latLngs.add(new LatLng(xuanthuy.latitude+0.0321,xuanthuy.longitude+0.001));
+            latLngs.add(new LatLng(xuanthuy.latitude+0.0121,xuanthuy.longitude+0.001));
+            latLngs.add(new LatLng(xuanthuy.latitude+0.0031,xuanthuy.longitude+0.001));
+            latLngs.add(new LatLng(xuanthuy.latitude+0.00221,xuanthuy.longitude+0.001));
+            latLngs.add(new LatLng(xuanthuy.latitude+0.0013,xuanthuy.longitude+0.001));
+            latLngs.add(new LatLng(xuanthuy.latitude+0.0012,xuanthuy.longitude+0.001));
+            latLngs.add(new LatLng(xuanthuy.latitude+0.0013,xuanthuy.longitude+0.001));
+
+        }
+
         initMap();
-        initMapLicense();
         return view;
     }
 
@@ -90,23 +111,11 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
                             map = googleMap;
+                            Utils.moveCamera(xuanthuy,12,map);
+                            Utils.showCircle(xuanthuy,4,map);
                             map.addMarker(new MarkerOptions().position(xuanthuy));
-                            map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                                @Override
-                                public void onMapClick(LatLng latLng) {
-                                    Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                                    List<Address> addresses = null;
-                                    try {
-                                        addresses = geocoder.getFromLocation(latLng.latitude,latLng.longitude, 1);
-                                        String cityName = addresses.get(0).getAddressLine(0);
-                                        String stateName = addresses.get(0).getAddressLine(1);
-                                        Log.d(TAG,addresses.toString()+"");
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
+                            initMapLicense();
 
-                                }
-                            });
                         }
                     });
                 }
@@ -135,6 +144,16 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
 
             }
         });
+        map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                map.clear();
+                Utils.showCircle(cameraPosition.target,12,map);
+                Random random =new Random();
+                int x = random.nextInt(6 - 1 + 1) + 1;
+
+            }
+        });
     }
     public SearchFragment()
     {}
@@ -149,6 +168,5 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        ShowToast.showToastLong(getContext(),"MAp OK");
     }
 }

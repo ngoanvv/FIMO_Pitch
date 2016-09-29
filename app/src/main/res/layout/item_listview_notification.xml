@@ -6,55 +6,55 @@
 
     <com.fimo_pitch.custom.view.RoundedImageView
         android:id="@+id/notification_avatar"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_below="@+id/divider"
         android:layout_marginLeft="10dp"
         android:layout_alignParentLeft="true"
         android:src="@drawable/ic_avatar"/>
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="80dp">
-    <TextView
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Medium "
-        android:maxLines ="3"
-        android:minLines="1"
-        android:id="@+id/notification_content"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        />
+        android:layout_height="70dp">
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="20dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/d10"
-        android:layout_marginTop="@dimen/d10"
-        android:gravity="center"
-        >
-        <ImageView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/d10"
+            android:layout_marginTop="@dimen/d10"
+            android:gravity="center"
+            android:id="@+id/linearLayout">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Small Text"
+                android:id="@+id/notification_date"
+                android:textColor="@color/colorlightGreen"
+                />
+        </LinearLayout>
 
-            />
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
-            android:id="@+id/notification_date"
-            android:textColor="@color/colorlightGreen"
-            />
-    </LinearLayout>
-</RelativeLayout>
+            android:text="Medium "
+            android:maxLines ="3"
+            android:minLines="1"
+            android:id="@+id/notification_content"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignLeft="@+id/linearLayout"
+            android:layout_alignStart="@+id/linearLayout" />
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorlightGreen"
+        ></View>
 </LinearLayout>

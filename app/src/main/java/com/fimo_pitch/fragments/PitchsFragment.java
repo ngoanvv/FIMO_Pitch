@@ -5,39 +5,35 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 
 
 import com.fimo_pitch.R;
-import com.fimo_pitch.adapter.MatchsFragmentAdapter;
+import com.fimo_pitch.adapter.PitchsFragmentAdapter;
 import com.fimo_pitch.model.Pitch;
 
 import java.util.ArrayList;
 
 
-public class MatchsFragment extends Fragment implements View.OnClickListener {
+public class PitchsFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
-    private static final String TAG = "MatchsFragment";
+    private static final String TAG = "PitchsFragment";
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
     private String mParam2;
     private RecyclerView recyclerView;
     private RelativeLayout menuView;
-    private MatchsFragmentAdapter adapter;
+    private PitchsFragmentAdapter adapter;
     private ImageButton buttonView2;
     private ImageButton buttonView4;
     private ArrayList<Pitch> data = new ArrayList<>();
@@ -63,7 +59,7 @@ public class MatchsFragment extends Fragment implements View.OnClickListener {
         buttonView2 = (ImageButton) view.findViewById(R.id.view2);
         buttonView4 = (ImageButton) view.findViewById(R.id.view4);
         recyclerView.setHasFixedSize(true);
-        adapter = new MatchsFragmentAdapter(getActivity(), data);
+        adapter = new PitchsFragmentAdapter(getActivity(), data);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
@@ -192,11 +188,11 @@ public class MatchsFragment extends Fragment implements View.OnClickListener {
         data.add(pitch6);
 
     }
-    public MatchsFragment() {
+    public PitchsFragment() {
 
     }
-    public static MatchsFragment newInstance(String param1, String param2) {
-        MatchsFragment fragment = new MatchsFragment();
+    public static PitchsFragment newInstance(String param1, String param2) {
+        PitchsFragment fragment = new PitchsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

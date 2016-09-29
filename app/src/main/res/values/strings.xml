@@ -96,4 +96,9 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="setting">Cài đặt</string>
+    <string name="acc_settings">Cài đặt tài khoản</string>
+    <string name="changePassword">Thay đổi mật khẩu</string>
+    <string name="app_settings">Cài đặt ứng dụng</string>
+    <string name="app_notificaiton">Cài đặt thông báo</string>
 </resources>

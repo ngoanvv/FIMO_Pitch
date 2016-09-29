@@ -20,12 +20,12 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.ActivityCompat;
@@ -33,7 +33,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -44,19 +43,17 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
-import com.fimo_pitch.fragments.MatchsFragment;
+import com.fimo_pitch.fragments.PitchsFragment;
 import com.fimo_pitch.fragments.NewsFragment;
 import com.fimo_pitch.fragments.NotifcationFragment;
 import com.fimo_pitch.fragments.PostNewsFragment;
 import com.fimo_pitch.fragments.SearchFragment;
+import com.fimo_pitch.fragments.SettingsFragment;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
@@ -64,8 +61,6 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -92,7 +87,7 @@ public class NavigationActivity extends AppCompatActivity implements GoogleApiCl
     private UserModel userModel;
     private TextView tv_userName,tv_email;
     private RoundedImageView userAvatar;
-
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -242,6 +237,7 @@ public class NavigationActivity extends AppCompatActivity implements GoogleApiCl
                                 }
                                 case R.id.menu_settings :
                                 {
+                                    replaceFragment(new SettingsFragment().newInstance("",""),NotifcationFragment.class.getName());
                                     mDrawerLayout.closeDrawers();
                                     break;
                                 }
@@ -263,6 +259,14 @@ public class NavigationActivity extends AppCompatActivity implements GoogleApiCl
             mGoogleApiClient.clearDefaultAccountAndReconnect();
             mGoogleApiClient.disconnect();
             mGoogleApiClient.connect();
+
+            sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
+            if(sharedPreferences !=null)
+            {
+                sharedPreferences.edit().clear();
+            }
+            finish();
+
         }
     }
     public void initGoogleAPI()
@@ -281,12 +285,18 @@ public class NavigationActivity extends AppCompatActivity implements GoogleApiCl
 
         AlertDialog.Builder builder = new AlertDialog.Builder(NavigationActivity.this);
         builder.setMessage(R.string.logout2);
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
                 signOut();
                 startActivity(new Intent(NavigationActivity.this,LoginActivity.class));
+                dialog.dismiss();
                 }
         });
         builder.create().show();
@@ -295,7 +305,7 @@ public class NavigationActivity extends AppCompatActivity implements GoogleApiCl
     // Add Fragments to Tabs
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment( MatchsFragment.newInstance("1","2"), "Tìm nhanh");
+        adapter.addFragment( PitchsFragment.newInstance("1","2"), "Tìm nhanh");
         adapter.addFragment(NewsFragment.newInstance("",""), "Tin tức");
         adapter.addFragment(PostNewsFragment.newInstance("",""), "Đăng tin");
         viewPager.setAdapter(adapter);

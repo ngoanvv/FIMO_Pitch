@@ -37,7 +37,6 @@
             <EditText android:id="@+id/input_email"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:text="diep@gmail.com"
                       android:textColor="@color/color_myaccount_title_bg"
                       android:inputType="textEmailAddress"
                       android:hint="Email" />
@@ -49,10 +48,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp">
+
             <EditText android:id="@+id/input_password"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:text="123456"
                       android:inputType="textPassword"
                       android:textColor="@color/color_myaccount_title_bg"
                       android:shadowColor="@color/color_myaccount_title_bg"
@@ -61,6 +60,7 @@
 
         <TextView
             android:id="@+id/btn_login"
+            android:background="@drawable/item_nav"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -71,7 +71,7 @@
             android:layout_gravity="center_horizontal"
             android:padding="5dp"
             android:text="@string/login"/>
-     
+
         <TextView android:id="@+id/link_forgot"
                   android:layout_width="fill_parent"
                   android:layout_height="30dp"
@@ -84,12 +84,14 @@
         <TextView android:id="@+id/link_signup"
                   android:layout_width="250dp"
                   android:layout_height="30dp"
-                  android:textColor="@color/color_myaccount_title_bg"
+                  android:textColor="@color/colorGreen"
                   android:text="@string/link_signUp"
                   android:layout_gravity="center"
+
                   android:textSize="16dip"/>
         <com.facebook.login.widget.LoginButton
             android:id="@+id/loginFB"
+            android:layout_marginTop="20dp"
             android:layout_width="250dp"
             android:layout_height="30dp"
             android:layout_gravity="center_horizontal"

@@ -18,7 +18,7 @@ import java.util.Random;
 /**
  * Created by TranManhTien on 22/08/2016.
  */
-public class MatchsFragmentAdapter extends RecyclerView.Adapter<MatchsFragmentAdapter.MyViewHolder> {
+public class PitchsFragmentAdapter extends RecyclerView.Adapter<PitchsFragmentAdapter.MyViewHolder> {
 
     private Context context;
 
@@ -27,7 +27,7 @@ public class MatchsFragmentAdapter extends RecyclerView.Adapter<MatchsFragmentAd
     private LayoutInflater inflater;
 
 
-    public MatchsFragmentAdapter(Context context, ArrayList<Pitch> data) {
+    public PitchsFragmentAdapter(Context context, ArrayList<Pitch> data) {
         this.context = context;
         this.data = data;
         this.inflater = LayoutInflater.from(context);
@@ -35,7 +35,7 @@ public class MatchsFragmentAdapter extends RecyclerView.Adapter<MatchsFragmentAd
     }
 
     @Override
-    public MatchsFragmentAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PitchsFragmentAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = inflater.inflate(R.layout.match_item, parent, false);
 

@@ -117,6 +117,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 getFacebookData(object);
                                 saveUserData(email,password,UserModel.TYPE_TEAM);
                                 moveToHomeScreen();
+                                Log.d(TAG,"login fb");
 
                             }
                         });
@@ -233,6 +234,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void loginGoogle() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
     }
     private void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
@@ -313,10 +315,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Intent intent = new Intent(LoginActivity.this,NavigationActivity.class);
             intent.putExtra("data",bundle);
             startActivity(intent);
+            Log.d(TAG,"login fb");
 
 
         } else {
-            Utils.openDialog(LoginActivity.this,"Đăng nhập Google thất bại");
 
         }
     }

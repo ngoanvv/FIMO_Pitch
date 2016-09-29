@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 
 import com.fimo_pitch.R;
-import com.fimo_pitch.fragments.MatchsFragment;
+import com.fimo_pitch.fragments.PitchsFragment;
 import com.fimo_pitch.fragments.NewsFragment;
 import com.fimo_pitch.fragments.PostNewsFragment;
 
@@ -23,7 +23,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 	private ViewPager mViewPager;
 	private static String TAG="MainActivity";
-	private MatchsFragment matchsFragment;
+	private PitchsFragment pitchsFragment;
 	private PostNewsFragment postNewsFragment;
 	private NewsFragment newsFragment;
 	private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -80,9 +80,9 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 		public Fragment getItem(int position) {
 			switch (position) {
 				case 0://Review fragment
-					if (matchsFragment == null)
-					matchsFragment = matchsFragment.newInstance("1", "2");
-					return matchsFragment;
+					if (pitchsFragment == null)
+					pitchsFragment = pitchsFragment.newInstance("1", "2");
+					return pitchsFragment;
 				case 1:
 					if (newsFragment == null)
 						newsFragment = newsFragment.newInstance("1", "2");
@@ -93,8 +93,8 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 						postNewsFragment = postNewsFragment.newInstance("1", "2");
 					return postNewsFragment;
 				default: {
-					matchsFragment = matchsFragment.newInstance("1", "2");
-					return matchsFragment;
+					pitchsFragment = pitchsFragment.newInstance("1", "2");
+					return pitchsFragment;
 				}
 			}
 
