@@ -1,6 +1,7 @@
 package com.fimo_pitch.main;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -13,15 +14,25 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.UserModel;
+import com.fimo_pitch.model.Utility;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     public   static String TAG = "SignUpActivity";
@@ -39,12 +50,21 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private Uri avatarUri;
     private String downloadURL="";
     private boolean pickedImage=false;
+
+    // Progress Dialog Object
+    ProgressDialog prgDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         initView();
         setListener();
+
+        prgDialog = new ProgressDialog(this);
+        prgDialog.setMessage("Chờ trong giây lát...");
+        // set mCancelable = false
+        prgDialog.setCancelable(false);
 
     }
 
@@ -125,7 +145,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void setListener()
     {
         bt_login.setOnClickListener(this);
-        bt_signUp.setOnClickListener(this);
+        bt_signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerUser(v);
+            }
+        });
         groupUsertype.check(R.id.radio_team);
         groupUsertype.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -142,6 +167,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     }
             }
         });
+
+
     }
 
     public void signup() {
@@ -178,6 +205,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
+
 
     }
 
@@ -276,4 +305,118 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         dialog.dismiss();
     }
 
+    /**
+     * Method gets triggered when Register button is clicked
+     *
+     * @param view
+     */
+    public void registerUser(View view){
+        //get value in xml
+
+        String name = edt_userName.getText().toString();
+        String email = edt_userEmail.getText().toString();
+        String password = edt_password.getText().toString();
+        String phone = edt_phone.getText().toString();
+
+
+        // Instantiate Http Request Param Object
+        RequestParams params = new RequestParams();
+        // check value name, email, password
+        if(Utility.isNotNull(name) && Utility.isNotNull(email) && Utility.isNotNull(password)){
+            // When Email entered is Valid
+            if(Utility.validate(email)){
+
+                // put value to params
+                params.put("name", name);
+                params.put("username", email);
+                params.put("password", password);
+                params.put("phone", phone);
+                params.put("usertype", userType);
+
+                invokeWS(params);
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Please enter valid email", Toast.LENGTH_LONG).show();
+            }
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Please fill the form, don't leave any field blank", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    /**
+     * Method RESTful webservice
+     *
+     */
+    public void invokeWS(RequestParams params){
+
+        prgDialog.show();
+        // Make RESTful webservice call using AsyncHttpClient object
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://192.168.1.54:8083/useraccount/register/doregister",params ,new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                // Hide Progress Dialog
+                prgDialog.hide();
+                try {
+                    // JSON Object
+                    JSONObject obj = new JSONObject(new String(responseBody));
+
+                    if(obj.getBoolean("status")){
+
+                        setDefaultValues();
+                        Toast.makeText(getApplicationContext(), "You are successfully registered!", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+
+                }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                            prgDialog.hide();
+
+                            if(statusCode == 404){
+                                Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                            }
+                            else if(statusCode == 500){
+                                Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                            }
+                    }
+       });
+    }
+
+    /**
+     * Method which navigates from Register Activity to Login Activity
+     */
+    public void navigatetoLoginActivity(View view){
+        Intent loginIntent = new Intent(getApplicationContext(),LoginActivity.class);
+        // Clears History of Activity
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(loginIntent);
+    }
+
+    /**
+     * Set degault values for Edit View controls
+     */
+    public void setDefaultValues(){
+        edt_userName.setText("");
+        edt_userEmail.setText("");
+        edt_password.setText("");
+        edt_phone.setText("");
+    }
+
 }
+
