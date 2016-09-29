@@ -317,6 +317,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         String email = edt_userEmail.getText().toString();
         String password = edt_password.getText().toString();
         String phone = edt_phone.getText().toString();
+        String usertype = "";
+
+        if (userType == UserModel.TYPE_OWNER) // chu san
+        {
+            usertype = "1";
+        }
+        else {
+            usertype = "0";
+        }
 
 
         // Instantiate Http Request Param Object
@@ -328,10 +337,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                 // put value to params
                 params.put("name", name);
-                params.put("username", email);
+                params.put("email", email);
                 params.put("password", password);
                 params.put("phone", phone);
-                params.put("usertype", userType);
+                params.put("usertype", usertype);
 
                 invokeWS(params);
             }
@@ -354,7 +363,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://192.168.1.54:8083/useraccount/register/doregister",params ,new AsyncHttpResponseHandler() {
+        client.get("http://192.168.1.54:8083/WebService/register/doregister",params ,new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
