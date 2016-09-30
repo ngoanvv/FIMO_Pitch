@@ -22,8 +22,8 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
-import com.fimo_pitch.TabHostActivivty;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.Utils;
@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         initGoogleAPI();
         initView();
-        sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
+        getLocalData();
 //        if(sharedPreferences!=null)   flash();
 //        moveToHomeScreen();
     }
@@ -90,6 +90,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         this.finish();
     }
 
+    public void getLocalData()
+    {
+        sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
+        if(sharedPreferences != null)
+        {
+            Log.d(TAG,sharedPreferences.getString("email","null"));
+            Log.d(TAG,sharedPreferences.getString("password","null"));
+            edt_email.setText(sharedPreferences.getString("email",""));
+            edt_password.setText(sharedPreferences.getString("password",""));
+
+        }
+    }
     public void initView()
     {
         tv_signUp = (TextView) findViewById(R.id.link_signup);
@@ -202,10 +214,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     {
         sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("email",email);
-        editor.putString("password",password);
-        editor.putString("userType",userType);
-        Log.d("info",email+"/"+password+"/"+userType);
+        editor.putString(CONSTANT.USER_EMAIL,email);
+        editor.putString(CONSTANT.USER_PASSWORD,password);
+//        editor.putString("userType",userType);
+//        Log.d("info",email+"/"+password+"/"+userType);
         editor.commit();
 
     }
@@ -271,19 +283,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
             case R.id.btn_login :
             {
-                moveToHomeScreen();
-//                if (!validate(edt_email.getText().toString(),edt_password.getText().toString())) {
-//                        onLoginFailed();
-//                        break;
-//                }
-//                else {
-//
-//                    dialog = new MaterialDialog.Builder(this)
-//                            .content("Đang đăng nhập....")
-//                            .progress(true, 0)
-//                            .show();
-//                    break;
-//                }
+
+//                moveToHomeScreen();
+                if (!validate(edt_email.getText().toString(),edt_password.getText().toString())) {
+                        onLoginFailed();
+                        break;
+                }
+                else {
+
+                    if(sharedPreferences !=null)
+                    {
+                        if(edt_email.getText().toString().equals(sharedPreferences.getString("email","owner@gmail.com")) &&
+                                edt_password.getText().toString().equals(sharedPreferences.getString("password","owner@gmail.com"))
+                                )
+                            startActivity(new Intent(LoginActivity.this,NavigationActivity.class));
+                    }
+
+                    dialog = new MaterialDialog.Builder(this)
+                            .content("Đang đăng nhập....")
+                            .progress(true, 0)
+                            .show();
+                    break;
+                }
             }
             case R.id.link_forgot :
             {
@@ -291,6 +312,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             }
         }
+    }
+
+    private void onLoginFailed() {
+        Utils.openDialog(LoginActivity.this,"Sai thông tin đăng nhập");
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
@@ -302,11 +327,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Log.d(TAG,"token "+acct.getIdToken());
             Log.d(TAG,"photo "+acct.getPhotoUrl().toString());
             Bundle bundle = new Bundle();
-            bundle.putString("email",acct.getEmail());
+            bundle.putString(CONSTANT.USER_EMAIL,acct.getEmail());
             bundle.putString("id",acct.getId());
             bundle.putString("token",acct.getIdToken());
             bundle.putString("photo",acct.getPhotoUrl().toString());
-            bundle.putString("name",acct.getGivenName().toString());
+            bundle.putString(CONSTANT.USER_NAME,acct.getGivenName().toString());
 
             email = acct.getEmail();
             password = acct.getId();

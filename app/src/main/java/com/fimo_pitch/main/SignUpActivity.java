@@ -39,6 +39,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private Uri avatarUri;
     private String downloadURL="";
     private boolean pickedImage=false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +54,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     {
         groupUsertype  = (RadioGroup) findViewById(R.id.radio_userType);
         edt_userName   = (EditText) findViewById(R.id.input_name);
-        edt_password   = (EditText) findViewById(R.id.input_password);
+        edt_password   = (EditText) findViewById(R.id.signup_input_password);
         edt_rePassword = (EditText) findViewById(R.id.input_re_password);
-        edt_userEmail  = (EditText) findViewById(R.id.input_email);
+        edt_userEmail  = (EditText) findViewById(R.id.signup_input_email);
         edt_phone      = (EditText) findViewById(R.id.input_phone);
         bt_signUp      = (TextView) findViewById(R.id.btn_signUp);
         // textview dung de luu lai imageURL
@@ -72,6 +74,33 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         {
             case R.id.btn_signUp :
             {
+                if(validate())
+                {
+                    sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
+                    if(sharedPreferences != null)
+                    {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.clear();
+                        editor.putString(CONSTANT.USER_EMAIL,edt_userEmail.getText().toString());
+                        editor.putString(CONSTANT.USER_PASSWORD,edt_password.getText().toString());
+                        editor.putString(CONSTANT.USER_PHONE,edt_phone.getText().toString());
+                        editor.putString(CONSTANT.USER_NAME,edt_userName.getText().toString());
+
+
+                    }
+                    Intent intent = new Intent(SignUpActivity.this,NavigationActivity.class);
+                    Bundle data = new Bundle();
+                    data.putString(CONSTANT.USER_EMAIL,edt_userEmail.getText().toString());
+                    data.putString(CONSTANT.USER_PASSWORD,edt_password.getText().toString());
+                    data.putString(CONSTANT.USER_PHONE,edt_phone.getText().toString());
+                    data.putString(CONSTANT.USER_NAME,edt_userName.getText().toString());
+                    intent.putExtra("data",data);
+                    Log.d(TAG,edt_userEmail.getText().toString());
+                    startActivity(intent);
+
+
+                }
+                break;
 
             }
             case R.id.btn_login :
@@ -253,7 +282,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private void onLoginSuccess(UserModel userModel,String password)
     {
         dialog.dismiss();
-        saveUserData(userModel.getEmail(),password,userModel.getUserType());
+//        saveUserData(userModel.getEmail(),password,userModel.getUserType());
         Intent intent= new Intent(SignUpActivity.this,MainActivity.class);
         intent.putExtra(CONSTANT.USER_TYPE,userModel.getUserType());
         intent.putExtra(CONSTANT.KEY_USER,userModel);
@@ -264,9 +293,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     {
         sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("email",email);
-        editor.putString("password",password);
-        editor.putString("userType",userType);
+        editor.putString(CONSTANT.USER_EMAIL,email);
+        editor.putString(CONSTANT.USER_PASSWORD,password);
+        editor.putString(CONSTANT.USER_TYPE,userType);
         Log.d("info",email+"/"+password+"/"+userType);
         editor.commit();
 

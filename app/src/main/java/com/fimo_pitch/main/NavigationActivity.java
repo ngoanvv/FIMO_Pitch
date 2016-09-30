@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.nfc.tech.NfcA;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -46,6 +47,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.fragments.PitchsFragment;
@@ -62,6 +64,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,16 +91,15 @@ public class NavigationActivity extends AppCompatActivity implements GoogleApiCl
     private TextView tv_userName,tv_email;
     private RoundedImageView userAvatar;
     private SharedPreferences sharedPreferences;
-
+    private View navHeader;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-        getData();
         initView();
+        getData();
         initNavMenu();
         initGoogleAPI();
-
 
         ActivityCompat.requestPermissions(NavigationActivity.this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
@@ -121,10 +123,13 @@ public class NavigationActivity extends AppCompatActivity implements GoogleApiCl
         data = getIntent().getBundleExtra("data");
         if(data !=null)
         {
-            userModel.setEmail(data.getString("email"));
-            userModel.setImageURL(data.getString("photo"));
-            userModel.setName(data.getString("name"));
-            Log.d(TAG,userModel.toString());
+            userModel.setEmail(data.getString(CONSTANT.USER_EMAIL));
+            userModel.setImageURL(data.getString(CONSTANT.USER_AVATAR));
+            userModel.setName(data.getString(CONSTANT.USER_NAME));
+
+            tv_email.setText(data.getString(CONSTANT.USER_EMAIL));
+            tv_userName.setText(data.getString(CONSTANT.USER_NAME));
+
         }
     }
     @Override
@@ -160,6 +165,12 @@ public class NavigationActivity extends AppCompatActivity implements GoogleApiCl
         frameLayout = (FrameLayout) findViewById(R.id.container);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        navHeader = navigationView.getHeaderView(0);
+        tv_email = (TextView) navHeader.findViewById(R.id.user_email);
+        tv_userName = (TextView) navHeader.findViewById(R.id.user_name);
+        userAvatar = (RoundedImageView) navHeader.findViewById(R.id.user_avatar);
+
+        Picasso.with(NavigationActivity.this).load(R.drawable.ic_avatar).fit().centerCrop().into(userAvatar);
 
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {

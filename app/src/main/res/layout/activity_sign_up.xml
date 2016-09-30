@@ -10,21 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="24dp"
-        android:paddingRight="24dp">
+        android:layout_marginTop="30dp"
+        android:paddingRight="24dp"><![CDATA[
         android:layout_gravity="center_horizontal" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:textSize="@dimen/text_size_20sp"
-            android:textColor="@color/myAccentColor"
-            android:layout_gravity="center_horizontal"
-            android:padding="12dp"
-            android:text="@string/app_name"/>
+        ]]>
+
         <com.fimo_pitch.custom.view.RoundedImageView
             android:id="@+id/img_avatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/ic_avatar"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp"
@@ -34,7 +28,7 @@
             android:id="@+id/txt_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/myAccentColor"
+            android:textColor="@color/colorPrimary"
             android:layout_gravity="center_horizontal"
             android:visibility="invisible"
             />
@@ -42,26 +36,24 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+           >
             <EditText android:id="@+id/input_name"
                       android:layout_width="match_parent"
-                      android:textColor="@color/myAccentColor"
+                      android:textColor="@color/colorPrimary"
                       android:layout_height="wrap_content"
-                      android:textColorHint="@color/myAccentColor"
+                      android:textColorHint="@color/colorPrimary"
                       android:inputType="textCapWords"
                       android:hint="Tên người dùng" />
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+           >
             <EditText android:id="@+id/input_phone"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:textColor="@color/myAccentColor"
-                      android:textColorHint="@color/myAccentColor"
+                      android:textColor="@color/colorPrimary"
+                      android:textColorHint="@color/colorPrimary"
                       android:inputType="number"
                       android:maxLength="11"
                       android:hint="Số điện thoại liên lạc" />
@@ -70,13 +62,12 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_email"
+           >
+            <EditText android:id="@+id/signup_input_email"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:textColorHint="@color/myAccentColor"
-                      android:textColor="@color/myAccentColor"
+                      android:textColorHint="@color/colorPrimary"
+                      android:textColor="@color/colorPrimary"
                       android:inputType="textEmailAddress"
                       android:hint="Email" />
         </android.support.design.widget.TextInputLayout>
@@ -85,26 +76,23 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_password"
+           >
+            <EditText android:id="@+id/signup_input_password"
                       android:layout_width="match_parent"
-                      android:textColorHint="@color/myAccentColor"
-                      android:textColor="@color/myAccentColor"
+                      android:textColorHint="@color/colorPrimary"
+                      android:textColor="@color/colorPrimary"
                       android:layout_height="wrap_content"
                       android:inputType="textPassword"
                       android:hint="Mật khẩu"/>
         </android.support.design.widget.TextInputLayout>
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp">
+            android:layout_height="wrap_content">
             <EditText android:id="@+id/input_re_password"
                       android:layout_width="match_parent"
-                      android:textColor="@color/myAccentColor"
+                      android:textColor="@color/colorPrimary"
                       android:layout_height="wrap_content"
-                      android:textColorHint="@color/myAccentColor"
+                      android:textColorHint="@color/colorPrimary"
                       android:inputType="textPassword"
                       android:hint="Nhập lại mật khẩu"/>
         </android.support.design.widget.TextInputLayout>
@@ -124,7 +112,7 @@
                 android:id="@+id/radio_owner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/myAccentColor"
+                android:textColor="@color/colorPrimary"
                 android:layout_marginRight="20dp"
                 android:text="@string/chusan"
                 android:layout_gravity="right"
@@ -133,7 +121,7 @@
                 android:id="@+id/radio_team"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/myAccentColor"
+                android:textColor="@color/colorPrimary"
                 android:layout_marginLeft="20dp"
                 android:text="@string/khachang"
                 android:checked="true"
@@ -147,19 +135,20 @@
             android:id="@+id/btn_signUp"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:gravity="center_horizontal"
-            android:textColor="@color/myAccentColor"
+            android:background="@drawable/item_nav"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_size_20sp"
             android:layout_gravity="center_horizontal"
-            android:padding="12dp"
+            android:padding="10dp"
             android:text="@string/signup"/>
 
         <TextView android:id="@+id/link_login"
                   android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
-                  android:textColor="@color/myAccentColor"
+                  android:textColor="@color/colorPrimary"
                   android:layout_marginBottom="24dp"
                   android:text="@string/link_login"
                   android:gravity="center"

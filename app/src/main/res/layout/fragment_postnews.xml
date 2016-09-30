@@ -127,14 +127,26 @@
             android:layout_marginRight="15dp"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:layout_marginTop="20dp"></FrameLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_marginTop="20dp"
+            android:layout_height="wrap_content">
+        <com.fimo_pitch.custom.view.RoundedImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="100dp"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_post"
             />
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Post tin"
-            android:layout_gravity="center_horizontal"
+        <com.fimo_pitch.custom.view.RoundedImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_cancel"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="100dp"
             />
+        </RelativeLayout>
     </LinearLayout>
 
 

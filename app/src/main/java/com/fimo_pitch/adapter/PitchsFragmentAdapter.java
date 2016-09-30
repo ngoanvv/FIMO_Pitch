@@ -2,6 +2,7 @@ package com.fimo_pitch.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ import java.util.Random;
 public class PitchsFragmentAdapter extends RecyclerView.Adapter<PitchsFragmentAdapter.MyViewHolder> {
 
     private Context context;
-
+    private String TAG=PitchsFragmentAdapter.class.getName();
     private ArrayList<Pitch> data;
 
     private LayoutInflater inflater;
@@ -36,14 +37,10 @@ public class PitchsFragmentAdapter extends RecyclerView.Adapter<PitchsFragmentAd
 
     @Override
     public PitchsFragmentAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = inflater.inflate(R.layout.match_item, parent, false);
-
         MyViewHolder holder = new MyViewHolder(view);
-
         return holder;
     }
-
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
@@ -51,6 +48,14 @@ public class PitchsFragmentAdapter extends RecyclerView.Adapter<PitchsFragmentAd
         int x = random.nextInt(10 - 1 + 1) + 1;
         if(x%2==0)  Picasso.with(context).load(R.drawable.ic_pitch).resize(0,400).into(holder.imageView);
         else Picasso.with(context).load(R.drawable.ic_pitch2).resize(0,650).into(holder.imageView);
+
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
     @Override
@@ -62,6 +67,12 @@ public class PitchsFragmentAdapter extends RecyclerView.Adapter<PitchsFragmentAd
     private Pitch getPitch(int position){
 
         return data.get(position);
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
     }
 
     @Override

@@ -3,4 +3,7 @@
         <item android:state_pressed="true">
                 <color android:color="@color/blue"></color>
         </item>
+        <item android:state_selected="true">
+                <color android:color="@color/blue"></color>
+        </item>
 </selector>

@@ -84,7 +84,7 @@
         <TextView android:id="@+id/link_signup"
                   android:layout_width="250dp"
                   android:layout_height="30dp"
-                  android:textColor="@color/colorGreen"
+                  android:textColor="@color/colorPrimary"
                   android:text="@string/link_signUp"
                   android:layout_gravity="center"
 

@@ -65,11 +65,11 @@
     <color name="myTextPrimaryColor">#212121</color>
     <color name="myNavigationColor">#000000</color>
 
+
     <color name="selected_gray">#ffdbdbdb</color>
     <color name="color70White">#D2D2D2</color>
     <color name="color80White">#E1E1E1</color>
     <color name="color80Gray">#DFDFDF</color>
-    <color name="colorGreen">#01579b</color>
     <color name="colorBlack">#000000</color>
     <color name="color80Black">#313131</color>
     <color name="colorMenuLeft">#444444</color>

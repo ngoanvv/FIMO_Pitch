@@ -64,22 +64,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_search,container,false);
         Log.d(TAG,"mapFragment null");
 
-        {
-            latLngs = new ArrayList<>();
-            latLngs.add(new LatLng(xuanthuy.latitude+0.001,xuanthuy.longitude+0.001));
-            latLngs.add(new LatLng(xuanthuy.latitude+0.011,xuanthuy.longitude+0.001));
-            latLngs.add(new LatLng(xuanthuy.latitude+0.021,xuanthuy.longitude+0.001));
-            latLngs.add(new LatLng(xuanthuy.latitude+0.031,xuanthuy.longitude+0.001));
-            latLngs.add(new LatLng(xuanthuy.latitude+0.0321,xuanthuy.longitude+0.001));
-            latLngs.add(new LatLng(xuanthuy.latitude+0.0121,xuanthuy.longitude+0.001));
-            latLngs.add(new LatLng(xuanthuy.latitude+0.0031,xuanthuy.longitude+0.001));
-            latLngs.add(new LatLng(xuanthuy.latitude+0.00221,xuanthuy.longitude+0.001));
-            latLngs.add(new LatLng(xuanthuy.latitude+0.0013,xuanthuy.longitude+0.001));
-            latLngs.add(new LatLng(xuanthuy.latitude+0.0012,xuanthuy.longitude+0.001));
-            latLngs.add(new LatLng(xuanthuy.latitude+0.0013,xuanthuy.longitude+0.001));
-
-        }
-
         initMap();
         return view;
     }
