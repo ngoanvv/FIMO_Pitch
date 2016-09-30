@@ -1,6 +1,7 @@
 package com.fimo_pitch.main;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.CallbackManager;
@@ -25,6 +27,7 @@ import com.facebook.login.widget.LoginButton;
 import com.fimo_pitch.R;
 import com.fimo_pitch.TabHostActivivty;
 import com.fimo_pitch.model.UserModel;
+import com.fimo_pitch.model.Utility;
 import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.auth.api.Auth;
@@ -37,10 +40,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Arrays;
+
+import cz.msebera.android.httpclient.Header;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
@@ -55,6 +63,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private SignInButton loginGG;
     private GoogleApiClient mGoogleApiClient;
     private int RC_SIGN_IN=9999;
+
+    private ProgressDialog prgDialog;
+    private TextView errorMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initView();
         sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
 //        if(sharedPreferences!=null)   flash();
-//        moveToHomeScreen();
+
     }
     public void initGoogleAPI()
     {
@@ -83,11 +94,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .enableAutoManage(this,this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-    }
-    public void moveToHomeScreen()
-    {
-        startActivity(new Intent(LoginActivity.this, NavigationActivity.class));
-        this.finish();
     }
 
     public void initView()
@@ -116,7 +122,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 Log.d(TAG,"onCOmplete :"+object.toString());
                                 getFacebookData(object);
                                 saveUserData(email,password,UserModel.TYPE_TEAM);
-                                moveToHomeScreen();
+                                navigatetoNavigationActivity();
                                 Log.d(TAG,"login fb");
 
                             }
@@ -271,7 +277,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
             case R.id.btn_login :
             {
-                moveToHomeScreen();
+                loginUser(v);
 //                if (!validate(edt_email.getText().toString(),edt_password.getText().toString())) {
 //                        onLoginFailed();
 //                        break;
@@ -355,5 +361,94 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    private void loginUser(View view){
+
+        String email = edt_email.getText().toString();
+        String password = edt_password.getText().toString();
+        RequestParams params = new RequestParams();
+
+        if(Utility.isNotNull(email) && Utility.isNotNull(password)){
+
+            if(Utility.validate(email)){
+
+                params.put("email", email);
+                params.put("password", password);
+
+                invokeWS(params, view);
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Please enter valid email", Toast.LENGTH_LONG).show();
+            }
+        } else{
+            Toast.makeText(getApplicationContext(), "Please fill the form, don't leave any field blank", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    public void invokeWS(RequestParams params, final View view){
+
+        prgDialog.show();
+        // Make RESTful webservice call using AsyncHttpClient object
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://192.168.1.54:8083/WebService/login/dologin",params ,new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                prgDialog.hide();
+                try {
+                    // JSON Object
+                    JSONObject obj = new JSONObject(new String(responseBody));
+                    if(obj.getBoolean("status")){
+                        Toast.makeText(getApplicationContext(), "You are successfully logged in!", Toast.LENGTH_LONG).show();
+                        navigatetoNavigationActivity();
+                    }
+                    else{
+                        errorMsg.setText(obj.getString("error_msg"));
+                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+
+                }
+
+            }
+
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                prgDialog.hide();
+                navigatetoRegisterActivity(view);
+                if(statusCode == 404){
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                else if(statusCode == 500){
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    public void navigatetoNavigationActivity(){
+        Intent homeIntent = new Intent(getApplicationContext(),NavigationActivity.class);
+        homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(homeIntent);
+    }
+
+    /**
+     * Method gets triggered when Register button is clicked
+     *
+     * @param view
+     */
+    public void navigatetoRegisterActivity(View view){
+        Intent loginIntent = new Intent(getApplicationContext(),SignUpActivity.class);
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(loginIntent);
     }
 }

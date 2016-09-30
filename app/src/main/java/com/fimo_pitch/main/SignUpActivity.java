@@ -52,7 +52,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private boolean pickedImage=false;
 
     // Progress Dialog Object
-    ProgressDialog prgDialog;
+    private ProgressDialog prgDialog;
+    private TextView errorMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,15 +128,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             if (data == null) {
                 Log.d(TAG, "data null");
             } else {
-             Picasso.with(SignUpActivity.this).load(data.getData()).fit().into(img_avatar);
+                Picasso.with(SignUpActivity.this).load(data.getData()).fit().into(img_avatar);
                 try {
-                        pickedImage=true;
-                        avatarUri = data.getData();
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), avatarUri);
-                        img_avatar.setImageBitmap(bitmap);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    pickedImage=true;
+                    avatarUri = data.getData();
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), avatarUri);
+                    img_avatar.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
             }
         }
@@ -155,16 +156,16 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         groupUsertype.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    if(checkedId==R.id.radio_owner)
-                    {
-                        userType = UserModel.TYPE_OWNER;
-                        Log.d("owner","click");
-                    }
-                    if(checkedId==R.id.radio_team)
-                    {
-                        userType = UserModel.TYPE_TEAM;
-                        Log.d("team","click");
-                    }
+                if(checkedId==R.id.radio_owner)
+                {
+                    userType = UserModel.TYPE_OWNER;
+                    Log.d("owner","click");
+                }
+                if(checkedId==R.id.radio_team)
+                {
+                    userType = UserModel.TYPE_TEAM;
+                    Log.d("team","click");
+                }
             }
         });
 
@@ -205,9 +206,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-
-
     }
 
     public boolean validate() {
@@ -342,7 +340,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 params.put("phone", phone);
                 params.put("usertype", usertype);
 
-                invokeWS(params);
+                invokeWS(params, view);
             }
             else{
                 Toast.makeText(getApplicationContext(), "Please enter valid email", Toast.LENGTH_LONG).show();
@@ -358,15 +356,14 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
      * Method RESTful webservice
      *
      */
-    public void invokeWS(RequestParams params){
+    public void invokeWS(RequestParams params, final View view){
 
         prgDialog.show();
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         client.get("http://192.168.1.54:8083/WebService/register/doregister",params ,new AsyncHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 // Hide Progress Dialog
                 prgDialog.hide();
                 try {
@@ -374,11 +371,12 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     JSONObject obj = new JSONObject(new String(responseBody));
 
                     if(obj.getBoolean("status")){
-
                         setDefaultValues();
                         Toast.makeText(getApplicationContext(), "You are successfully registered!", Toast.LENGTH_LONG).show();
+                        navigatetoLoginActivity(view);
                     }
                     else{
+                        errorMsg.setText(obj.getString("error_msg"));
                         Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -387,24 +385,24 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     e.printStackTrace();
 
                 }
-                    }
+            }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
-                            prgDialog.hide();
+                prgDialog.hide();
 
-                            if(statusCode == 404){
-                                Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-                            }
-                            else if(statusCode == 500){
-                                Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                            }
-                            else{
-                                Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
-                            }
-                    }
-       });
+                if(statusCode == 404){
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                else if(statusCode == 500){
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     /**
