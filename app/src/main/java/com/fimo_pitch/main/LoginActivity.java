@@ -83,6 +83,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
 //        if(sharedPreferences!=null)   flash();
 
+        prgDialog = new ProgressDialog(this);
+        prgDialog.setMessage("Chờ trong giây lát...");
+        // set mCancelable = false
+        prgDialog.setCancelable(false);
+
     }
     public void initGoogleAPI()
     {
@@ -106,7 +111,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginFB = (LoginButton) findViewById(R.id.loginFB);
         loginGG = (SignInButton) findViewById(R.id.loginGG);
         loginGG.setOnClickListener(this);
-        bt_login.setOnClickListener(this);
+
+        bt_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginUser(v);
+            }
+        });
+
         tv_signUp.setOnClickListener(this);
         tv_forgot.setOnClickListener(this);
         loginFB.setReadPermissions(Arrays.asList("public_profile,email,user_birthday"));
@@ -275,22 +287,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 loginGoogle();
                 break;
             }
-            case R.id.btn_login :
-            {
-                loginUser(v);
-//                if (!validate(edt_email.getText().toString(),edt_password.getText().toString())) {
-//                        onLoginFailed();
-//                        break;
-//                }
-//                else {
+//            case R.id.btn_login :
+//            {
+//                loginUser(v);
+//                break;
 //
-//                    dialog = new MaterialDialog.Builder(this)
-//                            .content("Đang đăng nhập....")
-//                            .progress(true, 0)
-//                            .show();
-//                    break;
-//                }
-            }
+//            }
             case R.id.link_forgot :
             {
                 startActivity(new Intent(LoginActivity.this,ForgotPasswordActivity.class));
@@ -363,7 +365,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    private void loginUser(View view){
+    public void loginUser(View view){
 
         String email = edt_email.getText().toString();
         String password = edt_password.getText().toString();
