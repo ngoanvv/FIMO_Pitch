@@ -101,4 +101,5 @@
     <string name="changePassword">Thay đổi mật khẩu</string>
     <string name="app_settings">Cài đặt ứng dụng</string>
     <string name="app_notificaiton">Cài đặt thông báo</string>
+    <string name="posted">Đăng tin thành công. Hãy đợi Hệ thống duyệt tin và đưa lên trang chủ :) Have fun</string>
 </resources>

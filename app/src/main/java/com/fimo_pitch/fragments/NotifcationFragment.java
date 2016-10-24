@@ -56,13 +56,13 @@ public class NotifcationFragment extends Fragment {
     {
         mlistNotification = new ArrayList<>();
         mlistNotification.add(new NotificationModel("Cần LX",""," Dương NV đã đánh giá về sân bóng của bạn","Ngày hôm qua, lúc 12h30","",true));
+        mlistNotification.add(new NotificationModel("Cần LX",""," Dương NV đã đánh giá về sân bóng của bạn","Ngày hôm qua, lúc 12h30","",false));
         mlistNotification.add(new NotificationModel("Cần LX",""," Dương NV đã đánh giá về sân bóng của bạn","Ngày hôm qua, lúc 12h30","",true));
+        mlistNotification.add(new NotificationModel("Cần LX",""," Dương NV đã đánh giá về sân bóng của bạn","Ngày hôm qua, lúc 12h30","",false));
         mlistNotification.add(new NotificationModel("Cần LX",""," Dương NV đã đánh giá về sân bóng của bạn","Ngày hôm qua, lúc 12h30","",true));
+        mlistNotification.add(new NotificationModel("Cần LX",""," Dương NV đã đánh giá về sân bóng của bạn","Ngày hôm qua, lúc 12h30","",false));
         mlistNotification.add(new NotificationModel("Cần LX",""," Dương NV đã đánh giá về sân bóng của bạn","Ngày hôm qua, lúc 12h30","",true));
-        mlistNotification.add(new NotificationModel("Cần LX",""," Dương NV đã đánh giá về sân bóng của bạn","Ngày hôm qua, lúc 12h30","",true));
-        mlistNotification.add(new NotificationModel("Cần LX",""," Dương NV đã đánh giá về sân bóng của bạn","Ngày hôm qua, lúc 12h30","",true));
-        mlistNotification.add(new NotificationModel("Cần LX",""," Dương NV đã đánh giá về sân bóng của bạn","Ngày hôm qua, lúc 12h30","",true));
-        mlistNotification.add(new NotificationModel("Cần LX",""," Dương NV đã đánh giá về sân bóng của bạn","Ngày hôm qua, lúc 12h30","",true));
+        mlistNotification.add(new NotificationModel("Cần LX",""," Dương NV đã đánh giá về sân bóng của bạn","Ngày hôm qua, lúc 12h30","",false));
         mlistNotification.add(new NotificationModel("Cần LX",""," Dương NV đã đánh giá về sân bóng của bạn","Ngày hôm qua, lúc 12h30","",true));
         Log.d(TAG,mlistNotification.size()+"sjze");
 

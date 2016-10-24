@@ -55,8 +55,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         Picasso.with(context).load(R.drawable.ic_avatar).resize(100,100).placeholder(R.drawable.ic_avatar).error(R.drawable.ic_avatar).resize(100,100).into(holder.avatar);
         holder.content.setText(list.get(position).getMessage());
         holder.time.setText(list.get(position).getDate());
-//        if(list.get(position).isRead()==true) convertView.setBackgroundColor(Color.parseColor("#ffffff"));
-//        else convertView.setBackgroundColor(Color.parseColor("#FFCEFFD0"));
+        if(list.get(position).isRead()==true) holder.wrapper.setBackgroundColor(Color.parseColor("#ffffff"));
+        else holder.wrapper.setBackgroundColor(Color.parseColor("#FFCEFFD0"));
 
     }
 
@@ -69,12 +69,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         RoundedImageView avatar;
         TextView content;
         TextView time;
-
+        LinearLayout wrapper;
         public MyViewHolder(View itemView) {
             super(itemView);
             avatar = (RoundedImageView) itemView.findViewById(R.id.notification_avatar);
             content = (TextView) itemView.findViewById(R.id.notification_content);
             time = (TextView) itemView.findViewById(R.id.notification_date);
+            wrapper = (LinearLayout) itemView.findViewById(R.id.wrapper);
+
         }
     }
 

@@ -50,6 +50,7 @@ import android.widget.TextView;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
+import com.fimo_pitch.fragments.ManageFragment;
 import com.fimo_pitch.fragments.PitchsFragment;
 import com.fimo_pitch.fragments.NewsFragment;
 import com.fimo_pitch.fragments.NotifcationFragment;
@@ -243,6 +244,7 @@ public class NavigationActivity extends AppCompatActivity implements GoogleApiCl
                                 }
                                 case R.id.menu_manage :
                                 {
+                                    replaceFragment(new ManageFragment().newInstance("",""),NotifcationFragment.class.getName());
                                     mDrawerLayout.closeDrawers();
                                     break;
                                 }

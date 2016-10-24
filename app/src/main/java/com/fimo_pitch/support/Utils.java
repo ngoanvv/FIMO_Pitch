@@ -26,7 +26,7 @@ public class Utils {
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setMessage(content);
-            builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
@@ -83,7 +83,6 @@ public class Utils {
     public static void moveCamera(LatLng latLng, int zoom, GoogleMap map) {
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoom  );
         map.animateCamera(cameraUpdate);
-        map.addMarker(new MarkerOptions().position(latLng));
     }
     public static void showCircle(LatLng latLng, double radius,GoogleMap map)
     {
@@ -96,9 +95,8 @@ public class Utils {
                 .fillColor(Color.parseColor("#F6CECE"))
                 .radius(radius);
         map.addCircle(circleOptions);
-        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_flag)).position(latLng);
-        map.addMarker(markerOptions);
-        moveCamera(latLng,12,map);
+        map.addMarker(new MarkerOptions().position(latLng));
+        moveCamera(latLng,13,map);
 
     }
     public boolean isGPSEnabled(Context context) {

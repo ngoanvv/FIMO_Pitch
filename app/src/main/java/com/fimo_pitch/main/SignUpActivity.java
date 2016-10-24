@@ -86,17 +86,20 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         editor.putString(CONSTANT.USER_PHONE,edt_phone.getText().toString());
                         editor.putString(CONSTANT.USER_NAME,edt_userName.getText().toString());
 
+                        editor.commit();
+                        Intent intent = new Intent(SignUpActivity.this,NavigationActivity.class);
+                        Bundle data = new Bundle();
+                        data.putString(CONSTANT.USER_EMAIL,edt_userEmail.getText().toString());
+                        data.putString(CONSTANT.USER_PASSWORD,edt_password.getText().toString());
+                        data.putString(CONSTANT.USER_PHONE,edt_phone.getText().toString());
+                        data.putString(CONSTANT.USER_NAME,edt_userName.getText().toString());
+                        intent.putExtra("data",data);
+                        Log.d(TAG,edt_userEmail.getText().toString());
+                        startActivity(intent);
+                        finish();
 
                     }
-                    Intent intent = new Intent(SignUpActivity.this,NavigationActivity.class);
-                    Bundle data = new Bundle();
-                    data.putString(CONSTANT.USER_EMAIL,edt_userEmail.getText().toString());
-                    data.putString(CONSTANT.USER_PASSWORD,edt_password.getText().toString());
-                    data.putString(CONSTANT.USER_PHONE,edt_phone.getText().toString());
-                    data.putString(CONSTANT.USER_NAME,edt_userName.getText().toString());
-                    intent.putExtra("data",data);
-                    Log.d(TAG,edt_userEmail.getText().toString());
-                    startActivity(intent);
+
 
 
                 }
@@ -105,7 +108,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             }
             case R.id.btn_login :
             {
-                onBackPressed();
+//                onBackPressed();
                 break;
             }
             case R.id.img_avatar :

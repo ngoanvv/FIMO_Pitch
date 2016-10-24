@@ -95,10 +95,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
         if(sharedPreferences != null)
         {
-            Log.d(TAG,sharedPreferences.getString("email","null"));
-            Log.d(TAG,sharedPreferences.getString("password","null"));
-            edt_email.setText(sharedPreferences.getString("email",""));
-            edt_password.setText(sharedPreferences.getString("password",""));
+            Log.d(TAG,sharedPreferences.getString(CONSTANT.USER_EMAIL,"null"));
+            Log.d(TAG,sharedPreferences.getString(CONSTANT.USER_PASSWORD,"null"));
+            edt_email.setText(sharedPreferences.getString(CONSTANT.USER_EMAIL,""));
+            edt_password.setText(sharedPreferences.getString(CONSTANT.USER_PASSWORD,""));
 
         }
     }

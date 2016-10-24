@@ -151,33 +151,16 @@ public class PitchsFragment extends Fragment implements View.OnClickListener {
     }
     private  void makeData() {
         Pitch pitch1 = new Pitch();
-        pitch1.setImage(R.drawable.san1);
-        pitch1.setName("San PVV");
         pitch1.setAddress("So 92 Tran Thai Tong");
-
         Pitch pitch2 = new Pitch();
-        pitch2.setImage(R.drawable.san2);
-        pitch2.setName("San Phuc Anh");
         pitch2.setAddress("So 92 Tran Thai Tong");
-
         Pitch pitch3 = new Pitch();
-        pitch3.setImage(R.drawable.san3);
-        pitch3.setName("San FECON");
         pitch3.setAddress("So 92 Tran Thai Tong, Quận Cầu Giấy, Tỉnh Hà Nội");
-
         Pitch pitch4 = new Pitch();
-        pitch4.setImage(R.drawable.san4);
-        pitch4.setName("San FECON1");
         pitch4.setAddress("So 92 Tran Thai Tong");
-
         Pitch pitch5 = new Pitch();
-        pitch5.setImage(R.drawable.san5);
-        pitch5.setName("San FECON2");
         pitch5.setAddress("So 92 Tran Thai Tong");
-
         Pitch pitch6 = new Pitch();
-        pitch6.setImage(R.drawable.san6_2);
-        pitch6.setName("San FECON3");
         pitch6.setAddress("So 92 Tran Thai Tong");
 
         data.add(pitch1);

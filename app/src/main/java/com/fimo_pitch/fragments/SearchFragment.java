@@ -1,6 +1,7 @@
 package com.fimo_pitch.fragments;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fimo_pitch.R;
+import com.fimo_pitch.main.PitchDetailActivity;
 import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
@@ -25,8 +27,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -95,10 +99,8 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
                             map = googleMap;
-                            Utils.moveCamera(xuanthuy,12,map);
-                            Utils.showCircle(xuanthuy,4,map);
-                            map.addMarker(new MarkerOptions().position(xuanthuy));
                             initMapLicense();
+                            Utils.showCircle(xuanthuy,5000,map);
 
                         }
                     });
@@ -114,28 +116,45 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                Utils.showCircle(latLng, 2000,map);
-                Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                List<Address> addresses = null;
-                try {
-                    addresses = geocoder.getFromLocation(latLng.latitude,latLng.longitude, 1);
-                    String cityName = addresses.get(0).getAddressLine(0);
-                    String stateName = addresses.get(0).getAddressLine(1);
-                    Log.d(TAG,addresses.toString()+"");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+//                List<Address> addresses = null;
+//                try {
+//                    addresses = geocoder.getFromLocation(latLng.latitude,latLng.longitude, 1);
+//                    String cityName = addresses.get(0).getAddressLine(0);
+//                    String stateName = addresses.get(0).getAddressLine(1);
+//                    Log.d(TAG,addresses.toString()+"");
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
 
             }
         });
+            map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+
+                    startActivity(new Intent(getActivity(), PitchDetailActivity.class));
+
+
+                    return true;
+                }
+            });
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
                 map.clear();
-                Utils.showCircle(cameraPosition.target,12,map);
+                map.addMarker(new MarkerOptions().position(xuanthuy).title("Hệ thống sân FIMO"));
                 Random random =new Random();
                 int x = random.nextInt(6 - 1 + 1) + 1;
-
+                Log.d(TAG,"X:"+x);
+                for(int i=0;i<x;i++)
+                {
+                    map.addMarker(new MarkerOptions().title("Hệ thống bóng FIMO").position(new LatLng(cameraPosition.target.latitude+0.01,cameraPosition.target.longitude+0.03)));
+                    map.addMarker(new MarkerOptions().title("Hệ thống bóng FIMO").position(new LatLng(cameraPosition.target.latitude+0.03,cameraPosition.target.longitude+0.06)));
+                    map.addMarker(new MarkerOptions().title("Hệ thống bóng FIMO").position(new LatLng(cameraPosition.target.latitude+0.021,cameraPosition.target.longitude+0.02)));
+                    map.addMarker(new MarkerOptions().title("Hệ thống bóng FIMO").position(new LatLng(cameraPosition.target.latitude+0.101,cameraPosition.target.longitude+0.0012)));
+//                            icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_ball)).
+                }
             }
         });
     }

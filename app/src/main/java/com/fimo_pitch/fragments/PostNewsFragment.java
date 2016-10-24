@@ -18,7 +18,9 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import com.fimo_pitch.R;
+import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.support.ShowToast;
+import com.fimo_pitch.support.Utils;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,7 +40,7 @@ import java.util.Map;
 /**
  * Created by TranManhTien on 23/08/2016.
  */
-public class PostNewsFragment extends Fragment {
+public class PostNewsFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     public final int SOFTKEYBOARDHEIGHT=100;
@@ -49,6 +51,9 @@ public class PostNewsFragment extends Fragment {
     // 144 xuan thuy : lat : 21.036654, lng 105.781218
     private SupportMapFragment mapFragment;
     private LatLng xuanthuy = new LatLng(21.036654,105.78218);
+    private RoundedImageView img_send,img_cancel;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -98,13 +103,12 @@ public class PostNewsFragment extends Fragment {
         edt_time = (EditText) view.findViewById(R.id.edt_time);
         edt_money = (EditText) view.findViewById(R.id.edt_money);
         edt_location = (EditText) view.findViewById(R.id.edt_location);
+        img_send = (RoundedImageView) view.findViewById(R.id.img_send);
+        img_cancel = (RoundedImageView) view.findViewById(R.id.img_cancel);
 
-        edt_time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePicker();
-            }
-        });
+        edt_time.setOnClickListener(this);
+        img_cancel.setOnClickListener(this);
+        img_send.setOnClickListener(this);
 
     }
     public void moveCamera(LatLng latLng,int zoom) {
@@ -123,8 +127,6 @@ public class PostNewsFragment extends Fragment {
                 .fillColor(Color.parseColor("#F6CECE"))
                 .radius(radius);
         map.addCircle(circleOptions);
-        MarkerOptions markerOptions = new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_flag)).position(latLng);
-        map.addMarker(markerOptions);
         moveCamera(latLng,12);
 
     }
@@ -214,4 +216,33 @@ public class PostNewsFragment extends Fragment {
         return valid;
     }
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id) {
+            case R.id.img_send :
+            {
+                Utils.openDialog(getContext(),getContext().getString(R.string.posted));
+                edt_description.setText("");
+                edt_location.setText("");
+                edt_time.setText("");
+                edt_money.setText("");
+                break;
+            }
+            case R.id.edt_time :
+            {
+                showDatePicker();
+                break;
+            }
+            case R.id.img_cancel :
+            {
+                edt_description.setText("");
+                edt_location.setText("");
+                edt_time.setText("");
+                edt_money.setText("");
+                break;
+            }
+        }
+
+    }
 }

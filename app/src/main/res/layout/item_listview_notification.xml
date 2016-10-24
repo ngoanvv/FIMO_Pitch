@@ -4,7 +4,8 @@
               android:layout_width="match_parent"
               android:orientation="horizontal"
               android:background="@drawable/item_nav"
-              android:layout_height="110dp">
+              android:layout_height="110dp"
+                android:id="@+id/wrapper">
 
     <com.fimo_pitch.custom.view.RoundedImageView
         android:id="@+id/notification_avatar"
@@ -19,6 +20,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:background="@drawable/item_nav"
         android:layout_height="70dp">
 
 
@@ -54,6 +56,7 @@
             android:layout_alignLeft="@+id/linearLayout"
             android:layout_alignStart="@+id/linearLayout" />
     </RelativeLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

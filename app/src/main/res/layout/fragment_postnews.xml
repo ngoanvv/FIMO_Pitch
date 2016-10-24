@@ -133,15 +133,17 @@
             android:layout_marginTop="20dp"
             android:layout_height="wrap_content">
         <com.fimo_pitch.custom.view.RoundedImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+            android:id="@+id/img_send"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginLeft="100dp"
         android:layout_alignParentLeft="true"
         android:src="@drawable/ic_post"
             />
         <com.fimo_pitch.custom.view.RoundedImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:id="@+id/img_cancel"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/ic_cancel"
             android:layout_alignParentRight="true"
             android:layout_marginRight="100dp"
