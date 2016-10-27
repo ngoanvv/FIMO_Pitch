@@ -8,35 +8,38 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 
 
 import com.fimo_pitch.R;
-import com.fimo_pitch.adapter.PitchsFragmentAdapter;
+import com.fimo_pitch.adapter.SystemPitchAdapter;
 import com.fimo_pitch.model.Pitch;
+import com.fimo_pitch.model.SystemPitch;
 
 import java.util.ArrayList;
 
 
-public class PitchsFragment extends Fragment implements View.OnClickListener {
+public class SystemPitchsFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
-    private static final String TAG = "PitchsFragment";
+    private static final String TAG = "SystemPitchsFragment";
     private static final String ARG_PARAM2 = "param2";
-    private String mParam1;
-    private String mParam2;
+    private EditText edt_search;
     private RecyclerView recyclerView;
     private RelativeLayout menuView;
-    private PitchsFragmentAdapter adapter;
+    private SystemPitchAdapter adapter;
     private ImageButton buttonView2;
     private ImageButton buttonView4;
-    private ArrayList<Pitch> data = new ArrayList<>();
+    private ArrayList<SystemPitch> data = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,16 +61,37 @@ public class PitchsFragment extends Fragment implements View.OnClickListener {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         buttonView2 = (ImageButton) view.findViewById(R.id.view2);
         buttonView4 = (ImageButton) view.findViewById(R.id.view4);
+        edt_search = (EditText) view.findViewById(R.id.edt_search);
         recyclerView.setHasFixedSize(true);
-        adapter = new PitchsFragmentAdapter(getActivity(), data);
+        makeData();
+        adapter = new SystemPitchAdapter(getActivity(), data);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
 
         addOnTouchListener();
-        makeData();
         addListenerOnButton(view);
         StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
         recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
+
+        edt_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    adapter.initList();
+                    adapter.getFilter().filter(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
     }
     private void hideMenu() {
 
@@ -150,32 +174,61 @@ public class PitchsFragment extends Fragment implements View.OnClickListener {
         }
     }
     private  void makeData() {
-        Pitch pitch1 = new Pitch();
-        pitch1.setAddress("So 92 Tran Thai Tong");
-        Pitch pitch2 = new Pitch();
-        pitch2.setAddress("So 92 Tran Thai Tong");
-        Pitch pitch3 = new Pitch();
-        pitch3.setAddress("So 92 Tran Thai Tong, Quận Cầu Giấy, Tỉnh Hà Nội");
-        Pitch pitch4 = new Pitch();
-        pitch4.setAddress("So 92 Tran Thai Tong");
-        Pitch pitch5 = new Pitch();
-        pitch5.setAddress("So 92 Tran Thai Tong");
-        Pitch pitch6 = new Pitch();
-        pitch6.setAddress("So 92 Tran Thai Tong");
+        SystemPitch systemPitch = new SystemPitch();
+        systemPitch.setAddress("144 Xuân thủy, Cầu giấy");
+        systemPitch.setComment("20");
+        systemPitch.setOwnerName("Phương LX");
+        systemPitch.setContact("0989238923");
+        systemPitch.setName("Sân Trần quốc hoàn");
+        systemPitch.setRating("3.5");
+        data.add(systemPitch);
 
-        data.add(pitch1);
-        data.add(pitch2);
-        data.add(pitch3);
-        data.add(pitch4);
-        data.add(pitch5);
-        data.add(pitch6);
+        SystemPitch systemPitch1 = new SystemPitch();
+
+        systemPitch1.setAddress("223 Xuân thủy, Cầu giấy");
+        systemPitch1.setComment("20");
+        systemPitch1.setOwnerName("Dương LX");
+        systemPitch1.setContact("0989238923");
+        systemPitch1.setName("Sân LÊ quốc hoàn");
+        systemPitch1.setRating("3.5");
+        data.add(systemPitch1);
+
+        SystemPitch systemPitch2 = new SystemPitch();
+
+        systemPitch2.setAddress("456 Xuân thủy, Cầu giấy");
+        systemPitch2.setComment("20");
+        systemPitch2.setOwnerName("Hoàng LX");
+        systemPitch2.setContact("0989238923");
+        systemPitch2.setName("Sân Trần Đại Nghĩa");
+        systemPitch2.setRating("3.5");
+        data.add(systemPitch2);
+
+        SystemPitch systemPitch3 = new SystemPitch();
+
+        systemPitch3.setAddress("124 Xuân thủy, Cầu giấy");
+        systemPitch3.setComment("20");
+        systemPitch3.setOwnerName("Hoàng LX");
+        systemPitch3.setContact("0989238923");
+        systemPitch3.setName("Sân Trần Đại Nghĩa");
+        systemPitch3.setRating("3.5");
+        data.add(systemPitch3);
+
+        SystemPitch systemPitch4 = new SystemPitch();
+
+        systemPitch4.setAddress("987 Xuân thủy, Cầu giấy");
+        systemPitch4.setComment("20");
+        systemPitch4.setOwnerName("Hoàng LX");
+        systemPitch4.setContact("0989238923");
+        systemPitch4.setName("Sân Trần Đại Nghĩa");
+        systemPitch4.setRating("3.5");
+        data.add(systemPitch4);
 
     }
-    public PitchsFragment() {
+    public SystemPitchsFragment() {
 
     }
-    public static PitchsFragment newInstance(String param1, String param2) {
-        PitchsFragment fragment = new PitchsFragment();
+    public static SystemPitchsFragment newInstance(String param1, String param2) {
+        SystemPitchsFragment fragment = new SystemPitchsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

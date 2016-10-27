@@ -3,9 +3,13 @@ package com.fimo_pitch.main;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -40,6 +44,9 @@ import com.google.android.gms.common.api.Status;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 
@@ -70,8 +77,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initGoogleAPI();
         initView();
         getLocalData();
-//        if(sharedPreferences!=null)   flash();
-//        moveToHomeScreen();
+        if(sharedPreferences!=null)   flash();
+        moveToHomeScreen();
+
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.example.packagename",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
+
     }
     public void initGoogleAPI()
     {
@@ -120,7 +143,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         ShowToast.showToastLong(LoginActivity.this,"Login success");
-
                         String accessToken = loginResult.getAccessToken().getToken();
                         GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                             @Override
@@ -157,6 +179,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStop();
     }
     private Bundle getFacebookData(JSONObject object) {
+
         try {
             Bundle bundle = new Bundle();
             String id = object.getString("id");
@@ -319,7 +342,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             Log.d(TAG,"email:"+acct.getEmail());
@@ -340,10 +362,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Intent intent = new Intent(LoginActivity.this,NavigationActivity.class);
             intent.putExtra("data",bundle);
             startActivity(intent);
-            Log.d(TAG,"login fb");
-
 
         } else {
+            Log.d(TAG, "failed +"+result.toString());
 
         }
     }

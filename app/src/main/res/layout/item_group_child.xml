@@ -3,20 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="horizontal"
+    android:padding="15dp"
     android:background="@drawable/item_nav"
     android:layout_height="wrap_content">
 
     <com.fimo_pitch.custom.view.RoundedImageView
         android:id="@+id/notification_avatar"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
         android:layout_width="40dp"
         android:layout_gravity="center_vertical"
         android:layout_height="40dp"
         android:layout_below="@+id/divider"
         android:layout_marginLeft="10dp"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_stadium"/>
+        android:background="@drawable/ic_ball"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -40,7 +39,7 @@
             android:text="Tình trạng : Đã đặt "
             android:maxLines ="3"
             android:minLines="1"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:layout_alignParentTop="true"
             android:layout_alignLeft="@+id/linearLayout"
             android:layout_alignStart="@+id/linearLayout" />
@@ -51,7 +50,7 @@
             android:text="Thời gian : 17h-19h "
             android:maxLines ="3"
             android:minLines="1"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:layout_alignParentTop="true"
             android:layout_alignLeft="@+id/linearLayout"
             android:layout_alignStart="@+id/linearLayout" />
@@ -62,7 +61,7 @@
         android:text="Người đặt : Tiến TM , 0989 172 212"
         android:maxLines ="3"
         android:minLines="1"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="3dp"
         android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/linearLayout"
         android:layout_alignStart="@+id/linearLayout" />
@@ -74,14 +73,9 @@
             android:text="Đã đặt cọc : 100.000đ"
             android:maxLines ="3"
             android:minLines="1"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="3dp"
             android:layout_alignParentTop="true"
             android:layout_alignLeft="@+id/linearLayout"
             android:layout_alignStart="@+id/linearLayout" />
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorlightGreen"
-        ></View>
 </LinearLayout>

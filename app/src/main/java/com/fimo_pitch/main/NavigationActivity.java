@@ -22,7 +22,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.nfc.tech.NfcA;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -51,7 +50,7 @@ import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.fragments.ManageFragment;
-import com.fimo_pitch.fragments.PitchsFragment;
+import com.fimo_pitch.fragments.SystemPitchsFragment;
 import com.fimo_pitch.fragments.NewsFragment;
 import com.fimo_pitch.fragments.NotifcationFragment;
 import com.fimo_pitch.fragments.PostNewsFragment;
@@ -102,20 +101,20 @@ public class NavigationActivity extends AppCompatActivity implements GoogleApiCl
         initNavMenu();
         initGoogleAPI();
 
-        ActivityCompat.requestPermissions(NavigationActivity.this,
-                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
-        gps = new TrackGPS(NavigationActivity.this,NavigationActivity.this);
-
-        if(gps.canGetLocation()){
-            double longitude = gps.getLongitude();
-            double latitude = gps .getLatitude();
-            Log.d(TAG,"lat : " + latitude +" lng :"+longitude);
-            currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
-        }
-        else
-        {
-            Utils.openDialog(NavigationActivity.this,"Không định vị được vị trí của bạn");
-        }
+//        ActivityCompat.requestPermissions(NavigationActivity.this,
+//                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
+//        gps = new TrackGPS(NavigationActivity.this,NavigationActivity.this);
+//
+//        if(gps.canGetLocation()){
+//            double longitude = gps.getLongitude();
+//            double latitude = gps .getLatitude();
+//            Log.d(TAG,"lat : " + latitude +" lng :"+longitude);
+//            currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
+//        }
+//        else
+//        {
+//            Utils.openDialog(NavigationActivity.this,"Không định vị được vị trí của bạn");
+//        }
 
     }
     private void getData()
@@ -318,7 +317,7 @@ public class NavigationActivity extends AppCompatActivity implements GoogleApiCl
     // Add Fragments to Tabs
     private void setupViewPager(ViewPager viewPager) {
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment( PitchsFragment.newInstance("1","2"), "Tìm nhanh");
+        adapter.addFragment( SystemPitchsFragment.newInstance("1","2"), "Tìm nhanh");
         adapter.addFragment(NewsFragment.newInstance("",""), "Tin tức");
         adapter.addFragment(PostNewsFragment.newInstance("",""), "Đăng tin");
         viewPager.setAdapter(adapter);

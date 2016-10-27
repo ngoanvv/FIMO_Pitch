@@ -87,8 +87,15 @@
                   android:textColor="@color/colorPrimary"
                   android:text="@string/link_signUp"
                   android:layout_gravity="center"
-
                   android:textSize="16dip"/>
+        <TextView android:id="@+id/link_trial"
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/trial"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:textSize="16dip"/>
         <com.facebook.login.widget.LoginButton
             android:id="@+id/loginFB"
             android:layout_marginTop="20dp"

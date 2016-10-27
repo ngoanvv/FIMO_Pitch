@@ -2,17 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/width_47dp"
-    android:background="@color/colorGroupExListMyNewoffers">
+    android:background="@color/com_facebook_button_background_color_pressed">
+
 
     <LinearLayout
         android:id="@+id/ln_custom_expandble_lv"
         android:layout_width="@dimen/width_47dp"
         android:layout_height="match_parent"
         android:background="@color/colorBackGroundCheckedExpand"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <ImageView
-            android:id="@+id/img_expandable_contact_shipment"
+            android:id="@+id/img_header"
             android:layout_width="@dimen/margin_25dp"
             android:layout_height="@dimen/margin_25dp"
             android:layout_gravity="center_vertical"
@@ -20,22 +24,22 @@
             android:layout_marginLeft="@dimen/padding_10dp"
             android:layout_marginRight="@dimen/margin_10dp"
             android:layout_marginTop="@dimen/margin_12dp"
-            android:src="@drawable/ic_down_group" />
+            android:background="@drawable/ic_down_group" />
     </LinearLayout>
 
-
     <TextView
-        android:id="@+id/tv_icontact_shipment"
+        android:id="@+id/tv_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/margin_40dp"
-        android:layout_toRightOf="@id/ln_custom_expandble_lv"
         android:gravity="center"
         android:text="Ngày 17-09-2016"
         android:textColor="@color/coloWhite"
-        android:textSize="@dimen/text_size_details_15sp"
-        android:textStyle="bold" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="30dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/ln_custom_expandble_lv"
+        android:layout_toEndOf="@+id/ln_custom_expandble_lv" />
 
 
 </RelativeLayout>

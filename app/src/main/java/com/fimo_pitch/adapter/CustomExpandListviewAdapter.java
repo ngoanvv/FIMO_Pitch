@@ -76,9 +76,10 @@ public class CustomExpandListviewAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.item_group, parent, false);
+//            TextView tvHeader = (TextView) convertView.findViewById(R.id.tv_header);
+
         }
 
-//        TextView tvHeader = (TextView) convertView.findViewById(R.id.tv_header);
 //        tvHeader.setText(mHeaderGroup.get(groupPosition));
         return convertView;
     }
@@ -92,7 +93,7 @@ public class CustomExpandListviewAdapter extends BaseExpandableListAdapter {
 
         }
 
-            return convertView;
+            return inflater.inflate(R.layout.item_group_child, parent, false);
     }
 
     @Override

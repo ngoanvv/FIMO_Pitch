@@ -9,6 +9,9 @@ public class SystemPitch {
     private String address;
     private String ownerID;
     private String contact;
+    private String comment;
+    private String rating;
+    private String ownerName;
 //    private String id;
 //    private String id;
 //    private String id;
@@ -28,6 +31,30 @@ public class SystemPitch {
                 ", ownerID='" + ownerID + '\'' +
                 ", contact='" + contact + '\'' +
                 '}';
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public String getId() {

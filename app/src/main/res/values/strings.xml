@@ -41,7 +41,7 @@
     <string name="action_info">Thông tin</string>
     <string name="title_activity_maps">Sân bóng của tôi</string>
     <string name="txt_yes">Tìm kiếm</string>
-    <string name="txt_no">Hủy</string>
+    <string name="cancel">Hủy</string>
     <string name="ok">Đồng ý</string>
     <string name="failed">Thất bại</string>
     <string name="processing">Đang xử lý</string>
@@ -102,4 +102,6 @@
     <string name="app_settings">Cài đặt ứng dụng</string>
     <string name="app_notificaiton">Cài đặt thông báo</string>
     <string name="posted">Đăng tin thành công. Hãy đợi Hệ thống duyệt tin và đưa lên trang chủ :) Have fun</string>
+    <string name="trial">Dùng thử ứng dụng</string>
+    <string name="title_activity_pitch_detail2">PitchDetailActivity2</string>
 </resources>

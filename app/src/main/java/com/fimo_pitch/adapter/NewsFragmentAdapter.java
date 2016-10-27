@@ -82,8 +82,6 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
     }
 
     private ArrayList<Match> getFilteredResults(CharSequence constraint) {
-        Log.d(TAG,"constraint "+constraint.toString());
-        Log.d(TAG,"list "+list.size());
 
         int count=0;
         results = new ArrayList<>();

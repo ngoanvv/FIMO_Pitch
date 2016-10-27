@@ -92,7 +92,7 @@ public class ManageFragment extends Fragment {
         expandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                Log.e(TAG, "onGroupClick: " + groupPosition);
+                Log.d(TAG, "onGroupClick: " + groupPosition);
                 return false;
             }
         });
@@ -100,14 +100,14 @@ public class ManageFragment extends Fragment {
         expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
             @Override
             public void onGroupCollapse(int groupPosition) {
-                Log.e(TAG, "onGroupCollapse: " + groupPosition);
+                Log.d(TAG, "onGroupCollapse: " + groupPosition);
             }
         });
 
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
-                Log.e(TAG, "onGroupExpand: " + groupPosition);
+                Log.d(TAG, "onGroupExpand: " + groupPosition);
             }
         });
         

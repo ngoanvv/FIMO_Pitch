@@ -35,6 +35,15 @@ public class Utils {
             builder.create().show();
 
         }
+        public static  void showDialog(Context context,String content,DialogInterface.OnClickListener yesClick,
+                                       DialogInterface.OnClickListener cancelClick)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage(content);
+            builder.setPositiveButton(context.getString(R.string.ok),yesClick);
+            builder.setNegativeButton(context.getString(R.string.cancel),cancelClick);
+            builder.create().show();
+        }
     public static  void showGpsSettingsAlert(final  Context context){
         android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(context);
 

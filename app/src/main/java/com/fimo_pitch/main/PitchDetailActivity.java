@@ -1,6 +1,7 @@
 package com.fimo_pitch.main;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -15,10 +16,12 @@ import android.view.View;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.Pitch;
+import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.TrackGPS;
+import com.fimo_pitch.support.Utils;
 
 public class PitchDetailActivity extends AppCompatActivity implements View.OnClickListener {
-    RoundedImageView bt_call;
+    private RoundedImageView bt_call,bt_order;
     private int permissionCode = 11;
     private String TAG = "PitchDetailActivity";
 
@@ -34,6 +37,10 @@ public class PitchDetailActivity extends AppCompatActivity implements View.OnCli
 
     public void initView() {
         bt_call = (RoundedImageView) findViewById(R.id.bt_call);
+        bt_order = (RoundedImageView) findViewById(R.id.bt_order);
+
+        bt_order.setOnClickListener(this);
+
     }
 
     @Override
@@ -41,8 +48,7 @@ public class PitchDetailActivity extends AppCompatActivity implements View.OnCli
         int id = v.getId();
         switch (id) {
             case R.id.bt_call: {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "029302933"));
-                Log.d(TAG,"ok call");
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "01266343244"));
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
@@ -56,6 +62,22 @@ public class PitchDetailActivity extends AppCompatActivity implements View.OnCli
                 startActivity(intent);
                 break;
             }
+            case R.id.bt_order: {
+                DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                    }
+                };
+                DialogInterface.OnClickListener cancel = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                };
+                Utils.showDialog(PitchDetailActivity.this,"Bạn có muốn đặt sân này không ?",ok,cancel);
+                break;
+            }
         }
     }
 
@@ -65,7 +87,6 @@ public class PitchDetailActivity extends AppCompatActivity implements View.OnCli
         if (requestCode == permissionCode)
             if (grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
                 bt_call.setOnClickListener(this);
-
 
             }
     }
