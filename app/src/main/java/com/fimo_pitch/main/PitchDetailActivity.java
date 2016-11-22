@@ -32,7 +32,6 @@ public class PitchDetailActivity extends AppCompatActivity implements View.OnCli
         setContentView(R.layout.activity_pitch_detail2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         initView();
 
     }
@@ -57,22 +56,7 @@ public class PitchDetailActivity extends AppCompatActivity implements View.OnCli
                 break;
             }
             case R.id.bt_order: {
-                DialogInterface.OnClickListener ok = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                    }
-                };
-                DialogInterface.OnClickListener cancel = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                };
-                Utils.showDialog(PitchDetailActivity.this,"Bạn có muốn đặt sân này không ?",ok,cancel);
-
                 startActivity(new Intent(PitchDetailActivity.this,PricingActivity.class));
-
                 break;
             }
         }

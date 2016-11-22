@@ -60,8 +60,6 @@
     <string name="order_pitch">Bạn có thật sự muốn đặt sân bóng này không ? Hãy chắc chắn về việc đặt sân và bạn cần có đặt cọc một khoản phí nhỏ để đảm bảo việc đặt sân của bạn !</string>
 
 
-
-
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>

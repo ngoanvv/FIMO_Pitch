@@ -21,21 +21,26 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".main.LoginActivity">
+        <activity android:name=".main.LoginActivity"
+            ></activity>
+
+        <activity android:name=".main.IntroductionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.NavigationActivity" />
-        <activity
-            android:name=".main.MainActivity"
-            />
-        <activity
+
+        <activity android:name=".main.NavigationActivity"
+            android:windowSoftInputMode="adjustPan" />
+        />
+        <activityMainActivity
             android:name=".main.AboutActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
+
         <activity android:name=".main.SignUpActivity" />
+
         <activity android:name=".main.ForgotPasswordActivity" />
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -48,11 +53,22 @@
         <activity
             android:name=".main.PricingActivity"
             android:label="@string/title_activity_pricing"
-            android:theme="@style/AppTheme"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+            android:theme="@style/AppTheme" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <!--<activity android:name=".main.LoginActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
     </application>
 
 </manifest>

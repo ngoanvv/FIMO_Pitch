@@ -100,8 +100,8 @@ public class Utils {
         circleOptions.center(latLng)
                 .center(latLng)
                 .clickable(true)
-                .strokeColor(Color.parseColor("#F6CECE"))
-                .fillColor(Color.parseColor("#F6CECE"))
+                .strokeColor(Color.parseColor("#664FC3F7"))
+                .fillColor(Color.parseColor("#664FC3F7"))
                 .radius(radius);
         map.addCircle(circleOptions);
         map.addMarker(new MarkerOptions().position(latLng));

@@ -23,12 +23,14 @@ import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -67,50 +69,32 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search,container,false);
         Log.d(TAG,"mapFragment null");
-
-        {
             mapFragment = new SupportMapFragment();
             if(mapFragment != null)
             {
                 mapFragment.getMapAsync(this);
             }
             getChildFragmentManager().beginTransaction().add(R.id.fragment_map, mapFragment).commit();
-        }        return view;
+
+        return view;
     }
-
-
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode==permissionCode)
         {
             Log.d(TAG,"OK");
-
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED) {
             }
         }
         else
             Log.d(TAG,"Not ok");
-
     }
-
     public void initMapLicense()
     {
         if(map!=null)
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-//                Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
-//                List<Address> addresses = null;
-//                try {
-//                    addresses = geocoder.getFromLocation(latLng.latitude,latLng.longitude, 1);
-//                    String cityName = addresses.get(0).getAddressLine(0);
-//                    String stateName = addresses.get(0).getAddressLine(1);
-//                    Log.d(TAG,addresses.toString()+"");
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
 
             }
         });
@@ -124,15 +108,14 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
-                map.clear();
-                map.addMarker(new MarkerOptions().position(xuanthuy).title("Hệ thống sân FIMO"));
+//                map.clear();
+//                map.addMarker(new MarkerOptions().position(xuanthuy).title("Hệ thống sân FIMO"));
                 Random random =new Random();
                 int x = random.nextInt(6 - 1 + 1) + 1;
             }
         });
     }
-    public SearchFragment()
-    {}
+    public SearchFragment() {}
     public static SearchFragment newInstance(String param1, String param2) {
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
@@ -144,7 +127,15 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        if(googleMap !=null) map=googleMap;
-        initMapLicense();
+        if(googleMap !=null) {
+            map = googleMap;
+            Utils.moveCamera(xuanthuy,11,map);
+            map.addMarker(new MarkerOptions().position(xuanthuy).title("Sân bóng FIMO"));
+            Utils.showCircle(xuanthuy,2000,map);
+            map.addMarker(new MarkerOptions().position(new LatLng(xuanthuy.latitude + 0.004, xuanthuy.longitude - 0.006)).title("Sân bóng FECON"));
+            map.addMarker(new MarkerOptions().position(new LatLng(xuanthuy.latitude + 0.004, xuanthuy.longitude - 0.004)).title("Sân bóng BDV"));
+            initMapLicense();
+
+        }
     }
 }

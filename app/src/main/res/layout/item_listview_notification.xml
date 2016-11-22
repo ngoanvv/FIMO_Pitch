@@ -16,7 +16,7 @@
         android:layout_below="@+id/divider"
         android:layout_marginLeft="10dp"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/ic_avatar"/>
+        android:background="@drawable/ic_manager"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

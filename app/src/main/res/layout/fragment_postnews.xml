@@ -26,7 +26,7 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="20dp"
-                android:layout_height="35dp">
+                android:layout_height="40dp">
                 <com.fimo_pitch.custom.view.RoundedImageView
                     android:layout_width="20dp"
                     android:background="@drawable/ic_money"
@@ -36,7 +36,6 @@
                     android:id="@+id/edt_money"
                     android:hint="Chi phí cho trận đấu ?"
                     style="@style/item_news"
-                    android:inputType="number"
                     />
             </LinearLayout>
 
@@ -79,7 +78,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:layout_height="35dp"
+                android:layout_height="40dp"
                 android:layout_weight="0.03">
                 <com.fimo_pitch.custom.view.RoundedImageView
                     android:layout_width="20dp"
@@ -98,7 +97,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:layout_height="35dp"
+                android:layout_height="40dp"
                 android:layout_weight="0.03">
                 <com.fimo_pitch.custom.view.RoundedImageView
                     android:layout_width="20dp"
@@ -120,7 +119,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
-                android:layout_height="35dp">
+                android:layout_height="40dp">
                 <com.fimo_pitch.custom.view.RoundedImageView
                     android:layout_gravity="center_vertical"
                     android:layout_width="20dp"
@@ -128,7 +127,7 @@
                     android:layout_height="20dp"/>
                 <EditText
                     android:id="@+id/edt_location"
-                    android:hint="Chọn vị trí của bạn ở bản đồ bên dưới"
+                    android:hint="Khu vực bạn muốn diễn ra "
                     style="@style/item_news"
                     />
             </LinearLayout>
@@ -138,7 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal"
-                android:layout_height="35dp">
+                android:layout_height="40dp">
                 <com.fimo_pitch.custom.view.RoundedImageView
                     android:layout_gravity="center_vertical"
                     android:layout_width="20dp"
@@ -151,7 +150,6 @@
                     />
             </LinearLayout>
         </LinearLayout>
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_marginTop="50dp"

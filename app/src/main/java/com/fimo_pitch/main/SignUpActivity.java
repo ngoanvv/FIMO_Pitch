@@ -273,7 +273,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     {
         dialog.dismiss();
         saveUserData(userModel.getEmail(),password,userModel.getUserType());
-        Intent intent= new Intent(SignUpActivity.this,MainActivity.class);
+        Intent intent= new Intent(SignUpActivity.this,NavigationActivity.class);
         intent.putExtra(CONSTANT.USER_TYPE,userModel.getUserType());
         intent.putExtra(CONSTANT.KEY_USER,userModel);
         startActivity(intent);

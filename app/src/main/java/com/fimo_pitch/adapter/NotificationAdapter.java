@@ -52,7 +52,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(NotificationAdapter.MyViewHolder holder, int position) {
-        Picasso.with(context).load(R.drawable.ic_avatar).resize(100,100).placeholder(R.drawable.ic_avatar).error(R.drawable.ic_avatar).resize(100,100).into(holder.avatar);
+//        Picasso.with(context).load(R.drawable.ic_manager).resize(100,100).placeholder(R.drawable.ic_avatar).error(R.drawable.ic_avatar).resize(100,100).into(holder.avatar);
         holder.content.setText(list.get(position).getMessage());
         holder.time.setText(list.get(position).getDate());
         if(list.get(position).isRead()==true) holder.wrapper.setBackgroundColor(Color.parseColor("#ffffff"));

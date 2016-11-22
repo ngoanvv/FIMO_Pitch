@@ -17,7 +17,6 @@ import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.fimo_pitch.main.MainActivity;
 
 /**
  * Created by diep1_000 on 9/21/2016.
