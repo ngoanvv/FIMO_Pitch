@@ -54,7 +54,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
     private TrackGPS gps;
     private GoogleMap map;
     // 144 xuan thuy : lat : 21.036654, lng 105.781218
-    private SupportMapFragment mapFragment;
+    private  SupportMapFragment mapFragment;
     private LocationManager locationManager;
     private boolean checkNetwork=false;
     private boolean checkGPS=false;
@@ -68,8 +68,14 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_search,container,false);
         Log.d(TAG,"mapFragment null");
 
-        initMap();
-        return view;
+        {
+            mapFragment = new SupportMapFragment();
+            if(mapFragment != null)
+            {
+                mapFragment.getMapAsync(this);
+            }
+            getChildFragmentManager().beginTransaction().add(R.id.fragment_map, mapFragment).commit();
+        }        return view;
     }
 
 
@@ -88,28 +94,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
             Log.d(TAG,"Not ok");
 
     }
-    public void initMap()
-    {
-        mapFragment = new SupportMapFragment() {
-            @Override
-            public void onActivityCreated(Bundle savedInstanceState) {
-                super.onActivityCreated(savedInstanceState);
-                if(mapFragment!=null) {
-                    mapFragment.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(GoogleMap googleMap) {
-                            map = googleMap;
-                            initMapLicense();
-                            Utils.showCircle(xuanthuy,5000,map);
 
-                        }
-                    });
-                }
-
-            }
-        };
-        getChildFragmentManager().beginTransaction().add(R.id.fragment_map, mapFragment).commit();
-    }
     public void initMapLicense()
     {
         if(map!=null)
@@ -132,10 +117,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-
                     startActivity(new Intent(getActivity(), PitchDetailActivity.class));
-
-
                     return true;
                 }
             });
@@ -146,15 +128,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
                 map.addMarker(new MarkerOptions().position(xuanthuy).title("Hệ thống sân FIMO"));
                 Random random =new Random();
                 int x = random.nextInt(6 - 1 + 1) + 1;
-                Log.d(TAG,"X:"+x);
-                for(int i=0;i<x;i++)
-                {
-                    map.addMarker(new MarkerOptions().title("Hệ thống bóng FIMO").position(new LatLng(cameraPosition.target.latitude+0.01,cameraPosition.target.longitude+0.03)));
-                    map.addMarker(new MarkerOptions().title("Hệ thống bóng FIMO").position(new LatLng(cameraPosition.target.latitude+0.03,cameraPosition.target.longitude+0.06)));
-                    map.addMarker(new MarkerOptions().title("Hệ thống bóng FIMO").position(new LatLng(cameraPosition.target.latitude+0.021,cameraPosition.target.longitude+0.02)));
-                    map.addMarker(new MarkerOptions().title("Hệ thống bóng FIMO").position(new LatLng(cameraPosition.target.latitude+0.101,cameraPosition.target.longitude+0.0012)));
-//                            icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_ball)).
-                }
             }
         });
     }
@@ -171,5 +144,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        if(googleMap !=null) map=googleMap;
+        initMapLicense();
     }
 }

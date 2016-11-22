@@ -1,6 +1,7 @@
 package com.fimo_pitch.main;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -13,15 +14,26 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.UserModel;
+import com.fimo_pitch.model.Utility;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
+
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     public   static String TAG = "SignUpActivity";
@@ -39,6 +51,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private Uri avatarUri;
     private String downloadURL="";
     private boolean pickedImage=false;
+    private ProgressDialog prgDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -354,7 +368,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         navigatetoLoginActivity(view);
                     }
                     else{
-                        errorMsg.setText(obj.getString("error_msg"));
                         Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {

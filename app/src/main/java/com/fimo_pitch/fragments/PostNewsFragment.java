@@ -49,7 +49,7 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
     private Button bt_post;
     private GoogleMap map;
     // 144 xuan thuy : lat : 21.036654, lng 105.781218
-    private SupportMapFragment mapFragment;
+    private static SupportMapFragment mapFragment;
     private LatLng xuanthuy = new LatLng(21.036654,105.78218);
     private RoundedImageView img_send,img_cancel;
 
@@ -93,7 +93,7 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
 
             }
         };
-        getChildFragmentManager().beginTransaction().add(R.id.mapfragment, mapFragment).commit();
+//        getChildFragmentManager().beginTransaction().add(R.id.mapfragment, mapFragment).commit();
         initView(view);
         return view;
     }

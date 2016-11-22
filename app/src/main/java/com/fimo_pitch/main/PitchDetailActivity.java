@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
@@ -28,9 +29,10 @@ public class PitchDetailActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pitch_detail);
-        ActivityCompat.requestPermissions(PitchDetailActivity.this,
-                new String[]{Manifest.permission.CALL_PHONE}, permissionCode);
+        setContentView(R.layout.activity_pitch_detail2);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         initView();
 
     }
@@ -40,6 +42,7 @@ public class PitchDetailActivity extends AppCompatActivity implements View.OnCli
         bt_order = (RoundedImageView) findViewById(R.id.bt_order);
 
         bt_order.setOnClickListener(this);
+        bt_call.setOnClickListener(this);
 
     }
 
@@ -48,18 +51,9 @@ public class PitchDetailActivity extends AppCompatActivity implements View.OnCli
         int id = v.getId();
         switch (id) {
             case R.id.bt_call: {
-                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "01266343244"));
-                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                startActivity(intent);
+                ActivityCompat.requestPermissions(PitchDetailActivity.this,
+                        new String[]{Manifest.permission.CALL_PHONE}, permissionCode);
+
                 break;
             }
             case R.id.bt_order: {
@@ -76,6 +70,9 @@ public class PitchDetailActivity extends AppCompatActivity implements View.OnCli
                     }
                 };
                 Utils.showDialog(PitchDetailActivity.this,"Bạn có muốn đặt sân này không ?",ok,cancel);
+
+                startActivity(new Intent(PitchDetailActivity.this,PricingActivity.class));
+
                 break;
             }
         }
@@ -86,8 +83,18 @@ public class PitchDetailActivity extends AppCompatActivity implements View.OnCli
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == permissionCode)
             if (grantResults[0] == PermissionChecker.PERMISSION_GRANTED) {
-                bt_call.setOnClickListener(this);
-
+                Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "01266343244"));
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                startActivity(intent);
             }
     }
 }

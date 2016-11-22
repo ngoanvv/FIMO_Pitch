@@ -15,9 +15,6 @@ import android.widget.TextView;
 
 import com.fimo_pitch.R;
 import com.fimo_pitch.main.PitchDetailActivity;
-import com.fimo_pitch.main.PitchDetailActivity2;
-import com.fimo_pitch.model.Match;
-import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.SystemPitch;
 import com.squareup.picasso.Picasso;
 
@@ -71,7 +68,7 @@ public class SystemPitchAdapter extends RecyclerView.Adapter<SystemPitchAdapter.
         holder.item_pitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.startActivity(new Intent(context, PitchDetailActivity2.class));
+                context.startActivity(new Intent(context, PitchDetailActivity.class));
             }
         });
 

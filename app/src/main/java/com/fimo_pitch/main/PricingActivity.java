@@ -1,11 +1,17 @@
 package com.fimo_pitch.main;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.fimo_pitch.R;
 
@@ -18,14 +24,21 @@ public class PricingActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        initTable();
+    }
+
+    private void initTable() {
+        TableLayout table  = (TableLayout) findViewById(R.id.table_pricing);
+        for(int i=0;i<5;i++)
+        {
+            TableRow row = new TableRow(PricingActivity.this);
+            row.setLayoutParams(new Toolbar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            TextView textview = new TextView(this);
+            textview.setText("ROW");
+            textview.setTextColor(Color.YELLOW);
+            row.addView(textview);
+            table.addView(row);
+        }
     }
 
 }

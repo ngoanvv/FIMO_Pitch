@@ -8,11 +8,11 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:orientation="vertical"
-        tools:context="com.fimo_pitch.main.PitchDetailActivity2">
+        tools:context="com.fimo_pitch.main.PitchDetailActivity">
         <ImageView
             android:id="@+id/img_pitch"
             android:layout_width="match_parent"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="50dp"
             android:layout_height="200dp"
             android:background="@drawable/ic_san"
             />
@@ -26,41 +26,41 @@
             android:text="Hệ thống Sân Trần Quốc Hoàn"
             android:textStyle="bold"
             />
-        <LinearLayout
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_star"
+            />
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_height="match_parent"
             android:layout_marginTop="5dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_star"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:text="3.5"
-                android:textSize="18dp"
-                android:layout_marginLeft="5dp"
-                />
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="15dp"
-                android:src="@drawable/ic_comment"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:textSize="18dp"
-                android:text="2"
-                />
-        </LinearLayout>
+            android:text="3.5"
+            android:textSize="18dp"
+            android:layout_marginLeft="5dp"
+            />
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/ic_comment"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:textSize="18dp"
+            android:text="2"
+            />
+    </LinearLayout>
 
     <!--<android.support.v7.widget.AppCompatRatingBar-->
         <!--android:layout_width="wrap_content"-->
@@ -91,15 +91,6 @@
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
 
-                    <!--<TextView-->
-                    <!--android:layout_width="100dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Địa chỉ"-->
-                    <!--android:textSize="18dp"-->
-                    <!--android:layout_marginLeft="10dp"-->
-                    <!--android:layout_gravity="center_vertical"-->
-                    <!--android:textColor="@color/colorBlack"-->
-                    <!--android:id="@+id/textView" />-->
 
                     <com.fimo_pitch.custom.view.RoundedImageView
                         android:layout_gravity="center_vertical"
@@ -109,14 +100,9 @@
 
                     <TextView
                         android:id="@+id/item_location"
-                        android:layout_width="match_parent"
-                        android:maxLines="2"
-                        android:textSize="18dp"
+                        style="@style/item_detail"
                         android:text="144 Xuân Thủy, Cầu Giấy"
-                        android:layout_marginLeft="10dp"
-                        android:layout_gravity="center_vertical"
-                        android:textColor="@color/accent_material_light"
-                        android:layout_height="wrap_content"/>
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -141,12 +127,8 @@
                     <!--/>-->
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/item_detail"
                         android:text="Từ 8h-21h hằng ngày"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="18dp"
-                        android:layout_gravity="center_vertical"
-                        android:textColor="@color/accent_material_light"
                         />
                 </LinearLayout>
                 <LinearLayout
@@ -171,13 +153,8 @@
                     <!--/>-->
                     <TextView
                         android:id="@+id/item_owner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        style="@style/item_detail"
                         android:text="MR Hưng BQ"
-                        android:layout_marginLeft="10dp"
-                        android:textSize="18dp"
-                        android:layout_gravity="center_vertical"
-                        android:textColor="@color/accent_material_light"
                         />
                 </LinearLayout>
 
@@ -204,39 +181,37 @@
                     <!--/>-->
                     <TextView
                         android:id="@+id/item_contact"
-                        android:layout_width="match_parent"
-                        android:maxLines="2"
-                        android:textSize="18dp"
+                        style="@style/item_detail"
                         android:text="0989891272"
-                        android:layout_marginLeft="10dp"
-                        android:layout_gravity="center_vertical"
-                        android:textColor="@color/accent_material_light"
-                        android:layout_height="wrap_content"/>
+
+                        />
                 </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <com.fimo_pitch.custom.view.RoundedImageView
-                android:id="@+id/bt_call"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/ic_call"
-                android:layout_marginRight="70dp"
-                android:layout_alignParentRight="true"
-                />
 
-            <com.fimo_pitch.custom.view.RoundedImageView
-                android:id="@+id/bt_order"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@drawable/ic_deal"
-                android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@+id/bt_call"
-                android:layout_toStartOf="@+id/bt_call"
-                android:layout_marginRight="68dp"
-                android:layout_marginEnd="68dp" />
-        </RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        >
+        <com.fimo_pitch.custom.view.RoundedImageView
+            android:id="@+id/bt_call"
+            style="@style/item_contact"
+            android:background="@drawable/ic_call"
+            ></com.fimo_pitch.custom.view.RoundedImageView>
+        <com.fimo_pitch.custom.view.RoundedImageView
+            android:id="@+id/bt_order"
+            style="@style/item_contact"
+            android:background="@drawable/ic_deal"
+             />
+        <com.fimo_pitch.custom.view.RoundedImageView
+            android:id="@+id/bt_share"
+            style="@style/item_contact"
+            android:background="@drawable/ic_share">
+        </com.fimo_pitch.custom.view.RoundedImageView>
+
+
     </LinearLayout>
+</LinearLayout>

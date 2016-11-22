@@ -185,14 +185,6 @@ public class NavigationActivity extends AppCompatActivity implements GoogleApiCl
                 }
             });
         }
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            });
-        }
 
     }
     
@@ -271,14 +263,11 @@ public class NavigationActivity extends AppCompatActivity implements GoogleApiCl
             mGoogleApiClient.clearDefaultAccountAndReconnect();
             mGoogleApiClient.disconnect();
             mGoogleApiClient.connect();
-
-            sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
-            if(sharedPreferences !=null)
-            {
-                sharedPreferences.edit().clear();
-            }
-            finish();
-
+        }
+        sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
+        if(sharedPreferences !=null)
+        {
+            sharedPreferences.edit().clear().commit();
         }
     }
     public void initGoogleAPI()

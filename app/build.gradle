@@ -41,5 +41,6 @@ dependencies {
 
     // see changelog
     compile 'com.loopj.android:android-async-http:1.4.9'
+    compile 'com.google.android.gms:play-services-appindexing:9.2.1'
 }
 apply plugin: 'com.google.gms.google-services'
