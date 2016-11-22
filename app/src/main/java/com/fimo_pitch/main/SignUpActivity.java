@@ -39,8 +39,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private Uri avatarUri;
     private String downloadURL="";
     private boolean pickedImage=false;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,15 +46,20 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         initView();
         setListener();
 
+        prgDialog = new ProgressDialog(this);
+        prgDialog.setMessage("Chờ trong giây lát...");
+        // set mCancelable = false
+        prgDialog.setCancelable(false);
+
     }
 
     public void initView()
     {
         groupUsertype  = (RadioGroup) findViewById(R.id.radio_userType);
         edt_userName   = (EditText) findViewById(R.id.input_name);
-        edt_password   = (EditText) findViewById(R.id.signup_input_password);
+        edt_password   = (EditText) findViewById(R.id.input_password);
         edt_rePassword = (EditText) findViewById(R.id.input_re_password);
-        edt_userEmail  = (EditText) findViewById(R.id.signup_input_email);
+        edt_userEmail  = (EditText) findViewById(R.id.input_email);
         edt_phone      = (EditText) findViewById(R.id.input_phone);
         bt_signUp      = (TextView) findViewById(R.id.btn_signUp);
         // textview dung de luu lai imageURL
@@ -74,41 +77,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         {
             case R.id.btn_signUp :
             {
-                if(validate())
-                {
-                    sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
-                    if(sharedPreferences != null)
-                    {
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.clear();
-                        editor.putString(CONSTANT.USER_EMAIL,edt_userEmail.getText().toString());
-                        editor.putString(CONSTANT.USER_PASSWORD,edt_password.getText().toString());
-                        editor.putString(CONSTANT.USER_PHONE,edt_phone.getText().toString());
-                        editor.putString(CONSTANT.USER_NAME,edt_userName.getText().toString());
-
-                        editor.commit();
-                        Intent intent = new Intent(SignUpActivity.this,NavigationActivity.class);
-                        Bundle data = new Bundle();
-                        data.putString(CONSTANT.USER_EMAIL,edt_userEmail.getText().toString());
-                        data.putString(CONSTANT.USER_PASSWORD,edt_password.getText().toString());
-                        data.putString(CONSTANT.USER_PHONE,edt_phone.getText().toString());
-                        data.putString(CONSTANT.USER_NAME,edt_userName.getText().toString());
-                        intent.putExtra("data",data);
-                        Log.d(TAG,edt_userEmail.getText().toString());
-                        startActivity(intent);
-                        finish();
-
-                    }
-
-
-
-                }
-                break;
 
             }
             case R.id.btn_login :
             {
-//                onBackPressed();
+                onBackPressed();
                 break;
             }
             case R.id.img_avatar :
@@ -285,7 +258,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private void onLoginSuccess(UserModel userModel,String password)
     {
         dialog.dismiss();
-//        saveUserData(userModel.getEmail(),password,userModel.getUserType());
+        saveUserData(userModel.getEmail(),password,userModel.getUserType());
         Intent intent= new Intent(SignUpActivity.this,MainActivity.class);
         intent.putExtra(CONSTANT.USER_TYPE,userModel.getUserType());
         intent.putExtra(CONSTANT.KEY_USER,userModel);
@@ -296,9 +269,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     {
         sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(CONSTANT.USER_EMAIL,email);
-        editor.putString(CONSTANT.USER_PASSWORD,password);
-        editor.putString(CONSTANT.USER_TYPE,userType);
+        editor.putString("email",email);
+        editor.putString("password",password);
+        editor.putString("userType",userType);
         Log.d("info",email+"/"+password+"/"+userType);
         editor.commit();
 
@@ -308,4 +281,127 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         dialog.dismiss();
     }
 
+    /**
+     * Method gets triggered when Register button is clicked
+     *
+     * @param view
+     */
+    public void registerUser(View view){
+        //get value in xml
+
+        String name = edt_userName.getText().toString();
+        String email = edt_userEmail.getText().toString();
+        String password = edt_password.getText().toString();
+        String phone = edt_phone.getText().toString();
+        String usertype = "";
+
+        if (userType == UserModel.TYPE_OWNER) // chu san
+        {
+            usertype = "1";
+        }
+        else {
+            usertype = "0";
+        }
+
+
+        // Instantiate Http Request Param Object
+        RequestParams params = new RequestParams();
+        // check value name, email, password
+        if(Utility.isNotNull(name) && Utility.isNotNull(email) && Utility.isNotNull(password)){
+            // When Email entered is Valid
+            if(Utility.validate(email)){
+
+                // put value to params
+                params.put("name", name);
+                params.put("email", email);
+                params.put("password", password);
+                params.put("phone", phone);
+                params.put("usertype", usertype);
+
+                invokeWS(params, view);
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Please enter valid email", Toast.LENGTH_LONG).show();
+            }
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Please fill the form, don't leave any field blank", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    /**
+     * Method RESTful webservice
+     *
+     */
+    public void invokeWS(RequestParams params, final View view){
+
+        prgDialog.show();
+        // Make RESTful webservice call using AsyncHttpClient object
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://192.168.1.54:8083/WebService/register/doregister",params ,new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                // Hide Progress Dialog
+                prgDialog.hide();
+                try {
+                    // JSON Object
+                    JSONObject obj = new JSONObject(new String(responseBody));
+
+                    if(obj.getBoolean("status")){
+                        setDefaultValues();
+                        Toast.makeText(getApplicationContext(), "You are successfully registered!", Toast.LENGTH_LONG).show();
+                        navigatetoLoginActivity(view);
+                    }
+                    else{
+                        errorMsg.setText(obj.getString("error_msg"));
+                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                prgDialog.hide();
+
+                if(statusCode == 404){
+                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+                }
+                else if(statusCode == 500){
+                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    /**
+     * Method which navigates from Register Activity to Login Activity
+     */
+    public void navigatetoLoginActivity(View view){
+        Intent loginIntent = new Intent(getApplicationContext(),LoginActivity.class);
+        // Clears History of Activity
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(loginIntent);
+    }
+
+    /**
+     * Set degault values for Edit View controls
+     */
+    public void setDefaultValues(){
+        edt_userName.setText("");
+        edt_userEmail.setText("");
+        edt_password.setText("");
+        edt_phone.setText("");
+    }
+
 }
+
