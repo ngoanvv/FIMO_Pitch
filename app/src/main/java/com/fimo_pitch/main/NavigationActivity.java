@@ -36,6 +36,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -73,7 +74,7 @@ import java.util.List;
 /**
  * Provides UI for the main screen.
  */
-public class NavigationActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class NavigationActivity extends ActionBarActivity implements GoogleApiClient.OnConnectionFailedListener {
     private String TAG="NavigationActivity";
     private DrawerLayout mDrawerLayout;
     private TabLayout tabs;
@@ -235,13 +236,16 @@ public class NavigationActivity extends AppCompatActivity implements GoogleApiCl
                                 }
                                 case R.id.menu_manage :
                                 {
-                                    replaceFragment(new ManageFragment().newInstance("",""),NotifcationFragment.class.getName());
+
+                                    Intent intent = new Intent(NavigationActivity.this,ManageActivity.class);
+                                    startActivity(intent);
                                     mDrawerLayout.closeDrawers();
                                     break;
                                 }
                                 case R.id.menu_settings :
                                 {
                                     replaceFragment(new SettingsFragment().newInstance("",""),NotifcationFragment.class.getName());
+
                                     mDrawerLayout.closeDrawers();
                                     break;
                                 }
@@ -268,6 +272,7 @@ public class NavigationActivity extends AppCompatActivity implements GoogleApiCl
         if(sharedPreferences !=null)
         {
             sharedPreferences.edit().clear().commit();
+            sharedPreferences.edit().putBoolean("seen",true).commit();
         }
     }
     public void initGoogleAPI()

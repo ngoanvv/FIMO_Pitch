@@ -42,7 +42,6 @@ public class NotifcationFragment extends Fragment {
     public void initView(View v)
     {
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView_notification);
-
     }
     private void initAdapter() {
         notificationAdapter = new NotificationAdapter(getActivity(),mlistNotification);

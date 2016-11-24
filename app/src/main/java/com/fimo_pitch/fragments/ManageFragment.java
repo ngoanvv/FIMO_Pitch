@@ -50,8 +50,8 @@ public class ManageFragment extends Fragment {
 
     public void initView(View v)
     {
-        expandableListView = (ExpandableListView) v.findViewById(R.id.expandlistview);
-        initList();
+//        expandableListView = (ExpandableListView) v.findViewById(R.id.expandlistview);
+//        initList();
 
     }
     public void initList()

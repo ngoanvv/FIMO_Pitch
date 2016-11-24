@@ -32,7 +32,7 @@
             android:id="@+id/view2"
             android:layout_width="40dp"
             android:layout_height="match_parent"
-            android:src="@drawable/ic_list"
+            android:background="@drawable/ic_list"
             android:layout_alignParentRight="true"
             android:onClick="addListenerOnButton"/>
 
@@ -42,7 +42,7 @@
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_marginRight="40dp"
-            android:src="@drawable/ic_grid"
+            android:background="@drawable/ic_grid"
             android:onClick="addListenerOnButton"/>
     </RelativeLayout>
 </RelativeLayout>

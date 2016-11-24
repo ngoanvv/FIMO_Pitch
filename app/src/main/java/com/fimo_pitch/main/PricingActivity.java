@@ -23,22 +23,10 @@ public class PricingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pricing);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        initTable();
     }
 
-    private void initTable() {
-        TableLayout table  = (TableLayout) findViewById(R.id.table_pricing);
-        for(int i=0;i<5;i++)
-        {
-            TableRow row = new TableRow(PricingActivity.this);
-            row.setLayoutParams(new Toolbar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            TextView textview = new TextView(this);
-            textview.setText("ROW");
-            textview.setTextColor(Color.YELLOW);
-            row.addView(textview);
-            table.addView(row);
-        }
-    }
 
 }

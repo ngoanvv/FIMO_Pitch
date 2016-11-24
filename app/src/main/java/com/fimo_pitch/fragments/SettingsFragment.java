@@ -28,11 +28,6 @@ public class SettingsFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
     private String mParam2;
-    private RecyclerView recyclerView;
-    private ArrayList<String> arrayLocation, arrayTime;
-    private EditText edt_input_search;
-    private NewsFragmentAdapter adapter;
-    private ArrayList<Match> list;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

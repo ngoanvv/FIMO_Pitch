@@ -15,22 +15,37 @@ public class IntroductionActivity extends AppIntro {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        addSlide(Introduction1Fragment.newInstance("",""));
-        addSlide(AppIntroFragment.newInstance("Tìm kiếm sân bóng qua bản đồ", "Tìm kiếm sân bóng nhanh, hiệu quả",
-                R.drawable.intro_3,getResources().getColor(R.color.colorPrimary)));
-        addSlide(AppIntroFragment.newInstance("Tìm kiếm sân bóng theo danh sách ", "Tìm kiếm sân bóng nhanh, hiệu quả",
-                R.drawable.intro_1,getResources().getColor(R.color.colorPrimary)));
-        addSlide(AppIntroFragment.newInstance("Bảng tin giao hữu, tìm đối", "Giao lưu, đăng tin tức và tìm đối thủ tiện lợi",
-                R.drawable.intro_2,getResources().getColor(R.color.colorPrimary)));
-        addSlide(AppIntroFragment.newInstance("Thông tin chi tiết", "Bảng giá, thông tin liên hệ, vị trí....",
-                R.drawable.intro_4,getResources().getColor(R.color.colorPrimary)));
-        showSkipButton(true);
+        sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
+        if(sharedPreferences !=null)
+        {
+            // neu đã xem giới thiệu
+            if(sharedPreferences.getBoolean("seen",false))
+            {
+                Intent intent = new Intent(IntroductionActivity.this,LoginActivity.class);
+                startActivity(intent);
+            }
+            else
+            {
+                addSlide(AppIntroFragment.newInstance("Tìm kiếm sân bóng qua bản đồ", "Tìm kiếm sân bóng nhanh, hiệu quả",
+                        R.drawable.intro_3,getResources().getColor(R.color.colorPrimary)));
+                addSlide(AppIntroFragment.newInstance("Tìm kiếm sân bóng theo danh sách ", "Tìm kiếm sân bóng nhanh, hiệu quả",
+                        R.drawable.intro_1,getResources().getColor(R.color.colorPrimary)));
+                addSlide(AppIntroFragment.newInstance("Bảng tin giao hữu, tìm đối", "Giao lưu, đăng tin tức và tìm đối thủ tiện lợi",
+                        R.drawable.intro_2,getResources().getColor(R.color.colorPrimary)));
+                addSlide(AppIntroFragment.newInstance("Thông tin chi tiết", "Bảng giá, thông tin liên hệ, vị trí....",
+                        R.drawable.intro_4,getResources().getColor(R.color.colorPrimary)));
+                showSkipButton(true);
+            }
+        }
+
     }
     @Override
     public void onSkipPressed(Fragment currentFragment) {
         super.onSkipPressed(currentFragment);
-
-
+        if(sharedPreferences !=null)
+        {
+            sharedPreferences.edit().putBoolean("seen",true).commit();
+        }
         Intent intent = new Intent(IntroductionActivity.this,LoginActivity.class);
         startActivity(intent);
     }
@@ -38,6 +53,10 @@ public class IntroductionActivity extends AppIntro {
     @Override
     public void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
+        if(sharedPreferences !=null)
+        {
+            sharedPreferences.edit().putBoolean("seen",true).commit();
+        }
         Intent intent = new Intent(IntroductionActivity.this,LoginActivity.class);
         startActivity(intent);
     }

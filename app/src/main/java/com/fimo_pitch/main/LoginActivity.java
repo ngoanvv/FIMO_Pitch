@@ -335,6 +335,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
             case R.id.btn_login: {
                 moveToHomeScreen();
+                finish();
 //                if (!validate(edt_email.getText().toString(),edt_password.getText().toString())) {
 //                        onLoginFailed();
 //                        break;
