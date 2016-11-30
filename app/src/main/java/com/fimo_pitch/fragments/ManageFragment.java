@@ -42,10 +42,16 @@ public class ManageFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+     try {
         View rootView= inflater.inflate(R.layout.fragment_manage, container, false);
         initView(rootView);
         Log.d(TAG,"manage");
         return rootView;
+    }
+    catch (Exception e)
+    {
+        return inflater.inflate(R.layout.empty, container, false);
+    }
     }
 
     public void initView(View v)

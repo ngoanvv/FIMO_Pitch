@@ -34,7 +34,7 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View itemview = inflater.inflate(R.layout.item_match, parent, false);
+            View itemview = inflater.inflate(R.layout.item_news, parent, false);
             return new RecyclerViewHolder(itemview);
     }
 

@@ -1,6 +1,5 @@
 package com.fimo_pitch.fragments;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -14,30 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fimo_pitch.R;
-import com.fimo_pitch.main.PitchDetailActivity;
-import com.fimo_pitch.support.ShowToast;
+import com.fimo_pitch.main.DetailActivity;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 import java.util.Random;
-
-import static com.fimo_pitch.R.id.edt_location;
 
 /**
  */
@@ -63,14 +53,19 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search,container,false);
-        mapFragment = new SupportMapFragment();
-        if(mapFragment != null)
-        {
-            mapFragment.getMapAsync(this);
+        try {
+            View view = inflater.inflate(R.layout.fragment_search, container, false);
+            mapFragment = new SupportMapFragment();
+            if (mapFragment != null) {
+                mapFragment.getMapAsync(this);
+            }
+            getChildFragmentManager().beginTransaction().add(R.id.fragment_map, mapFragment).commit();
+            return view;
         }
-        getChildFragmentManager().beginTransaction().add(R.id.fragment_map, mapFragment).commit();
-        return view;
+        catch (Exception e)
+        {
+            return inflater.inflate(R.layout.empty, container, false);
+        }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -95,7 +90,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-                    startActivity(new Intent(getActivity(), PitchDetailActivity.class));
+                    startActivity(new Intent(getActivity(), DetailActivity.class));
                     return true;
                 }
             });

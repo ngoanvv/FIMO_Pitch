@@ -43,9 +43,15 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+       try {
         View view = inflater.inflate(R.layout.fragment_matchs, container, false);
         initView(view);
         return view;
+        }
+        catch (Exception e)
+        {
+        return inflater.inflate(R.layout.empty, container, false);
+        }
     }
 
 
