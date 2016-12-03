@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="80dp"
+        android:textSize="@dimen/size_80dp"
         android:text="Hello FIMO"
         />
 </RelativeLayout>

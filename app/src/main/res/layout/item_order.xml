@@ -18,29 +18,36 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="20dp"
+    android:padding="@dimen/margin_10dp"
     android:background="?android:attr/selectableItemBackground">
 <LinearLayout
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <ImageView
-        android:layout_width="120dp"
-        android:layout_height="80dp"
+        android:id="@+id/item_image"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
         android:background="@drawable/ic_pitch" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center_vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:layout_marginLeft="20dp"
-        android:textStyle="bold"
-        android:textColor="@color/colorBlack"
-        android:text="Sân số 1" />
+        >
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_30sp"
+            android:layout_marginLeft="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:textStyle="bold"
+            android:textColor="@color/colorBlack"
+            android:text="Sân số 1" />
     </LinearLayout>
 </LinearLayout>
     <View
@@ -48,61 +55,15 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="10dp"
-        android:background="@color/button_grey"
+        android:background="@color/Grey"
         android:layout_below="@+id/main">
     </View>
 
     <LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/view"
-    android:layout_marginTop="30dp"
-    android:layout_alignParentRight="true"
-    android:orientation="vertical">
-<LinearLayout
-    android:id="@+id/pricing"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/view"
-    android:orientation="horizontal"
-    android:layout_alignParentRight="true">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:textColor="@color/colorOrange"
-        android:text="VNĐ"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        android:textColor="@color/colorOrange"
-        android:text="500.000"        />
-</LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:textSize="30dp"
-        android:textStyle="bold"
-        android:padding="10dp"
-        android:background="@drawable/order_button"
-        android:textColor="@color/white"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/pricing"
-        android:text="Đặt sân"  />
-</LinearLayout>
-
-    <LinearLayout
+        android:id="@+id/layout_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="30dp"
         android:gravity="center"
         android:layout_below="@+id/view"
         android:layout_alignParentLeft="true"
@@ -110,20 +71,22 @@
         <LinearLayout
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="@dimen/margin_10dp">
             <com.fimo_pitch.custom.view.RoundedImageView
                 android:layout_width="15dp"
                 android:background="@drawable/ic_money"
                 android:layout_gravity="center_vertical"
                 android:layout_height="15dp"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:text="Đặt cọc trước 50%"
-                android:textSize="15dp"
+                android:textSize="@dimen/text_size_15sp"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/accent_material_light"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:id="@+id/item_money" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="150dp"
@@ -135,13 +98,108 @@
                 android:layout_gravity="center_vertical"
                 android:layout_height="15dp"/>
             <TextView
+                android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:text="Từ 17h30 - 19h"
-                android:textSize="15dp"
+                android:textSize="@dimen/text_size_15sp"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/accent_material_light"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+            <com.fimo_pitch.custom.view.RoundedImageView
+                android:layout_width="15dp"
+                android:background="@drawable/ic_money"
+                android:layout_gravity="center_vertical"
+                android:layout_height="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Miễn phí 1 bình nước"
+                android:textSize="@dimen/text_size_15sp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/accent_material_light"
+                android:layout_height="wrap_content"
+                 />
+        </LinearLayout>
     </LinearLayout>
+
+
+    <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignTop="@+id/layout_info"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/linearLayout3">
+<LinearLayout
+    android:id="@+id/pricing"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/view"
+    android:orientation="horizontal"
+    android:layout_alignParentRight="true">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:textSize="@dimen/text_size_details_25sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorOrange"
+        android:text="VNĐ"
+        />
+    <TextView
+        android:id="@+id/item_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_30sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorOrange"
+        android:text="500.000"   />
+</LinearLayout>
+
+        <TextView
+            android:id="@+id/bt_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:textSize="@dimen/text_size_30sp"
+            android:textStyle="bold"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="30dp"
+            android:paddingLeft="30dp"
+            android:background="@drawable/order_button"
+            android:textColor="@color/white"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/pricing"
+            android:text="Đặt sân"
+             />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/item_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Xem chi tiết"
+        android:textSize="@dimen/text_size_20sp"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/colorRed"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/linearLayout3" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/Grey"
+        android:layout_below="@+id/item_detail"></View>
 </RelativeLayout>

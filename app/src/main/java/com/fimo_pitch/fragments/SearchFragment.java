@@ -1,19 +1,30 @@
 package com.fimo_pitch.fragments;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.akexorcist.googledirection.DirectionCallback;
+import com.akexorcist.googledirection.GoogleDirection;
+import com.akexorcist.googledirection.constant.AvoidType;
+import com.akexorcist.googledirection.model.Direction;
+import com.directions.route.Route;
+import com.directions.route.RouteException;
+import com.directions.route.Routing;
+import com.directions.route.RoutingListener;
 import com.fimo_pitch.R;
 import com.fimo_pitch.main.DetailActivity;
+import com.fimo_pitch.main.NavigationActivity;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -49,6 +60,8 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
     private LatLng xuanthuy = new LatLng(21.036654,105.78218);
     private int permissionCode=9999;
     private ArrayList<LatLng> latLngs;
+    private LatLng currentLatLng;
+    private LatLng start,end,waypoint;
 
 
     @Override
@@ -71,12 +84,21 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode==permissionCode)
         {
-            Log.d(TAG,"OK");
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED) {
+                gps = new TrackGPS(getContext(),getActivity());
+                if(gps.canGetLocation()){
+                    double longitude = gps.getLongitude();
+                    double latitude = gps .getLatitude();
+                    Log.d("SearchFragment","lat : " + latitude +" lng :"+longitude);
+                    currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
+                    map.addMarker(new MarkerOptions().position(currentLatLng));
+                    Utils.showCircle(currentLatLng,5000,map);
+
+                }
             }
         }
         else
-            Log.d(TAG,"Not ok");
+            Utils.openDialog(getContext(),"Không định vị được vị trí của bạn");
     }
     public void initMapLicense()
     {
@@ -97,8 +119,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
-//                map.clear();
-//                map.addMarker(new MarkerOptions().position(xuanthuy).title("Hệ thống sân FIMO"));
                 Random random =new Random();
                 int x = random.nextInt(6 - 1 + 1) + 1;
             }
@@ -118,13 +138,12 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         if(googleMap !=null) {
             map = googleMap;
-            Utils.moveCamera(xuanthuy,11,map);
-            map.addMarker(new MarkerOptions().position(xuanthuy).title("Sân bóng FIMO"));
-            Utils.showCircle(xuanthuy,2000,map);
-            map.addMarker(new MarkerOptions().position(new LatLng(xuanthuy.latitude + 0.004, xuanthuy.longitude - 0.006)).title("Sân bóng FECON"));
-            map.addMarker(new MarkerOptions().position(new LatLng(xuanthuy.latitude + 0.004, xuanthuy.longitude - 0.004)).title("Sân bóng BDV"));
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
             initMapLicense();
 
         }
     }
+
+
 }

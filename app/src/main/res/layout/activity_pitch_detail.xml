@@ -178,6 +178,7 @@
         android:layout_height="250dp"
         class="com.google.android.gms.maps.SupportMapFragment" />
     <TextView
+        android:id="@+id/bt_now"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:text="Đặt sân ngay"

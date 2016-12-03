@@ -102,20 +102,9 @@ public class NavigationActivity extends ActionBarActivity implements GoogleApiCl
         initNavMenu();
         initGoogleAPI();
 
-//        ActivityCompat.requestPermissions(NavigationActivity.this,
-//                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
-//        gps = new TrackGPS(NavigationActivity.this,NavigationActivity.this);
-//
-//        if(gps.canGetLocation()){
-//            double longitude = gps.getLongitude();
-//            double latitude = gps .getLatitude();
-//            Log.d(TAG,"lat : " + latitude +" lng :"+longitude);
-//            currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
-//        }
-//        else
-//        {
-//            Utils.openDialog(NavigationActivity.this,"Không định vị được vị trí của bạn");
-//        }
+        ActivityCompat.requestPermissions(NavigationActivity.this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},permissionCode);
+
 
     }
     private void getData()
