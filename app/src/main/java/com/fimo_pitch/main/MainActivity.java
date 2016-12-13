@@ -18,10 +18,12 @@ package com.fimo_pitch.main;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -37,7 +39,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -47,17 +50,25 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
+import com.fimo_pitch.HttpRequest;
 import com.fimo_pitch.R;
+import com.fimo_pitch.adapter.NewsFragmentAdapter;
+import com.fimo_pitch.adapter.SystemPitchAdapter;
 import com.fimo_pitch.custom.view.RoundedImageView;
-import com.fimo_pitch.fragments.ManageFragment;
 import com.fimo_pitch.fragments.SystemPitchsFragment;
 import com.fimo_pitch.fragments.NewsFragment;
 import com.fimo_pitch.fragments.NotifcationFragment;
 import com.fimo_pitch.fragments.PostNewsFragment;
 import com.fimo_pitch.fragments.SearchFragment;
 import com.fimo_pitch.fragments.SettingsFragment;
+import com.fimo_pitch.model.News;
+import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.UserModel;
+import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.auth.api.Auth;
@@ -67,15 +78,25 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 
 /**
  * Provides UI for the main screen.
  */
-public class NavigationActivity extends ActionBarActivity implements GoogleApiClient.OnConnectionFailedListener {
-    private String TAG="NavigationActivity";
+public class MainActivity extends ActionBarActivity implements GoogleApiClient.OnConnectionFailedListener {
+    private String TAG="MainActivity";
     private DrawerLayout mDrawerLayout;
     private TabLayout tabs;
     private ViewPager viewPager;
@@ -93,65 +114,48 @@ public class NavigationActivity extends ActionBarActivity implements GoogleApiCl
     private RoundedImageView userAvatar;
     private SharedPreferences sharedPreferences;
     private View navHeader;
+    private SearchFragment mSearchFragment;
+    private boolean isOpened=false;
+    private OkHttpClient okHttpClient;
+    private String mString="hello";
+    private ArrayList<SystemPitch> listSystem=new ArrayList<>();
+    private ArrayList<News> listNews=new ArrayList<>();
+    private String listSystemData="",listNewsData="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+        Log.d(TAG,mString);
         initView();
         getData();
         initNavMenu();
         initGoogleAPI();
 
-        ActivityCompat.requestPermissions(NavigationActivity.this,
+        ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},permissionCode);
 
-
     }
-    private void getData()
-    {
+    private void getData() {
+        listSystem = new ArrayList<>();
+        listNews = new ArrayList<>();
+        new MyTask().execute();
+
         userModel = new UserModel();
         data = getIntent().getBundleExtra("data");
-        if(data !=null)
-        {
+        if (data != null) {
             userModel.setEmail(data.getString(CONSTANT.USER_EMAIL));
             userModel.setImageURL(data.getString(CONSTANT.USER_AVATAR));
             userModel.setName(data.getString(CONSTANT.USER_NAME));
-
             tv_email.setText(data.getString(CONSTANT.USER_EMAIL));
             tv_userName.setText(data.getString(CONSTANT.USER_NAME));
-
         }
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(grantResults[0]== PackageManager.PERMISSION_GRANTED) {
-            gps = new TrackGPS(NavigationActivity.this,NavigationActivity.this);
-
-            if(gps.canGetLocation()){
-                double longitude = gps.getLongitude();
-                double latitude = gps .getLatitude();
-                Log.d(TAG,"lat : " + latitude +" lng :"+longitude);
-                currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
-            }
-            else
-            {
-                Utils.openDialog(NavigationActivity.this,"Không định vị được vị trí của bạn");
-            }
-        }
-
     }
 
     public void initView()
     {
-
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-        tabs = (TabLayout) findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
+
         frameLayout = (FrameLayout) findViewById(R.id.container);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -159,8 +163,7 @@ public class NavigationActivity extends ActionBarActivity implements GoogleApiCl
         tv_email = (TextView) navHeader.findViewById(R.id.user_email);
         tv_userName = (TextView) navHeader.findViewById(R.id.user_name);
         userAvatar = (RoundedImageView) navHeader.findViewById(R.id.user_avatar);
-
-        Picasso.with(NavigationActivity.this).load(R.drawable.ic_avatar).fit().centerCrop().into(userAvatar);
+        Picasso.with(MainActivity.this).load(R.drawable.ic_avatar).fit().centerCrop().into(userAvatar);
 
         ActionBar supportActionBar = getSupportActionBar();
         if (supportActionBar != null) {
@@ -172,6 +175,9 @@ public class NavigationActivity extends ActionBarActivity implements GoogleApiCl
                 @Override
                 public void onClick(View v) {
                     mDrawerLayout.openDrawer(Gravity.LEFT);
+                    Log.d(TAG,listSystemData);
+                    Log.d(TAG,listNewsData);
+
                 }
             });
         }
@@ -186,9 +192,14 @@ public class NavigationActivity extends ActionBarActivity implements GoogleApiCl
         frameLayout.setVisibility(View.VISIBLE);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container,fragment,tag).commit();
-
     }
-    
+    public void backToFragment(final Fragment fragment) {
+
+        // go back to something that was added to the backstack
+        getSupportFragmentManager().popBackStackImmediate(
+                fragment.getClass().getName(), 0);
+        isOpened = true;
+    }
     // init Nav menu
     public void initNavMenu()
     {
@@ -198,6 +209,7 @@ public class NavigationActivity extends ActionBarActivity implements GoogleApiCl
                         // This method will trigger on item Click of navigation menu
                         @Override
                         public boolean onNavigationItemSelected(MenuItem menuItem) {
+//                            ShowToast.showToastLong(MainActivity.this,mSystemPitchArrayList.size()+"");
                             menuItem.setChecked(true);
                             navigationView.setCheckedItem(menuItem.getItemId());
 
@@ -212,21 +224,22 @@ public class NavigationActivity extends ActionBarActivity implements GoogleApiCl
                                 }
                                 case R.id.menu_notification :
                                 {
-
                                     replaceFragment(NotifcationFragment.newInstance("",""),NotifcationFragment.class.getName());
                                     mDrawerLayout.closeDrawers();
                                     break;
                                 }
                                 case R.id.menu_search :
                                 {
-                                    replaceFragment(new SearchFragment().newInstance("",""),NotifcationFragment.class.getName());
+                                        Log.d(TAG,"null");
+                                        mSearchFragment = SearchFragment.newInstance("","");
+                                        replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());
                                     mDrawerLayout.closeDrawers();
                                     break;
                                 }
                                 case R.id.menu_manage :
                                 {
 
-                                    Intent intent = new Intent(NavigationActivity.this,ManageActivity.class);
+                                    Intent intent = new Intent(MainActivity.this,ManageActivity.class);
                                     startActivity(intent);
                                     mDrawerLayout.closeDrawers();
                                     break;
@@ -234,7 +247,6 @@ public class NavigationActivity extends ActionBarActivity implements GoogleApiCl
                                 case R.id.menu_settings :
                                 {
                                     replaceFragment(new SettingsFragment().newInstance("",""),NotifcationFragment.class.getName());
-
                                     mDrawerLayout.closeDrawers();
                                     break;
                                 }
@@ -278,7 +290,7 @@ public class NavigationActivity extends ActionBarActivity implements GoogleApiCl
     private void logoutDialog()
     {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(NavigationActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setMessage(R.string.logout2);
         builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
             @Override
@@ -290,26 +302,68 @@ public class NavigationActivity extends ActionBarActivity implements GoogleApiCl
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 signOut();
-                startActivity(new Intent(NavigationActivity.this,LoginActivity.class));
+                startActivity(new Intent(MainActivity.this,LoginActivity.class));
                 dialog.dismiss();
                 }
         });
         builder.create().show();
     }
+    private class MyTask extends AsyncTask<String, Void, String> {
+        ProgressDialog progressDialog;
+        @Override
+        protected String doInBackground(String... params) {
+            Request newsRequest = new Request.Builder()
+                    .url(API.getNews)
+                    .build();
+            Request systemPitchRequest = new Request.Builder()
+                    .url(API.getSystemPitch)
+                    .build();
+            try {
+                okHttpClient = new OkHttpClient();
+                okhttp3.Response newsResponse = okHttpClient.newCall(newsRequest).execute();
+                if(newsResponse.isSuccessful()) listNewsData = newsResponse.body().string();
 
-    // Add Fragments to Tabs
-    private void setupViewPager(ViewPager viewPager) {
-        Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment( SystemPitchsFragment.newInstance("1","2"), "Tìm nhanh");
-        adapter.addFragment(NewsFragment.newInstance("",""), "Tin tức");
-        adapter.addFragment(PostNewsFragment.newInstance("",""), "Đăng tin");
-        viewPager.setAdapter(adapter);
+                okhttp3.Response systemPitchResponse = okHttpClient.newCall(systemPitchRequest).execute();
+                if(systemPitchResponse.isSuccessful()) listSystemData = systemPitchResponse.body().string();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            progressDialog.dismiss();
+            tabs = (TabLayout) findViewById(R.id.tabs);
+            viewPager = (ViewPager) findViewById(R.id.viewpager);
+            Adapter adapter = new Adapter(getSupportFragmentManager());
+            adapter.addFragment(new SystemPitchsFragment(listSystemData), "Tìm nhanh");
+            adapter.addFragment(new NewsFragment(listNewsData), "Tin tức");
+            adapter.addFragment(PostNewsFragment.newInstance("",""), "Đăng tin");
+            viewPager.setAdapter(adapter);
+            viewPager.setOffscreenPageLimit(3);
+            tabs.setupWithViewPager(viewPager);
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setMessage(getString(R.string.processing));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+        }
     }
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
 
     static class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
@@ -338,6 +392,25 @@ public class NavigationActivity extends ActionBarActivity implements GoogleApiCl
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults[0]== PackageManager.PERMISSION_GRANTED) {
+            gps = new TrackGPS(MainActivity.this,MainActivity.this);
+
+            if(gps.canGetLocation()){
+                double longitude = gps.getLongitude();
+                double latitude = gps .getLatitude();
+                Log.d(TAG,"lat : " + latitude +" lng :"+longitude);
+                currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
+            }
+            else
+            {
+                Utils.openDialog(MainActivity.this,"Không định vị được vị trí của bạn");
+            }
+        }
+
     }
 
     @Override

@@ -185,7 +185,7 @@
         android:textSize="40dp"
         android:gravity="center"
         android:textColor="@color/white"
-        android:background="@color/colorOrange"
+        android:background="@drawable/rounded_border"
         />
 
 </LinearLayout>

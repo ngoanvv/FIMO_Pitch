@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.fimo_pitch.R;
-import com.fimo_pitch.model.Utility;
 import com.fimo_pitch.support.Utils;
 
 public class FirstActivity extends AppCompatActivity {

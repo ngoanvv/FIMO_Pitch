@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fimo_pitch.R;
-import com.fimo_pitch.model.Match;
+import com.fimo_pitch.model.News;
 
 import java.util.ArrayList;
 
@@ -22,13 +22,15 @@ import java.util.ArrayList;
  */
 public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapter.RecyclerViewHolder> implements Filterable{
     public static String TAG="FindMacthAdapter";
-    public ArrayList<Match> list;
+    public ArrayList<News> list;
     public Activity context;
-    public NewsFragmentAdapter(Activity context, ArrayList<Match> listData) {
+    public NewsFragmentAdapter(Activity context, ArrayList<News> listData) {
         this.context = context;
         this.list = listData;
+        Log.d("Adpater",list.size()+"");
+
     }
-    ArrayList<Match> results;
+    ArrayList<News> results;
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -63,7 +65,7 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
 
-                list = (ArrayList<Match>) results.values;
+                list = (ArrayList<News>) results.values;
                 notifyDataSetChanged();
             }
 
@@ -71,7 +73,7 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
             protected FilterResults performFiltering(CharSequence constraint) {
 
                 FilterResults results = new FilterResults();
-                ArrayList<Match> filteredArray = getFilteredResults(constraint);
+                ArrayList<News> filteredArray = getFilteredResults(constraint);
                 results.count = filteredArray.size();
                 results.values = filteredArray;
                 return results;
@@ -81,14 +83,14 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
         return filter;
     }
 
-    private ArrayList<Match> getFilteredResults(CharSequence constraint) {
+    private ArrayList<News> getFilteredResults(CharSequence constraint) {
 
         int count=0;
         results = new ArrayList<>();
         constraint=constraint.toString().toLowerCase();
         for(int i =0;i<list.size();i++)
         {
-            if(list.get(i).getLocation().toLowerCase().contains(constraint) || list.get(i).getStadium().toLowerCase().contains(constraint)
+            if(list.get(i).getLocation().toLowerCase().contains(constraint) || list.get(i).getTitle().toLowerCase().contains(constraint)
               ||      list.get(i).getHostName().toLowerCase().contains(constraint) ||list.get(i).getDescription().toLowerCase().contains(constraint) ||
             list.get(i).getMoney().toLowerCase().contains(constraint) || list.get(i).getTime().toLowerCase().contains(constraint)
                     )
@@ -101,16 +103,6 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
         Log.d(TAG,"result size: "+results.size());
         return results;
     }
-    public void initList()
-    {
-        list = new ArrayList<>();
-        list.add(new Match("1","18h ngày 11-7","Chelsea FC","FECON  Stadium","Đá giao lưu nhẹ nhàng, mong gặp đối thủ lâu dài thường xuyên, liên hệ số 0998989898","144 Xuân Thủy, Cầu Giấy","100k chia đôi"));
-        list.add(new Match("1","18h ngày 12-7","MU FC","Old Traford Stadium","Đá giao lưu","144 Hồ tùng mậu , Cầu Giấy sdadasdasdsadasdsadasdasdasdasd","100k chia đôi"));
-        list.add(new Match("1","18h ngày 13-7","MC FC","ETIHAD Stadium","Đá giao lưu","144 Xuân Thủy, Cầu Giấy","100k chia đôi"));
-        list.add(new Match("1","18h ngày 14-7","Arsenal FC","Emirates Bridge Stadium","Đá giao lưu","144 Xuân Thủy, Cầu Giấy","100k chia đôi"));
-        list.add(new Match("1","18h ngày 11-7","Chelsea FC","Stamford Bridge Stadium","Đá giao lưu","144 Xuân Thủy, Cầu Giấy, Hà Nội","100k chia đôi"));
-
-    }
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         TextView tv_hostname,tv_time,tv_location,tv_money,tv_descrip;
         LinearLayout ll_match;
@@ -121,7 +113,7 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
             tv_time = (TextView) itemView.findViewById(R.id.item_time);
             tv_location = (TextView) itemView.findViewById(R.id.item_location);
             tv_money = (TextView) itemView.findViewById(R.id.item_money);
-            tv_descrip = (TextView) itemView.findViewById(R.id.item_slogan);
+            tv_descrip = (TextView) itemView.findViewById(R.id.item_title);
             ll_match = (LinearLayout) itemView.findViewById(R.id.ll_match);
         }
 

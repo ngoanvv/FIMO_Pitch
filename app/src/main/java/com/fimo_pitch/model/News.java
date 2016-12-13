@@ -5,26 +5,18 @@ import java.io.Serializable;
 /**
  * Created by Diep_Chelsea on 13/07/2016.
  */
-public class Match implements Serializable {
+public class News implements Serializable {
     private String id;
     private String hostID;
     private String time;
     private  String hostName;
-    private  String stadium;
+    private  String title;
     private  String description;
     private  String location;
     private  String money;
 
-    public Match(String id, String time, String hostName, String stadium, String description, String location, String money) {
-        this.hostID = id;
-        this.time = time;
-        this.hostName = hostName;
-        this.stadium = stadium;
-        this.description = description;
-        this.location = location;
-        this.money = money;
-    }
-    public Match()
+
+    public News()
     {}
 
     public String getId() {
@@ -51,12 +43,12 @@ public class Match implements Serializable {
         this.money = money;
     }
 
-    public String getStadium() {
-        return stadium;
+    public String getTitle() {
+        return title;
     }
 
-    public void setStadium(String stadium) {
-        this.stadium = stadium;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 
@@ -94,11 +86,11 @@ public class Match implements Serializable {
 
     @Override
     public String toString() {
-        return "Match{" +
+        return "News{" +
                 "hostID='" + hostID + '\'' +
                 ", time='" + time + '\'' +
                 ", hostName='" + hostName + '\'' +
-                ", stadium='" + stadium + '\'' +
+                ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", location='" + location + '\'' +
                 ", money='" + money + '\'' +

@@ -1,8 +1,6 @@
 package com.fimo_pitch.fragments;
 
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,9 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -20,72 +17,77 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 
-
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.fimo_pitch.API;
+import com.fimo_pitch.HttpRequest;
 import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.SystemPitchAdapter;
-import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.SystemPitch;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 
-public class SystemPitchsFragment extends Fragment implements View.OnClickListener {
-    private static final String ARG_PARAM1 = "param1";
+public class SystemPitchsFragment extends Fragment implements View.OnClickListener, Response.ErrorListener, Response.Listener {
     private static final String TAG = "SystemPitchsFragment";
-    private static final String ARG_PARAM2 = "param2";
     private EditText edt_search;
     private RecyclerView recyclerView;
     private RelativeLayout menuView;
     private SystemPitchAdapter adapter;
     private ImageButton buttonView2;
     private ImageButton buttonView4;
-    private ArrayList<SystemPitch> data = new ArrayList<>();
+    public static String data;
+    private ArrayList<SystemPitch> listSystemPitch;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-       try {
+
         View view = inflater.inflate(R.layout.fragment_matchs, container, false);
+        listSystemPitch = new ArrayList<>();
+        Log.d(TAG,data);
         initView(view);
+
         return view;
-        }
-        catch (Exception e)
-        {
-        return inflater.inflate(R.layout.empty, container, false);
-        }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onPause() {
+
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
 
     private void initView(View view)
     {
         menuView = (RelativeLayout) view.findViewById(R.id.menu_view);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         buttonView2 = (ImageButton) view.findViewById(R.id.view2);
         buttonView4 = (ImageButton) view.findViewById(R.id.view4);
         edt_search = (EditText) view.findViewById(R.id.edt_search);
-        recyclerView.setHasFixedSize(true);
-
-
-        makeData();
-        adapter = new SystemPitchAdapter(getActivity(), data);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adapter);
-
         addListenerOnButton(view);
-        StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
-        recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
-
+        getData(view);
         edt_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    adapter.initList();
-                    adapter.getFilter().filter(s);
+//                    adapter.initList();
+//                    adapter.getFilter().filter(s);
             }
-
             @Override
             public void afterTextChanged(Editable s) {
 
@@ -105,6 +107,7 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
         switch (id) {
             case R.id.view2:
             {
+                Log.d(TAG,listSystemPitch.size()+"");
                 LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
                 mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
@@ -118,66 +121,57 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
             }
         }
     }
-    private  void makeData() {
-        SystemPitch systemPitch = new SystemPitch();
-        systemPitch.setAddress("144 Xuân thủy, Cầu giấy");
-        systemPitch.setComment("20");
-        systemPitch.setOwnerName("Phương LX");
-        systemPitch.setContact("0989238923");
-        systemPitch.setName("Sân Trần quốc hoàn");
-        systemPitch.setRating("3.5");
-        data.add(systemPitch);
+    private void getData(View view) {
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        listSystemPitch = new ArrayList<>();
+        String result = data.toString();
+        if (result.contains("success")) {
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray data = jsonObject.getJSONArray("data");
+                for (int i = 0; i < data.length() - 1; i++) {
+                    JSONObject object = data.getJSONObject(i);
+                    SystemPitch systemPitch = new SystemPitch();
+                    systemPitch.setDescription(object.getString("description"));
+                    systemPitch.setId(object.getString("id"));
+                    systemPitch.setOwnerName("Tiến TM");
+                    systemPitch.setOwnerID("user_id");
+                    systemPitch.setName(object.getString("name"));
+                    systemPitch.setAddress(object.getString("address"));
+                    systemPitch.setId("id");
+                    systemPitch.setLat(object.getString("lat"));
+                    systemPitch.setLng(object.getString("log"));
+                    listSystemPitch.add(systemPitch);
+                }
+                Log.d(TAG, listSystemPitch.size() + "");
+                adapter = new SystemPitchAdapter(getActivity(), listSystemPitch);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                recyclerView.setAdapter(adapter);
+                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
+                mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+            }
+            catch (JSONException e)
+            {
 
-        SystemPitch systemPitch1 = new SystemPitch();
+            }
+        }
+    }
+    public SystemPitchsFragment(String s)
+    {
+        data=s;
+    }
 
-        systemPitch1.setAddress("223 Xuân thủy, Cầu giấy");
-        systemPitch1.setComment("20");
-        systemPitch1.setOwnerName("Dương LX");
-        systemPitch1.setContact("0989238923");
-        systemPitch1.setName("Sân LÊ quốc hoàn");
-        systemPitch1.setRating("3.5");
-        data.add(systemPitch1);
-
-        SystemPitch systemPitch2 = new SystemPitch();
-
-        systemPitch2.setAddress("456 Xuân thủy, Cầu giấy");
-        systemPitch2.setComment("20");
-        systemPitch2.setOwnerName("Hoàng LX");
-        systemPitch2.setContact("0989238923");
-        systemPitch2.setName("Sân Trần Đại Nghĩa");
-        systemPitch2.setRating("3.5");
-        data.add(systemPitch2);
-
-        SystemPitch systemPitch3 = new SystemPitch();
-
-        systemPitch3.setAddress("124 Xuân thủy, Cầu giấy");
-        systemPitch3.setComment("20");
-        systemPitch3.setOwnerName("Hoàng LX");
-        systemPitch3.setContact("0989238923");
-        systemPitch3.setName("Sân Trần Đại Nghĩa");
-        systemPitch3.setRating("3.5");
-        data.add(systemPitch3);
-
-        SystemPitch systemPitch4 = new SystemPitch();
-
-        systemPitch4.setAddress("987 Xuân thủy, Cầu giấy");
-        systemPitch4.setComment("20");
-        systemPitch4.setOwnerName("Hoàng LX");
-        systemPitch4.setContact("0989238923");
-        systemPitch4.setName("Sân Trần Đại Nghĩa");
-        systemPitch4.setRating("3.5");
-        data.add(systemPitch4);
+    @Override
+    public void onErrorResponse(VolleyError error) {
+//        Utils.openDialog(getContext(),"Không thể tải trang, thử lại sau");
 
     }
-    public SystemPitchsFragment() {
 
-    }
-    public static SystemPitchsFragment newInstance(String param1, String param2) {
-        SystemPitchsFragment fragment = new SystemPitchsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    @Override
+    public void onResponse(Object response) {
+        Log.d("get data",response.toString());
+
     }
 }

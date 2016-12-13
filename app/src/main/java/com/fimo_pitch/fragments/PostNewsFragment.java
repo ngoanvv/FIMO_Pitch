@@ -47,10 +47,7 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
     public static String TAG="PostNewsFragment";
     private EditText edt_time,edt_money,edt_description,edt_location;
     private Button bt_post;
-    private GoogleMap map;
     // 144 xuan thuy : lat : 21.036654, lng 105.781218
-    private static SupportMapFragment mapFragment;
-    private LatLng xuanthuy = new LatLng(21.036654,105.78218);
     private RoundedImageView img_send,img_cancel;
 
 
@@ -58,42 +55,7 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_postnews, container, false);
-        mapFragment = new SupportMapFragment() {
-            @Override
-            public void onActivityCreated(Bundle savedInstanceState) {
-                super.onActivityCreated(savedInstanceState);
-                if(mapFragment!=null) {
-                    mapFragment.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(GoogleMap googleMap) {
-                            map = googleMap;
-                            moveCamera(xuanthuy, 12);
-                            map.addMarker(new MarkerOptions().position(xuanthuy));
-                            map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                                @Override
-                                public void onMapClick(LatLng latLng) {
-                                    showCircle(latLng, 2000);
-                                    Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
-                                    List<Address> addresses = null;
-                                    try {
-                                        addresses = geocoder.getFromLocation(latLng.latitude,latLng.longitude, 1);
-                                        String cityName = addresses.get(0).getAddressLine(0);
-                                        String stateName = addresses.get(0).getAddressLine(1);
-                                        Log.d(TAG,addresses.toString()+"");
-                                        edt_location.setText(stateName);
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-                            });
-                        }
-                    });
-                }
-
-            }
-        };
-//        getChildFragmentManager().beginTransaction().add(R.id.mapfragment, mapFragment).commit();
+        Log.d(TAG,"OnCreateView");
         initView(view);
         return view;
     }
@@ -109,25 +71,6 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
         edt_time.setOnClickListener(this);
         img_cancel.setOnClickListener(this);
         img_send.setOnClickListener(this);
-
-    }
-    public void moveCamera(LatLng latLng,int zoom) {
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoom  );
-        map.animateCamera(cameraUpdate);
-        map.addMarker(new MarkerOptions().position(latLng));
-    }
-    public void showCircle(LatLng latLng, double radius)
-    {
-        map.clear();
-        CircleOptions circleOptions = new CircleOptions();
-        circleOptions.center(latLng)
-                .center(latLng)
-                .clickable(true)
-                .strokeColor(Color.parseColor("#F6CECE"))
-                .fillColor(Color.parseColor("#F6CECE"))
-                .radius(radius);
-        map.addCircle(circleOptions);
-        moveCamera(latLng,12);
 
     }
     public static PostNewsFragment newInstance(String param1, String param2) {

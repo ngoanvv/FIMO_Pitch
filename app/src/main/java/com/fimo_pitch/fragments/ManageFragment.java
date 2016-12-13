@@ -1,25 +1,15 @@
 package com.fimo_pitch.fragments;
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ExpandableListView;
 
 import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.CustomExpandListviewAdapter;
-import com.fimo_pitch.adapter.NewsFragmentAdapter;
-import com.fimo_pitch.model.Match;
 import com.fimo_pitch.model.SystemPitch;
 
 import java.util.ArrayList;

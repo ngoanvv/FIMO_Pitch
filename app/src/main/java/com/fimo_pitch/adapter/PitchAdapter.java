@@ -132,11 +132,11 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.MyViewHolder
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            tv_name = (TextView) itemView.findViewById(R.id.item_name);
-            imageView = (ImageView) itemView.findViewById(R.id.item_image);
-            tv_money = (TextView) itemView.findViewById(R.id.item_money);
-            tv_price = (TextView) itemView.findViewById(R.id.item_price);
-            tv_time = (TextView) itemView.findViewById(R.id.item_time);
+//            tv_name = (TextView) itemView.findViewById(R.id.item_name);
+//            imageView = (ImageView) itemView.findViewById(R.id.item_image);
+//            tv_money = (TextView) itemView.findViewById(R.id.item_money);
+//            tv_price = (TextView) itemView.findViewById(R.id.item_price);
+//            tv_time = (TextView) itemView.findViewById(R.id.item_time);
 
         }
 

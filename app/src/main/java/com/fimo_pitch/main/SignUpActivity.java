@@ -14,25 +14,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.UserModel;
-import com.fimo_pitch.model.Utility;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-import cz.msebera.android.httpclient.Header;
 
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
@@ -273,7 +264,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     {
         dialog.dismiss();
         saveUserData(userModel.getEmail(),password,userModel.getUserType());
-        Intent intent= new Intent(SignUpActivity.this,NavigationActivity.class);
+        Intent intent= new Intent(SignUpActivity.this,MainActivity.class);
         intent.putExtra(CONSTANT.USER_TYPE,userModel.getUserType());
         intent.putExtra(CONSTANT.KEY_USER,userModel);
         startActivity(intent);
@@ -300,101 +291,101 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
      *
      * @param view
      */
-    public void registerUser(View view){
-        //get value in xml
-
-        String name = edt_userName.getText().toString();
-        String email = edt_userEmail.getText().toString();
-        String password = edt_password.getText().toString();
-        String phone = edt_phone.getText().toString();
-        String usertype = "";
-
-        if (userType == UserModel.TYPE_OWNER) // chu san
-        {
-            usertype = "1";
-        }
-        else {
-            usertype = "0";
-        }
-
-
-        // Instantiate Http Request Param Object
-        RequestParams params = new RequestParams();
-        // check value name, email, password
-        if(Utility.isNotNull(name) && Utility.isNotNull(email) && Utility.isNotNull(password)){
-            // When Email entered is Valid
-            if(Utility.validate(email)){
-
-                // put value to params
-                params.put("name", name);
-                params.put("email", email);
-                params.put("password", password);
-                params.put("phone", phone);
-                params.put("usertype", usertype);
-
-                invokeWS(params, view);
-            }
-            else{
-                Toast.makeText(getApplicationContext(), "Please enter valid email", Toast.LENGTH_LONG).show();
-            }
-        }
-        else{
-            Toast.makeText(getApplicationContext(), "Please fill the form, don't leave any field blank", Toast.LENGTH_LONG).show();
-        }
-
-    }
+//    public void registerUser(View view){
+//        //get value in xml
+//
+//        String name = edt_userName.getText().toString();
+//        String email = edt_userEmail.getText().toString();
+//        String password = edt_password.getText().toString();
+//        String phone = edt_phone.getText().toString();
+//        String usertype = "";
+//
+//        if (userType == UserModel.TYPE_OWNER) // chu san
+//        {
+//            usertype = "1";
+//        }
+//        else {
+//            usertype = "0";
+//        }
+//
+//
+//        // Instantiate Http Request Param Object
+//        RequestParams params = new RequestParams();
+//        // check value name, email, password
+//        if(Utility.isNotNull(name) && Utility.isNotNull(email) && Utility.isNotNull(password)){
+//            // When Email entered is Valid
+//            if(Utility.validate(email)){
+//
+//                // put value to params
+//                params.put("name", name);
+//                params.put("email", email);
+//                params.put("password", password);
+//                params.put("phone", phone);
+//                params.put("usertype", usertype);
+//
+//                invokeWS(params, view);
+//            }
+//            else{
+//                Toast.makeText(getApplicationContext(), "Please enter valid email", Toast.LENGTH_LONG).show();
+//            }
+//        }
+//        else{
+//            Toast.makeText(getApplicationContext(), "Please fill the form, don't leave any field blank", Toast.LENGTH_LONG).show();
+//        }
+//
+//    }
 
     /**
      * Method RESTful webservice
      *
      */
-    public void invokeWS(RequestParams params, final View view){
-
-        prgDialog.show();
-        // Make RESTful webservice call using AsyncHttpClient object
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://192.168.1.54:8083/WebService/register/doregister",params ,new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                // Hide Progress Dialog
-                prgDialog.hide();
-                try {
-                    // JSON Object
-                    JSONObject obj = new JSONObject(new String(responseBody));
-
-                    if(obj.getBoolean("status")){
-                        setDefaultValues();
-                        Toast.makeText(getApplicationContext(), "You are successfully registered!", Toast.LENGTH_LONG).show();
-                        navigatetoLoginActivity(view);
-                    }
-                    else{
-                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-                prgDialog.hide();
-
-                if(statusCode == 404){
-                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
-                }
-                else if(statusCode == 500){
-                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-    }
+//    public void invokeWS(RequestParams params, final View view){
+//
+//        prgDialog.show();
+//        // Make RESTful webservice call using AsyncHttpClient object
+//        AsyncHttpClient client = new AsyncHttpClient();
+//        client.get("http://192.168.1.54:8083/WebService/register/doregister",params ,new AsyncHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+//                // Hide Progress Dialog
+//                prgDialog.hide();
+//                try {
+//                    // JSON Object
+//                    JSONObject obj = new JSONObject(new String(responseBody));
+//
+//                    if(obj.getBoolean("status")){
+//                        setDefaultValues();
+//                        Toast.makeText(getApplicationContext(), "You are successfully registered!", Toast.LENGTH_LONG).show();
+//                        navigatetoLoginActivity(view);
+//                    }
+//                    else{
+//                        Toast.makeText(getApplicationContext(), obj.getString("error_msg"), Toast.LENGTH_LONG).show();
+//                    }
+//                } catch (JSONException e) {
+//                    // TODO Auto-generated catch block
+//                    Toast.makeText(getApplicationContext(), "Error Occured [Server's JSON response might be invalid]!", Toast.LENGTH_LONG).show();
+//                    e.printStackTrace();
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+//
+//                prgDialog.hide();
+//
+//                if(statusCode == 404){
+//                    Toast.makeText(getApplicationContext(), "Requested resource not found", Toast.LENGTH_LONG).show();
+//                }
+//                else if(statusCode == 500){
+//                    Toast.makeText(getApplicationContext(), "Something went wrong at server end", Toast.LENGTH_LONG).show();
+//                }
+//                else{
+//                    Toast.makeText(getApplicationContext(), "Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running]", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
+//    }
 
     /**
      * Method which navigates from Register Activity to Login Activity

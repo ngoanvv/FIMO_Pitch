@@ -104,6 +104,7 @@ public class Utils {
     }
     public static void moveCamera(LatLng latLng, int zoom, GoogleMap map) {
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoom  );
+        map.addMarker(new MarkerOptions().position(latLng).title("Sân bóng Xuân thủy")).showInfoWindow();
         map.animateCamera(cameraUpdate);
     }
     public static void showCircle(LatLng latLng, double radius,GoogleMap map)

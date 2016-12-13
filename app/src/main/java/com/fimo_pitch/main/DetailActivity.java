@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -25,8 +27,13 @@ import com.akexorcist.googledirection.model.Leg;
 import com.akexorcist.googledirection.model.Route;
 import com.akexorcist.googledirection.model.Step;
 import com.akexorcist.googledirection.util.DirectionConverter;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.fimo_pitch.CONSTANT;
+import com.fimo_pitch.HttpRequest;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
+import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.maps.CameraUpdate;
@@ -46,12 +53,17 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class DetailActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, DirectionCallback {
     private RoundedImageView bt_call,bt_order;
     private int callRequest = 1;
     private int gpsRequest = 2;
 
+    private String lat;
+    private String lng;
+//    private String getPlace = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng+"&sensor=false";
+    private String getPlace = "http://maps.googleapis.com/maps/api/geocode/json?latlng=";
     private String TAG = "DetailActivity";
     private SupportMapFragment mapFragment;
     private TextView bt_now;
@@ -60,11 +72,18 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private LatLng currentLatLng;
     private LatLng start,end;
     private List<Route> listRoute;
-    private LatLng xuanthuy = new LatLng(21.036654,105.78218);
+    private SystemPitch mSystemPitch;
+//    private LatLng xuanthuy = new LatLng(21.036654,105.78218);
+    private LatLng target;
     private JSONObject rawDirections;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSystemPitch = (SystemPitch) getIntent().getSerializableExtra(CONSTANT.SystemPitch_MODEL);
+        if (mSystemPitch !=null) {
+            Log.d(TAG,mSystemPitch.toString());
+            target = new LatLng(Double.valueOf(mSystemPitch.getLat()), Double.valueOf(mSystemPitch.getLng()));
+        }
         setContentView(R.layout.activity_pitch_detail);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -106,7 +125,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             }
             case R.id.bt_order: {
-                startActivity(new Intent(DetailActivity.this,PricingActivity.class));
+//                startActivity(new Intent(DetailActivity.this,PricingActivity.class));
                 break;
             }
             case R.id.bt_now: {
@@ -143,16 +162,44 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                     double latitude = gps .getLatitude();
                     Log.d(TAG,"lat : " + latitude +" lng :"+longitude);
                     currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
-                    map.addMarker(new MarkerOptions().position(currentLatLng));
-                    Utils.moveCamera(currentLatLng,12,map);
-                    if(Utils.isConnected(DetailActivity.this))
-                    {
-                        drawLine(map,currentLatLng,xuanthuy);
-//                        map.addPolyline(new PolylineOptions().add(currentLatLng,xuanthuy).color(Color.BLUE).width(5));
 
-                    }
+//                    map.addMarker(new MarkerOptions().position(xuanthuy));
+//                    Utils.moveCamera(xuanthuy,12,map);
+
+                            lat = target.latitude+"";
+                            lng = target.longitude+"";
+
+                    HttpRequest.HttpGETrequest(DetailActivity.this, getPlace+lat+","+lng+"&sensor=false", new Response.Listener() {
+                                @Override
+                                public void onResponse(Object response) {
+                                    Log.d("getplace",response.toString());
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("error",error.toString());
+
+                                }
+                            });
+
                 }
             }
+    }
+    public String getAddress(double latitude,double longitude) throws Exception
+    {
+        Geocoder geocoder;
+        List<Address> addresses;
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+        addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+        String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+        String city = addresses.get(0).getLocality();
+        String state = addresses.get(0).getAdminArea();
+        String country = addresses.get(0).getCountryName();
+        String postalCode = addresses.get(0).getPostalCode();
+        String knownName = addresses.get(0).getFeatureName();
+        return addresses.toString();
     }
     public void drawLine(GoogleMap map,LatLng start,LatLng finish)
     {
@@ -166,7 +213,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     public void onMapReady(GoogleMap googleMap) {
         if(mapFragment !=null) {
             map = googleMap;
-
+            Utils.moveCamera(new LatLng(Double.valueOf(mSystemPitch.getLat()),Double.valueOf(mSystemPitch.getLng())),12,map);
         }
     }
     public void drawPolyline(GoogleMap map,LatLng start,LatLng end)
@@ -175,27 +222,42 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     }
     @Override
     public void onDirectionSuccess(Direction direction, String rawBody) {
-        JSONObject routes,legs;
+        Log.d(TAG,rawBody);
+        JSONObject routes, legs;
         JSONArray steps;
-        Route route = direction.getRouteList().get(0);
-        Leg leg = route.getLegList().get(0);
-        List<Step> stepList = leg.getStepList();
-        Log.d("Size ",stepList.size()+"");
-        for (int i=0;i<stepList.size()-1;i++)
+        if(direction.getRouteList().size()>0)
         {
+        Route route = direction.getRouteList().get(0);
+        if (route != null)
+        {
+            if(route.getLegList().size()>0)
+            {
+            Leg leg = route.getLegList().get(0);
+            List<Step> stepList = leg.getStepList();
+            Log.d("Size ", stepList.size() + "");
+            for (int i = 0; i < stepList.size() - 1; i++) {
+            }
+            map.addMarker(new MarkerOptions().position(leg.getEndLocation().getCoordination()));
+            map.addMarker(new MarkerOptions().position(leg.getStartLocation().getCoordination()));
+
+            ArrayList<LatLng> directionPositionList = leg.getDirectionPoint();
+            PolylineOptions polylineOptions = DirectionConverter.createPolyline(this, directionPositionList, 5,
+                    getResources().getColor(R.color.bluehistory));
+
+            map.addPolyline(polylineOptions);
+          }
         }
-        map.addMarker(new MarkerOptions().position(leg.getEndLocation().getCoordination()));
-        map.addMarker(new MarkerOptions().position(leg.getStartLocation().getCoordination()));
+        }
+        else
+        {
 
-        ArrayList<LatLng> directionPositionList = leg.getDirectionPoint();
-        PolylineOptions polylineOptions = DirectionConverter.createPolyline(this, directionPositionList, 5,
-                                                    getResources().getColor(R.color.bluehistory));
 
-        map.addPolyline(polylineOptions);
+        }
+
     }
-
     @Override
     public void onDirectionFailure(Throwable t) {
             Log.d(TAG,"Direction Failed");
     }
 }
+

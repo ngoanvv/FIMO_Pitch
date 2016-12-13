@@ -3,13 +3,10 @@ package com.fimo_pitch.main;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -48,7 +45,6 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
-import cz.msebera.android.httpclient.impl.conn.LoggingSessionOutputBuffer;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
@@ -78,6 +74,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_login);
 
 //        try {
 //            PackageInfo info = null;
@@ -97,7 +94,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //
 //        }
 
-        setContentView(R.layout.activity_login);
         initGoogleAPI();
         initView();
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -136,7 +132,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void moveToHomeScreen() {
-        startActivity(new Intent(LoginActivity.this, NavigationActivity.class));
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
         this.finish();
     }
 
@@ -378,7 +374,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             password = acct.getId();
             saveUserData(email, password, UserModel.TYPE_TEAM);
 
-            Intent intent = new Intent(LoginActivity.this, NavigationActivity.class);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("data", bundle);
             startActivity(intent);
 

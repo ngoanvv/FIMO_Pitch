@@ -1,26 +1,22 @@
 package com.fimo_pitch.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Diep_Chelsea on 22/08/2016.
  */
-public class SystemPitch {
+public class SystemPitch implements Serializable {
     private String id;
     private String name;
     private String address;
     private String ownerID;
-    private String contact;
+    private String description;
+    private String phone;
+    private String lat;
+    private String lng;
     private String comment;
     private String rating;
     private String ownerName;
-//    private String id;
-//    private String id;
-//    private String id;
-//    private String id;
-//    private String id;
-//    private String id;
-//    private String id;
-//    private String id;
-//    private String id;
 
     @Override
     public String toString() {
@@ -29,10 +25,42 @@ public class SystemPitch {
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", ownerID='" + ownerID + '\'' +
-                ", contact='" + contact + '\'' +
+                ", description='" + description + '\'' +
+                ", phone='" + phone + '\'' +
+                ", lat='" + lat + '\'' +
+                ", lng='" + lng + '\'' +
+                ", comment='" + comment + '\'' +
+                ", rating='" + rating + '\'' +
+                ", ownerName='" + ownerName + '\'' +
                 '}';
     }
 
+    public String getPhone() {
+        return phone;
+    }
+    public String getDescription() {
+        return description;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
     public String getComment() {
         return comment;
     }
@@ -89,11 +117,9 @@ public class SystemPitch {
         this.ownerID = ownerID;
     }
 
-    public String getContact() {
-        return contact;
-    }
 
-    public void setContact(String contact) {
-        this.contact = contact;
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

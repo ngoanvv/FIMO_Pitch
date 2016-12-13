@@ -2,17 +2,12 @@ package com.fimo_pitch.adapter;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fimo_pitch.R;
-import com.fimo_pitch.model.Match;
 
 import java.util.ArrayList;
 

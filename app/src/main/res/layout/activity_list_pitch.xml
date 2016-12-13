@@ -7,97 +7,58 @@
     android:layout_height="match_parent"
     tools:context="com.fimo_pitch.main.ListPitchActivity">
 
-    <LinearLayout
-        android:id="@+id/top"
-        android:layout_below="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:gravity="center"
-            android:layout_weight="1">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:orientation="horizontal"
-                android:background="@drawable/border">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="5dp"
-                    >
-                    <ImageView
-                        android:layout_width="@dimen/height_30dp"
-                        android:layout_height="@dimen/height_30dp"
-                        android:background="@drawable/ic_calendar"
-                        android:layout_gravity="center"
-                        />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:lines="2"
-                        android:layout_gravity="center"
-                        android:text="Ngày 30 tháng 11 năm 2016" />
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:orientation="horizontal"
-                android:background="@drawable/border"
-                >
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:orientation="vertical"
-                   >
-                    <ImageView
-                        android:layout_width="@dimen/height_30dp"
-                        android:layout_height="@dimen/height_30dp"
-                        android:background="@drawable/ic_calendar"
-                        android:layout_gravity="center"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:lines="2"
-                        android:layout_gravity="center"
-                        android:text="Ngày 30 tháng 11 năm 2016"
-                        android:id="@+id/textView6" />
-                </LinearLayout>
-            </LinearLayout>
-
-        </LinearLayout>
-    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="10dp"
         android:id="@+id/list_pitch"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/top"
-        android:layout_alignLeft="@+id/top"
-        android:layout_alignStart="@+id/top"></android.support.v7.widget.RecyclerView>
-
+        android:layout_below="@+id/toolbar">
+    </android.support.v7.widget.RecyclerView>
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:layout_height="60dp"
         android:titleTextColor="@color/white"
+        app:subtitleTextColor="@color/white"
         app:layout_collapseMode="pin"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"></android.support.v7.widget.Toolbar>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/com_facebook_blue"
+        android:layout_below="@id/toolbar"
+        ></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+    <TextView
+        android:id="@+id/date_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/com_facebook_blue"
+        android:text="12 / 12 / 2016"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_30sp"/>
+        <TextView
+            android:id="@+id/time_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/com_facebook_blue"
+            android:text="17h - 19h"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_30sp"/>
+    </LinearLayout>
+
 </RelativeLayout>

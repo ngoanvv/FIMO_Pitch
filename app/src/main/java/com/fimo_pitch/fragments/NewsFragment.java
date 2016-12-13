@@ -1,13 +1,11 @@
 package com.fimo_pitch.fragments;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -17,29 +15,42 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 
+import com.android.volley.VolleyError;
+import com.fimo_pitch.API;
+import com.fimo_pitch.HttpRequest;
 import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.NewsFragmentAdapter;
-import com.fimo_pitch.model.Match;
+import com.fimo_pitch.adapter.SystemPitchAdapter;
+import com.fimo_pitch.main.MainActivity;
+import com.fimo_pitch.model.News;
+import com.fimo_pitch.model.SystemPitch;
+import com.fimo_pitch.support.ShowToast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
 
 /**
  * Created by Diep_Chelsea on 13/07/2016.
  */
 public class NewsFragment extends Fragment {
     public static final String TAG = "NewsFragment";
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private RecyclerView recyclerView;
     private ArrayList<String> arrayLocation, arrayTime;
     private EditText edt_input_search;
     private NewsFragmentAdapter adapter;
-    private ArrayList<Match> list;
+    private ArrayList<News> list;
+    private OkHttpClient okHttpClient;
+    public String data;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView= inflater.inflate(R.layout.fragment_news, container, false);
-        initList();
+        Log.d(TAG,data);
         initView(rootView);
         return rootView;
     }
@@ -47,16 +58,8 @@ public class NewsFragment extends Fragment {
     public void initView(View v)
     {
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+        initList();
         edt_input_search = (EditText) v.findViewById(R.id.edt_input);
-        adapter = new NewsFragmentAdapter(getActivity(),list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adapter);
-//        StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
-//        recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
-
-        LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
-        mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
         edt_input_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -64,8 +67,6 @@ public class NewsFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    adapter.initList();
-                    adapter.getFilter().filter(s);
             }
 
             @Override
@@ -74,55 +75,54 @@ public class NewsFragment extends Fragment {
             }
         });
     }
-    public void initList()
-    {
-        list = new ArrayList<>();
-        list.add(new Match("1","18h ngày 11-7","Chelsea FC","FECON  Stadium","Đá giao lưu nhẹ nhàng, mong gặp đối thủ lâu dài thường xuyên, liên hệ số 0998989898","144 Xuân Thủy, Cầu Giấy","100k chia đôi"));
-        list.add(new Match("1","18h ngày 12-7","MU FC","Old Traford Stadium","Đá giao lưu","144 Hồ tùng mậu , Cầu Giấy sdadasdasdsadasdsadasdasdasdasd","100k chia đôi"));
-        list.add(new Match("1","18h ngày 13-7","MC FC","ETIHAD Stadium","Đá giao lưu","144 Xuân Thủy, Cầu Giấy","100k chia đôi"));
-        list.add(new Match("1","18h ngày 14-7","Arsenal FC","Emirates Bridge Stadium","Đá giao lưu","144 Xuân Thủy, Cầu Giấy","100k chia đôi"));
-        list.add(new Match("1","18h ngày 11-7","Chelsea FC","Stamford Bridge Stadium","Đá giao lưu","144 Xuân Thủy, Cầu Giấy, Hà Nội","100k chia đôi"));
 
+    @Override
+    public void onStart() {
+        super.onStart();
     }
-    private class MyTask extends AsyncTask<String, Void, String> {
-        ProgressDialog progressDialog;
-        @Override
-        protected String doInBackground(String... params) {
-            return null;
-        }
 
-        @Override
-        protected void onPostExecute(String result) {
-            progressDialog.dismiss();
-        }
+    public void initList() {
 
-        @Override
-        protected void onPreExecute() {
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setMessage(getActivity().getString(R.string.processing));
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
+        list = new ArrayList<>();
+        String result = data.toString();
+        if (result.contains("success")) {
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray data = jsonObject.getJSONArray("data");
+                for (int i = 0; i < data.length() - 1; i++) {
+                    JSONObject object = data.getJSONObject(i);
+                    News news = new News();
+                    news.setDescription(object.getString("description"));
+                    news.setId(object.getString("id"));
+                    news.setTitle("title");
+                    news.setLocation("address");
+                    news.setHostID(object.getString("user_id"));
+                    news.setHostName("Trần Mạnh Tiến UET");
+                    news.setTime("time_start");
+                    news.setDescription(object.getString("description"));
+                    list.add(news);
+                }
+                adapter = new NewsFragmentAdapter(getActivity(), list);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                recyclerView.setAdapter(adapter);
+                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
+                mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+            } catch (JSONException e) {
+                ShowToast.showToastLong(getContext(),e.getMessage().toString());
 
-        @Override
-        protected void onProgressUpdate(Void... values) {
+            }
         }
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-    public NewsFragment() {
+    public NewsFragment(String s) {
+        data=s;
 
     }
-    public static NewsFragment newInstance(String param1, String param2) {
-        NewsFragment fragment = new NewsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
 }
 

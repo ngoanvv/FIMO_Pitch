@@ -1,24 +1,18 @@
 package com.fimo_pitch.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
-import com.fimo_pitch.model.Match;
 import com.fimo_pitch.model.NotificationModel;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
