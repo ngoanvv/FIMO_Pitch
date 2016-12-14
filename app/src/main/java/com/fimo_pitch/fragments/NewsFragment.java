@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 
-import com.android.volley.VolleyError;
 import com.fimo_pitch.API;
 import com.fimo_pitch.HttpRequest;
 import com.fimo_pitch.R;

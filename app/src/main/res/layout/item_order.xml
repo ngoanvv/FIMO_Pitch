@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/wrapper"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_marginTop="10dp"
@@ -20,12 +21,76 @@
         android:textSize="@dimen/text_size_15sp"
         android:text="( Hệ thống sân bóng Trần Quốc Hoàn )"
         />
-    <ImageView
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="170dp"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:background="@drawable/ic_pitch"-->
+        <!--/>-->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/ic_pitch"
-        />
+        android:layout_height="150dp"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.5">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Trạng thái rảnh/bận"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp"
+                android:textSize="@dimen/text_size_20sp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/textView14"></TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="17h - 19h"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_40sp"
+                android:layout_above="@+id/textView14"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp"
+                android:id="@+id/textView15" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.5">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Trạng thái rảnh/bận"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp"
+                android:textSize="@dimen/text_size_20sp"
+                android:id="@+id/textView11"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"></TextView>
+
+            <com.fimo_pitch.custom.view.RoundedImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/ic_ok"
+                android:layout_marginTop="50dp"
+                android:id="@+id/roundedImageView3"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

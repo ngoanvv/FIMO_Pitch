@@ -50,8 +50,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.HttpRequest;
@@ -125,7 +123,6 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
-        Log.d(TAG,mString);
         initView();
         getData();
         initNavMenu();
@@ -423,9 +420,14 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+
+
             return true;
-        } else if (id == android.R.id.home) {
         }
+        else if (id == android.R.id.home) {
+            mDrawerLayout.openDrawer(Gravity.LEFT);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 }

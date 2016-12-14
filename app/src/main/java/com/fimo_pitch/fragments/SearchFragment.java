@@ -10,17 +10,17 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
-import com.fimo_pitch.HttpRequest;
 import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.SystemPitchAdapter;
 import com.fimo_pitch.main.DetailActivity;
@@ -29,6 +29,8 @@ import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -45,15 +47,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static android.R.layout.select_dialog_item;
+
 /**
  */
-public class SearchFragment extends Fragment implements OnMapReadyCallback, Response.ErrorListener, Response.Listener {
+public class SearchFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static String TAG="SearchFragment";
-    private MapFragment fragment;
-    private Location myLocation;
-    private int LOCATION=1;
     private GoogleApiClient client;
     private TrackGPS gps;
     private GoogleMap map;
@@ -68,21 +69,37 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Resp
     private LatLng currentLatLng;
     private LatLng start,end,waypoint;
     private ArrayList<SystemPitch> listSystemPitch;
-
+    private AutoCompleteTextView search_box;
+    private ImageView bt_currentLocation;
+    private static String[] address ={"Ba Đình","Cầu Giấy","Thanh Xuân","Hà Đông","Mai Dịch","Cổ Nhuế","Từ Liêm","Hai Bà Trưng"};
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
         try {
             View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                    (getContext(), android.R.layout.simple_dropdown_item_1line,address);
+            search_box = (AutoCompleteTextView) view.findViewById(R.id.search_box);
+            search_box.setThreshold(2);
+            search_box.setAdapter(adapter);
+
+
+            bt_currentLocation = (ImageView) view.findViewById(R.id.bt_currentLocation) ;
+            bt_currentLocation.setOnClickListener(this);
+
             mapFragment = new SupportMapFragment();
+
             if (mapFragment != null) {
                 mapFragment.getMapAsync(this);
             }
             getChildFragmentManager().beginTransaction().add(R.id.fragment_map, mapFragment).commit();
+
             return view;
         }
         catch (Exception e)
         {
+            Log.d(TAG,e.getMessage().toString());
             return inflater.inflate(R.layout.empty, container, false);
         }
     }
@@ -158,9 +175,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Resp
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-
-
         if(googleMap !=null) {
             map = googleMap;
             ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
@@ -180,50 +194,18 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, Resp
     }
     private  void getData() {
         listSystemPitch = new ArrayList<>();
-        HttpRequest.HttpGETrequest(getContext(),API.getSystemPitch,this,this);
     }
 
     @Override
-    public void onErrorResponse(VolleyError error) {
-
-    }
-
-    @Override
-    public void onResponse(Object response) {
-        Log.d(TAG,response.toString());
-        try {
-            JSONObject result = new JSONObject((String) response);
-            if(result.getString("status").contains("success"))
+    public void onClick(View v) {
+        int id=v.getId();
+        switch (id)
+        {
+            case R.id.bt_currentLocation :
             {
-                JSONArray data = result.getJSONArray("data");
-                if(data !=null)
-                {
-                    for(int i =0;i<data.length()-1;i++)
-                    {
-                        JSONObject object =data.getJSONObject(i);
-                        SystemPitch systemPitch = new SystemPitch();
-                        systemPitch.setId(object.getString("id"));
-                        systemPitch.setName(object.getString("name"));
-                        systemPitch.setAddress(object.getString("address"));
-                        systemPitch.setDescription(object.getString("description"));
-                        systemPitch.setPhone(object.getString("phone"));
-                        systemPitch.setLat(object.getString("lat"));
-                        systemPitch.setLng(object.getString("lng"));
-                        systemPitch.setOwnerID(object.getString("user_id"));
-                        systemPitch.setComment("3");
-                        systemPitch.setOwnerName("Trần Mạnh Tiến");
-                        listSystemPitch.add(systemPitch);
-
-                        LatLng mLatLng = new LatLng(Double.valueOf(object.getString("lat")),Double.valueOf(object.getString("lng")));
-
-                        Log.d(TAG,mLatLng.toString());
-                    }
-
-                }
+                Utils.moveCamera(currentLatLng,13,map);
+                break;
             }
-        } catch (JSONException e) {
-            Utils.openDialog(getContext(),"Không thể tải trang, thử lại sau");
-            e.printStackTrace();
         }
     }
 }

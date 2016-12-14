@@ -17,8 +17,6 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.fimo_pitch.API;
 import com.fimo_pitch.HttpRequest;
 import com.fimo_pitch.R;
@@ -32,7 +30,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class SystemPitchsFragment extends Fragment implements View.OnClickListener, Response.ErrorListener, Response.Listener {
+public class SystemPitchsFragment extends Fragment implements View.OnClickListener{
     private static final String TAG = "SystemPitchsFragment";
     private EditText edt_search;
     private RecyclerView recyclerView;
@@ -148,9 +146,10 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
                 adapter = new SystemPitchAdapter(getActivity(), listSystemPitch);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 recyclerView.setAdapter(adapter);
-                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
-                mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
-                recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+
+                StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new
+                        StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
+                recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
             }
             catch (JSONException e)
             {
@@ -163,15 +162,4 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
         data=s;
     }
 
-    @Override
-    public void onErrorResponse(VolleyError error) {
-//        Utils.openDialog(getContext(),"Không thể tải trang, thử lại sau");
-
-    }
-
-    @Override
-    public void onResponse(Object response) {
-        Log.d("get data",response.toString());
-
-    }
 }

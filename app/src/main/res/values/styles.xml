@@ -60,6 +60,7 @@
 
 
     </style>
+
     <style name="AppTheme" parent="AppTheme.Base"></style>
 
     <style name="tabTheme" parent="android:style/Theme">

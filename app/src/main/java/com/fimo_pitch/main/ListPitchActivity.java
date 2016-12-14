@@ -44,8 +44,6 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
     public void initView()
     {
 
-        tv_timeFilter = (TextView) findViewById(R.id.time_filter);
-        tv_timeFilter.setOnClickListener(this);
 
         tv_dateFilter = (TextView) findViewById(R.id.date_filter);
         tv_dateFilter.setOnClickListener(this);
@@ -85,7 +83,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
                 if (view.isShown())
                 {
                     tv_dateFilter.setText(dayOfMonth+" / "+monthOfYear+" / "+year);
-                    showTimePicker();
+//                    showTimePicker();
                 }
             }
         }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
@@ -119,11 +117,6 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
         int i=v.getId();
         switch (i)
         {
-            case R.id.time_filter :
-            {
-                showDatePicker();
-                break;
-            }
             case R.id.date_filter :
             {
                 showDatePicker();

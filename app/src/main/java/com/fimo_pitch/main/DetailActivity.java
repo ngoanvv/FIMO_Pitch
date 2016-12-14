@@ -27,10 +27,7 @@ import com.akexorcist.googledirection.model.Leg;
 import com.akexorcist.googledirection.model.Route;
 import com.akexorcist.googledirection.model.Step;
 import com.akexorcist.googledirection.util.DirectionConverter;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.fimo_pitch.CONSTANT;
-import com.fimo_pitch.HttpRequest;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.SystemPitch;
@@ -88,6 +85,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        ActivityCompat.requestPermissions(DetailActivity.this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},gpsRequest);
 
     }
 
@@ -98,9 +97,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         bt_order.setOnClickListener(this);
         bt_call.setOnClickListener(this);
         bt_now.setOnClickListener(this);
-        ActivityCompat.requestPermissions(DetailActivity.this,
-                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},gpsRequest);
+
     }
+
+
+
 
     public void initView() {
         bt_call = (RoundedImageView) findViewById(R.id.bt_call);
@@ -169,18 +170,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                             lat = target.latitude+"";
                             lng = target.longitude+"";
 
-                    HttpRequest.HttpGETrequest(DetailActivity.this, getPlace+lat+","+lng+"&sensor=false", new Response.Listener() {
-                                @Override
-                                public void onResponse(Object response) {
-                                    Log.d("getplace",response.toString());
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Log.d("error",error.toString());
-
-                                }
-                            });
 
                 }
             }

@@ -19,7 +19,7 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
         android:titleTextColor="@color/white"
         app:subtitleTextColor="@color/white"
         app:layout_collapseMode="pin"
@@ -45,20 +45,11 @@
         android:id="@+id/date_filter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         android:textColor="@color/com_facebook_blue"
         android:text="12 / 12 / 2016"
         android:textStyle="bold"
         android:textSize="@dimen/text_size_30sp"/>
-        <TextView
-            android:id="@+id/time_filter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textColor="@color/com_facebook_blue"
-            android:text="17h - 19h"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_size_30sp"/>
     </LinearLayout>
 
 </RelativeLayout>

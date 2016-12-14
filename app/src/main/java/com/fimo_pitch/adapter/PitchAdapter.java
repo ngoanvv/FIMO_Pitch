@@ -32,7 +32,6 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.MyViewHolder
     private Context context;
     private String TAG=PitchAdapter.class.getName();
     private ArrayList<Pitch> data;
-
     private LayoutInflater inflater;
     private ArrayList<Pitch> results;
     private ArrayList<Pitch> list;
@@ -54,8 +53,14 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 //        holder.tv_name.setText(list.get(position).getName());
+        if(position%2==0)
+        {
+//            holder.wrapper.setBackgroundResource(R.color.com_facebook_blue);
+        }
+        else
+        {
 
-
+        }
     }
 
     @Override
@@ -129,7 +134,7 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.MyViewHolder
         TextView tv_money;
         TextView tv_price;
         TextView tv_time;
-
+        LinearLayout wrapper;
         public MyViewHolder(View itemView) {
             super(itemView);
 //            tv_name = (TextView) itemView.findViewById(R.id.item_name);
@@ -137,6 +142,7 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.MyViewHolder
 //            tv_money = (TextView) itemView.findViewById(R.id.item_money);
 //            tv_price = (TextView) itemView.findViewById(R.id.item_price);
 //            tv_time = (TextView) itemView.findViewById(R.id.item_time);
+            wrapper = (LinearLayout) itemView.findViewById(R.id.wrapper);
 
         }
 
