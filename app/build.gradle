@@ -41,7 +41,8 @@ dependencies {
     compile 'com.akexorcist:googledirectionlibrary:1.0.4'
     compile 'com.github.jd-alexander:library:1.1.0'
     compile 'com.squareup.okhttp3:okhttp:3.3.0'
-
+    compile 'com.wingjay:blurimageviewlib:2.0.1'
+    compile 'com.github.aakira:expandable-layout:1.6.0@aar'
     // see changelog
     compile 'com.google.android.gms:play-services-appindexing:9.2.1'
 }

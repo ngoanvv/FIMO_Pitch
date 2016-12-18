@@ -94,21 +94,6 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
             finish();
-//            SystemPitch systemPitch = new SystemPitch();
-//            systemPitch.setComment("3.3");
-//            systemPitch.setOwnerName("Tiến TM");
-//            systemPitch.setPhone("0923829832");
-//            systemPitch.setOwnerID("12123123");
-//            systemPitch.setName("Sân bóng Cổ Loa");
-//            systemPitch.setLat("25.090921");
-//            systemPitch.setLng("108.2222");
-//            systemPitch.setId("1");
-//            systemPitch.setDescription("Sân đẹp sân ngon ahihi");
-//            systemPitch.setAddress("Số 43, Cổ Loa, Đông Anh, Hà Nội");
-//            systemPitch.setRating("3.4");
-//            Intent intent =new Intent(ListPitchActivity.this,DetailActivity.class);
-//            intent.putExtra(CONSTANT.SystemPitch_MODEL,systemPitch);
-//            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }

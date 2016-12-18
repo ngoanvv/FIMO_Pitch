@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.fimo_pitch.R;
 import com.fimo_pitch.main.DetailActivity;
+import com.fimo_pitch.main.PaymentActivity;
 import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.SystemPitch;
 import com.squareup.picasso.Picasso;
@@ -61,6 +62,13 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.MyViewHolder
         {
 
         }
+        holder.bt_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, PaymentActivity.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -133,7 +141,7 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.MyViewHolder
         TextView tv_name;
         TextView tv_money;
         TextView tv_price;
-        TextView tv_time;
+        TextView tv_time,bt_order;
         LinearLayout wrapper;
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -142,6 +150,7 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.MyViewHolder
 //            tv_money = (TextView) itemView.findViewById(R.id.item_money);
 //            tv_price = (TextView) itemView.findViewById(R.id.item_price);
 //            tv_time = (TextView) itemView.findViewById(R.id.item_time);
+            bt_order = (TextView) itemView.findViewById(R.id.bt_order);
             wrapper = (LinearLayout) itemView.findViewById(R.id.wrapper);
 
         }

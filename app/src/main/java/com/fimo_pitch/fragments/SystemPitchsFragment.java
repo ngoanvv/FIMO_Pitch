@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 
@@ -36,8 +37,8 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
     private RecyclerView recyclerView;
     private RelativeLayout menuView;
     private SystemPitchAdapter adapter;
-    private ImageButton buttonView2;
-    private ImageButton buttonView4;
+    private ImageView buttonView2;
+    private ImageView buttonView4;
     public static String data;
     private ArrayList<SystemPitch> listSystemPitch;
     @Override
@@ -72,8 +73,8 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
     private void initView(View view)
     {
         menuView = (RelativeLayout) view.findViewById(R.id.menu_view);
-        buttonView2 = (ImageButton) view.findViewById(R.id.view2);
-        buttonView4 = (ImageButton) view.findViewById(R.id.view4);
+        buttonView2 = (ImageView) view.findViewById(R.id.view2);
+        buttonView4 = (ImageView) view.findViewById(R.id.view4);
         edt_search = (EditText) view.findViewById(R.id.edt_search);
         addListenerOnButton(view);
         getData(view);

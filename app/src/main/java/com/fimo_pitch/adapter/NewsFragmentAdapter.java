@@ -27,7 +27,6 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
     public NewsFragmentAdapter(Activity context, ArrayList<News> listData) {
         this.context = context;
         this.list = listData;
-        Log.d("Adpater",list.size()+"");
 
     }
     ArrayList<News> results;

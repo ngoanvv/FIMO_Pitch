@@ -206,7 +206,7 @@
         android:textColor="@color/white"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:id="@+id/textView9" />
+        android:id="@+id/bt_order" />
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

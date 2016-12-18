@@ -8,8 +8,6 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content">
-
-
         <EditText
             android:id="@+id/edt_input"
             android:hint="@string/edt_input_search"
