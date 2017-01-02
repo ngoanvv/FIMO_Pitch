@@ -1,7 +1,5 @@
 package com.fimo_pitch.fragments;
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,14 +13,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 
-import com.fimo_pitch.API;
-import com.fimo_pitch.HttpRequest;
 import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.NewsFragmentAdapter;
-import com.fimo_pitch.adapter.SystemPitchAdapter;
-import com.fimo_pitch.main.MainActivity;
 import com.fimo_pitch.model.News;
-import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.support.ShowToast;
 
 import org.json.JSONArray;
@@ -49,7 +42,7 @@ public class NewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView= inflater.inflate(R.layout.fragment_news, container, false);
-        Log.d(TAG,data);
+//        Log.d(TAG,data);
         initView(rootView);
         return rootView;
     }

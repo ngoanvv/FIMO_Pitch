@@ -1,5 +1,7 @@
 package com.fimo_pitch.model;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 
 /**
@@ -17,7 +19,7 @@ public class SystemPitch implements Serializable {
     private String comment;
     private String rating;
     private String ownerName;
-
+    private LatLng latLng;
     @Override
     public String toString() {
         return "SystemPitch{" +

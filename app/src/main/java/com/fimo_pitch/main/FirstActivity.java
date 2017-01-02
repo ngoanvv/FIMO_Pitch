@@ -37,7 +37,7 @@ public class FirstActivity extends AppCompatActivity {
                     if (sharedPreferences != null) {
                         seen = sharedPreferences.getBoolean("seen", false);
                         if (seen == true) {
-                            Intent intent = new Intent(FirstActivity.this, LoginActivity.class);
+                            Intent intent = new Intent(FirstActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
                         } else {

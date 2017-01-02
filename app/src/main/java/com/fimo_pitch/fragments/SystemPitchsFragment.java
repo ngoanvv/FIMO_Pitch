@@ -13,13 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 
-import com.fimo_pitch.API;
-import com.fimo_pitch.HttpRequest;
 import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.SystemPitchAdapter;
 import com.fimo_pitch.model.SystemPitch;
@@ -47,7 +44,7 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
 
         View view = inflater.inflate(R.layout.fragment_matchs, container, false);
         listSystemPitch = new ArrayList<>();
-        Log.d(TAG,data);
+//        Log.d(TAG,data);
         initView(view);
 
         return view;

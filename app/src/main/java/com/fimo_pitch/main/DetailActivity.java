@@ -202,7 +202,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     public void onMapReady(GoogleMap googleMap) {
         if(mapFragment !=null) {
             map = googleMap;
-            Utils.moveCamera(new LatLng(Double.valueOf(mSystemPitch.getLat()),Double.valueOf(mSystemPitch.getLng())),12,map);
+            Utils.moveCamera(new LatLng(Double.valueOf(mSystemPitch.getLat()),Double.valueOf(mSystemPitch.getLng())),mSystemPitch.getName(),12,map);
         }
     }
     public void drawPolyline(GoogleMap map,LatLng start,LatLng end)

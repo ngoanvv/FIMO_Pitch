@@ -39,8 +39,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
@@ -52,10 +50,7 @@ import android.widget.TextView;
 
 import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
-import com.fimo_pitch.HttpRequest;
 import com.fimo_pitch.R;
-import com.fimo_pitch.adapter.NewsFragmentAdapter;
-import com.fimo_pitch.adapter.SystemPitchAdapter;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.fragments.SystemPitchsFragment;
 import com.fimo_pitch.fragments.NewsFragment;
@@ -66,7 +61,6 @@ import com.fimo_pitch.fragments.SettingsFragment;
 import com.fimo_pitch.model.News;
 import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.UserModel;
-import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.auth.api.Auth;
@@ -76,16 +70,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -172,8 +160,8 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                 @Override
                 public void onClick(View v) {
                     mDrawerLayout.openDrawer(Gravity.LEFT);
-                    Log.d(TAG,listSystemData);
-                    Log.d(TAG,listNewsData);
+//                    Log.d(TAG,listSystemData);
+//                    Log.d(TAG,listNewsData);
 
                 }
             });
@@ -227,9 +215,9 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                                 }
                                 case R.id.menu_search :
                                 {
-                                        Log.d(TAG,"null");
-                                        mSearchFragment = SearchFragment.newInstance("","");
-                                        replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());
+                                    Log.d(TAG,"null");
+                                    mSearchFragment = SearchFragment.newInstance(listSystemData,"");
+                                    replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());
                                     mDrawerLayout.closeDrawers();
                                     break;
                                 }
@@ -321,7 +309,12 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                 if(newsResponse.isSuccessful()) listNewsData = newsResponse.body().string();
 
                 okhttp3.Response systemPitchResponse = okHttpClient.newCall(systemPitchRequest).execute();
-                if(systemPitchResponse.isSuccessful()) listSystemData = systemPitchResponse.body().string();
+                if(systemPitchResponse.isSuccessful())
+
+                {
+                    listSystemData = systemPitchResponse.body().string();
+
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -341,7 +334,9 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
             viewPager.setAdapter(adapter);
             viewPager.setOffscreenPageLimit(3);
             tabs.setupWithViewPager(viewPager);
-
+//            Log.d(TAG,listSystemData);
+            mSearchFragment = SearchFragment.newInstance(listSystemData,"");
+            replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());
         }
 
         @Override

@@ -1,5 +1,6 @@
 package com.fimo_pitch.support;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.view.inputmethod.InputMethodManager;
 
 import com.fimo_pitch.R;
 import com.google.android.gms.maps.CameraUpdate;
@@ -19,6 +21,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * Created by Diep_Chelsea on 15/07/2016.
@@ -102,9 +106,9 @@ public class Utils {
         });
         alertDialog.show();
     }
-    public static void moveCamera(LatLng latLng, int zoom, GoogleMap map) {
+    public static void moveCamera(LatLng latLng, String title,int zoom, GoogleMap map) {
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, zoom  );
-        map.addMarker(new MarkerOptions().position(latLng).title("Sân bóng Xuân thủy")).showInfoWindow();
+        map.addMarker(new MarkerOptions().position(latLng).title(title)).showInfoWindow();
         map.animateCamera(cameraUpdate);
     }
     public static void showCircle(LatLng latLng, double radius,GoogleMap map)
@@ -119,9 +123,16 @@ public class Utils {
                 .radius(radius);
         map.addCircle(circleOptions);
         map.addMarker(new MarkerOptions().position(latLng));
-        moveCamera(latLng,13,map);
+        moveCamera(latLng,"Bạn ở đây",13,map);
 
     }
+    public static  void hideSoftKeyboard(Activity context) {
+        if(context.getCurrentFocus()!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(context.getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
     public boolean isGPSEnabled(Context context) {
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;

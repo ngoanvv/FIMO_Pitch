@@ -7,7 +7,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.fimo_pitch.main.PaymentActivity">
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <LinearLayout
         android:background="@drawable/rounded__grey_border"
         android:layout_width="match_parent"
@@ -157,6 +160,7 @@
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/text_size_details_25sp" />
             <TextView
+                android:id="@+id/tv_price"
                 android:maxLines="2"
                 android:text="500.000 đ"
                 android:layout_width="wrap_content"
@@ -169,35 +173,101 @@
                 android:textColor="@color/com_facebook_blue"
                 android:textSize="@dimen/text_size_details_25sp" />
         </RelativeLayout>
+    </LinearLayout>
         <RelativeLayout
+            android:id="@+id/info_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+            <ImageView
+                android:id="@+id/img_info"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="30dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_right" />
 
             <TextView
-                android:id="@+id/bt_now"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:text="Đăng nhập "
-                android:textSize="25dp"
-                android:paddingTop="15dp"
+                android:id="@+id/item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:paddingBottom="15dp"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:background="@drawable/rounded_border"
-                />
-
-            <com.fimo_pitch.custom.view.RoundedImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@mipmap/ic_launcher"
-                android:layout_marginLeft="40dp"
-                android:layout_centerVertical="true"
-                android:layout_alignLeft="@+id/bt_now"
-                android:layout_alignStart="@+id/bt_now" />
+                android:text="Thông tin khách hàng"
+                android:textStyle="bold"
+                android:textSize="@dimen/text_size_30sp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
         </RelativeLayout>
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+            android:id="@+id/expandable_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:ael_expanded="false"
+            app:ael_duration="100"
+            android:layout_marginLeft="20dp"
+            app:ael_interpolator="bounce"
+            app:ael_orientation="vertical">
 
+        <EditText
+            android:id="@+id/edt_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:textSize="@dimen/text_size_details_25sp"
+            android:hint="Tên" />
+        <EditText
+            android:id="@+id/edt_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_details_25sp"
+            android:hint="Địa chỉ"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/edt_name"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <EditText
+            android:id="@+id/edt_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="@dimen/text_size_details_25sp"
+            android:layout_below="@id/edt_address"
+            android:hint="Số điện thoại liên hệ" />
+        <EditText
+            android:id="@+id/edt_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="@dimen/text_size_details_25sp"
+            android:layout_below="@id/edt_phone"
+            android:hint="Email" />
+        <EditText
+            android:id="@+id/edt_des"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:gravity="bottom"
+            android:layout_marginTop="10dp"
+            android:textSize="@dimen/text_size_details_25sp"
+            android:layout_below="@id/edt_email"
+            android:hint="Ghi chú ?" />
 
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/rounded_border"
+            android:text="Tiếp tục"
+            android:textSize="@dimen/text_size_30sp"
+            android:layout_margin="10dp"
+            android:textColor="@color/white"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/bt_pay" />
     </LinearLayout>
 </ScrollView>
