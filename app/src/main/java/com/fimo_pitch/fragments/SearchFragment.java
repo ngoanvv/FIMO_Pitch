@@ -2,6 +2,7 @@ package com.fimo_pitch.fragments;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -20,6 +21,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -33,12 +35,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
-import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
-import com.fimo_pitch.NetworkUtils;
 import com.fimo_pitch.R;
-import com.fimo_pitch.adapter.SystemPitchAdapter;
+import com.fimo_pitch.custom.view.DetailDialog;
+import com.fimo_pitch.custom.view.InstantAutoComplete;
+import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.main.DetailActivity;
 import com.fimo_pitch.main.MainActivity;
 import com.fimo_pitch.model.DirectionStep;
@@ -46,12 +50,7 @@ import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
-import com.google.android.gms.appdatasearch.GetRecentContextCall;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -79,7 +78,7 @@ import static android.R.layout.select_dialog_item;
 
 /**
  */
-public class SearchFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener {
+public class SearchFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener, DetailDialog.OnMoreDetailEvent {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static String TAG="SearchFragment";
@@ -91,16 +90,18 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     private ArrayList<LatLng> latLngs;
     private LatLng currentLatLng;
     private ArrayList<SystemPitch> listSystemPitch;
-    private AutoCompleteTextView search_box;
+    private InstantAutoComplete search_box;
     private ImageView bt_currentLocation;
-    private static String[] address ={"Ba Đình","Cầu Giấy","Thanh Xuân","Hà Đông","Mai Dịch","Cổ Nhuế","Từ Liêm","Hai Bà Trưng"};
+    private static String[] address ={"Vị trí hiện tại","Ba Đình","Cầu Giấy","Thanh Xuân","Hà Đông","Mai Dịch","Cổ Nhuế","Từ Liêm","Hai Bà Trưng"};
     private String result,data;
     private LatLng resultLatLng;
     private OkHttpClient okHttpClient;
     private ArrayList<DirectionStep> directionSteps;
     private ArrayList<Polyline> polylines;
-
-
+    private RoundedImageView bt_search;
+    private TextView tv_time;
+    private int mHour,mMinute;
+    private int choosePostition;
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
         try {
@@ -110,37 +111,41 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             polylines = new ArrayList<>();
             ArrayAdapter<String> adapter = new ArrayAdapter<String>
                     (getContext(), android.R.layout.simple_dropdown_item_1line,address);
-
-
             resultLatLng = new LatLng(0.0,0.0);
 
-            search_box = (AutoCompleteTextView) view.findViewById(R.id.search_box);
-            search_box.setThreshold(2);
+            search_box = (InstantAutoComplete) view.findViewById(R.id.search_box);
+            tv_time    = (TextView) view.findViewById(R.id.tv_time);
+            bt_search  =  (RoundedImageView) view.findViewById(R.id.bt_search);
+            bt_currentLocation = (ImageView) view.findViewById(R.id.bt_currentLocation) ;
+
+            bt_currentLocation.setOnClickListener(this);
+            tv_time.setOnClickListener(this);
+            bt_search.setOnClickListener(this);
+
+            search_box.setThreshold(0);
             search_box.setAdapter(adapter);
             search_box.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Log.d(TAG,search_box.getText().toString()+"");
-                        String url = "http://maps.google.com/maps/api/geocode/json?address="
-                                + search_box.getText().toString() + "&sensor=false";
-                        if(Utils.isConnected(getContext()))
-                        new Sendrequest(url).execute();
-                        else Utils.openDialog(getContext(),getString(R.string.no_connection));
 
+                        if(position==0)
+                        {
+                            resultLatLng = currentLatLng;
+                        }
+                        else {
+                            Log.d(TAG, search_box.getText().toString() + "");
+                            String url = "http://maps.google.com/maps/api/geocode/json?address=" + search_box.getText().toString() + "&sensor=false";
+                            if (Utils.isConnected(getContext())) new Sendrequest(url).execute();
+                            else Utils.openDialog(getContext(), getString(R.string.no_connection));
+                        }
                 }
             });
 
-
-            bt_currentLocation = (ImageView) view.findViewById(R.id.bt_currentLocation) ;
-            bt_currentLocation.setOnClickListener(this);
-
             mapFragment = new SupportMapFragment();
-
             if (mapFragment != null) {
                 mapFragment.getMapAsync(this);
             }
             getChildFragmentManager().beginTransaction().add(R.id.fragment_map, mapFragment).commit();
-
             return view;
         }
         catch (Exception e)
@@ -149,12 +154,14 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             return inflater.inflate(R.layout.empty, container, false);
         }
     }
+
+
+
     private class GetDirections extends AsyncTask<LatLng, Void, String> {
         ProgressDialog progressDialog;
         @Override
         protected String doInBackground(LatLng... params) {
             getDirections(params[0],params[1],"directions_mode");
-
             return null;
         }
 
@@ -192,9 +199,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             okHttpClient = new OkHttpClient();
             okhttp3.Response response = okHttpClient.newCall(newsRequest).execute();
             JSONObject jsonObject = new JSONObject(response.body().string());
-
             JSONArray routesArray = jsonObject.getJSONArray("routes");
-
             if(routesArray.length() > 0)
             {
                 JSONObject route = routesArray.getJSONObject(0);
@@ -217,7 +222,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                         item.setDistance(distance.getString("text"));
                         directionSteps.add(item);
                     }
-
                 }
             }
             else
@@ -227,7 +231,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return url;
     }
     public void drawLine(int index,LatLng start,LatLng end,String distance,String des)
@@ -260,10 +263,13 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                     Double lat = Double.valueOf(object.getString("lat"));
                     Double lng = Double.valueOf(object.getString("log"));
                     options.position(new LatLng(lat,lng)).title("Sân bóng 123x");
-                    map.addMarker(options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_marker_free)))).showInfoWindow();
-
+                    options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_marker_free)));
+                    Marker marker = map.addMarker(options);
+                    marker.setTag(i);
                 }
-            } catch (JSONException e) {
+            }
+            catch (JSONException e)
+            {
 
             }
         }
@@ -285,7 +291,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         protected void onPostExecute(String result) {
             progressDialog.dismiss();
             search_box.setText(result);
-            Utils.moveCamera(resultLatLng,result,12,map);
 
         }
 
@@ -338,8 +343,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                     double latitude = gps .getLatitude();
                     Log.d("SearchFragment","lat : " + latitude +" lng :"+longitude);
                     currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
-                    map.addMarker(new MarkerOptions().position(currentLatLng));
-                    Utils.showCircle(currentLatLng,5000,map);
+//                    map.addMarker(new MarkerOptions().position(currentLatLng));
                     Utils.moveCamera(currentLatLng,"Bạn ở đây",13,map);
                 }
             }
@@ -360,25 +364,13 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-//                    SystemPitch systemPitch = new SystemPitch();
-//                    systemPitch.setComment("3.3");
-//                    systemPitch.setOwnerName("Tiến TM");
-//                    systemPitch.setPhone("0923829832");
-//                    systemPitch.setOwnerID("12123123");
-//                    systemPitch.setName("Sân bóng Cổ Loa");
-//                    systemPitch.setLat(currentLatLng.latitude+"");
-//                    systemPitch.setLng(currentLatLng.longitude+"");
-//                    systemPitch.setId("1");
-//                    systemPitch.setDescription("Sân đẹp sân ngon ahihi");
-//                    systemPitch.setAddress("Số 43, Cổ Loa, Đông Anh, Hà Nội");
-//                    systemPitch.setRating("3.4");
-                      new GetDirections().execute(marker.getPosition(),currentLatLng);
+                    SystemPitch systemPitch = listSystemPitch.get((Integer) marker.getTag());
+                    new GetDirections().execute(marker.getPosition(),currentLatLng);
+                    DetailDialog dialog = new DetailDialog(getContext(),systemPitch, (Integer) marker.getTag());
 
-//                      getDirections(marker.getPosition(),currentLatLng,"directions_mode");
-
-//                    Intent intent =new Intent(getActivity(),DetailActivity.class);
-//                    intent.putExtra(CONSTANT.SystemPitch_MODEL,systemPitch);
-//                    startActivity(intent);
+                    dialog.setOnArrivalDeliverListener(SearchFragment.this);
+                    dialog.show(getFragmentManager(),TAG);
+                    choosePostition =  (Integer) marker.getTag();
                     return true;
                 }
             });
@@ -390,6 +382,12 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                 }
             });
         }
+    }
+    @Override
+    public void onConfirmed(boolean confirm) {
+                    Intent intent =new Intent(getActivity(),DetailActivity.class);
+                    intent.putExtra(CONSTANT.SystemPitch_MODEL,listSystemPitch.get(choosePostition));
+                    startActivity(intent);
     }
     public SearchFragment() {}
     public static SearchFragment newInstance(String mdata, String param2) {
@@ -424,7 +422,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         if(googleMap !=null) {
             map = googleMap;
             ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
-            initList();
+//            initList();
             initMapLicense();
             gps = new TrackGPS(getContext(),getActivity());
             if(gps.canGetLocation())
@@ -432,9 +430,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                 double longitude = gps.getLongitude();
                 double latitude = gps .getLatitude();
                 currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
-//                map.addMarker(new MarkerOptions().position(currentLatLng).title("Bạn ở đây")
-//                                    .icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_ok)))).showInfoWindow();
-//                    Utils.showCircle(currentLatLng,5000,map);
                 Utils.moveCamera(currentLatLng,"Bạn ở đây",12,map);
 
 
@@ -451,6 +446,37 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             case R.id.bt_currentLocation :
             {
                 Utils.moveCamera(currentLatLng,"Bạn ở đây",13,map);
+                break;
+            }
+            case R.id.tv_time :
+            {
+                mHour = 0;
+                mMinute=0;
+                TimePickerDialog dialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        mHour = hourOfDay;
+                        mMinute = minute;
+                        TimePickerDialog mDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                mHour = hourOfDay;
+                                mMinute = minute;
+                                tv_time.setText(mHour+":"+mMinute+"-"+hourOfDay+":"+minute);
+                            }
+                        },mHour,mMinute,true);
+                        mDialog.setTitle("Chọn khung giờ kết thúc mà bạn muốn");
+                        mDialog.show();
+                    }
+                },mHour,mMinute,true);
+                dialog.setTitle("Chọn giờ bắt đầu bạn muốn");
+                dialog.show();
+                break;
+            }
+            case R.id.bt_search :
+            {
+                // tim kiem
+                initList();
                 break;
             }
         }

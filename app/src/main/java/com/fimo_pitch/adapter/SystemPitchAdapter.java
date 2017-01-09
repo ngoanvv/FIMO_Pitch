@@ -161,7 +161,7 @@ public class SystemPitchAdapter extends RecyclerView.Adapter<SystemPitchAdapter.
         public MyViewHolder(View itemView) {
             super(itemView);
             textviewname = (TextView) itemView.findViewById(R.id.item_name);
-            imageView = (ImageView) itemView.findViewById(R.id.item_img);
+            imageView = (ImageView) itemView.findViewById(R.id.imageSystem);
             textviewaddress = (TextView) itemView.findViewById(R.id.item_address);
             textviewRating = (TextView) itemView.findViewById(R.id.item_rating);
             textviewComment = (TextView) itemView.findViewById(R.id.item_comment);

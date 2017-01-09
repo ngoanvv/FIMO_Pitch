@@ -126,16 +126,17 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
             try {
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray data = jsonObject.getJSONArray("data");
-                for (int i = 0; i < data.length() - 1; i++) {
+                for (int i = 0; i < data.length(); i++) {
                     JSONObject object = data.getJSONObject(i);
                     SystemPitch systemPitch = new SystemPitch();
                     systemPitch.setDescription(object.getString("description"));
                     systemPitch.setId(object.getString("id"));
                     systemPitch.setOwnerName("Tiến TM");
-                    systemPitch.setOwnerID("user_id");
+                    systemPitch.setOwnerID(object.getString("user_id"));
                     systemPitch.setName(object.getString("name"));
                     systemPitch.setAddress(object.getString("address"));
-                    systemPitch.setId("id");
+                    systemPitch.setId(object.getString("id"));
+                    systemPitch.setPhone(object.getString("phone"));
                     systemPitch.setLat(object.getString("lat"));
                     systemPitch.setLng(object.getString("log"));
                     listSystemPitch.add(systemPitch);

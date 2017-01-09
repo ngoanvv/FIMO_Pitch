@@ -335,8 +335,8 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
             viewPager.setOffscreenPageLimit(3);
             tabs.setupWithViewPager(viewPager);
 //            Log.d(TAG,listSystemData);
-            mSearchFragment = SearchFragment.newInstance(listSystemData,"");
-            replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());
+//            mSearchFragment = SearchFragment.newInstance(listSystemData,"");
+//            replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());
         }
 
         @Override

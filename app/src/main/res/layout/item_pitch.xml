@@ -15,7 +15,7 @@
         android:background="@drawable/rounded_border"
         >
     <ImageView
-        android:id="@+id/item_img"
+        android:id="@+id/imageSystem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_pitch"
