@@ -3,20 +3,19 @@ package com.fimo_pitch.model;
 import java.io.Serializable;
 
 /**
- * Created by diep1_000 on 9/19/2016.
+ * Created by diep1 on 1/9/2017.
  */
-public class Pitch implements Serializable {
+
+public class TimeTable implements Serializable {
     private int image;
     private String name;
     private String id;
     private String type;
     private String description;
     private String size;
+    private String start_time;
+    private String end_time;
     private String phone;
-
-    public String getId() {
-        return id;
-    }
 
     public String getPhone() {
         return phone;
@@ -26,9 +25,29 @@ public class Pitch implements Serializable {
         this.phone = phone;
     }
 
-    public Pitch()
+    public TimeTable()
     {
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(String start_time) {
+        this.start_time = start_time;
+    }
+
+    public String getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(String end_time) {
+        this.end_time = end_time;
     }
 
     public String getType() {
@@ -55,16 +74,7 @@ public class Pitch implements Serializable {
         this.size = size;
     }
 
-    @Override
-    public String toString() {
-        return "Pitch{" +
-                "image=" + image +
-                ", name='" + name + '\'' +
-                ", id='" + id + '\'' +
-                '}';
-    }
-
-    public Pitch(int image, String name, String id, int numberComment, float rating) {
+    public TimeTable(int image, String name, String id, int numberComment, float rating) {
         this.image = image;
         this.name = name;
         this.id = id;
@@ -94,8 +104,6 @@ public class Pitch implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
-
-
 
 
 }

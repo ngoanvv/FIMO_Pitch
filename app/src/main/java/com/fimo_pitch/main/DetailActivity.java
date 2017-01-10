@@ -41,6 +41,7 @@ import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.Price;
 import com.fimo_pitch.model.SystemPitch;
+import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.maps.CameraUpdate;
@@ -93,7 +94,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private TableLayout tableLayout;
     private TextView tvSysName,tvDes;
     private TextView tvPhone;
-
+    private Button btView;
     public DetailActivity() {
     }
 
@@ -133,6 +134,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         tvDes = (TextView) findViewById(R.id.tv_desc);
         tvSysName = (TextView) findViewById(R.id.tv_syspitch_name);
         tvPhone = (TextView) findViewById(R.id.tvPhone);
+        btView = (Button) findViewById(R.id.bt_view);
+        btView.setOnClickListener(this);
 
         if(mSystemPitch !=null)
         {
@@ -141,11 +144,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             tvPhone.setText(mSystemPitch.getPhone());
         }
 
-
-
         TableRow tr = new TableRow(this);
         tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         tr.setGravity(Gravity.CENTER);
+
         TextView b = new TextView(this);
         TextView c = new TextView(this);
         TextView f = new TextView(this);
@@ -155,16 +157,15 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         c.setText("Ngày thường");
         f.setText("Thứ 7, Chủ nhật");
         g.setText("Ghi chú");
-        b.setTextSize(15);
-        c.setTextSize(15);
-        f.setTextSize(15);
-        g.setTextSize(15);
+        b.setTextSize(12);
+        c.setTextSize(12);
+        f.setTextSize(12);
+        g.setTextSize(12);
 
-        b.setPadding(20,0,20,0);
-        c.setPadding(20,0,20,0);
-        f.setPadding(20,0,20,0);
-        g.setPadding(20,0,20,0);
-
+        b.setPadding(10,0,10,0);
+        c.setPadding(10,0,10,0);
+        f.setPadding(10,0,10,0);
+        g.setPadding(10,0,10,0);
 
         b.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
         c.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
@@ -175,11 +176,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         tr.addView(f);
         tr.addView(g);
         tableLayout.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
-
         new GetPriceTask().execute();
-
-
-
     }
     private class GetPriceTask extends AsyncTask<String,Void,String> {
         ProgressDialog progressDialog;
@@ -198,10 +195,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                     if(result.getString("status").contains("success"))
                     {
                         JSONArray data = result.getJSONArray("data");
-                        Log.d("Data",data.toString()+"");
+//                        Log.d("Data",data.toString()+"");
                         for (int i=0;i<data.length();i++)
                         {
-
                             JSONObject object = data.getJSONObject(i);
                             Price p = new Price();
                             p.setDayOfWeek(object.getString("dateofweek"));
@@ -216,6 +212,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                ShowToast.showToastLong(DetailActivity.this,e.getMessage().toString());
             }
             return null;
 
@@ -231,9 +228,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 Price saturday = listSaturdayPrice.get(j);
                 addRow(monday.getTime(),monday.getPrice(),saturday.getPrice(),monday.getDescription());
             }
-
         }
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -256,16 +251,15 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         c.setText(mondayPrice);
         f.setText(weekendPrice);
         g.setText(des);
-        b.setTextSize(15);
-        c.setTextSize(15);
-        f.setTextSize(15);
-        g.setTextSize(15);
+        b.setTextSize(12);
+        c.setTextSize(12);
+        f.setTextSize(12);
+        g.setTextSize(12);
 
-        b.setPadding(20,5,20,5);
-        c.setPadding(20,5,20,5);
-        f.setPadding(20,5,20,5);
-        g.setPadding(20,5,20,5);
-
+        b.setPadding(10,5,10,5);
+        c.setPadding(10,5,10,5);
+        f.setPadding(10,5,10,5);
+        g.setPadding(10,5,10,5);
 
         b.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
         c.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
@@ -290,11 +284,13 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.bt_call: {
                 ActivityCompat.requestPermissions(DetailActivity.this,
                         new String[]{Manifest.permission.CALL_PHONE}, callRequest);
-
                 break;
             }
-            case R.id.bt_order: {
-//                startActivity(new Intent(DetailActivity.this,PricingActivity.class));
+            case R.id.bt_view: {
+
+                Intent intent = new Intent(DetailActivity.this,ListPitchActivity.class);
+                intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
+                startActivity(intent);
                 break;
             }
 //            case R.id.bt_now: {
@@ -309,11 +305,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         if (item.getItemId() == android.R.id.home) {
             finish(); // close this activity and return to preview activity (if there is any)
         }
-
         return super.onOptionsItemSelected(item);
     }
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -333,14 +326,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                     double latitude = gps .getLatitude();
                     Log.d(TAG,"lat : " + latitude +" lng :"+longitude);
                     currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
-
-//                    map.addMarker(new MarkerOptions().position(xuanthuy));
-//                    Utils.moveCamera(xuanthuy,12,map);
-
-                            lat = target.latitude+"";
-                            lng = target.longitude+"";
-
-
+                    lat = target.latitude+"";
+                    lng = target.longitude+"";
                 }
             }
     }

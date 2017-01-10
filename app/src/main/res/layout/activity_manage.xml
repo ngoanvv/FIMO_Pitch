@@ -126,11 +126,13 @@
             </TableRow>
         </TableLayout>
     </RelativeLayout>
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/recycler_view_mng"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-</android.support.v7.widget.RecyclerView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_mng"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -143,5 +145,5 @@
         android:paddingLeft="70dp"
         android:background="@drawable/border"
         android:text="Đăng xuất"
-        />
+        android:id="@+id/textView12" />
 </LinearLayout>

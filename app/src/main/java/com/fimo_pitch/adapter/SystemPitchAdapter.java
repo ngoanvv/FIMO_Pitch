@@ -2,7 +2,6 @@ package com.fimo_pitch.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,8 +21,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Random;
-
-import static com.fimo_pitch.CONSTANT.SystemPitch_MODEL;
 
 /**
  * Created by TranManhTien on 22/08/2016.
@@ -50,7 +47,7 @@ public class SystemPitchAdapter extends RecyclerView.Adapter<SystemPitchAdapter.
 
     @Override
     public SystemPitchAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.item_pitch, parent, false);
+        View view = inflater.inflate(R.layout.item_systempitch, parent, false);
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
     }

@@ -52,6 +52,7 @@ import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
+import com.fimo_pitch.fragments.ManageFragment;
 import com.fimo_pitch.fragments.SystemPitchsFragment;
 import com.fimo_pitch.fragments.NewsFragment;
 import com.fimo_pitch.fragments.NotifcationFragment;
@@ -115,7 +116,6 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         getData();
         initNavMenu();
         initGoogleAPI();
-
         ActivityCompat.requestPermissions(MainActivity.this,
                 new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},permissionCode);
 
@@ -223,9 +223,10 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                                 }
                                 case R.id.menu_manage :
                                 {
+                                    replaceFragment(new ManageFragment().newInstance("",""),ManageFragment.class.getName());
 
-                                    Intent intent = new Intent(MainActivity.this,ManageActivity.class);
-                                    startActivity(intent);
+//                                    Intent intent = new Intent(MainActivity.this,ManageActivity.class);
+//                                    startActivity(intent);
                                     mDrawerLayout.closeDrawers();
                                     break;
                                 }

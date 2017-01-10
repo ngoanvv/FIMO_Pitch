@@ -1,12 +1,20 @@
 package com.fimo_pitch.adapter;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -18,6 +26,9 @@ import com.fimo_pitch.main.DetailActivity;
 import com.fimo_pitch.main.PaymentActivity;
 import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.SystemPitch;
+import com.fimo_pitch.model.TimeTable;
+import com.fimo_pitch.support.TrackGPS;
+import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,19 +37,16 @@ import java.util.Random;
 /**
  * Created by TranManhTien on 22/08/2016.
  */
-public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.MyViewHolder>
-                                    implements Filterable
-{
+public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.MyViewHolder> implements View.OnClickListener {
 
     private Context context;
     private String TAG=PitchAdapter.class.getName();
-    private ArrayList<Pitch> data;
+    private ArrayList<TimeTable> data;
     private LayoutInflater inflater;
-    private ArrayList<Pitch> results;
-    private ArrayList<Pitch> list;
+    private int callRequest = 1;
 
 
-    public PitchAdapter(Context context, ArrayList<Pitch> data) {
+    public PitchAdapter(Context context, ArrayList<TimeTable> data) {
         this.context = context;
         this.data = data;
         this.inflater = LayoutInflater.from(context);
@@ -47,29 +55,46 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.MyViewHolder
 
     @Override
     public PitchAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.item_order, parent, false);
+        View view = inflater.inflate(R.layout.item_pitch, parent, false);
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
     }
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-//        holder.tv_name.setText(list.get(position).getName());
-        if(position%2==0)
-        {
-//            holder.wrapper.setBackgroundResource(R.color.com_facebook_blue);
-        }
-        else
-        {
+        holder.tv_name.setText(data.get(position).getName());
+        holder.tv_des.setText(data.get(position).getDescription());
+        holder.tv_size.setText(data.get(position).getSize());
+        holder.tv_time.setText(data.get(position).getStart_time().substring(0,5)+"-"+data.get(position).getEnd_time().substring(0,5));
+        holder.tv_size.setText(data.get(position).getType());
 
-        }
-        holder.bt_order.setOnClickListener(new View.OnClickListener() {
+        holder.btCall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, PaymentActivity.class);
-                context.startActivity(intent);
+               if(data.get(position).getPhone().length()>0)
+               mOnCallEvent.onCallEvent(data.get(position).getPhone());
+               else
+               mOnCallEvent.onCallEvent("null");
+
             }
         });
+        holder.btBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
+    public OnCallEvent mOnCallEvent;
+    public void setOnCallEvent(OnCallEvent onCallEvent)
+    {
+        this.mOnCallEvent = onCallEvent;
+    }
+    public interface OnCallEvent
+    {
+        public void onCallEvent(String number);
+    }
+
 
     @Override
     public int getItemCount() {
@@ -77,7 +102,7 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.MyViewHolder
         return data.size();
     }
 
-    private Pitch getPitch(int position){
+    private TimeTable getPitch(int position){
 
         return data.get(position);
     }
@@ -94,64 +119,26 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.MyViewHolder
     }
 
     @Override
-    public Filter getFilter() {
-        Filter filter = new Filter() {
+    public void onClick(View v) {
+        int id = v.getId();
 
-            @SuppressWarnings("unchecked")
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                list = (ArrayList<Pitch>) results.values;
-                data = list;
-                notifyDataSetChanged();
-            }
-
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-
-                FilterResults results = new FilterResults();
-                ArrayList<Pitch> filteredArray = getFilteredResults(constraint);
-                results.count = filteredArray.size();
-                results.values = filteredArray;
-                return results;
-            }
-        };
-
-        return filter;
     }
-    private ArrayList<Pitch> getFilteredResults(CharSequence constraint) {
-        Log.d(TAG,"constraint "+constraint.toString());
 
-        int count=0;
-        results = new ArrayList<>();
-        constraint=constraint.toString().toLowerCase();
-        for(int i =0;i<list.size();i++)
-        {
-            if(list.get(i).getAddress().toLowerCase().contains(constraint) ||
-                    list.get(i).getName().toLowerCase().contains(constraint)
-                    )
-            {
-                results.add(list.get(i));
-                count++;
-            }
-        }
-        return results;
-    }
     class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView tv_name;
-        TextView tv_money;
-        TextView tv_price;
-        TextView tv_time,bt_order;
+        TextView tv_time,tv_des,tv_size,tv_type;
         LinearLayout wrapper;
+        Button btBook,btCall;
         public MyViewHolder(View itemView) {
             super(itemView);
-//            tv_name = (TextView) itemView.findViewById(R.id.item_name);
-//            imageView = (ImageView) itemView.findViewById(R.id.item_image);
-//            tv_money = (TextView) itemView.findViewById(R.id.item_money);
-//            tv_price = (TextView) itemView.findViewById(R.id.item_price);
-//            tv_time = (TextView) itemView.findViewById(R.id.item_time);
-            bt_order = (TextView) itemView.findViewById(R.id.bt_order);
-            wrapper = (LinearLayout) itemView.findViewById(R.id.wrapper);
+            tv_name = (TextView) itemView.findViewById(R.id.pitch_name);
+            tv_des = (TextView) itemView.findViewById(R.id.pitch_description);
+            tv_time = (TextView) itemView.findViewById(R.id.pitch_time);
+            tv_size = (TextView) itemView.findViewById(R.id.pitch_size);
+            tv_type = (TextView) itemView.findViewById(R.id.pitch_type);
+            btBook = (Button) itemView.findViewById(R.id.bt_book);
+            btCall = (Button) itemView.findViewById(R.id.bt_call);
 
         }
 

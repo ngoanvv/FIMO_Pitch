@@ -6,12 +6,6 @@
     android:id="@+id/ll_match"
     android:layout_height="wrap_content">
 
-    <View
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
-    android:background="@color/medium_grey"></View>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -81,13 +75,13 @@
                         android:layout_height="20dp">
                         <com.fimo_pitch.custom.view.RoundedImageView
                             android:layout_width="10dp"
-                            android:background="@drawable/ic_money"
+                            android:background="@drawable/ic_manager"
                             android:layout_gravity="center_vertical"
                             android:layout_height="10dp"/>
                         <TextView
-                            android:id="@+id/pitch_money"
+                            android:id="@+id/order_userName"
                             android:layout_width="wrap_content"
-                            android:text="300.000vnđ"
+                            android:text="Dũng Nguyễn Lê"
                             android:textSize="15sp"
                             android:layout_marginLeft="10dp"
                             android:layout_gravity="center_vertical"
@@ -105,10 +99,11 @@
                             android:layout_gravity="center_vertical"
                             android:background="@drawable/ic_clock"
                             android:layout_height="10dp"/>
+
                         <TextView
                             android:layout_width="wrap_content"
-                            android:id="@+id/pitch_type"
-                            android:text="Sân cỏ nhân tạo"
+                            android:id="@+id/order_day"
+                            android:text="17-01-2017"
                             android:layout_marginLeft="10dp"
                             android:textSize="15sp"
                             android:layout_gravity="center_vertical"
@@ -124,12 +119,12 @@
                         <com.fimo_pitch.custom.view.RoundedImageView
                             android:layout_width="10dp"
                             android:layout_gravity="center_vertical"
-                            android:background="@drawable/ic_clock"
+                            android:background="@drawable/ic_location"
                             android:layout_height="10dp"/>
                         <TextView
                             android:layout_width="wrap_content"
-                            android:id="@+id/pitch_description"
-                            android:text="18h, ngày 28/12/2016"
+                            android:id="@+id/order_address"
+                            android:text="Cầu Giấy, Hà Nội"
                             android:layout_marginLeft="10dp"
                             android:textSize="15sp"
                             android:layout_gravity="center_vertical"
@@ -147,16 +142,16 @@
                     <com.fimo_pitch.custom.view.RoundedImageView
                         android:layout_gravity="center_vertical"
                         android:layout_width="10dp"
-                        android:background="@drawable/ic_location"
+                        android:background="@drawable/ic_phone"
                         android:layout_height="10dp"/>
 
                     <TextView
-                        android:id="@+id/pitch_size"
+                        android:id="@+id/order_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="3"
                         android:textSize="15sp"
-                        android:text="Khu vực Cầu Giấy"
+                        android:text="0923787434"
                         android:layout_marginLeft="10dp"
                         android:layout_gravity="center_vertical"
                         android:inputType="textMultiLine"
@@ -181,18 +176,25 @@
             android:layout_height="50dp"
             android:textColor="@color/white"
             android:layout_gravity="center_vertical"
-            android:text="Đặt sân"/>
+            android:text="Duyệt yêu cầu"/>
 
             <Button
                 android:id="@+id/bt_call"
                 android:layout_width="100dp"
                 android:gravity="center"
                 android:layout_marginTop="20dp"
-                android:background="@color/colorBackGroundFragmentTabHost"
+                android:background="@color/colorRed"
                 android:layout_height="50dp"
                 android:textColor="@color/white"
                 android:layout_gravity="center"
-                android:text="Liên hệ"/>
+                android:text="Hủy yêu cầu"/>
         </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/Grey"></View>
 </LinearLayout>

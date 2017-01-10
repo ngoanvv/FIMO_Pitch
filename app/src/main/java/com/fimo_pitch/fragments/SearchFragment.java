@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -44,8 +45,10 @@ import com.fimo_pitch.custom.view.DetailDialog;
 import com.fimo_pitch.custom.view.InstantAutoComplete;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.main.DetailActivity;
+import com.fimo_pitch.main.ListPitchActivity;
 import com.fimo_pitch.main.MainActivity;
 import com.fimo_pitch.model.DirectionStep;
+import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.TrackGPS;
@@ -67,12 +70,17 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Random;
 
 
+import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 
 import static android.R.layout.select_dialog_item;
 
@@ -101,14 +109,22 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     private RoundedImageView bt_search;
     private TextView tv_time;
     private int mHour,mMinute;
+    private String listSystemData="";
     private int choosePostition;
+    private String sHour="7";
+    private String sMinute="00";
+    private String location="Cầu Giấy";
+    private String dateofweek="Mon";
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
         try {
             View view = inflater.inflate(R.layout.fragment_search, container, false);
+
             okHttpClient = new OkHttpClient();
             directionSteps = new ArrayList<>();
             polylines = new ArrayList<>();
+            listSystemPitch = new ArrayList<>();
+
             ArrayAdapter<String> adapter = new ArrayAdapter<String>
                     (getContext(), android.R.layout.simple_dropdown_item_1line,address);
             resultLatLng = new LatLng(0.0,0.0);
@@ -131,12 +147,15 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                         if(position==0)
                         {
                             resultLatLng = currentLatLng;
+
                         }
-                        else {
+                        else
+                        {
                             Log.d(TAG, search_box.getText().toString() + "");
                             String url = "http://maps.google.com/maps/api/geocode/json?address=" + search_box.getText().toString() + "&sensor=false";
                             if (Utils.isConnected(getContext())) new Sendrequest(url).execute();
                             else Utils.openDialog(getContext(), getString(R.string.no_connection));
+                            location = search_box.getText().toString();
                         }
                 }
             });
@@ -238,42 +257,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         map.addPolyline(new PolylineOptions().add(start,end).color(Color.BLUE).width(8));
         polylines.add(index, this.map.addPolyline(new PolylineOptions().add(start,end).color(Color.BLUE).width(8)));
     }
-    public void initList() {
-        Log.d(TAG,data);
-        listSystemPitch = new ArrayList<>();
-        if (data.contains("success")) {
-            try {
-                JSONObject jsonObject = new JSONObject(data);
-                JSONArray data = jsonObject.getJSONArray("data");
-                for (int i = 0; i < data.length() - 1; i++) {
-                    JSONObject object = data.getJSONObject(i);
-                    SystemPitch systemPitch = new SystemPitch();
-                    systemPitch.setDescription(object.getString("description"));
-                    systemPitch.setId(object.getString("id"));
-                    systemPitch.setOwnerName("Tiến TM");
-                    systemPitch.setOwnerID("user_id");
-                    systemPitch.setName(object.getString("name"));
-                    systemPitch.setAddress(object.getString("address"));
-                    systemPitch.setId("id");
-                    systemPitch.setLat(object.getString("lat"));
-                    systemPitch.setLng(object.getString("log"));
-                    listSystemPitch.add(systemPitch);
 
-                    MarkerOptions options = new MarkerOptions();
-                    Double lat = Double.valueOf(object.getString("lat"));
-                    Double lng = Double.valueOf(object.getString("log"));
-                    options.position(new LatLng(lat,lng)).title("Sân bóng 123x");
-                    options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_marker_free)));
-                    Marker marker = map.addMarker(options);
-                    marker.setTag(i);
-                }
-            }
-            catch (JSONException e)
-            {
-
-            }
-        }
-    }
     private class Sendrequest extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         public String url;
@@ -431,10 +415,146 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                 double latitude = gps .getLatitude();
                 currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
                 Utils.moveCamera(currentLatLng,"Bạn ở đây",12,map);
-
-
             }
 
+        }
+    }
+    public void initList() {
+        Log.d(TAG,data);
+        listSystemPitch = new ArrayList<>();
+        if (data.contains("success")) {
+            try {
+                JSONObject jsonObject = new JSONObject(data);
+                JSONArray data = jsonObject.getJSONArray("data");
+                for (int i = 0; i < data.length() - 1; i++) {
+                    JSONObject object = data.getJSONObject(i);
+                    SystemPitch systemPitch = new SystemPitch();
+                    systemPitch.setDescription(object.getString("description"));
+                    systemPitch.setId(object.getString("id"));
+                    systemPitch.setOwnerName("Tiến TM");
+                    systemPitch.setOwnerID("user_id");
+                    systemPitch.setName(object.getString("name"));
+                    systemPitch.setAddress(object.getString("address"));
+                    systemPitch.setId("id");
+                    systemPitch.setLat(object.getString("lat"));
+                    systemPitch.setLng(object.getString("log"));
+                    listSystemPitch.add(systemPitch);
+
+                    MarkerOptions options = new MarkerOptions();
+                    Double lat = Double.valueOf(object.getString("lat"));
+                    Double lng = Double.valueOf(object.getString("log"));
+                    options.position(new LatLng(lat,lng)).title("Sân bóng 123x");
+                    options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_marker_free)));
+                    Marker marker = map.addMarker(options);
+                    marker.setTag(i);
+                }
+            }
+            catch (JSONException e)
+            {
+
+            }
+        }
+    }
+    private class SearchSystemPitch extends AsyncTask<String,Void,String> {
+        ProgressDialog progressDialog;
+        String hour,minute;
+        String date;
+        String location;
+        public SearchSystemPitch(String hour, String time, String dateofweek, String locationEncoded)
+        {
+            this.hour =hour;
+            this.minute = time;
+            this.date = dateofweek;
+            this.location = locationEncoded;
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+
+            RequestBody formBody = new FormBody.Builder()
+                    .add("time_start", "7:00")
+                    .add("dateofweek","Mon")
+                    .add("textlocation",URLEncoder.encode("Cầu Giấy"))
+                    .build();
+            Log.d("body","time_start="+hour+"%3A"+minute+"&dateofweek="+date+"&textlocation="+location);
+            RequestBody body = RequestBody.create(mediaType,
+                                "time_start="+hour+"%3A"+minute+"&dateofweek="+date+"&textlocation="+location);
+            Request request = new Request.Builder()
+                    .url("https://pitchwebservice.herokuapp.com/pitchs/searchPitch")
+                    .post(body)
+                    .addHeader("content-type", "application/x-www-form-urlencoded")
+                    .addHeader("cache-control", "no-cache")
+                    .addHeader("postman-token", "b9494f39-8e39-7533-1896-281ee653703b")
+                    .build();
+            try {
+                okHttpClient = new OkHttpClient();
+                okhttp3.Response systemPitchResponse = okHttpClient.newCall(request).execute();
+                if (systemPitchResponse.isSuccessful()) {
+                    listSystemData = systemPitchResponse.body().string().toString();
+                    JSONObject result = new JSONObject(listSystemData);
+                    Log.d("search",listSystemData.toString()) ;
+                    if(result.getString("status").contains("success"))
+                    {
+                        final JSONArray data = result.getJSONArray("data");
+                        if(data.length()>0)
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject object = data.getJSONObject(i);
+                            SystemPitch systemPitch = new SystemPitch();
+                            systemPitch.setDescription(object.getString("description"));
+                            systemPitch.setOwnerName("Tiến TM");
+                            systemPitch.setOwnerID("user_id");
+                            systemPitch.setName(object.getString("name"));
+                            systemPitch.setAddress(object.getString("address"));
+                            systemPitch.setId(object.getString("system_id"));
+                            systemPitch.setPhone(object.getString("phone"));
+                            systemPitch.setLat(object.getString("lat"));
+                            systemPitch.setLng(object.getString("log"));
+                            listSystemPitch.add(systemPitch);
+                            Log.d(TAG,listSystemPitch.size()+"");
+                        }
+
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+            if(listSystemPitch.size()>0)
+
+            for(int i=0;i<listSystemPitch.size();i++)
+            {
+                SystemPitch systemPitch = listSystemPitch.get(i);
+                MarkerOptions options = new MarkerOptions();
+                Double lat = Double.valueOf(systemPitch.getLat());
+                Double lng = Double.valueOf(systemPitch.getLng());
+                options.position(new LatLng(lat,lng)).title(systemPitch.getName());
+                options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_marker_free)));
+                Marker marker = map.addMarker(options);
+                marker.setTag(i);
+            }
+            else
+            {
+                Utils.openDialog(getContext(),"Không có kết quả, hãy thử với điều kiện khác");
+            }
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            listSystemPitch = new ArrayList<>();
+
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("Đang thao tác");
+            progressDialog.show();
         }
     }
 
@@ -457,18 +577,11 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         mHour = hourOfDay;
                         mMinute = minute;
-                        TimePickerDialog mDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                mHour = hourOfDay;
-                                mMinute = minute;
-                                tv_time.setText(mHour+":"+mMinute+"-"+hourOfDay+":"+minute);
-                            }
-                        },mHour,mMinute,true);
-                        mDialog.setTitle("Chọn khung giờ kết thúc mà bạn muốn");
-                        mDialog.show();
+                        sHour = mHour+"";
+                        sMinute= mMinute+"";
+                        tv_time.setText(mHour+":"+mMinute);
                     }
-                },mHour,mMinute,true);
+                },7,00,true);
                 dialog.setTitle("Chọn giờ bắt đầu bạn muốn");
                 dialog.show();
                 break;
@@ -476,8 +589,15 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             case R.id.bt_search :
             {
                 // tim kiem
-                initList();
+//                initList();
+                map.clear();
+                map.addMarker(new MarkerOptions().position(currentLatLng).title("Bạn ở đây"));
+                dateofweek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)+"";
+                Log.d("dateofweek",dateofweek.toString()+"");
+                new SearchSystemPitch(sHour+"",sMinute+"","Mon",URLEncoder.encode(location)).execute();
                 break;
+
+
             }
         }
     }

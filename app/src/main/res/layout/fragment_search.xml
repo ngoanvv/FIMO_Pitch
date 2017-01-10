@@ -54,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_marginLeft="10dp"
-            android:hint="Tìm kiếm ở đây"
+            android:hint="Khu vực tìm kiếm"
             android:background="@color/colorTransparent"
             android:textColor="@color/color_myaccount_title_bg"
             android:layout_alignParentTop="true" />

@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.SystemPitchAdapter;
 import com.fimo_pitch.model.SystemPitch;
+import com.fimo_pitch.support.ShowToast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +45,7 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
 
         View view = inflater.inflate(R.layout.fragment_matchs, container, false);
         listSystemPitch = new ArrayList<>();
-//        Log.d(TAG,data);
+        Log.d(TAG,data);
         initView(view);
 
         return view;
@@ -119,6 +120,7 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
     }
     private void getData(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+
         recyclerView.setHasFixedSize(true);
         listSystemPitch = new ArrayList<>();
         String result = data.toString();
@@ -152,7 +154,7 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
             }
             catch (JSONException e)
             {
-
+                ShowToast.showToastLong(getContext(),e.getMessage().toString());
             }
         }
     }
