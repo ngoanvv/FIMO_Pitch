@@ -39,6 +39,7 @@ import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
+import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.Price;
 import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.support.ShowToast;
@@ -60,12 +61,15 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 
 public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
     private RoundedImageView bt_call,bt_order;
@@ -74,10 +78,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     private String lat;
     private String lng;
-//    private String getPlace = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng+"&sensor=false";
-//    private String getPlace = "http://maps.googleapis.com/maps/api/geocode/json?latlng=";
     private String TAG = "DetailActivity";
-//    private SupportMapFragment mapFragment;
     private TextView bt_now;
     private GoogleMap map;
     private TrackGPS gps;
@@ -85,7 +86,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private LatLng start,end;
     private List<Route> listRoute;
     private SystemPitch mSystemPitch;
-//    private LatLng xuanthuy = new LatLng(21.036654,105.78218);
     private LatLng target;
     private JSONObject rawDirections;
     private ArrayList<Price> listMondayPrice,listSaturdayPrice;
@@ -95,6 +95,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private TextView tvSysName,tvDes;
     private TextView tvPhone;
     private Button btView;
+    private String listpitchData;
+    private List<String> listName;
+    private ArrayList<Pitch> listPitch;
+
     public DetailActivity() {
     }
 
@@ -104,8 +108,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         mSystemPitch = (SystemPitch) getIntent().getSerializableExtra(CONSTANT.SystemPitch_MODEL);
         listMondayPrice = new ArrayList<>();
         listSaturdayPrice = new ArrayList<>();
-
-
+        listName = new ArrayList<>();
+        listPitch = new ArrayList<>();
 
         if (mSystemPitch !=null) {
             Log.d(TAG,mSystemPitch.toString());
@@ -114,7 +118,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_pitch_detail);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         initView();
 
     }
@@ -200,10 +204,16 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                         {
                             JSONObject object = data.getJSONObject(i);
                             Price p = new Price();
+                            if(!object.getString("dateofweek").equals(null))
                             p.setDayOfWeek(object.getString("dateofweek"));
-                            p.setDescription(object.getString("description"));
-                            p.setPrice(object.getString("price")+".000vnđ");
-                            p.setTime(object.getString("time_start").substring(0,5)+"-"+object.getString("time_end").substring(0,5));
+                            if(!object.getString("description").equals(null))
+                                p.setDescription(object.getString("description"));
+                            if(!object.getString("price").equals(null))
+                                p.setPrice(object.getString("price")+".000vnđ");
+                            if(!object.getString("time_start").equals(null))
+                                  if(!object.getString("time_end").equals(null))
+                                     p.setTime(object.getString("time_start").substring(0,5)+"-"+object.getString("time_end").substring(0,5));
+
                             if(p.getDayOfWeek().contains("Mon")) listMondayPrice.add(p);
                             else listSaturdayPrice.add(p);
                         }
@@ -287,16 +297,78 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             }
             case R.id.bt_view: {
-
-                Intent intent = new Intent(DetailActivity.this,ListPitchActivity.class);
-                intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
-                startActivity(intent);
+                new GetListPitch().execute();
                 break;
             }
-//            case R.id.bt_now: {
-//                startActivity(new Intent(DetailActivity.this,ListPitchActivity.class));
-//                break;
-//            }
+        }
+    }
+    private class GetListPitch extends AsyncTask<String,Void,String> {
+        ProgressDialog progressDialog;
+
+        @Override
+        protected String doInBackground(String... params) {
+            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
+            RequestBody body = RequestBody.create(mediaType, "systemPID="+mSystemPitch.getId());
+            Request request = new Request.Builder()
+                    .url("https://pitchwebservice.herokuapp.com/pitchs/getallpitchofsystem")
+                    .post(body)
+                    .addHeader("content-type", "application/x-www-form-urlencoded")
+                    .addHeader("cache-control", "no-cache")
+                    .addHeader("postman-token", "b9494f39-8e39-7533-1896-281ee653703b")
+                    .build();
+            try {
+                okHttpClient = new OkHttpClient();
+                okhttp3.Response systemPitchResponse = okHttpClient.newCall(request).execute();
+                if (systemPitchResponse.isSuccessful()) {
+                    listpitchData = systemPitchResponse.body().string().toString();
+                    Log.d(TAG,mSystemPitch.getId()+", "+listpitchData.toString());
+                    JSONObject result = new JSONObject(listpitchData);
+                    if(result.getString("status").contains("success"))
+                    {
+                        JSONArray data = result.getJSONArray("data");
+                        for (int i=0;i<data.length();i++)
+                        {
+                            JSONObject object = data.getJSONObject(i);
+                            Pitch p = new Pitch();
+                            p.setId(object.getString("id"));
+                            p.setName(object.getString("name"));
+                            p.setType(object.getString("type"));
+                            p.setSize(object.getString("size"));
+                            p.setDescription(object.getString("description"));
+                            if(mSystemPitch.getPhone().length()>0)
+                                p.setPhone(mSystemPitch.getPhone());
+                            listPitch.add(p);
+                            listName.add(object.getString("name"));
+                        }
+
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+            Log.d("listname",listPitch.size()+"");
+            Intent intent = new Intent(DetailActivity.this,ListPitchActivity.class);
+            intent.putExtra(CONSTANT.LISTPITCH_DATA, (Serializable) listName);
+            intent.putExtra(CONSTANT.LISTPITCH,  (Serializable) listPitch);
+            intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
+            startActivity(intent);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(DetailActivity.this);
+            progressDialog.setMessage("Đang thao tác");
+            progressDialog.show();
         }
     }
     @Override
@@ -331,79 +403,5 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 }
             }
     }
-//    public String getAddress(double latitude,double longitude) throws Exception
-//    {
-//        Geocoder geocoder;
-//        List<Address> addresses;
-//        geocoder = new Geocoder(this, Locale.getDefault());
-//
-//        addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-//
-//        String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-//        String city = addresses.get(0).getLocality();
-//        String state = addresses.get(0).getAdminArea();
-//        String country = addresses.get(0).getCountryName();
-//        String postalCode = addresses.get(0).getPostalCode();
-//        String knownName = addresses.get(0).getFeatureName();
-//        return addresses.toString();
-//    }
-//    public void drawLine(GoogleMap map,LatLng start,LatLng finish)
-//    {
-//        GoogleDirection.withServerKey("AIzaSyAbx2lqsUq1OfOCHUbk7N_DPlyNzeP1n6s")
-//                .from(start)
-//                .to(finish)
-//                .transportMode(TransportMode.DRIVING)
-//                .execute(this);
-//    }
-//    @Override
-//    public void onMapReady(GoogleMap googleMap) {
-//        if(mapFragment !=null) {
-//            map = googleMap;
-//            Utils.moveCamera(new LatLng(Double.valueOf(mSystemPitch.getLat()),Double.valueOf(mSystemPitch.getLng())),mSystemPitch.getName(),12,map);
-//        }
-//    }
-//    public void drawPolyline(GoogleMap map,LatLng start,LatLng end)
-//    {
-//        map.addPolyline(new PolylineOptions().add(start,end).color(Color.BLUE).width(7));
-//    }
-//    @Override
-//    public void onDirectionSuccess(Direction direction, String rawBody) {
-//        Log.d(TAG,rawBody);
-//        JSONObject routes, legs;
-//        JSONArray steps;
-//        if(direction.getRouteList().size()>0)
-//        {
-//        Route route = direction.getRouteList().get(0);
-//        if (route != null)
-//        {
-//            if(route.getLegList().size()>0)
-//            {
-//            Leg leg = route.getLegList().get(0);
-//            List<Step> stepList = leg.getStepList();
-//            Log.d("Size ", stepList.size() + "");
-//            for (int i = 0; i < stepList.size() - 1; i++) {
-//            }
-//            map.addMarker(new MarkerOptions().position(leg.getEndLocation().getCoordination()));
-//            map.addMarker(new MarkerOptions().position(leg.getStartLocation().getCoordination()));
-//
-//            ArrayList<LatLng> directionPositionList = leg.getDirectionPoint();
-//            PolylineOptions polylineOptions = DirectionConverter.createPolyline(this, directionPositionList, 5,
-//                    getResources().getColor(R.color.bluehistory));
-//
-//            map.addPolyline(polylineOptions);
-//          }
-//        }
-//        }
-//        else
-//        {
-//
-//
-//        }
-//
-//    }
-//    @Override
-//    public void onDirectionFailure(Throwable t) {
-//            Log.d(TAG,"Direction Failed");
-//    }
 }
 

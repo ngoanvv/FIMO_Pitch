@@ -12,11 +12,11 @@
 
     <ImageView
         android:id="@+id/ic_laucher"
-        android:layout_width="@dimen/margin_100dp"
-        android:layout_height="@dimen/margin_100dp"
+        android:layout_width="@dimen/100dp"
+        android:layout_height="@dimen/100dp"
         android:background="@mipmap/ic_launcher"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="@dimen/150dp"
         />
     <TextView
         android:layout_width="wrap_content"
@@ -24,7 +24,7 @@
         android:text="Xin đợi trong giây lát...."
         android:textSize="20dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_50dp"
+        android:layout_marginTop="@dimen/50dp"
         android:textColor="@color/colorPrimary"
         android:layout_below="@+id/ic_laucher"
         android:id="@+id/textView" />
@@ -35,5 +35,5 @@
         android:id="@+id/progressBar2"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_30dp" />
+        android:layout_marginTop="@dimen/30dp" />
 </RelativeLayout>

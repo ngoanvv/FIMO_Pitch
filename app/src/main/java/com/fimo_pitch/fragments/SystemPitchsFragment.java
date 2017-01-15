@@ -76,20 +76,6 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
         edt_search = (EditText) view.findViewById(R.id.edt_search);
         addListenerOnButton(view);
         getData(view);
-        edt_search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                    adapter.initList();
-//                    adapter.getFilter().filter(s);
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
 
     }
@@ -119,9 +105,7 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
         }
     }
     private void getData(View view) {
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-
-        recyclerView.setHasFixedSize(true);
+        Log.d("Data",data.toString());
         listSystemPitch = new ArrayList<>();
         String result = data.toString();
         if (result.contains("success")) {
@@ -143,11 +127,11 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
                     systemPitch.setLng(object.getString("log"));
                     listSystemPitch.add(systemPitch);
                 }
-                Log.d(TAG, listSystemPitch.size() + "");
+                recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+                recyclerView.setHasFixedSize(true);
                 adapter = new SystemPitchAdapter(getActivity(), listSystemPitch);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 recyclerView.setAdapter(adapter);
-
                 StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new
                         StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
                 recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);

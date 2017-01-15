@@ -82,7 +82,7 @@
     <string name="notify">Thông báo</string>
     <string name="manage">Quản lý</string>
     <string name="title_activity_main2">Main2Activity</string>
-<string name="mapbox">pk.eyJ1IjoibmdvYW52diIsImEiOiJjaXd1d3hhczQwMTI0Mm9xY2ZxOHVnMmxnIn0.5t6PsQ087SN9qy3sFTmrkQ</string>
+    <string name="mapbox">pk.eyJ1IjoibmdvYW52diIsImEiOiJjaXd1d3hhczQwMTI0Mm9xY2ZxOHVnMmxnIn0.5t6PsQ087SN9qy3sFTmrkQ</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="setting">Cài đặt</string>

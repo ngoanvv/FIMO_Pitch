@@ -13,7 +13,8 @@ public class CONSTANT {
     public static String USER_AVATAR = "avatar";
     public static String USER_PHONE = "phone";
     public static String SystemPitch_MODEL = "ssss";
+    public static String LISTPITCH_DATA="LISTPITCHDATA";
 
-
+    public static String LISTPITCH="LISTPITCH";
 
 }

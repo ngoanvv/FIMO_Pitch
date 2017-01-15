@@ -40,6 +40,7 @@ import com.fimo_pitch.support.Utils;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 import org.w3c.dom.ls.LSInput;
@@ -77,13 +78,21 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
     private String phoneNumber;
     private String dateOfWeek= String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
     private Pitch crPitch;
+    private TextView mText;
+    private ArrayAdapter<String> dataAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_pitch);
         mSystemPitch = (SystemPitch) getIntent().getSerializableExtra(CONSTANT.SystemPitch_MODEL);
+        listName = (List<String>) getIntent().getSerializableExtra(CONSTANT.LISTPITCH_DATA);
+        listPitches = (ArrayList<Pitch>) getIntent().getSerializableExtra(CONSTANT.LISTPITCH);
 
+        setContentView(R.layout.activity_list_pitch);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Tìm kiếm sân trống");
         initView();
     }
     public void initView()
@@ -92,11 +101,13 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
         tv_dateFilter = (TextView) findViewById(R.id.date_filter);
         spinner = (Spinner) findViewById(R.id.pitch_filter);
         btSearch = (RoundedImageView) findViewById(R.id.btsearch);
+        mText = (TextView) findViewById(R.id.mText);
+
+
 
         btSearch.setOnClickListener(this);
-        listName = new ArrayList<>();
-        listPitches = new ArrayList<>();
         listTime = new ArrayList<>();
+
         recyclerView = (RecyclerView) findViewById(R.id.list_pitch);
         LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(ListPitchActivity.this); // (Context context)
         mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
@@ -106,21 +117,24 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
         recyclerView.setAdapter(adapter);
 
         tv_dateFilter.setOnClickListener(this);
-        new GetListPitch().execute();
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("spinner",listPitches.get(position).getId()+"");
-                pitchId = listPitches.get(position).getid();
-                crPitch = listPitches.get(position);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+        if(listName.size()>0&&listPitches.size()>0) {
+            dataAdapter = new ArrayAdapter<String>(ListPitchActivity.this, android.R.layout.simple_spinner_dropdown_item, listName);
+            spinner.setAdapter(dataAdapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    Log.d("spinner", listPitches.get(position).getId() + "");
+                    pitchId = listPitches.get(position).getid();
+                    crPitch = listPitches.get(position);
+                }
 
-            }
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
 
+                }
+            });
+        }
     }
 
     @Override
@@ -147,71 +161,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
                 startActivity(intent);
             }
     }
-    private class GetListPitch extends AsyncTask<String,Void,String> {
-        ProgressDialog progressDialog;
 
-        @Override
-        protected String doInBackground(String... params) {
-            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
-            RequestBody body = RequestBody.create(mediaType, "systemPID="+mSystemPitch.getId());
-            Request request = new Request.Builder()
-                    .url("https://pitchwebservice.herokuapp.com/pitchs/getallpitchofsystem")
-                    .post(body)
-                    .addHeader("content-type", "application/x-www-form-urlencoded")
-                    .addHeader("cache-control", "no-cache")
-                    .addHeader("postman-token", "b9494f39-8e39-7533-1896-281ee653703b")
-                    .build();
-            try {
-                okHttpClient = new OkHttpClient();
-                okhttp3.Response systemPitchResponse = okHttpClient.newCall(request).execute();
-                if (systemPitchResponse.isSuccessful()) {
-                    listpitchData = systemPitchResponse.body().string().toString();
-                    Log.d(TAG,mSystemPitch.getId()+", "+listpitchData.toString());
-                    JSONObject result = new JSONObject(listpitchData);
-                    if(result.getString("status").contains("success"))
-                    {
-                        JSONArray data = result.getJSONArray("data");
-                        for (int i=0;i<data.length();i++)
-                        {
-                            JSONObject object = data.getJSONObject(i);
-                            Pitch p = new Pitch();
-                            p.setId(object.getString("id"));
-                            p.setName(object.getString("name"));
-                            p.setType(object.getString("type"));
-                            p.setSize(object.getString("size"));
-                            p.setDescription(object.getString("description"));
-                            if(mSystemPitch.getPhone().length()>0)
-                            p.setPhone(mSystemPitch.getPhone());
-                            listPitches.add(p);
-                            listName.add(object.getString("name"));
-                        }
-
-                    }
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            progressDialog.dismiss();
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(ListPitchActivity.this,android.R.layout.simple_spinner_dropdown_item,listName);
-            spinner.setAdapter(dataAdapter);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(ListPitchActivity.this);
-            progressDialog.setMessage("Đang thao tác");
-            progressDialog.show();
-        }
-    }
     private class GetTimeTable extends AsyncTask<String,Void,String> {
         ProgressDialog progressDialog;
         Pitch mPitch;
@@ -246,13 +196,25 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
                 okhttp3.Response response = okHttpClient.newCall(request).execute();
                 if (response.isSuccessful()) {
                     listimeData = response.body().string().toString();
-                    JSONObject result = new JSONObject(listimeData);
-                    Log.d("time table",listimeData.toString());
-                    if(result.getString("status").contains("success"))
-                    {
-                        JSONArray data = result.getJSONArray("data");
-                        for (int i=0;i<data.length();i++)
-                        {
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return listimeData;
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            JSONObject result = null;
+            try {
+                result = new JSONObject(s);
+                Log.d("time table",s.toString());
+                if(result.getString("status").contains("success")) {
+                    JSONArray data = result.getJSONArray("data");
+                    if (data.length() > 0) {
+                        for (int i = 0; i < data.length(); i++) {
                             JSONObject object = data.getJSONObject(i);
                             TimeTable p = new TimeTable();
                             p.setId(mPitch.getid());
@@ -262,26 +224,26 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
                             p.setDescription(mPitch.getDescription());
                             p.setEnd_time(object.getString("time_end"));
                             p.setStart_time(object.getString("time_start"));
-                            if(mSystemPitch.getPhone().length()>0)
+                            if (mSystemPitch.getPhone().length() > 0)
                                 p.setPhone(mSystemPitch.getPhone());
                             listTime.add(p);
                         }
+                        progressDialog.dismiss();
+                        mText.setVisibility(View.INVISIBLE);
+                        adapter = new PitchAdapter(ListPitchActivity.this, listTime);
+                        adapter.setOnCallEvent(ListPitchActivity.this);
+                        recyclerView.setAdapter(adapter);
                     }
                 }
-            } catch (Exception e) {
+                else
+                {
+                    mText.setVisibility(View.VISIBLE);
+                }
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
-            return null;
 
-        }
 
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            progressDialog.dismiss();
-            adapter = new PitchAdapter(ListPitchActivity.this,listTime);
-            adapter.setOnCallEvent(ListPitchActivity.this);
-            recyclerView.setAdapter(adapter);
         }
     }
     private class BookPitchTask extends AsyncTask<String,Void,String> {

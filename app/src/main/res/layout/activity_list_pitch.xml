@@ -7,59 +7,81 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.fimo_pitch.main.ListPitchActivity">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_pitch"
-        android:paddingLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:paddingRight="10dp"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="@dimen/50dp"
+        android:titleTextColor="@color/white"
+        app:layout_collapseMode="pin"
+        android:background="@color/com_facebook_blue"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/50dp"
         android:background="@color/com_facebook_blue"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
+
         <Spinner
         android:id="@+id/pitch_filter"
-        android:padding="10dp"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
+        android:padding="@dimen/10dp"
+        android:layout_width="@dimen/150dp"
+        android:layout_height="@dimen/50dp"
         android:layout_gravity="center"
         android:textColor="@color/white"
         android:text="Sân số 1"
         android:textStyle="bold"
-        android:textSize="@dimen/text_size_30sp"
+        android:textSize="@dimen/30sp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/date_filter"
         android:layout_toEndOf="@+id/date_filter"
-        android:layout_marginLeft="11dp"
-        android:layout_marginStart="11dp" />
+        android:layout_marginLeft="@dimen/10dp"
+        android:layout_marginStart="@dimen/10dp" />
+
         <TextView
         android:id="@+id/date_filter"
-        android:padding="10dp"
-        android:layout_width="150dp"
+        android:padding="@dimen/10dp"
+        android:layout_width="@dimen/150dp"
         android:textColor="@color/white"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/50dp"
         android:layout_gravity="center"
         android:text="12/12/2016"
         android:textStyle="bold"
-        android:textSize="@dimen/text_size_details_25sp"/>
+        android:textSize="@dimen/25sp"/>
         <com.fimo_pitch.custom.view.RoundedImageView
             android:id="@+id/btsearch"
-            android:layout_marginLeft="20dp"
-            android:layout_width="40dp"
+            android:layout_width="@dimen/40dp"
             android:layout_gravity="center_vertical"
-            android:layout_height="40dp"
+            android:layout_height="@dimen/40dp"
             android:background="@drawable/places_ic_search"
             />
-
     </LinearLayout>
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_pitch"
+            android:paddingLeft="@dimen/10dp"
+            android:paddingRight="@dimen/10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+        </android.support.v7.widget.RecyclerView>
+     <TextView
+         android:id="@+id/mText"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:textSize="@dimen/30dp"
+         android:layout_marginTop="@dimen/100dp"
+         android:visibility="visible"
+         android:textColor="@color/button_grey"
+         android:text="Không có thông tin về sân này"
+         />
+    </RelativeLayout>
 
 </LinearLayout>

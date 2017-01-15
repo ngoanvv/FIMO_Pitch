@@ -14,7 +14,7 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        app:srcCompat="@drawable/ic_gps"
+        android:src="@drawable/ic_gps"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
 

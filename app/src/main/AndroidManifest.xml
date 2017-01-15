@@ -61,7 +61,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".main.ListPitchActivity" />
-        <activity android:name=".main.PaymentActivity"></activity>
+        <activity android:name=".main.PaymentActivity" />
     </application>
 
 </manifest>

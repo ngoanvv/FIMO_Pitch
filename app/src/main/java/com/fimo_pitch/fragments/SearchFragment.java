@@ -114,7 +114,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     private String sHour="7";
     private String sMinute="00";
     private String location="Cầu Giấy";
-    private String dateofweek="Mon";
+    private int dateofweek=1;
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
         try {
@@ -147,7 +147,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                         if(position==0)
                         {
                             resultLatLng = currentLatLng;
-
                         }
                         else
                         {
@@ -255,7 +254,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     public void drawLine(int index,LatLng start,LatLng end,String distance,String des)
     {
         map.addPolyline(new PolylineOptions().add(start,end).color(Color.BLUE).width(8));
-        polylines.add(index, this.map.addPolyline(new PolylineOptions().add(start,end).color(Color.BLUE).width(8)));
+        polylines.add(index,this.map.addPolyline(new PolylineOptions().add(start,end).color(Color.BLUE).width(8)));
     }
 
     private class Sendrequest extends AsyncTask<String, Void, String> {
@@ -348,14 +347,26 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
-                    SystemPitch systemPitch = listSystemPitch.get((Integer) marker.getTag());
-                    new GetDirections().execute(marker.getPosition(),currentLatLng);
-                    DetailDialog dialog = new DetailDialog(getContext(),systemPitch, (Integer) marker.getTag());
+                    if(marker.getTag() != null) {
+                        SystemPitch systemPitch = listSystemPitch.get((Integer) marker.getTag());
+                        if(currentLatLng != null) {
+                            map.clear();
+                            map.addMarker(new MarkerOptions().title("Bạn ở đây").position(currentLatLng));
+                            map.addMarker(new MarkerOptions().position(marker.getPosition()).title(listSystemPitch.get((Integer) marker.getTag()).getName()));
+                            new GetDirections().execute(marker.getPosition(), currentLatLng);
 
-                    dialog.setOnArrivalDeliverListener(SearchFragment.this);
-                    dialog.show(getFragmentManager(),TAG);
-                    choosePostition =  (Integer) marker.getTag();
-                    return true;
+                        }
+                        else
+                        {
+                        }
+                        DetailDialog dialog = new DetailDialog(getContext(), systemPitch, (Integer) marker.getTag());
+                        dialog.setOnArrivalDeliverListener(SearchFragment.this);
+                        dialog.show(getFragmentManager(), TAG);
+                        choosePostition = (Integer) marker.getTag();
+
+                        return true;
+                    }
+                     return true;
                 }
             });
             map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
@@ -406,13 +417,11 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         if(googleMap !=null) {
             map = googleMap;
             ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
-//            initList();
+            initList();
             initMapLicense();
             gps = new TrackGPS(getContext(),getActivity());
             if(gps.canGetLocation())
             {
-                double longitude = gps.getLongitude();
-                double latitude = gps .getLatitude();
                 currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
                 Utils.moveCamera(currentLatLng,"Bạn ở đây",12,map);
             }
@@ -438,14 +447,15 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                     systemPitch.setId("id");
                     systemPitch.setLat(object.getString("lat"));
                     systemPitch.setLng(object.getString("log"));
+                    systemPitch.setStatus(object.getString("status"));
                     listSystemPitch.add(systemPitch);
 
                     MarkerOptions options = new MarkerOptions();
                     Double lat = Double.valueOf(object.getString("lat"));
                     Double lng = Double.valueOf(object.getString("log"));
                     options.position(new LatLng(lat,lng)).title("Sân bóng 123x");
-                    options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_marker_free)));
-                    Marker marker = map.addMarker(options);
+                    if(systemPitch.getStatus().contains("0")) options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_marker_free)));                    Marker marker = map.addMarker(options);
+
                     marker.setTag(i);
                 }
             }
@@ -508,6 +518,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                             systemPitch.setId(object.getString("system_id"));
                             systemPitch.setPhone(object.getString("phone"));
                             systemPitch.setLat(object.getString("lat"));
+                            systemPitch.setStatus(object.getString("status"));
                             systemPitch.setLng(object.getString("log"));
                             listSystemPitch.add(systemPitch);
                             Log.d(TAG,listSystemPitch.size()+"");
@@ -557,7 +568,42 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             progressDialog.show();
         }
     }
+    private String getDayofWeek(int dateofweek)
+    {
+        switch (dateofweek)
+        {
+            case 1 :
+            {
+                return "Sun";
+            }
+            case 2 :
+            {
+                return "Mon";
+            }
+            case 3 :
+            {
+                return "Tue";
+            }
+            case 4 :
+            {
+                return "Wed";
+            }
+            case 5 :
+            {
+                return "Thu";
+            }
+            case 6 :
+            {
+                return "Fri";
+            }
+            case 7 :
+            {
+                return "Sat";
+            }
+        }
+        return "Mon";
 
+    }
     @Override
     public void onClick(View v) {
         int id=v.getId();
@@ -565,7 +611,13 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         {
             case R.id.bt_currentLocation :
             {
+                if(currentLatLng !=null)
                 Utils.moveCamera(currentLatLng,"Bạn ở đây",13,map);
+                else
+                {
+                    Utils.openDialog(getContext(),"Không định vị được vị trí của bạn");
+                    break;
+                }
                 break;
             }
             case R.id.tv_time :
@@ -579,7 +631,11 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                         mMinute = minute;
                         sHour = mHour+"";
                         sMinute= mMinute+"";
-                        tv_time.setText(mHour+":"+mMinute);
+                        if(mHour<10&&mMinute<10)
+                        {
+                            tv_time.setText("0"+mHour+":"+"0"+mMinute);
+                        }
+                        else tv_time.setText(mHour+":"+mMinute);
                     }
                 },7,00,true);
                 dialog.setTitle("Chọn giờ bắt đầu bạn muốn");
@@ -592,9 +648,8 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
 //                initList();
                 map.clear();
                 map.addMarker(new MarkerOptions().position(currentLatLng).title("Bạn ở đây"));
-                dateofweek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)+"";
-                Log.d("dateofweek",dateofweek.toString()+"");
-                new SearchSystemPitch(sHour+"",sMinute+"","Mon",URLEncoder.encode(location)).execute();
+                dateofweek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+                new SearchSystemPitch(sHour+"",sMinute+"",getDayofWeek(2),URLEncoder.encode(location)).execute();
                 break;
 
 

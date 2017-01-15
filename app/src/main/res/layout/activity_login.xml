@@ -8,16 +8,14 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:padding="@dimen/10dp"
         android:layout_marginTop="100dp"
         >
 
         <com.fimo_pitch.custom.view.RoundedImageView
            android:background="@mipmap/ic_launcher"
-           android:layout_width="80dp"
-           android:layout_height="80dp"
+           android:layout_width="@dimen/80dp"
+           android:layout_height="@dimen/80dp"
            android:layout_gravity="center_horizontal" />
         <TextView
             android:layout_width="wrap_content"
