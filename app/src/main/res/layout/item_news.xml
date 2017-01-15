@@ -15,12 +15,12 @@
     <LinearLayout
      android:orientation="horizontal"
      android:layout_width="match_parent"
-     android:layout_marginTop="5dp"
+     android:layout_marginTop="@dimen/s5dp"
      android:layout_height="wrap_content">
     <com.fimo_pitch.custom.view.RoundedImageView
-        android:layout_width="@dimen/height_50dp"
+        android:layout_width="@dimen/s50dp"
         android:background="@drawable/logo_chelsea"
-        android:layout_height="@dimen/height_50dp"
+        android:layout_height="@dimen/s50dp"
         android:layout_gravity="center_vertical"
         android:id="@+id/view"/>
     <LinearLayout
@@ -34,7 +34,7 @@
         android:text="Chelsea FC"
         android:textSize="@dimen/text_size_15sp"
         android:textStyle="bold"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="@dimen/s10dp"
         android:gravity="center_vertical"
         android:textColor="@color/colorBlack"
         android:layout_alignBottom="@+id/view"/>
@@ -43,10 +43,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Xin chào các bạn, team mình là Chelsea FC."
-        android:textSize="12sp"
-        android:layout_marginLeft="10dp"
+        android:textSize="@dimen/s10dp"
+        android:layout_marginLeft="@dimen/s10dp"
         android:maxLines="2"
-        android:layout_marginTop="@dimen/margin_5dp"
+        android:layout_marginTop="@dimen/s5dp"
         android:textStyle="italic"
         android:gravity="center_vertical"
         android:textColor="@android:color/holo_green_dark"
@@ -69,65 +69,65 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_height="20dp">
+            android:layout_marginTop="@dimen/s5dp"
+            android:layout_marginLeft="@dimen/s10dp"
+            android:layout_height="@dimen/s20dp">
             <com.fimo_pitch.custom.view.RoundedImageView
-            android:layout_width="10dp"
+            android:layout_width="@dimen/s10dp"
             android:background="@drawable/ic_money"
             android:layout_gravity="center_vertical"
-            android:layout_height="10dp"/>
+            android:layout_height="@dimen/s10dp"/>
             <TextView
                 android:id="@+id/item_money"
                 android:layout_width="wrap_content"
                 android:text="250k, chia đôi"
-                android:textSize="15sp"
-                android:layout_marginLeft="10dp"
+                android:textSize="@dimen/s12dp"
+                android:layout_marginLeft="@dimen/s10dp"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/accent_material_light"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
     <!--time-->
         <LinearLayout
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/s5dp"
+            android:layout_marginLeft="@dimen/s10dp"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
             <com.fimo_pitch.custom.view.RoundedImageView
-                android:layout_width="10dp"
+                android:layout_width="@dimen/s10dp"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/ic_clock"
-                android:layout_height="10dp"/>
+                android:layout_height="@dimen/s10dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:id="@+id/item_time"
                 android:text="18h, ngày 28/12/2016"
-                android:layout_marginLeft="10dp"
-                android:textSize="15sp"
+                android:layout_marginLeft="@dimen/s10dp"
+                android:textSize="@dimen/s12dp"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/accent_material_light"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <!--location-->
         <LinearLayout
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="@dimen/s10dp"
+            android:layout_marginBottom="@dimen/s5dp"
             android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/s5dp"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
             <com.fimo_pitch.custom.view.RoundedImageView
                 android:layout_gravity="center_vertical"
-                android:layout_width="10dp"
+                android:layout_width="@dimen/s10dp"
                 android:background="@drawable/ic_location"
-                android:layout_height="10dp"/>
+                android:layout_height="@dimen/s10dp"/>
             <TextView
                 android:id="@+id/item_location"
-                android:layout_width="230dp"
+                android:layout_width="@dimen/s250dp"
                 android:layout_height="wrap_content"
                 android:maxLines="3"
-                android:textSize="15sp"
+                android:textSize="@dimen/s12dp"
                 android:text="Khu vực Cầu Giấy"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center_vertical"
@@ -136,23 +136,23 @@
                 />
         </LinearLayout>
             <LinearLayout
-                android:layout_marginLeft="10dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="@dimen/s10dp"
+                android:layout_marginBottom="@dimen/s5dp"
                 android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/s5dp"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
                 <com.fimo_pitch.custom.view.RoundedImageView
                     android:layout_gravity="center_vertical"
-                    android:layout_width="10dp"
+                    android:layout_width="@dimen/s10dp"
                     android:background="@drawable/ic_note"
-                    android:layout_height="10dp"/>
+                    android:layout_height="@dimen/s10dp"/>
                 <TextView
                     android:id="@+id/item_description"
-                    android:layout_width="230dp"
+                    android:layout_width="@dimen/s250dp"
                     android:layout_height="wrap_content"
                     android:maxLines="3"
-                    android:textSize="15sp"
+                    android:textSize="@dimen/s12dp"
                     android:text="Chúng mình cần tìm gấp đối thủ, bạn nào có thể liên hệ số 09892839283"
                     android:layout_marginLeft="10dp"
                     android:layout_gravity="center_vertical"

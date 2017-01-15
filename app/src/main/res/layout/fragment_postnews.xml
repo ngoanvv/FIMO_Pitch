@@ -17,21 +17,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="@dimen/s30dp"
             android:orientation="vertical"
             android:weightSum="1">
             <!--money-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_height="40dp">
+                android:layout_marginTop="@dimen/s10dp"
+                android:layout_marginLeft="@dimen/s20dp"
+                android:layout_height="@dimen/s40dp">
                 <com.fimo_pitch.custom.view.RoundedImageView
-                    android:layout_width="20dp"
+                    android:layout_width="@dimen/s20dp"
                     android:background="@drawable/ic_money"
                     android:layout_gravity="center_vertical"
-                    android:layout_height="20dp"/>
+                    android:layout_height="@dimen/s20dp"/>
                 <EditText
                     android:id="@+id/edt_money"
                     android:hint="Chi phí cho trận đấu ?"
@@ -43,8 +43,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:layout_marginLeft="40dp"
-                android:layout_height="35dp"
+                android:layout_marginLeft="@dimen/s40dp"
+                android:layout_height="@dimen/s35dp"
                 android:layout_weight="0.03">
                 <RadioGroup
                     android:layout_width="match_parent"
@@ -53,20 +53,20 @@
                     >
                     <RadioButton
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_height="@dimen/s40dp"
+                        android:layout_marginLeft="@dimen/s20dp"
                         android:text="Thua trả"
                         />
                     <RadioButton
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_height="@dimen/s40dp"
+                        android:layout_marginLeft="@dimen/s20dp"
                         android:text="Chia đôi"
                         />
                     <RadioButton
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginLeft="20dp"
+                        android:layout_height="@dimen/s40dp"
+                        android:layout_marginLeft="@dimen/s20dp"
                         android:text="Khác"
 
                         />
@@ -74,17 +74,17 @@
             </LinearLayout>
             <!--time-->
             <LinearLayout
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginTop="@dimen/s20dp"
+                android:layout_marginLeft="@dimen/s20dp"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/s40dp"
                 android:layout_weight="0.03">
                 <com.fimo_pitch.custom.view.RoundedImageView
-                    android:layout_width="20dp"
+                    android:layout_width="@dimen/s20dp"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/ic_clock"
-                    android:layout_height="20dp"/>
+                    android:layout_height="@dimen/s20dp"/>
                 <EditText
                     android:id="@+id/edt_time"
                     style="@style/item_news"
@@ -93,17 +93,17 @@
                 />
             </LinearLayout>
             <LinearLayout
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginTop="@dimen/s20dp"
+                android:layout_marginLeft="@dimen/s20dp"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:layout_height="40dp"
+                android:layout_height="@dimen/s40dp"
                 android:layout_weight="0.03">
                 <com.fimo_pitch.custom.view.RoundedImageView
-                    android:layout_width="20dp"
+                    android:layout_width="@dimen/s20dp"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/ic_member"
-                    android:layout_height="20dp"/>
+                    android:layout_height="@dimen/s20dp"/>
                 <EditText
                     android:id="@+id/edt_"
                     style="@style/item_news"
@@ -114,17 +114,17 @@
             </LinearLayout>
             <!--location-->
             <LinearLayout
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="@dimen/s20dp"
                 android:layout_marginBottom="5dp"
                 android:layout_width="match_parent"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/s20dp"
                 android:orientation="horizontal"
-                android:layout_height="40dp">
+                android:layout_height="@dimen/s40dp">
                 <com.fimo_pitch.custom.view.RoundedImageView
                     android:layout_gravity="center_vertical"
-                    android:layout_width="20dp"
+                    android:layout_width="@dimen/s20dp"
                     android:background="@drawable/ic_location"
-                    android:layout_height="20dp"/>
+                    android:layout_height="@dimen/s20dp"/>
                 <EditText
                     android:id="@+id/edt_location"
                     android:hint="Khu vực bạn muốn diễn ra "
@@ -132,17 +132,17 @@
                     />
             </LinearLayout>
             <LinearLayout
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="@dimen/s20dp"
+                android:layout_marginBottom="@dimen/s5dp"
                 android:layout_width="match_parent"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/s20dp"
                 android:orientation="horizontal"
-                android:layout_height="40dp">
+                android:layout_height="@dimen/s40dp">
                 <com.fimo_pitch.custom.view.RoundedImageView
                     android:layout_gravity="center_vertical"
-                    android:layout_width="20dp"
+                    android:layout_width="@dimen/s20dp"
                     android:background="@drawable/ic_note"
-                    android:layout_height="20dp"/>
+                    android:layout_height="@dimen/s20dp"/>
                 <EditText
                     android:id="@+id/edt_description"
                     android:hint="Miêu tả về trận đấu này"
@@ -157,23 +157,23 @@
 
             <com.fimo_pitch.custom.view.RoundedImageView
             android:id="@+id/img_cancel"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/s40dp"
+            android:layout_height="@dimen/s40dp"
             android:background="@drawable/ic_cancel"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="100dp"
+            android:layout_marginRight="@dimen/s100dp"
             />
 
             <com.fimo_pitch.custom.view.RoundedImageView
                 android:id="@+id/img_send"
-                 android:layout_width="40dp"
-                 android:layout_height="40dp"
+                 android:layout_width="@dimen/s40dp"
+                 android:layout_height="@dimen/s40dp"
                 android:background="@drawable/ic_post"
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/img_cancel"
                 android:layout_toStartOf="@+id/img_cancel"
-                android:layout_marginRight="67dp"
-                android:layout_marginEnd="67dp" />
+                android:layout_marginRight="@dimen/s70dp"
+                android:layout_marginEnd="@dimen/s70dp" />
         </RelativeLayout>
     </LinearLayout>
 

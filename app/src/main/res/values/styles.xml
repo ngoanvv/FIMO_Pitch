@@ -17,44 +17,26 @@
         <!-- Blue -->
     </style>
 
-    android:id="@+id/edt_money"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textSize="12sp"
-    android:layout_marginLeft="50dp"
-    android:layout_gravity="center_vertical"
-    android:textColor="@color/accent_material_light"
-    android:hint="Chi phí cho trận đấu ?"
-    android:textColorHint="@color/blueGray"
 
     <style name="item_news">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">15dp</item>
+        <item name="android:textSize">@dimen/s12dp</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginLeft">@dimen/s30dp</item>
     </style>
 
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:maxLines="2"
-    android:textSize="18dp"
-    android:layout_marginLeft="10dp"
-    android:layout_gravity="center_vertical"
-    android:textColor="@color/accent_material_light"
-
-
     <style name="item_contact">
-        <item name="android:layout_width">40dp</item>
-        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">@dimen/s40dp</item>
+        <item name="android:layout_height">@dimen/s40dp</item>
     </style>
 
     <style name="item_detail">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">@dimen/s12dp</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginLeft">s30dp</item>
         <item name="android:textColor">@color/myAccentColor</item>
         <item name="android:maxLines">2</item>
 

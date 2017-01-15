@@ -9,9 +9,9 @@
     tools:context="com.fimo_pitch.main.ListPitchActivity">
 
     <LinearLayout
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="@dimen/s50dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/s50dp"
         android:background="@color/com_facebook_blue"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -19,38 +19,38 @@
 
         <Spinner
             android:id="@+id/pitch_filter"
-            android:padding="10dp"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:padding="@dimen/s10dp"
+            android:layout_width="@dimen/s150dp"
+            android:layout_height="@dimen/s50dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:textColor="@color/white"
             android:text="Sân số 1"
             android:textStyle="bold"
-            android:textSize="@dimen/text_size_30sp"
+            android:textSize="@dimen/s25dp"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/date_filter"
             android:layout_toEndOf="@+id/date_filter"
-            android:layout_marginLeft="11dp"
-            android:layout_marginStart="11dp" />
+            android:layout_marginLeft="@dimen/s10dp"
+            android:layout_marginStart="@dimen/s10dp" />
 
         <TextView
             android:id="@+id/date_filter"
-            android:padding="10dp"
-            android:layout_width="150dp"
+            android:padding="@dimen/s10dp"
+            android:layout_width="@dimen/s150dp"
             android:textColor="@color/white"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/s50dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="12/12/2016"
             android:textStyle="bold"
-            android:textSize="@dimen/text_size_details_25sp"/>
+            android:textSize="@dimen/s25dp"/>
         <com.fimo_pitch.custom.view.RoundedImageView
             android:id="@+id/btSearch"
-            android:layout_marginLeft="20dp"
-            android:layout_width="40dp"
+            android:layout_marginLeft="@dimen/s20dp"
+            android:layout_width="@dimen/s40dp"
             android:layout_gravity="center_vertical"
-            android:layout_height="40dp"
+            android:layout_height="@dimen/s40dp"
             android:background="@drawable/places_ic_search"
             />
 

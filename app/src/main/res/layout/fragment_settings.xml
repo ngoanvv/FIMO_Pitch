@@ -8,9 +8,9 @@
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"
         android:layout_marginTop="0dp"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/s50dp"
         android:background="@color/colorlightGreen"
-        android:paddingTop="5dp">
+        android:paddingTop="@dimen/s5dp">
 
 
         <TextView
@@ -20,31 +20,31 @@
             android:layout_centerVertical="true"
             android:text="@string/setting"
             android:textColor="#fff"
-            android:textSize="18sp" />
+            android:textSize="@dimen/s15dp" />
     </RelativeLayout>
     <TextView
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="@dimen/s10dp"
+        android:paddingBottom="@dimen/s10dp"
         android:text="@string/acc_settings"
-        android:textSize="16dp"
+        android:textSize="@dimen/s15dp"
         android:textColor="@color/colorlightGreen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <TextView
-        android:layout_marginLeft="30dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:layout_marginLeft="@dimen/s30dp"
+        android:paddingTop="@dimen/s10dp"
+        android:paddingBottom="@dimen/s10dp"
         android:text="@string/changePassword"
-        android:textSize="16dp"
+        android:textSize="@dimen/s15dp"
         android:textColor="@color/com_facebook_blue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tv_changePassword"/>
     <TextView
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="@dimen/s10dp"
+        android:paddingBottom="@dimen/s10dp"
         android:text="@string/app_settings"
-        android:textSize="16dp"
+        android:textSize="@dimen/s15dp"
         android:textColor="@color/colorlightGreen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -53,10 +53,10 @@
         android:layout_height="wrap_content">
     <TextView
         android:layout_marginLeft="30dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="@dimen/s10dp"
+        android:paddingBottom="@dimen/s10dp"
         android:text="@string/app_notificaiton"
-        android:textSize="16dp"
+        android:textSize="@dimen/s15dp"
         android:layout_centerVertical="true"
         android:textColor="@color/com_facebook_blue"
         android:layout_width="match_parent"
@@ -64,7 +64,7 @@
         android:id="@+id/textView3"/>
     <Switch
         android:id="@+id/mSwitch"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="@dimen/s20dp"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"

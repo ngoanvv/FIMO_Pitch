@@ -7,17 +7,17 @@
 
 
     <com.fimo_pitch.custom.view.RoundedImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="@dimen/s100dp"
+        android:layout_height="@dimen/s100dp"
         android:background="@drawable/ic_ok"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="@dimen/s200dp"
         android:layout_gravity="center"
         android:id="@+id/roundedImageView" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:textSize="@dimen/s20dp"
         android:textStyle="bold"
         android:layout_gravity="center"
         android:gravity="center"
@@ -34,9 +34,9 @@
         android:background="@drawable/rounded_border"
         android:text="Tiếp tục"
         android:textSize="@dimen/text_size_30sp"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/s10dp"
         android:textColor="@color/white"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="@dimen/s10dp"
+        android:paddingBottom="@dimen/s10dp"
         android:id="@+id/bt_continue" />
 </LinearLayout>

@@ -9,8 +9,8 @@
     <View
     android:layout_width="match_parent"
     android:layout_height="1dp"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
+    android:layout_marginTop="@dimen/s5dp"
+    android:layout_marginBottom="@dimen/s5dp"
     android:background="@color/medium_grey"></View>
 
     <LinearLayout
@@ -19,7 +19,7 @@
         android:orientation="horizontal">
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="230dp"
+            android:layout_width="@dimen/s250dp"
             android:layout_height="wrap_content">
 
             <!--header-->
@@ -28,9 +28,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Sân bóng sô 1"
-                android:textSize="@dimen/text_size_20sp"
+                android:textSize="@dimen/s17dp"
                 android:textStyle="bold"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/s10dp"
                 android:gravity="center_vertical"
                 android:textColor="@color/colorBlack"
                 android:layout_alignBottom="@+id/view"/>
@@ -38,7 +38,7 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/s5dp"
                 android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -51,9 +51,9 @@
                         android:layout_height="wrap_content"
                         android:text="19:00 - 21:00"
                         android:textSize="@dimen/text_size_30sp"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="@dimen/s10dp"
                         android:maxLines="2"
-                        android:layout_marginTop="@dimen/margin_5dp"
+                        android:layout_marginTop="@dimen/s5dp"
                         android:textStyle="italic"
                         android:gravity="center_vertical"
                         android:textColor="@android:color/holo_green_dark"
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:layout_width="200dp"
+                    android:layout_width="@dimen/s200dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="5"
                     android:orientation="vertical"
@@ -77,61 +77,61 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
-                        android:layout_marginTop="5dp"
-                        android:layout_height="20dp">
+                        android:layout_marginTop="@dimen/s5dp"
+                        android:layout_height="@dimen/s20dp">
                         <com.fimo_pitch.custom.view.RoundedImageView
-                            android:layout_width="10dp"
+                            android:layout_width="@dimen/s10dp"
                             android:background="@drawable/ic_money"
                             android:layout_gravity="center_vertical"
-                            android:layout_height="10dp"/>
+                            android:layout_height="@dimen/s10dp"/>
                         <TextView
                             android:id="@+id/pitch_money"
                             android:layout_width="wrap_content"
                             android:text="300.000vnđ"
-                            android:textSize="15sp"
-                            android:layout_marginLeft="10dp"
+                            android:textSize="@dimen/s12dp"
+                            android:layout_marginLeft="@dimen/s10dp"
                             android:layout_gravity="center_vertical"
                             android:textColor="@color/accent_material_light"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
                     <!--time-->
                     <LinearLayout
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="@dimen/s5dp"
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
                         android:layout_height="wrap_content">
                         <com.fimo_pitch.custom.view.RoundedImageView
-                            android:layout_width="10dp"
+                            android:layout_width="@dimen/s10dp"
                             android:layout_gravity="center_vertical"
                             android:background="@drawable/ic_clock"
-                            android:layout_height="10dp"/>
+                            android:layout_height="@dimen/s10dp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:id="@+id/pitch_type"
                             android:text="Sân cỏ nhân tạo"
-                            android:layout_marginLeft="10dp"
-                            android:textSize="15sp"
+                            android:layout_marginLeft="@dimen/s10dp"
+                            android:textSize="@dimen/s12dp"
                             android:layout_gravity="center_vertical"
                             android:textColor="@color/accent_material_light"
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="@dimen/s5dp"
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
                         android:layout_height="wrap_content">
                         <com.fimo_pitch.custom.view.RoundedImageView
-                            android:layout_width="10dp"
+                            android:layout_width="@dimen/s10dp"
                             android:layout_gravity="center_vertical"
                             android:background="@drawable/ic_clock"
-                            android:layout_height="10dp"/>
+                            android:layout_height="@dimen/s10dp"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:id="@+id/pitch_description"
                             android:text="18h, ngày 28/12/2016"
-                            android:layout_marginLeft="10dp"
-                            android:textSize="15sp"
+                            android:layout_marginLeft="@dimen/s10dp"
+                            android:textSize="@dimen/s12dp"
                             android:layout_gravity="center_vertical"
                             android:textColor="@color/accent_material_light"
                             android:layout_height="wrap_content"/>
@@ -139,25 +139,25 @@
 
                     <!--location-->
                 <LinearLayout
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="@dimen/s5dp"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="@dimen/s5dp"
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
                     <com.fimo_pitch.custom.view.RoundedImageView
                         android:layout_gravity="center_vertical"
-                        android:layout_width="10dp"
+                        android:layout_width="@dimen/s10dp"
                         android:background="@drawable/ic_location"
-                        android:layout_height="10dp"/>
+                        android:layout_height="@dimen/s10dp"/>
 
                     <TextView
                         android:id="@+id/pitch_size"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="3"
-                        android:textSize="15sp"
+                        android:textSize="@dimen/s12dp"
                         android:text="Khu vực Cầu Giấy"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="@dimen/s10dp"
                         android:layout_gravity="center_vertical"
                         android:inputType="textMultiLine"
                         android:textColor="@color/accent_material_light"
@@ -168,28 +168,28 @@
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="100dp"
+            android:layout_width="@dimen/s100dp"
             android:layout_height="match_parent"
             android:gravity="center"
             android:orientation="vertical">
         <Button
             android:id="@+id/bt_book"
-            android:layout_marginTop="20dp"
-            android:layout_width="100dp"
+            android:layout_width="@dimen/s100dp"
+            android:layout_height="@dimen/s50dp"
+            android:layout_marginTop="@dimen/s20dp"
             android:background="@color/com_facebook_blue"
             android:gravity="center"
-            android:layout_height="50dp"
-            android:textColor="@color/white"
             android:layout_gravity="center_vertical"
+            android:textColor="@color/white"
             android:text="Đặt sân"/>
 
             <Button
                 android:id="@+id/bt_call"
-                android:layout_width="100dp"
+                android:layout_width="@dimen/s100dp"
+                android:layout_height="@dimen/s50dp"
                 android:gravity="center"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/s20dp"
                 android:background="@color/colorBackGroundFragmentTabHost"
-                android:layout_height="50dp"
                 android:textColor="@color/white"
                 android:layout_gravity="center"
                 android:text="Liên hệ"/>

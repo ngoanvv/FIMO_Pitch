@@ -12,7 +12,7 @@
             android:id="@+id/edt_input"
             android:hint="@string/edt_input_search"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="@dimen/s50dp"
             android:theme="@style/transparent_bottom_line"
 
             />

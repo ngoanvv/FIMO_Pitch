@@ -6,9 +6,9 @@
     >
 
         <android.support.v7.widget.RecyclerView
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="@dimen/s40dp"
             android:layout_width="match_parent"
-            android:paddingTop="20dp"
+            android:paddingTop="@dimen/s20dp"
             android:layout_height="match_parent"
             android:id="@+id/recyclerView_notification"
             android:layout_gravity="center_vertical"

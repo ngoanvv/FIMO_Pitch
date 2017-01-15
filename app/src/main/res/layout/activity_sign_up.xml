@@ -9,19 +9,17 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="24dp"
-        android:layout_marginTop="30dp"
-        android:paddingRight="24dp"><![CDATA[
-        android:layout_gravity="center_horizontal" />
-        ]]>
+        android:paddingLeft="@dimen/s25dp"
+        android:layout_marginTop="@dimen/s30dp"
+        android:paddingRight="@dimen/s25dp">
 
         <com.fimo_pitch.custom.view.RoundedImageView
             android:id="@+id/img_avatar"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/s60dp"
+            android:layout_height="@dimen/s60dp"
             android:src="@drawable/ic_avatar"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="@dimen/s25dp"
             >
         </com.fimo_pitch.custom.view.RoundedImageView>
         <TextView
@@ -113,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="@dimen/s20dp"
                 android:text="@string/chusan"
                 android:layout_gravity="right"
                 />
@@ -122,7 +120,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="@dimen/s20dp"
                 android:text="@string/khachang"
                 android:checked="true"
                 android:layout_gravity="left"/>
@@ -133,26 +131,26 @@
 
         <TextView
             android:id="@+id/btn_signUp"
-            android:layout_width="200dp"
+            android:layout_width="@dimen/s200dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="@dimen/s10dp"
+            android:layout_marginBottom="s10dp"
             android:gravity="center_horizontal"
             android:background="@drawable/item_nav"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_size_20sp"
+            android:textSize="@dimen/s20dp"
             android:layout_gravity="center_horizontal"
-            android:padding="10dp"
+            android:padding="@dimen/s10dp"
             android:text="@string/signup"/>
 
         <TextView android:id="@+id/link_login"
                   android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
                   android:textColor="@color/colorPrimary"
-                  android:layout_marginBottom="24dp"
+                  android:layout_marginBottom="@dimen/s25dp"
                   android:text="@string/link_login"
                   android:gravity="center"
-                  android:textSize="16dip"/>
+                  android:textSize="@dimen/s20dp"/>
 
     </LinearLayout>
 </ScrollView>
