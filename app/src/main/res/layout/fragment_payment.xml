@@ -160,7 +160,7 @@
             android:paddingBottom="@dimen/s20dp"
             android:layout_marginLeft="@dimen/s20dp"
             android:textColor="@color/colorBlack"
-            android:textSize="@dimen/text_size_details_25sp" />
+            android:textSize="@dimen/s20dp" />
             <TextView
                 android:id="@+id/tv_price"
                 android:maxLines="2"
@@ -173,7 +173,7 @@
                 android:layout_alignParentRight="true"
                 android:paddingBottom="@dimen/s20dp"
                 android:textColor="@color/com_facebook_blue"
-                android:textSize="@dimen/text_size_details_25sp" />
+                android:textSize="@dimen/s20dp" />
         </RelativeLayout>
     </LinearLayout>
         <RelativeLayout
@@ -265,7 +265,7 @@
             android:gravity="center"
             android:background="@drawable/rounded_border"
             android:text="Tiếp tục"
-            android:textSize="@dimen/text_size_30sp"
+            android:textSize="@dimen/s25dp"
             android:layout_margin="@dimen/s10dp"
             android:textColor="@color/white"
             android:paddingTop="@dimen/s10dp"

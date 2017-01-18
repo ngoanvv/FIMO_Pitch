@@ -22,7 +22,7 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:layout_margin="@dimen/s10dp"
-    android:paddingBottom="@dimen/md_keylines"
-    android:paddingTop="@dimen/md_keylines"
+    android:paddingBottom="@dimen/s5dp"
+    android:paddingTop="@dimen/s5dp"
     android:scrollbars="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior" />

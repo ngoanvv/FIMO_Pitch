@@ -95,7 +95,7 @@
             android:text="@string/trial"
             android:layout_gravity="center"
             android:gravity="center_horizontal"
-            android:textSize="@dimen/stext_size_20sp"/>
+            android:textSize="@dimen/s17dp"/>
         <com.facebook.login.widget.LoginButton
             android:id="@+id/loginFB"
             android:layout_marginTop="@dimen/s20dp"

@@ -50,7 +50,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="19:00 - 21:00"
-                        android:textSize="@dimen/text_size_30sp"
+                        android:textSize="@dimen/s25dp"
                         android:layout_marginLeft="@dimen/s10dp"
                         android:maxLines="2"
                         android:layout_marginTop="@dimen/s5dp"

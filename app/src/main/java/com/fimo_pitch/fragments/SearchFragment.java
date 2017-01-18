@@ -348,23 +348,24 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                 @Override
                 public boolean onMarkerClick(Marker marker) {
                     if(marker.getTag() != null) {
-                        SystemPitch systemPitch = listSystemPitch.get((Integer) marker.getTag());
+                        int position = (int) marker.getTag();
+                        Log.d("pos",marker.getTag()+"");
+                        SystemPitch systemPitch = listSystemPitch.get(position);
                         if(currentLatLng != null) {
                             map.clear();
                             map.addMarker(new MarkerOptions().title("Bạn ở đây").position(currentLatLng));
-                            map.addMarker(new MarkerOptions().position(marker.getPosition()).title(listSystemPitch.get((Integer) marker.getTag()).getName()));
+                            map.addMarker(new MarkerOptions().position(marker.getPosition()).title(listSystemPitch.get(0).getName()));
                             new GetDirections().execute(marker.getPosition(), currentLatLng);
-
+                            DetailDialog dialog = new DetailDialog(getContext(), systemPitch,position);
+                            dialog.setOnArrivalDeliverListener(SearchFragment.this);
+                            dialog.show(getFragmentManager(), TAG);
+                            choosePostition = position;
                         }
                         else
                         {
+                            return true;
                         }
-                        DetailDialog dialog = new DetailDialog(getContext(), systemPitch, (Integer) marker.getTag());
-                        dialog.setOnArrivalDeliverListener(SearchFragment.this);
-                        dialog.show(getFragmentManager(), TAG);
-                        choosePostition = (Integer) marker.getTag();
 
-                        return true;
                     }
                      return true;
                 }

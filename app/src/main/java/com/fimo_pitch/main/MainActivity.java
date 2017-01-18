@@ -214,7 +214,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                                 }
                                 case R.id.menu_search :
                                 {
-                                    Log.d(TAG,"null");
+//                                    Log.d(TAG,);
                                     mSearchFragment = SearchFragment.newInstance(listSystemData,"");
                                     replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());
                                     mDrawerLayout.closeDrawers();

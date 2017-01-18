@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:class="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_add_pitch"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.fimo_pitch.main.AddSystemPitchActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/s50dp"
+                android:background="?attr/colorPrimary" />
+        </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+        <EditText
+            android:layout_height="@dimen/s70dp"
+            android:id="@+id/edt_name"
+            style="@style/item_addPitch"
+            android:hint="Tên sân bóng" />
+
+        <EditText
+            android:id="@+id/edt_phone"
+            android:inputType="number"
+            android:layout_marginTop="@dimen/s30dp"
+            android:layout_height="@dimen/s70dp"
+            style="@style/item_addPitch"
+            android:hint="Kích cỡ sân" />
+
+        <Spinner
+            android:layout_height="@dimen/s70dp"
+            android:layout_marginTop="@dimen/s30dp"
+            style="@style/item_addPitch"
+            android:hint="Chọn loại sân"/>
+
+        <Spinner
+            android:layout_height="@dimen/s70dp"
+            style="@style/item_addPitch"
+            android:layout_marginTop="@dimen/s30dp"
+            android:hint="Chọn loại sân"
+            android:id="@+id/spinner" />
+
+
+        <Button
+            android:id="@+id/bt_addSystem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginLeft="@dimen/s20dp"
+            android:layout_marginRight="@dimen/s20dp"
+            android:layout_marginTop="@dimen/s30dp"
+            android:text="Thêm"
+            android:paddingTop="@dimen/s30dp"
+            android:paddingBottom="@dimen/s30dp"
+            android:textSize="@dimen/s25dp"
+            android:background="@color/com_facebook_blue"/>
+    </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

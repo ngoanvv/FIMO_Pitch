@@ -1,14 +1,14 @@
-package com.fimo_pitch.fragments;
+package com.fimo_pitch.main;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -31,15 +31,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
-/**
- * Created by Diep_Chelsea on 13/07/2016.
- */
-public class ManageFragment extends Fragment implements View.OnClickListener {
-    public static final String TAG = "ManageFragment";
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private String mParam1;
-    private String mParam2;
+public class OrderActivity extends AppCompatActivity implements View.OnClickListener {
     private ArrayList<Order> listOrder;
     private ArrayList<Pitch> listPitch;
     private OkHttpClient okHttpClient;
@@ -51,38 +43,44 @@ public class ManageFragment extends Fragment implements View.OnClickListener {
     private Pitch crPitch;
     private String listpitchData;
     private List<String> listName;
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-     try {
-         listOrder = new ArrayList<>();
-         listPitch = new ArrayList<>();
-         listName = new ArrayList<>();
-         View rootView= inflater.inflate(R.layout.fragment_manage, container, false);
-        initView(rootView);
-        return rootView;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_order);
+
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Quản lý yêu cầu đặt sân");
+
+        initList();
+        initView();
+
     }
-    catch (Exception e)
+    public void initList()
     {
-        return inflater.inflate(R.layout.empty, container, false);
+        listOrder = new ArrayList<>();
+        listPitch = new ArrayList<>();
+        listName = new ArrayList<>();
+
     }
-    }
-    public void initView(View v)
+    public void initView()
     {
-        recyclerView = (RecyclerView) v.findViewById(R.id.list_manage);
-        dayFilter = (TextView) v.findViewById(R.id.date_filter);
-        pitchFilter = (Spinner) v.findViewById(R.id.pitch_filter);
-        btSearch = (RoundedImageView) v.findViewById(R.id.btSearch);
+        recyclerView = (RecyclerView) findViewById(R.id.list_manage);
+        dayFilter = (TextView) findViewById(R.id.date_filter);
+        pitchFilter = (Spinner) findViewById(R.id.pitch_filter);
+        btSearch = (RoundedImageView) findViewById(R.id.btSearch);
 
         dayFilter.setOnClickListener(this);
         btSearch.setOnClickListener(this);
 
+        new GetListPitch().execute();
+
         pitchFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                crPitch = listPitch.get(position);
+//                crPitch = listPitch.get(position);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -94,13 +92,16 @@ public class ManageFragment extends Fragment implements View.OnClickListener {
         listOrder.add( new Order());
         listOrder.add( new Order());
 
-        orderAdapter = new OrderAdapter(getActivity(), listOrder);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        orderAdapter = new OrderAdapter(OrderActivity.this, listOrder);
+        recyclerView.setLayoutManager(new LinearLayoutManager(OrderActivity.this));
         recyclerView.setAdapter(orderAdapter);
-        LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
+        LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(OrderActivity.this); // (Context context)
         mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+
+
     }
+
 
     private class GetListPitch extends AsyncTask<String,Void,String> {
         ProgressDialog progressDialog;
@@ -110,8 +111,7 @@ public class ManageFragment extends Fragment implements View.OnClickListener {
             MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
             RequestBody body = RequestBody.create(mediaType, "systemPID="+1);
             Request request = new Request.Builder()
-                    .url("https://pitchwebservice.herokuapp.com/pitchs/getallpitchofsystem")
-                    .post(body)
+                    .url("https://pitchwebservice.herokuapp.com/pitch/getAllPitchsOfSystem/1")
                     .addHeader("content-type", "application/x-www-form-urlencoded")
                     .addHeader("cache-control", "no-cache")
                     .addHeader("postman-token", "b9494f39-8e39-7533-1896-281ee653703b")
@@ -157,45 +157,39 @@ public class ManageFragment extends Fragment implements View.OnClickListener {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             progressDialog.dismiss();
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_dropdown_item,listName);
-            pitchFilter.setAdapter(dataAdapter);
+            if(listName.size()>0) {
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(OrderActivity.this, android.R.layout.simple_spinner_dropdown_item, listName);
+                pitchFilter.setAdapter(dataAdapter);
+            }
+            else
+            {
+                listName.add("Sân 1 demo ");
+                listName.add("Sân 2 demo");
+                listName.add("Sân 3 demo");
+
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(OrderActivity.this, android.R.layout.simple_spinner_dropdown_item,listName);
+                pitchFilter.setAdapter(dataAdapter);
+            }
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(getContext());
+            progressDialog = new ProgressDialog(OrderActivity.this);
             progressDialog.setMessage("Đang thao tác");
             progressDialog.show();
         }
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     public void onClick(View v) {
-        int id = v.getId();
-        switch (id)
-        {
-            case R.id.btSearch:
-            {
-                break;
-            }
-            case R.id.date_filter:
-            {
-                break;
-            }
-        }
-    }
-    public ManageFragment() {
 
     }
-    public static ManageFragment newInstance(String param1, String param2) {
-        ManageFragment fragment = new ManageFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
 }
-

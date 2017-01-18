@@ -134,7 +134,7 @@
             android:layout_width="@dimen/s200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/s10dp"
-            android:layout_marginBottom="s10dp"
+            android:layout_marginBottom="@dimen/s10dp"
             android:gravity="center_horizontal"
             android:background="@drawable/item_nav"
             android:textColor="@color/colorPrimary"

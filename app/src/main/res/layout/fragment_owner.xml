@@ -4,6 +4,8 @@
     android:id="@+id/activity_owner"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="@dimen/s50dp"
+    android:paddingRight="@dimen/s50dp"
     tools:context="com.fimo_pitch.main.OwnerActivity">
 
 <LinearLayout
@@ -18,23 +20,25 @@
         android:textColor="@color/white"
         android:layout_marginTop="@dimen/s20dp"
         android:layout_marginBottom="@dimen/s20dp"
-        android:text="Quản lý thông tin hệ thống "
+        android:text="Quản lý hệ thống sân"
         android:paddingTop="@dimen/s50dp"
         android:paddingBottom="@dimen/s50dp"
         android:textSize="@dimen/s25dp"
         android:background="@color/com_facebook_blue"/>
+
     <Button
-        android:id="@+id/bt_add_pitch"
+        android:id="@+id/btManagePitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:layout_marginTop="@dimen/s20dp"
         android:layout_marginBottom="@dimen/s20dp"
-        android:text="Quản lý thông tin hệ thống "
+        android:text="Quản lý sân bóng "
         android:paddingTop="@dimen/s50dp"
         android:paddingBottom="@dimen/s50dp"
         android:textSize="@dimen/s25dp"
         android:background="@color/colorGreen203"/>
+
     <Button
         android:id="@+id/bt_manageOrder"
         android:layout_width="match_parent"
@@ -42,12 +46,23 @@
         android:textColor="@color/white"
         android:layout_marginTop="@dimen/s20dp"
         android:layout_marginBottom="@dimen/s20dp"
-        android:text="Quản lý thông tin hệ thống "
+        android:text="Quản lý yêu cầu đặt sân "
         android:paddingTop="@dimen/s50dp"
         android:paddingBottom="@dimen/s50dp"
         android:textSize="@dimen/s25dp"
         android:background="@color/colorOrange"/>
-
+    <Button
+        android:id="@+id/bt_managerPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_marginTop="@dimen/s20dp"
+        android:layout_marginBottom="@dimen/s20dp"
+        android:text="Quản lý giá tiền"
+        android:paddingTop="@dimen/s50dp"
+        android:paddingBottom="@dimen/s50dp"
+        android:textSize="@dimen/s25dp"
+        android:background="@color/com_facebook_blue"/>
 </LinearLayout>
 
 </ScrollView>

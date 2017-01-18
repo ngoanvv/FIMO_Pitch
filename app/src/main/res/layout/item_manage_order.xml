@@ -22,9 +22,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:text="Sân bóng sô 1"
-                android:textSize="@dimen/text_size_20sp"
+                android:textSize="@dimen/s17dp"
                 android:textStyle="bold"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="@dimen/s20dp"
                 android:gravity="center_vertical"
                 android:textColor="@color/colorBlack"
                 android:layout_alignBottom="@+id/view"/>
@@ -37,6 +37,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"
+                    android:layout_marginLeft="@dimen/s20dp"
                     android:layout_height="wrap_content">
 
                     <TextView
@@ -44,10 +45,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="19:00 - 21:00"
-                        android:textSize="@dimen/text_size_30sp"
+                        android:textSize="@dimen/s25dp"
                         android:layout_marginLeft="10dp"
                         android:maxLines="2"
-                        android:layout_marginTop="@dimen/margin_5dp"
+                        android:layout_marginTop="@dimen/s5dp"
                         android:textStyle="italic"
                         android:gravity="center_vertical"
                         android:textColor="@android:color/holo_green_dark"
@@ -59,6 +60,7 @@
                     android:layout_marginTop="1dp"
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
+                    android:layout_marginLeft="@dimen/s30dp"
                     android:layout_height="wrap_content">
 
                 <LinearLayout
@@ -166,6 +168,7 @@
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:layout_marginLeft="@dimen/s20dp"
             android:orientation="vertical">
         <Button
             android:id="@+id/bt_book"

@@ -53,15 +53,22 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".main.FirstActivity">
+        <activity android:name=".main.AddSystemPitchActivity" />
+        <activity android:name=".main.ListPitchActivity" />
+        <activity android:name=".main.PaymentActivity" />
+        <activity android:name=".main.AddPitchActivity" />
+        <activity android:name=".main.SystemManagementActivity" />
+        <activity
+            android:name=".main.FirstActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.ListPitchActivity" />
-        <activity android:name=".main.PaymentActivity" />
+        <activity android:name=".main.OrderActivity" />
+        <activity android:name=".main.PitchManagementActivity"></activity>
     </application>
 
 </manifest>

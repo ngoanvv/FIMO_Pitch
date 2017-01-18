@@ -1,16 +1,18 @@
 package com.fimo_pitch.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.fimo_pitch.R;
-
-import org.w3c.dom.Text;
+import com.fimo_pitch.main.AddPitchActivity;
+import com.fimo_pitch.main.OrderActivity;
+import com.fimo_pitch.main.PitchManagementActivity;
+import com.fimo_pitch.main.SystemManagementActivity;
 
 /**
  * Created by Diep_Chelsea on 13/07/2016.
@@ -19,22 +21,23 @@ public class OwnerFragment extends Fragment implements View.OnClickListener {
     public static final String TAG = "NewsFragment";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private Button btManageOrder,btAddPitch,btManageSystem;
+    private Button btManageOrder,btManagePitch,btManageSystem;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView= inflater.inflate(R.layout.activity_owner, container, false);
+        View rootView= inflater.inflate(R.layout.fragment_owner, container, false);
+        initView(rootView);
         return rootView;
     }
 
     public void initView(View v)
     {
         btManageOrder = (Button) v.findViewById(R.id.bt_manageOrder);
-        btAddPitch = (Button) v.findViewById(R.id.bt_add_pitch);
+        btManagePitch = (Button) v.findViewById(R.id.btManagePitch);
         btManageSystem = (Button) v.findViewById(R.id.bt_manageSystem);
 
         btManageSystem.setOnClickListener(this);
-        btAddPitch.setOnClickListener(this);
+        btManagePitch.setOnClickListener(this);
         btManageOrder.setOnClickListener(this);
 
     }
@@ -43,18 +46,22 @@ public class OwnerFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId())
         {
-            case R.id.bt_add_pitch :
+            case R.id.btManagePitch :
             {
+                Intent intent = new Intent(getActivity(), PitchManagementActivity.class);
+                startActivity(intent);
                 break;
             }
             case R.id.bt_manageOrder :
             {
-
+                Intent intent = new Intent(getActivity(), OrderActivity.class);
+                startActivity(intent);
                 break;
             }
             case R.id.bt_manageSystem :
             {
-
+                Intent intent = new Intent(getActivity(), SystemManagementActivity.class);
+                startActivity(intent);
                 break;
             }
         }

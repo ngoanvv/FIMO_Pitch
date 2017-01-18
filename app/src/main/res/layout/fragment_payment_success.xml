@@ -33,7 +33,7 @@
         android:gravity="center"
         android:background="@drawable/rounded_border"
         android:text="Tiếp tục"
-        android:textSize="@dimen/text_size_30sp"
+        android:textSize="@dimen/s25dp"
         android:layout_margin="@dimen/s10dp"
         android:textColor="@color/white"
         android:paddingTop="@dimen/s10dp"

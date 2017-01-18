@@ -44,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:layout_marginLeft="@dimen/s40dp"
-                android:layout_height="@dimen/s35dp"
+                android:layout_height="@dimen/s30dp"
                 android:layout_weight="0.03">
                 <RadioGroup
                     android:layout_width="match_parent"
