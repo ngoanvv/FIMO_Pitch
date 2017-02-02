@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:class="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_add_pitch"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -34,29 +33,28 @@
             android:hint="Tên sân bóng" />
 
         <EditText
-            android:id="@+id/edt_phone"
+            android:id="@+id/edt_size"
             android:inputType="number"
             android:layout_marginTop="@dimen/s30dp"
             android:layout_height="@dimen/s70dp"
             style="@style/item_addPitch"
             android:hint="Kích cỡ sân" />
 
-        <Spinner
+        <EditText
+            android:id="@+id/edt_type"
             android:layout_height="@dimen/s70dp"
             android:layout_marginTop="@dimen/s30dp"
             style="@style/item_addPitch"
-            android:hint="Chọn loại sân"/>
+            android:hint="Loại sân: Cỏ nhân tạo/Cỏ"/>
 
-        <Spinner
+        <EditText
+            android:id="@+id/edt_des"
             android:layout_height="@dimen/s70dp"
-            style="@style/item_addPitch"
             android:layout_marginTop="@dimen/s30dp"
-            android:hint="Chọn loại sân"
-            android:id="@+id/spinner" />
-
-
+            style="@style/item_addPitch"
+            android:hint="Mô tả"/>
         <Button
-            android:id="@+id/bt_addSystem"
+            android:id="@+id/bt_addPitch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"

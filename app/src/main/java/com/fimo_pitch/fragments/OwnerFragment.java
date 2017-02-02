@@ -12,6 +12,7 @@ import com.fimo_pitch.R;
 import com.fimo_pitch.main.AddPitchActivity;
 import com.fimo_pitch.main.OrderActivity;
 import com.fimo_pitch.main.PitchManagementActivity;
+import com.fimo_pitch.main.PriceManagementActivity;
 import com.fimo_pitch.main.SystemManagementActivity;
 
 /**
@@ -21,7 +22,7 @@ public class OwnerFragment extends Fragment implements View.OnClickListener {
     public static final String TAG = "NewsFragment";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private Button btManageOrder,btManagePitch,btManageSystem;
+    private Button btManageOrder,btManagePitch,btManageSystem,btManagePrice;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,7 +36,9 @@ public class OwnerFragment extends Fragment implements View.OnClickListener {
         btManageOrder = (Button) v.findViewById(R.id.bt_manageOrder);
         btManagePitch = (Button) v.findViewById(R.id.btManagePitch);
         btManageSystem = (Button) v.findViewById(R.id.bt_manageSystem);
+        btManagePrice = (Button) v.findViewById(R.id.bt_managerPrice);
 
+        btManagePrice.setOnClickListener(this);
         btManageSystem.setOnClickListener(this);
         btManagePitch.setOnClickListener(this);
         btManageOrder.setOnClickListener(this);
@@ -61,6 +64,12 @@ public class OwnerFragment extends Fragment implements View.OnClickListener {
             case R.id.bt_manageSystem :
             {
                 Intent intent = new Intent(getActivity(), SystemManagementActivity.class);
+                startActivity(intent);
+                break;
+            }
+            case R.id.bt_managerPrice :
+            {
+                Intent intent = new Intent(getActivity(), PriceManagementActivity.class);
                 startActivity(intent);
                 break;
             }

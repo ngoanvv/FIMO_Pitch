@@ -1,6 +1,7 @@
 package com.fimo_pitch.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
+import com.fimo_pitch.main.EditPitchActivity;
 import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.TimeTable;
 import com.fimo_pitch.support.ShowToast;
@@ -48,13 +51,21 @@ public class PitchManagementAdapter extends RecyclerView.Adapter<PitchManagement
         holder.tv_des.setText(data.get(position).getDescription());
         holder.tv_size.setText(data.get(position).getSize());
         holder.tv_type.setText(data.get(position).getType());
-        holder.wrapper.setOnClickListener(new View.OnClickListener() {
+        holder.del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowToast.showToastLong(context,position+"");
+
             }
         });
+        holder.edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, EditPitchActivity.class);
+                intent.putExtra(CONSTANT.PITCH_MODEL,data.get(position));
+                context.startActivity(intent);
 
+            }
+        });
     }
 
 
@@ -83,6 +94,7 @@ public class PitchManagementAdapter extends RecyclerView.Adapter<PitchManagement
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tv_name;
         LinearLayout wrapper;
+        Button edit,del;
         TextView tv_time,tv_des,tv_size,tv_type;
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -91,7 +103,8 @@ public class PitchManagementAdapter extends RecyclerView.Adapter<PitchManagement
             tv_size = (TextView) itemView.findViewById(R.id.pitch_size);
             tv_type = (TextView) itemView.findViewById(R.id.pitch_type);
             wrapper = (LinearLayout) itemView.findViewById(R.id.ll_match);
-
+            edit    = (Button) itemView.findViewById(R.id.bt_edit);
+            del     = (Button) itemView.findViewById(R.id.bt_delete);
         }
 
 

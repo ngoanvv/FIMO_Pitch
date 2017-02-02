@@ -17,4 +17,5 @@ public class CONSTANT {
 
     public static String LISTPITCH="LISTPITCH";
 
+    public static String PITCH_MODEL="putchModel";
 }

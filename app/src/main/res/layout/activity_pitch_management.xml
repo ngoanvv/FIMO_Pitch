@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -20,6 +19,17 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_pitch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/s20dp"
+        android:layout_marginBottom="@dimen/s30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        </android.support.v7.widget.RecyclerView>
         <com.fimo_pitch.custom.view.RoundedImageView
         android:layout_width="@dimen/s70dp"
         android:layout_height="@dimen/s70dp"
@@ -29,15 +39,5 @@
         android:layout_marginRight="@dimen/s100dp"
         android:id="@+id/bt_addPitch"
         android:background="@drawable/bt_add"/>
-        <android.support.v7.widget.RecyclerView
-        android:id="@+id/list_pitch"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/s20dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-        </android.support.v7.widget.RecyclerView>
-
     </RelativeLayout>
 </LinearLayout>

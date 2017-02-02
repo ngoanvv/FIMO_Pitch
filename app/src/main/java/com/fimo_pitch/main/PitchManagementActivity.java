@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 
 import com.fimo_pitch.R;
@@ -62,7 +63,7 @@ public class PitchManagementActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
             Request request = new Request.Builder()
-                    .url("https://pitchwebservice.herokuapp.com/pitch/getAllPitchsOfSystem/1")
+                    .url("https://pitchwebservice.herokuapp.com/pitch/getAllPitchsOfSystem/2")
                     .addHeader("content-type", "application/x-www-form-urlencoded")
                     .addHeader("cache-control", "no-cache")
                     .addHeader("postman-token", "b9494f39-8e39-7533-1896-281ee653703b")
@@ -113,6 +114,7 @@ public class PitchManagementActivity extends AppCompatActivity {
             recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
             adapter = new PitchManagementAdapter(PitchManagementActivity.this,listPitch);
             recyclerView.setAdapter(adapter);
+
         }
 
         @Override
@@ -129,9 +131,9 @@ public class PitchManagementActivity extends AppCompatActivity {
         btAddPitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowToast.showToastLong(PitchManagementActivity.this,"Hello");
                 Intent intent = new Intent(PitchManagementActivity.this,AddPitchActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

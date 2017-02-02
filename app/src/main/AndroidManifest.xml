@@ -56,6 +56,9 @@
         <activity android:name=".main.AddSystemPitchActivity" />
         <activity android:name=".main.ListPitchActivity" />
         <activity android:name=".main.PaymentActivity" />
+        <activity android:name=".main.PriceManagementActivity" />
+        <activity android:name=".main.AddPriceActivity" />
+
         <activity android:name=".main.AddPitchActivity" />
         <activity android:name=".main.SystemManagementActivity" />
         <activity

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:paddingTop="@dimen/s20dp"
+    android:id="@+id/ll_match"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/s20dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="@dimen/s250dp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/item_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="19:00 - 21:00"
+                android:textSize="@dimen/s25dp"
+                android:layout_marginLeft="@dimen/s20dp"
+                android:maxLines="2"
+                android:layout_marginTop="@dimen/s5dp"
+                android:textStyle="italic"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/holo_green_dark"
+                android:layout_alignBottom="@+id/view"/>
+            <!--//body-->
+            <LinearLayout
+                android:layout_marginTop="1dp"
+                android:layout_marginLeft="@dimen/s20dp"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+                <!--money-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/s5dp"
+                    android:layout_height="@dimen/s20dp">
+                    <com.fimo_pitch.custom.view.RoundedImageView
+                        android:layout_width="@dimen/s15dp"
+                        android:background="@drawable/ic_money"
+                        android:layout_gravity="center_vertical"
+                        android:layout_height="@dimen/s15dp"/>
+
+                    <TextView
+                        android:id="@+id/item_price"
+                        android:layout_width="wrap_content"
+                        android:text="300.000vnđ"
+                        android:textSize="@dimen/s15dp"
+                        android:layout_marginLeft="@dimen/s15dp"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/accent_material_light"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/s5dp"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <com.fimo_pitch.custom.view.RoundedImageView
+                        android:layout_width="@dimen/s15dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/ic_clock"
+                        android:layout_height="@dimen/s15dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/item_date"
+                        android:text="Ngày thường"
+                        android:layout_marginLeft="@dimen/s15dp"
+                        android:textSize="@dimen/s15dp"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/accent_material_light"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginBottom="@dimen/s5dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/s5dp"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <com.fimo_pitch.custom.view.RoundedImageView
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="@dimen/s15dp"
+                        android:background="@drawable/ic_location"
+                        android:layout_height="@dimen/s15dp"/>
+
+                    <TextView
+                        android:id="@+id/item_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="3"
+                        android:textSize="@dimen/s15dp"
+                        android:text="Chả có gì mô tả"
+                        android:layout_marginLeft="@dimen/s15dp"
+                        android:layout_gravity="center_vertical"
+                        android:inputType="textMultiLine"
+                        android:textColor="@color/accent_material_light"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+            <Button
+                android:id="@+id/bt_edit"
+                android:layout_width="@dimen/s100dp"
+                android:layout_height="@dimen/s50dp"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/s20dp"
+                android:background="@color/colorBackGroundFragmentTabHost"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:text="Chỉnh sửa"/>
+
+        <Button
+            android:id="@+id/bt_delete"
+            android:layout_width="@dimen/s100dp"
+            android:layout_height="@dimen/s50dp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/s20dp"
+            android:layout_marginLeft="@dimen/s30dp"
+            android:background="@color/colorRed"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:text="Xóa"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/s20dp"
+        android:layout_marginBottom="@dimen/s5dp"
+        android:background="@color/Grey"></View>
+
+</LinearLayout>

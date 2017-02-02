@@ -9,6 +9,24 @@ public class Price {
     String dayOfWeek;
     String price;
     String description;
+    String timeStart;
+    String timeEnd;
+
+    public String getTimeStart() {
+        return timeStart;
+    }
+
+    public void setTimeStart(String timeStart) {
+        this.timeStart = timeStart;
+    }
+
+    public String getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(String timeEnd) {
+        this.timeEnd = timeEnd;
+    }
 
     public String getTime() {
         return time;

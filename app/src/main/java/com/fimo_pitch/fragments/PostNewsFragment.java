@@ -37,6 +37,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 /**
  * Created by TranManhTien on 23/08/2016.
  */
@@ -45,10 +51,11 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM2 = "param2";
     public final int SOFTKEYBOARDHEIGHT=100;
     public static String TAG="PostNewsFragment";
-    private EditText edt_time,edt_money,edt_description,edt_location;
+    private EditText edt_time,edt_title,edt_description,edt_location;
     private Button bt_post;
     // 144 xuan thuy : lat : 21.036654, lng 105.781218
-    private RoundedImageView img_send,img_cancel;
+    private RoundedImageView img_send;
+    private OkHttpClient client;
 
 
     @Override
@@ -62,13 +69,11 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
     {
         edt_description = (EditText) view.findViewById(R.id.edt_description);
         edt_time = (EditText) view.findViewById(R.id.edt_time);
-        edt_money = (EditText) view.findViewById(R.id.edt_money);
+        edt_title = (EditText) view.findViewById(R.id.edt_title);
         edt_location = (EditText) view.findViewById(R.id.edt_location);
         img_send = (RoundedImageView) view.findViewById(R.id.img_send);
-        img_cancel = (RoundedImageView) view.findViewById(R.id.img_cancel);
 
         edt_time.setOnClickListener(this);
-        img_cancel.setOnClickListener(this);
         img_send.setOnClickListener(this);
 
     }
@@ -80,6 +85,8 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
         fragment.setArguments(args);
         return fragment;
     }
+
+
     public void showTimePicker(final int year, final int month, final int day)
     {
         TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
@@ -110,10 +117,10 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
     }
     public boolean validate() {
         boolean valid = true;
-        String description,address,stadium,time,money;
+        String description,address,title,time,money;
         description = edt_description.getText().toString().replaceAll("\\s+", " ");;
         time        = edt_time.getText().toString().replaceAll("\\s+", " ");
-        money       = edt_money.getText().toString().replaceAll("\\s+", " ");
+        title       = edt_title.getText().toString().replaceAll("\\s+", " ");
         address     = edt_location.getText().toString().replaceAll("\\s+", " ");
 
         if (description.isEmpty() || description.length() < 6)
@@ -135,14 +142,14 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
         {
             edt_time.setError(null);
         }
-        if (money.isEmpty() || money.length() < 6 )
+        if (title.isEmpty() || title.length() < 6 )
         {
-            edt_money.setError(getString(R.string.invalid_length));
+            edt_title.setError(getString(R.string.invalid_length));
             valid = false;
         }
         else
         {
-            edt_money.setError(null);
+            edt_title.setError(null);
         }
         if (address.isEmpty() || address.length() < 6 )
         {
@@ -168,20 +175,12 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
                 edt_description.setText("");
                 edt_location.setText("");
                 edt_time.setText("");
-                edt_money.setText("");
+                edt_title.setText("");
                 break;
             }
             case R.id.edt_time :
             {
                 showDatePicker();
-                break;
-            }
-            case R.id.img_cancel :
-            {
-                edt_description.setText("");
-                edt_location.setText("");
-                edt_time.setText("");
-                edt_money.setText("");
                 break;
             }
         }

@@ -41,7 +41,42 @@ public class Utils {
             builder.create().show();
 
         }
+    public static String getDayofWeek(int dateofweek)
+    {
+        switch (dateofweek)
+        {
+            case 1 :
+            {
+                return "Sun";
+            }
+            case 2 :
+            {
+                return "Mon";
+            }
+            case 3 :
+            {
+                return "Tue";
+            }
+            case 4 :
+            {
+                return "Wed";
+            }
+            case 5 :
+            {
+                return "Thu";
+            }
+            case 6 :
+            {
+                return "Fri";
+            }
+            case 7 :
+            {
+                return "Sat";
+            }
+        }
+        return "Mon";
 
+    }
     public static boolean isConnected(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -42,15 +42,15 @@ public class NewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView= inflater.inflate(R.layout.fragment_news, container, false);
-//        Log.d(TAG,data);
+        Log.d(TAG,data);
         initView(rootView);
+        initList();
         return rootView;
     }
 
     public void initView(View v)
     {
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
-        initList();
         edt_input_search = (EditText) v.findViewById(R.id.edt_input);
         edt_input_search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -100,7 +100,8 @@ public class NewsFragment extends Fragment {
                 LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
                 mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
-            } catch (JSONException e) {
+            }
+            catch (JSONException e) {
                 ShowToast.showToastLong(getContext(),e.getMessage().toString());
 
             }

@@ -6,14 +6,6 @@
     android:id="@+id/ll_match"
     android:layout_height="wrap_content">
 
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/s20dp"
-        android:layout_marginBottom="@dimen/s5dp"
-        android:background="@color/Grey"></View>
-
     <LinearLayout
         android:layout_marginLeft="@dimen/s20dp"
         android:layout_width="match_parent"
@@ -23,7 +15,6 @@
             android:orientation="vertical"
             android:layout_width="@dimen/s250dp"
             android:layout_height="wrap_content">
-
             <!--header-->
             <TextView
                 android:id="@+id/pitch_name"
@@ -90,7 +81,7 @@
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:layout_marginTop="@dimen/s20dp"
-                    android:layout_height="@dimen/s20dp">
+                    android:layout_height="@dimen/s30dp">
                     <com.fimo_pitch.custom.view.RoundedImageView
                         android:layout_width="@dimen/s20dp"
                         android:background="@drawable/ic_ball"
@@ -110,5 +101,34 @@
             </LinearLayout>
 
         </LinearLayout>
+        <Button
+            android:id="@+id/bt_edit"
+            android:layout_width="@dimen/s100dp"
+            android:layout_height="@dimen/s50dp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/s20dp"
+            android:background="@color/colorBackGroundFragmentTabHost"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:text="Sửa"/>
+
+        <Button
+            android:id="@+id/bt_delete"
+            android:layout_width="@dimen/s100dp"
+            android:layout_height="@dimen/s50dp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/s20dp"
+            android:layout_marginLeft="@dimen/s30dp"
+            android:background="@color/colorRed"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:text="Xóa"/>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/s20dp"
+        android:layout_marginBottom="@dimen/s5dp"
+        android:background="@color/Grey"></View>
+
 </LinearLayout>

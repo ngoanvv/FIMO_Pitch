@@ -3,10 +3,8 @@ package com.fimo_pitch.main;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -15,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.fimo_pitch.R;
-import com.fimo_pitch.adapter.PitchManagementAdapter;
 import com.fimo_pitch.support.NetworkUtils;
 
 import java.util.HashMap;
@@ -23,12 +20,12 @@ import java.util.HashMap;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
-public class AddPitchActivity extends AppCompatActivity {
+public class EditPitchActivity extends AppCompatActivity {
     private HashMap<String,String> param;
     private EditText edtName,edtType,edtSize,edtDes;
     private Button btAdd;
     private OkHttpClient client;
-    private String TAG="AddPitchActivity";
+    private String TAG="EditPitchActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +35,7 @@ public class AddPitchActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("Thêm một sân mới");
+        getSupportActionBar().setTitle("Chỉnh sửa thông tin sân bóng");
 
         initData();
         initView();
@@ -56,8 +53,9 @@ public class AddPitchActivity extends AppCompatActivity {
         edtSize = (EditText) findViewById(R.id.edt_size);
         edtDes = (EditText) findViewById(R.id.edt_des);
         btAdd = (Button) findViewById(R.id.bt_addPitch);
+        btAdd.setText("Cập nhật");
 
-        edtName.setText("Sân Demo");
+        edtName.setText("Sân 99");
         edtType.setText("Sân Cỏ");
         edtSize.setText("9");
         edtDes.setText("Sân đẹp lắm");
@@ -98,7 +96,7 @@ public class AddPitchActivity extends AppCompatActivity {
             Log.d(TAG,s);
             progressDialog.dismiss();
             if(s.contains("success")) {
-                Intent intent = new Intent(AddPitchActivity.this,PitchManagementActivity.class);
+                Intent intent = new Intent(EditPitchActivity.this,PitchManagementActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -108,7 +106,7 @@ public class AddPitchActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(AddPitchActivity.this);
+            progressDialog = new ProgressDialog(EditPitchActivity.this);
             progressDialog.setMessage("Đang thao tác");
             progressDialog.show();
         }
@@ -134,7 +132,7 @@ public class AddPitchActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            Intent intent = new Intent(AddPitchActivity.this,PitchManagementActivity.class);
+            Intent intent = new Intent(EditPitchActivity.this,PitchManagementActivity.class);
             startActivity(intent);
             finish();
         }
