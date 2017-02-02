@@ -12,7 +12,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
+import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.support.NetworkUtils;
 
 import java.util.HashMap;
@@ -26,7 +28,7 @@ public class EditPitchActivity extends AppCompatActivity {
     private Button btAdd;
     private OkHttpClient client;
     private String TAG="EditPitchActivity";
-
+    private Pitch mPitch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,7 @@ public class EditPitchActivity extends AppCompatActivity {
 
     public void initData()
     {
+        mPitch = (Pitch) getIntent().getSerializableExtra(CONSTANT.PITCH_MODEL);
         client = new OkHttpClient();
         param = new HashMap<>();
     }
@@ -55,10 +58,10 @@ public class EditPitchActivity extends AppCompatActivity {
         btAdd = (Button) findViewById(R.id.bt_addPitch);
         btAdd.setText("Cập nhật");
 
-        edtName.setText("Sân 99");
-        edtType.setText("Sân Cỏ");
-        edtSize.setText("9");
-        edtDes.setText("Sân đẹp lắm");
+        edtName.setText(mPitch.getName());
+        edtType.setText(mPitch.getType());
+        edtSize.setText(mPitch.getSize());
+        edtDes.setText(mPitch.getDescription());
 
         btAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +75,8 @@ public class EditPitchActivity extends AppCompatActivity {
                 param.put("type",edtType.getText().toString());
                 param.put("size",edtSize.getText().toString());
                 param.put("description",edtDes.getText().toString());
-                param.put("system_id","2");
-                param.put("image","image");
+                param.put("system_id",mPitch.getSystemId());
+                param.put("id",mPitch.getId());
                 new MyTask(param).execute();
             }
         });
@@ -113,7 +116,9 @@ public class EditPitchActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try {
-                Response response = client.newCall(NetworkUtils.createPostRequest("https://pitchwebservice.herokuapp.com/pitch/insertPitch", this.param)).execute();
+                Response response =
+                        client.newCall(NetworkUtils.createPutRequest("https://pitchwebservice.herokuapp.com/pitch/updatepitch/"+mPitch.getId(),
+                                this.param)).execute();
                 if (response.isSuccessful()) {
                     String results = response.body().string();
                     Log.d("run", results);

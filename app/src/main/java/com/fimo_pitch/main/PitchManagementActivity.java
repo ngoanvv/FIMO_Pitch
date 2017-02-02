@@ -92,6 +92,8 @@ public class PitchManagementActivity extends AppCompatActivity {
                                 p.setSize(object.getString("size"));
                             if(!object.getString("description").equals(null))
                                 p.setDescription(object.getString("description"));
+                            if(!object.getString("system_id").equals(null))
+                                p.setSystemId(object.getString("system_id"));
                             listPitch.add(p);
                         }
                     }

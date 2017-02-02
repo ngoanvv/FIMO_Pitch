@@ -13,6 +13,15 @@ public class Pitch implements Serializable {
     private String description;
     private String size;
     private String phone;
+    private String systemId;
+
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
+    }
 
     public String getId() {
         return id;
