@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.model.Pitch;
+import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
 
 import java.util.HashMap;
@@ -29,10 +30,13 @@ public class EditPitchActivity extends AppCompatActivity {
     private OkHttpClient client;
     private String TAG="EditPitchActivity";
     private Pitch mPitch;
+    private UserModel userModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pitch);
+        userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

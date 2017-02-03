@@ -1,10 +1,13 @@
 package com.fimo_pitch.fragments;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,6 +22,9 @@ import android.widget.TimePicker;
 
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
+import com.fimo_pitch.main.AddSystemPitchActivity;
+import com.fimo_pitch.main.PitchManagementActivity;
+import com.fimo_pitch.support.NetworkUtils;
 import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.maps.CameraUpdate;
@@ -33,6 +39,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -56,12 +63,13 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
     // 144 xuan thuy : lat : 21.036654, lng 105.781218
     private RoundedImageView img_send;
     private OkHttpClient client;
-
+    private String time=" ";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_postnews, container, false);
+        client = new OkHttpClient();
         initView(view);
         return view;
     }
@@ -72,6 +80,12 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
         edt_title = (EditText) view.findViewById(R.id.edt_title);
         edt_location = (EditText) view.findViewById(R.id.edt_location);
         img_send = (RoundedImageView) view.findViewById(R.id.img_send);
+
+        edt_title.setText("Tiêu đề");
+        edt_description.setText("Mô tả");
+        edt_location.setText("Xung quanh Cầu Giấy");
+        edt_time.setText("17h ngày 20-1-2016");
+
 
         edt_time.setOnClickListener(this);
         img_send.setOnClickListener(this);
@@ -164,6 +178,60 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
 
         return valid;
     }
+    class MyTask extends AsyncTask<String,String,String>
+    {
+
+
+        HashMap<String,String> param;
+        ProgressDialog progressDialog;
+
+        public MyTask(HashMap<String,String> body)
+        {
+            this.param=body;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.d(TAG,s);
+            progressDialog.dismiss();
+            if(s.contains("success")) {
+                Utils.openDialog(getContext(),getContext().getString(R.string.posted));
+                edt_description.setText("");
+                edt_location.setText("");
+                edt_time.setText("");
+                edt_title.setText("");
+            }
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("Đang thao tác");
+            progressDialog.show();
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                Response response =
+                client.newCall(NetworkUtils.createPostRequest("https://pitchwebservice.herokuapp.com/find_teams/createNews", this.param)).execute();
+                String results = response.body().string();
+                Log.d("run", results);
+                if (response.isSuccessful()) {
+                    Log.d("run", results);
+                    return results;
+                }
+
+            }
+            catch (Exception e)
+            {
+                return e.toString();
+            }
+            return "failed";
+        }
+    }
 
     @Override
     public void onClick(View v) {
@@ -171,11 +239,15 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
         switch (id) {
             case R.id.img_send :
             {
-                Utils.openDialog(getContext(),getContext().getString(R.string.posted));
-                edt_description.setText("");
-                edt_location.setText("");
-                edt_time.setText("");
-                edt_title.setText("");
+
+                HashMap<String,String> param =new HashMap<>();
+                param.put("time_start",edt_time.getText().toString());
+                param.put("title",edt_title.getText().toString());
+                param.put("address",edt_location.getText().toString());
+                param.put("user_id","1");
+
+                param.put("description",edt_description.getText().toString());
+                new MyTask(param).execute();
                 break;
             }
             case R.id.edt_time :

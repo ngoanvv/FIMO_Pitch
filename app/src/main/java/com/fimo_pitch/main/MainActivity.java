@@ -121,7 +121,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         listNews = new ArrayList<>();
         new MyTask().execute();
 
-        userModel = new UserModel();
+        userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
         data = getIntent().getBundleExtra("data");
         if (data != null) {
             userModel.setEmail(data.getString(CONSTANT.USER_EMAIL));

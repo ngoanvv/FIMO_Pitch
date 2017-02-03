@@ -74,7 +74,7 @@
                 android:id="@+id/spnDate"
                 android:hint="Chọn loại ngày"/>
             <Button
-                android:id="@+id/bt_add"
+                android:id="@+id/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"

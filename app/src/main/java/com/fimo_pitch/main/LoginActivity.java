@@ -23,6 +23,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.Utils;
@@ -57,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CallbackManager callbackManager;
     private String email, password;
     private SignInButton loginGG;
+    private UserModel userModel;
     private GoogleApiClient mGoogleApiClient;
     private int RC_SIGN_IN = 9999;
     /**
@@ -93,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        } catch (NoSuchAlgorithmException e) {
 //
 //        }
-
+        userModel = new UserModel();
         initGoogleAPI();
         initView();
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -190,11 +192,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onStop() {
-        super.onStop();// ATTENTION: This was auto-generated to implement the App Indexing API.
-// See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client.disconnect();
     }
 
@@ -370,12 +368,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             bundle.putString("photo", acct.getPhotoUrl().toString());
             bundle.putString("name", acct.getGivenName().toString());
 
+            userModel.setPhone("");
+            userModel.setId("1");
+            userModel.setName(acct.getGivenName().toString());
+            userModel.setEmail(acct.getEmail());
+            userModel.setImageURL("img");
             email = acct.getEmail();
             password = acct.getId();
             saveUserData(email, password, UserModel.TYPE_TEAM);
 
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("data", bundle);
+            intent.putExtra(CONSTANT.KEY_USER,userModel);
             startActivity(intent);
 
 

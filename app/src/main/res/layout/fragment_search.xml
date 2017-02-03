@@ -43,7 +43,7 @@
             android:paddingRight="@dimen/s10dp"
             android:textStyle="bold"
             android:textSize="@dimen/s15dp"
-            android:text="17:00-19:00"
+            android:text="17:00"
             android:background="@android:color/holo_blue_light"
             android:id="@+id/tv_time" />
         <RelativeLayout

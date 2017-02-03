@@ -636,7 +636,14 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                         {
                             tv_time.setText("0"+mHour+":"+"0"+mMinute);
                         }
-                        else tv_time.setText(mHour+":"+mMinute);
+                        if(mHour<10&&mMinute>10)
+                        {
+                            tv_time.setText("0"+mHour+":"+""+mMinute);
+                        }
+                        if(mHour>10&&mMinute<10)
+                        {
+                            tv_time.setText(""+mHour+":"+"0"+mMinute);
+                        }
                     }
                 },7,00,true);
                 dialog.setTitle("Chọn giờ bắt đầu bạn muốn");

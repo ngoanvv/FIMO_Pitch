@@ -45,7 +45,7 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
 
         View view = inflater.inflate(R.layout.fragment_matchs, container, false);
         listSystemPitch = new ArrayList<>();
-        Log.d(TAG,data);
+//        Log.d(TAG,data);
         initView(view);
 
         return view;

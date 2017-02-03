@@ -14,12 +14,14 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 
+import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.PitchAdapter;
 import com.fimo_pitch.adapter.PitchManagementAdapter;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.TimeTable;
+import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.ShowToast;
 
 import org.json.JSONArray;
@@ -39,10 +41,13 @@ public class PitchManagementActivity extends AppCompatActivity {
     private ArrayList<Pitch> listPitch;
     private OkHttpClient okHttpClient;
     private String listpitchData;
+    private UserModel userModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pitch_management);
+        userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -134,6 +139,7 @@ public class PitchManagementActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PitchManagementActivity.this,AddPitchActivity.class);
+                intent.putExtra(CONSTANT.KEY_USER,userModel);
                 startActivity(intent);
                 finish();
             }

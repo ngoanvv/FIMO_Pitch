@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.main.AddPitchActivity;
 import com.fimo_pitch.main.OrderActivity;
 import com.fimo_pitch.main.PitchManagementActivity;
 import com.fimo_pitch.main.PriceManagementActivity;
 import com.fimo_pitch.main.SystemManagementActivity;
+import com.fimo_pitch.model.UserModel;
 
 /**
  * Created by Diep_Chelsea on 13/07/2016.
@@ -23,10 +25,11 @@ public class OwnerFragment extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private Button btManageOrder,btManagePitch,btManageSystem,btManagePrice;
-
+    private UserModel userModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView= inflater.inflate(R.layout.fragment_owner, container, false);
+        userModel = (UserModel) getActivity().getIntent().getSerializableExtra(CONSTANT.KEY_USER);
         initView(rootView);
         return rootView;
     }
@@ -52,24 +55,28 @@ public class OwnerFragment extends Fragment implements View.OnClickListener {
             case R.id.btManagePitch :
             {
                 Intent intent = new Intent(getActivity(), PitchManagementActivity.class);
+                intent.putExtra(CONSTANT.KEY_USER,userModel);
                 startActivity(intent);
                 break;
             }
             case R.id.bt_manageOrder :
             {
                 Intent intent = new Intent(getActivity(), OrderActivity.class);
+                intent.putExtra(CONSTANT.KEY_USER,userModel);
                 startActivity(intent);
                 break;
             }
             case R.id.bt_manageSystem :
             {
                 Intent intent = new Intent(getActivity(), SystemManagementActivity.class);
+                intent.putExtra(CONSTANT.KEY_USER,userModel);
                 startActivity(intent);
                 break;
             }
             case R.id.bt_managerPrice :
             {
                 Intent intent = new Intent(getActivity(), PriceManagementActivity.class);
+                intent.putExtra(CONSTANT.KEY_USER,userModel);
                 startActivity(intent);
                 break;
             }

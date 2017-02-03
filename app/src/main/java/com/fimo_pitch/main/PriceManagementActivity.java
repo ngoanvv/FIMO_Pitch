@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.PitchAdapter;
 import com.fimo_pitch.adapter.PitchManagementAdapter;
@@ -19,6 +20,7 @@ import com.fimo_pitch.adapter.PriceAdapter;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.Price;
+import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.ShowToast;
 
 import org.json.JSONArray;
@@ -37,10 +39,13 @@ public class PriceManagementActivity extends AppCompatActivity {
     private ArrayList<Price> listPrice;
     private OkHttpClient okHttpClient;
     private String listpitchData;
+    private UserModel userModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pitch_management);
+        userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
 
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -71,7 +76,9 @@ public class PriceManagementActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ShowToast.showToastLong(PriceManagementActivity.this,"Hello");
                 Intent intent = new Intent(PriceManagementActivity.this,AddPriceActivity.class);
+                intent.putExtra(CONSTANT.KEY_USER,userModel);
                 startActivity(intent);
+                finish();
             }
         });
 
