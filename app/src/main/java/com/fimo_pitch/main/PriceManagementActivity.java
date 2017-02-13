@@ -59,11 +59,6 @@ public class PriceManagementActivity extends AppCompatActivity {
         listPrice = new ArrayList<>();
         listPrice.add( new Price());
         listPrice.add( new Price());
-        listPrice.add( new Price());
-        listPrice.add( new Price());
-        listPrice.add( new Price());
-        listPrice.add( new Price());
-        listPrice.add( new Price());
 
     }
     
@@ -74,7 +69,6 @@ public class PriceManagementActivity extends AppCompatActivity {
         btAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowToast.showToastLong(PriceManagementActivity.this,"Hello");
                 Intent intent = new Intent(PriceManagementActivity.this,AddPriceActivity.class);
                 intent.putExtra(CONSTANT.KEY_USER,userModel);
                 startActivity(intent);

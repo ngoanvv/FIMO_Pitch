@@ -307,14 +307,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
         @Override
         protected String doInBackground(String... params) {
-            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
-            RequestBody body = RequestBody.create(mediaType, "systemPID="+mSystemPitch.getId());
             Request request = new Request.Builder()
-                    .url("https://pitchwebservice.herokuapp.com/pitchs/getallpitchofsystem")
-                    .post(body)
-                    .addHeader("content-type", "application/x-www-form-urlencoded")
-                    .addHeader("cache-control", "no-cache")
-                    .addHeader("postman-token", "b9494f39-8e39-7533-1896-281ee653703b")
+                    .url(API.getAllPitchofSystem+mSystemPitch.getId())
                     .build();
             try {
                 okHttpClient = new OkHttpClient();

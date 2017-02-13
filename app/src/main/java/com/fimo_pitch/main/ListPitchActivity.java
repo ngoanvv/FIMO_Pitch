@@ -353,9 +353,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
             }
             case R.id.btsearch :
             {
-                Log.d("timetable",pitchId+","+mSystemPitch.getId());
-                Log.d("pitch",listPitches.get(pitchPos).toString());
-                new GetTimeTable(crPitch).execute(pitchId,mSystemPitch.getId(),"Mon");
+//                new GetTimeTable(crPitch).execute(pitchId,mSystemPitch.getId(),"Mon");
 
                 break;
             }

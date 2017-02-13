@@ -8,14 +8,14 @@ import java.io.Serializable;
 public class UserModel implements Serializable {
     public static String TYPE_TEAM="TEAM";
     public static String TYPE_OWNER="OWNER";
-    public String name;
-    public String id;
-    public String phone;
-    public String email;
-    public String userType;
-    public String imageURL;
-    public String password;
-
+    private String name;
+    private String id;
+    private String phone;
+    private String email;
+    private String userType;
+    private String imageURL;
+    private String password;
+    private String token;
     @Override
     public String toString() {
         return "UserModel{" +
@@ -27,6 +27,14 @@ public class UserModel implements Serializable {
                 ", imageURL='" + imageURL + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getPassword() {

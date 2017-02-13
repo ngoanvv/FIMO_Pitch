@@ -100,7 +100,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     private ArrayList<SystemPitch> listSystemPitch;
     private InstantAutoComplete search_box;
     private ImageView bt_currentLocation;
-    private static String[] address ={"Vị trí hiện tại","Ba Đình","Cầu Giấy","Thanh Xuân","Hà Đông","Mai Dịch","Cổ Nhuế","Từ Liêm","Hai Bà Trưng"};
     private String result,data;
     private LatLng resultLatLng;
     private OkHttpClient okHttpClient;
@@ -126,7 +125,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             listSystemPitch = new ArrayList<>();
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                    (getContext(), android.R.layout.simple_dropdown_item_1line,address);
+                    (getContext(), android.R.layout.simple_dropdown_item_1line,getActivity().getResources().getStringArray(R.array.listProvince));
             resultLatLng = new LatLng(0.0,0.0);
 
             search_box = (InstantAutoComplete) view.findViewById(R.id.search_box);

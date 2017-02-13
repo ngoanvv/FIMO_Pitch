@@ -118,7 +118,7 @@
                 android:background="@color/colorBackGroundFragmentTabHost"
                 android:textColor="@color/white"
                 android:layout_gravity="center"
-                android:text="Chỉnh sửa"/>
+                android:text="Sửa"/>
 
         <Button
             android:id="@+id/bt_delete"

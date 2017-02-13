@@ -19,15 +19,22 @@ import android.widget.TimePicker;
 
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
+import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
 import com.fimo_pitch.support.ShowToast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 
 public class AddPriceActivity extends AppCompatActivity implements View.OnClickListener {
@@ -38,13 +45,14 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
     private String TAG="AddPriceActivity";
     private OkHttpClient client;
     private UserModel userModel;
+    private OkHttpClient okHttpClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_price);
         userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
-
+        okHttpClient = new OkHttpClient();
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -108,7 +116,24 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
         {
             this.param=body;
         }
-
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                Response response =
+                        client.newCall(NetworkUtils.createPostRequest(""
+                                        , this.param)).execute();
+                if (response.isSuccessful()) {
+                    String results = response.body().string();
+                    Log.d("run", results);
+                    return results;
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+            return null;
+        }
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
@@ -130,22 +155,7 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
             progressDialog.setMessage("Đang thao tác");
             progressDialog.show();
         }
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                Response response = client.newCall(NetworkUtils.createPostRequest("https://pitchwebservice.herokuapp.com/pitch/insertPitch", this.param)).execute();
-                if (response.isSuccessful()) {
-                    String results = response.body().string();
-                    Log.d("run", results);
-                    return results;
-                }
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
-            return null;
-        }
+
     }
     @Override
     public void onClick(View v) {

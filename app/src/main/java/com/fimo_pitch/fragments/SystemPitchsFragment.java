@@ -136,7 +136,7 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
                         StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
                 recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
             }
-            catch (JSONException e)
+            catch (Exception e)
             {
                 ShowToast.showToastLong(getContext(),e.getMessage().toString());
             }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.PitchManagementAdapter;
@@ -119,7 +120,7 @@ public class AddPitchActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try {
-                Response response = client.newCall(NetworkUtils.createPostRequest("https://pitchwebservice.herokuapp.com/pitch/insertPitch", this.param)).execute();
+                Response response = client.newCall(NetworkUtils.createPostRequest(API.insertPitch, this.param)).execute();
                 if (response.isSuccessful()) {
                     String results = response.body().string();
                     Log.d("run", results);

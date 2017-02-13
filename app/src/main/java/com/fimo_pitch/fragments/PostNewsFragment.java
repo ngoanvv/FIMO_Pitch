@@ -20,6 +20,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.fimo_pitch.API;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.main.AddSystemPitchActivity;
@@ -216,7 +217,7 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
         protected String doInBackground(String... params) {
             try {
                 Response response =
-                client.newCall(NetworkUtils.createPostRequest("https://pitchwebservice.herokuapp.com/find_teams/createNews", this.param)).execute();
+                client.newCall(NetworkUtils.createPostRequest(API.createNews, this.param)).execute();
                 String results = response.body().string();
                 Log.d("run", results);
                 if (response.isSuccessful()) {
@@ -245,7 +246,6 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
                 param.put("title",edt_title.getText().toString());
                 param.put("address",edt_location.getText().toString());
                 param.put("user_id","1");
-
                 param.put("description",edt_description.getText().toString());
                 new MyTask(param).execute();
                 break;

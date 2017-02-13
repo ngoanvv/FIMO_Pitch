@@ -11,6 +11,24 @@ public class Price {
     String description;
     String timeStart;
     String timeEnd;
+    String status;
+    String systemId;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
+    }
 
     public String getTimeStart() {
         return timeStart;

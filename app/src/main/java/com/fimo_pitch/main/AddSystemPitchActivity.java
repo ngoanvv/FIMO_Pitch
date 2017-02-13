@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.model.UserModel;
@@ -125,7 +126,7 @@ public class AddSystemPitchActivity extends AppCompatActivity implements OnMapRe
         protected String doInBackground(String... params) {
             try {
                 Response response =
-                  client.newCall(NetworkUtils.createPostRequest("https://pitchwebservice.herokuapp.com/system_pitch/insertsystempich", this.param)).execute();
+                  client.newCall(NetworkUtils.createPostRequest(API.insertSystemPitch, this.param)).execute();
                 String results = response.body().string();
                 Log.d("run", results);
                 if (response.isSuccessful()) {

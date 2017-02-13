@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.EditText;
 
 
@@ -51,6 +52,7 @@ public class NewsFragment extends Fragment {
     public void initView(View v)
     {
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+
         edt_input_search = (EditText) v.findViewById(R.id.edt_input);
         edt_input_search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -100,6 +102,24 @@ public class NewsFragment extends Fragment {
                 LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
                 mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                        super.onScrollStateChanged(recyclerView, newState);
+                        if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                            Log.d(TAG,"1");
+                        } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                            Log.d(TAG,"2");
+                        } else {
+                            Log.d(TAG,"3");
+                        }
+                    }
+
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+                    }
+                });
             }
             catch (JSONException e) {
                 ShowToast.showToastLong(getContext(),e.getMessage().toString());

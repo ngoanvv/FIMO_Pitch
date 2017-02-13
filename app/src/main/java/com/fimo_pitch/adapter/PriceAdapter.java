@@ -42,16 +42,16 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.MyViewHolder
     }
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-//        holder.tv_des.setText(data.get(position).getDescription());
-//        holder.tv_date.setText(data.get(position).getDayOfWeek());
-//        holder.tv_time.setText(data.get(position).getTimeStart().substring(0,5)+"-"+data.get(position).getTimeEnd().substring(0,5));
-//        holder.tv_price.setText(data.get(position).getPrice());
-//        holder.btEdit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        holder.tv_des.setText(data.get(position).getDescription());
+        holder.tv_date.setText(data.get(position).getDayOfWeek());
+        holder.tv_time.setText(data.get(position).getTimeStart().substring(0,5)+"-"+data.get(position).getTimeEnd().substring(0,5));
+        holder.tv_price.setText(data.get(position).getPrice());
+        holder.btEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
     }
 

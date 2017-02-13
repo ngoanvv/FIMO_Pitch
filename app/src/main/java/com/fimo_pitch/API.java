@@ -5,9 +5,14 @@ package com.fimo_pitch;
  */
 
 public class API {
-    public static String getSystemPitch="https://pitchwebservice.herokuapp.com/system_pitch/getallsystempitch";
-    public static String postNews="https://pitchwebservice.herokuapp.com/find_teams/create?title=a&address=cau giay&description=5h&user_id=1&time_start=5h";
-    public static String getNews="https://pitchwebservice.herokuapp.com/find_teams/getfindteams/1";
-    public static String GetPrice="https://pitchwebservice.herokuapp.com/pitchs/getPricePitch/1";
-    public static String BookPitch="https://pitchwebservice.herokuapp.com/pitchs/putPitch/";
+    public static String getSystemPitch="http://118.70.72.13:3000/system_pitch/getallsystempitch";
+    public static String getNews="http://118.70.72.13:3000/find_teams/getfindteams/1";
+    public static String GetPrice="http://118.70.72.13:3000/pitchs/getPricePitch/1";
+    public static String createNews="http://118.70.72.13:3000/find_teams/createNews";
+    public static String insertPitch="http://118.70.72.13:3000/pitch/insertPitch";
+    public static String insertSystemPitch="http://118.70.72.13:3000/system_pitch/insertsystempich";
+    public static String getAllPitchofSystem="http://118.70.72.13:3000/pitch/getallpitchsofsystem/";
+    public static String updatePitch="http://118.70.72.13:3000/pitch/updatepitch/";
+    public static String Login="http://118.70.72.13:3000/users/login";
+
 }

@@ -123,12 +123,9 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
 
         userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
         data = getIntent().getBundleExtra("data");
-        if (data != null) {
-            userModel.setEmail(data.getString(CONSTANT.USER_EMAIL));
-            userModel.setImageURL(data.getString(CONSTANT.USER_AVATAR));
-            userModel.setName(data.getString(CONSTANT.USER_NAME));
-            tv_email.setText(data.getString(CONSTANT.USER_EMAIL));
-            tv_userName.setText(data.getString(CONSTANT.USER_NAME));
+        if (userModel != null) {
+            tv_email.setText(userModel.getEmail());
+            tv_userName.setText(userModel.getName());
         }
     }
 
@@ -304,34 +301,39 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                 if(newsResponse.isSuccessful()) listNewsData = newsResponse.body().string();
 
                 okhttp3.Response systemPitchResponse = okHttpClient.newCall(systemPitchRequest).execute();
+                Log.d(TAG,systemPitchResponse.body().toString()+"");
                 if(systemPitchResponse.isSuccessful())
-
                 {
                     listSystemData = systemPitchResponse.body().string();
-
                 }
+            } catch (Exception e) {
 
-            } catch (IOException e) {
                 e.printStackTrace();
+                return "failed";
             }
-            return null;
+            return "success";
         }
 
         @Override
         protected void onPostExecute(String result) {
-            progressDialog.dismiss();
-            tabs = (TabLayout) findViewById(R.id.tabs);
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
-            Adapter adapter = new Adapter(getSupportFragmentManager());
-            adapter.addFragment(new SystemPitchsFragment(listSystemData), "Tìm nhanh");
-            adapter.addFragment(new NewsFragment(listNewsData), "Tin tức");
-            adapter.addFragment(PostNewsFragment.newInstance("",""), "Đăng tin");
-            viewPager.setAdapter(adapter);
-            viewPager.setOffscreenPageLimit(3);
-            tabs.setupWithViewPager(viewPager);
+            if (result.equals(null) || result.contains("failed")) {
+                Utils.openDialog(MainActivity.this,"Đã có lỗi xảy ra, vui lòng thử lại sau");
+            }
+            else {
+                progressDialog.dismiss();
+                tabs = (TabLayout) findViewById(R.id.tabs);
+                viewPager = (ViewPager) findViewById(R.id.viewpager);
+                Adapter adapter = new Adapter(getSupportFragmentManager());
+                adapter.addFragment(new SystemPitchsFragment(listSystemData), "Tìm nhanh");
+                adapter.addFragment(new NewsFragment(listNewsData), "Tin tức");
+                adapter.addFragment(PostNewsFragment.newInstance("", ""), "Đăng tin");
+                viewPager.setAdapter(adapter);
+                viewPager.setOffscreenPageLimit(3);
+                tabs.setupWithViewPager(viewPager);
 //            Log.d(TAG,listSystemData);
 //            mSearchFragment = SearchFragment.newInstance(listSystemData,"");
 //            replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());
+            }
         }
 
         @Override

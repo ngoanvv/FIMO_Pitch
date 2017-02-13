@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.model.Pitch;
@@ -121,7 +122,7 @@ public class EditPitchActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             try {
                 Response response =
-                        client.newCall(NetworkUtils.createPutRequest("https://pitchwebservice.herokuapp.com/pitch/updatepitch/"+mPitch.getId(),
+                        client.newCall(NetworkUtils.createPutRequest(API.updatePitch+mPitch.getId(),
                                 this.param)).execute();
                 if (response.isSuccessful()) {
                     String results = response.body().string();
@@ -133,7 +134,7 @@ public class EditPitchActivity extends AppCompatActivity {
             {
                 return null;
             }
-            return null;
+            return "failed";
         }
     }
 
