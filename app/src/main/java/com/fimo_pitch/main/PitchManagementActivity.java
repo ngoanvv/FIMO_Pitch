@@ -53,8 +53,8 @@ public class PitchManagementActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Quản lý sân ");
-        initList();
         initView();
+        initList();
     }
     public void initList()
     {

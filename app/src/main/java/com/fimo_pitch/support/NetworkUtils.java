@@ -39,4 +39,9 @@ public class NetworkUtils {
         Request request = new Request.Builder().url(url).put(formBody).build();
         return request;
     }
+    public static Request createGetRequest(String url)
+    {
+        Request request = new Request.Builder().url(url).build();
+        return request;
+    }
 }

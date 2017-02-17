@@ -49,10 +49,11 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/s43dp">
-        <com.fimo_pitch.custom.view.InstantAutoComplete
+        <Spinner
             android:id="@+id/search_box"
             android:layout_width="match_parent"
             android:layout_height="@dimen/s43dp"
+            android:layout_marginRight="@dimen/s70dp"
             android:layout_marginLeft="@dimen/s10dp"
             android:hint="Khu vực tìm kiếm"
             android:background="@color/colorTransparent"

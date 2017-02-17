@@ -1,33 +1,35 @@
 {
   "project_info": {
-    "project_number": "887621846318",
-    "project_id": "fimo-pitch"
+    "project_number": "413460108497",
+    "firebase_url": "https://bookpitch-f9a88.firebaseio.com",
+    "project_id": "bookpitch-f9a88",
+    "storage_bucket": "bookpitch-f9a88.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:887621846318:android:31cb60d8a67bc64f",
+        "mobilesdk_app_id": "1:413460108497:android:31cb60d8a67bc64f",
         "android_client_info": {
           "package_name": "com.fimo_pitch"
         }
       },
       "oauth_client": [
         {
-          "client_id": "887621846318-8eknaf87mfbrebuhvvoe7hfsp7nrnlpr.apps.googleusercontent.com",
+          "client_id": "413460108497-qcj7l5fkbdk3mu9tpi73vjfinb6qg0o6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.fimo_pitch",
-            "certificate_hash": "63DA203E591A291680F2761E3DD2F84A8AA61CE5"
+            "certificate_hash": "29E7BD8014C8A89CD83A725A6B5D6662E5D36F7F"
           }
         },
         {
-          "client_id": "887621846318-hj7flbooshpstor7k4gl4a4vuia8dvap.apps.googleusercontent.com",
+          "client_id": "413460108497-sjdpc3km8dn7qce1eh8psq86gn96sdpp.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCFEwJfkFCjEPsFRgufBDKDuUl-iT1CaVE"
+          "current_key": "AIzaSyAqPqcP8H_XDKU2SAlQZnlCc7ZfJwCF9lY"
         }
       ],
       "services": {
@@ -35,11 +37,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "413460108497-sjdpc3km8dn7qce1eh8psq86gn96sdpp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

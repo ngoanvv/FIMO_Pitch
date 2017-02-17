@@ -81,7 +81,13 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
 
         return filter;
     }
-
+    public void updateData(ArrayList<News> myData)
+    {
+        Log.d("newsAdapter","old : "+list.size()+" new "+myData.size());
+        list.clear();
+        list.addAll(myData);
+        notifyDataSetChanged();
+    }
     private ArrayList<News> getFilteredResults(CharSequence constraint) {
 
         int count=0;

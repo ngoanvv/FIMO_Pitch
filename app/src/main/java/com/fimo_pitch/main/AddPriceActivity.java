@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
+import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.model.Pitch;
@@ -40,12 +41,17 @@ import okhttp3.Response;
 public class AddPriceActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText edt_startTime,edt_endTime,edt_price,edt_description;
     private List<String> listDate;
-    private Spinner spinnerDate;
+    private Spinner spinnerDate,spinnerPitch;
     private Button button;
     private String TAG="AddPriceActivity";
     private OkHttpClient client;
     private UserModel userModel;
     private OkHttpClient okHttpClient;
+    private String listpitchData;
+    private ArrayList<Pitch> listPitch;
+    private List<String> listName;
+    private String idPitch;
+    private String typeofDate="0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +72,8 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
     {
         client = new OkHttpClient();
         listDate = new ArrayList<>();
+        listName = new ArrayList<>();
+        listPitch = new ArrayList<>();
         listDate.add("Ngày thường");
         listDate.add("Ngày nghỉ,Thứ 7 - Chủ nhật");
 
@@ -77,26 +85,37 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
         edt_price = (EditText) findViewById(R.id.edt_price);
         edt_description = (EditText) findViewById(R.id.edt_des);
         spinnerDate = (Spinner) findViewById(R.id.spnDate);
+        spinnerPitch = (Spinner) findViewById(R.id.spnPitch);
         button = (Button) findViewById(R.id.button);
-        
         button.setOnClickListener(this);
 
         edt_startTime.setOnClickListener(this);
         edt_endTime.setOnClickListener(this);
+
+        edt_description.setText("Nothing to say");
+        edt_price.setText("300");
+
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(AddPriceActivity.this,android.R.layout.simple_list_item_1,listDate);
         spinnerDate.setAdapter(arrayAdapter);
         spinnerDate.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                typeofDate= String.valueOf(position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        new GetListPitch().execute();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
@@ -105,23 +124,84 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
         }
         return super.onOptionsItemSelected(item);
     }
-    class MyTask extends AsyncTask<String,String,String>
+    private class GetListPitch extends AsyncTask<String,Void,String> {
+        ProgressDialog progressDialog;
+
+        @Override
+        protected String doInBackground(String... params) {
+            Request request = new Request.Builder()
+                    .url(API.getAllPitchofSystem+1)
+                    .build();
+            try {
+                okHttpClient = new OkHttpClient();
+                okhttp3.Response systemPitchResponse = okHttpClient.newCall(request).execute();
+                if (systemPitchResponse.isSuccessful()) {
+                    listpitchData = systemPitchResponse.body().string().toString();
+                    JSONObject result = new JSONObject(listpitchData);
+                    if(result.getString("status").contains("success"))
+                    {
+                        JSONArray data = result.getJSONArray("data");
+                        for (int i=0;i<data.length();i++)
+                        {
+                            JSONObject object = data.getJSONObject(i);
+                            Pitch p = new Pitch();
+                            p.setId(object.getString("id"));
+                            p.setName(object.getString("name"));
+                            p.setType(object.getString("type"));
+                            p.setSize(object.getString("size"));
+                            p.setDescription(object.getString("description"));
+                            listPitch.add(p);
+                            listName.add(object.getString("name"));
+                        }
+
+                    }
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddPriceActivity.this,android.R.layout.simple_list_item_1,listName);
+            spinnerPitch.setAdapter(adapter);
+            spinnerPitch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        idPitch = listPitch.get(position).getId();
+                    Log.d(TAG,"id pitch : "+idPitch);
+                }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(AddPriceActivity.this);
+            progressDialog.setMessage("Đang thao tác");
+            progressDialog.show();
+        }
+    }
+    class AddPrice extends AsyncTask<String,String,String>
     {
-
-
         HashMap<String,String> param;
         ProgressDialog progressDialog;
 
-        public MyTask(HashMap<String,String> body)
+        public AddPrice(HashMap<String,String> body)
         {
             this.param=body;
         }
         @Override
         protected String doInBackground(String... params) {
             try {
-                Response response =
-                        client.newCall(NetworkUtils.createPostRequest(""
-                                        , this.param)).execute();
+                Response response = client.newCall(NetworkUtils.createPostRequest(API.newPrice,this.param)).execute();
                 if (response.isSuccessful()) {
                     String results = response.body().string();
                     Log.d("run", results);
@@ -130,16 +210,17 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
             }
             catch (Exception e)
             {
-                return null;
+                e.printStackTrace();
+                return "failed";
             }
-            return null;
+            return "failed";
         }
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.d(TAG,s);
             progressDialog.dismiss();
-            if(s.contains("success")) {
+            if(s != null) {
                 Intent intent = new Intent(AddPriceActivity.this,PitchManagementActivity.class);
                 intent.putExtra(CONSTANT.KEY_USER,userModel);
                 startActivity(intent);
@@ -171,7 +252,6 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
                 },0,0,true);
                 dialog.setTitle("Chọn giờ bắt đầu");
                 dialog.show();
-
                 break;
             }
             case R.id.edt_endTime :
@@ -189,7 +269,17 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
             }
             case R.id.button :
             {
-                
+                HashMap<String,String> body = new HashMap<>();
+                body.put("system_id","1");
+                body.put("pitch_id",idPitch);
+                Log.d("add price",idPitch+":"+typeofDate+":"+edt_description.getText().toString());
+                body.put("time_start","17:30"+":00");
+                body.put("time_end","19:30"+":00");
+                body.put("price",edt_price.getText().toString());
+                body.put("typedate",typeofDate);
+                body.put("description",edt_description.getText().toString());
+                new AddPrice(body).execute();
+
                 break;
             }
         }

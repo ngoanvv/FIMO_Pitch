@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:class="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_add_pitch"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.fimo_pitch.main.AddSystemPitchActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/s50dp"
+                android:background="?attr/colorPrimary" />
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:layout_height="@dimen/s70dp"
+                android:layout_marginTop="@dimen/s30dp"
+                style="@style/item_addPitch"
+                android:id="@+id/tvName"
+                android:gravity="center"
+                android:textSize="@dimen/s30sp"
+                android:text="Sân số 1" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/edt_startTime"
+                    android:layout_height="@dimen/s70dp"
+                    android:layout_marginLeft="@dimen/s30dp"
+                    android:enabled="false"
+                    android:layout_width="@dimen/s200dp"
+                    android:hint="Giờ bắt đầu" />
+
+                <EditText
+                    android:layout_height="@dimen/s70dp"
+                    android:layout_width="@dimen/s200dp"
+                    android:enabled="false"
+                    android:id="@+id/edt_endTime"
+                    android:hint="Giờ kết thúc" />
+            </LinearLayout>
+            <EditText
+                android:id="@+id/edt_price"
+                android:inputType="number"
+                android:layout_marginTop="@dimen/s30dp"
+                android:layout_height="@dimen/s70dp"
+                style="@style/item_addPitch"
+                android:hint="Giá tiền" />
+
+            <EditText
+                android:id="@+id/edt_des"
+                android:layout_height="@dimen/s100dp"
+                style="@style/item_addPitch"
+                android:maxLines="2"
+                android:gravity="bottom"
+                android:hint="Mô tả" />
+
+
+           <Spinner
+                android:layout_height="@dimen/s70dp"
+                android:layout_marginTop="@dimen/s30dp"
+                style="@style/item_addPitch"
+                android:id="@+id/spnDate"
+                android:hint="Chọn loại ngày"/>
+            <Button
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_marginLeft="@dimen/s20dp"
+                android:layout_marginRight="@dimen/s20dp"
+                android:layout_marginTop="@dimen/s30dp"
+                android:text="Thêm"
+                android:paddingTop="@dimen/s30dp"
+                android:paddingBottom="@dimen/s30dp"
+                android:textSize="@dimen/s25dp"
+                android:background="@color/com_facebook_blue"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

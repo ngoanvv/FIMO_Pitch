@@ -73,11 +73,6 @@ public class Pitch implements Serializable {
                 '}';
     }
 
-    public Pitch(int image, String name, String id, int numberComment, float rating) {
-        this.image = image;
-        this.name = name;
-        this.id = id;
-    }
 
 
     public int getImage() {
@@ -96,9 +91,6 @@ public class Pitch implements Serializable {
         this.name = name;
     }
 
-    public String getid() {
-        return id;
-    }
 
     public void setId(String id) {
         this.id = id;

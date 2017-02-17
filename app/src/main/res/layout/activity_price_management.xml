@@ -17,6 +17,11 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary" />
     </android.support.design.widget.AppBarLayout>
+
+    <Spinner
+        android:id="@+id/spnPitch"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/s50dp"></Spinner>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -29,6 +34,7 @@
         android:layout_marginRight="@dimen/s100dp"
         android:id="@+id/bt_addPitch"
         android:background="@drawable/bt_add"/>
+
         <android.support.v7.widget.RecyclerView
         android:id="@+id/list_pitch"
         android:layout_width="match_parent"

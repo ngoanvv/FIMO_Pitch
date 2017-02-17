@@ -1,6 +1,8 @@
 package com.fimo_pitch.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
+import com.fimo_pitch.main.EditPriceActivity;
 import com.fimo_pitch.model.Price;
 import com.fimo_pitch.model.TimeTable;
 
@@ -25,7 +29,6 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.MyViewHolder
     private String TAG=PriceAdapter.class.getName();
     private ArrayList<Price> data;
     private LayoutInflater inflater;
-
 
     public PriceAdapter(Context context, ArrayList<Price> data) {
         this.context = context;
@@ -44,9 +47,19 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.tv_des.setText(data.get(position).getDescription());
         holder.tv_date.setText(data.get(position).getDayOfWeek());
-        holder.tv_time.setText(data.get(position).getTimeStart().substring(0,5)+"-"+data.get(position).getTimeEnd().substring(0,5));
+        holder.tv_time.setText(data.get(position).getTime());
         holder.tv_price.setText(data.get(position).getPrice());
         holder.btEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, EditPriceActivity.class);
+                intent.putExtra(CONSTANT.PRICE,data.get(position));
+                context.startActivity(intent);
+                ((Activity)context).finish();
+
+            }
+});
+        holder.btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -89,16 +102,15 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.MyViewHolder
         TextView tv_name;
         TextView tv_time,tv_des,tv_price,tv_date;
         LinearLayout wrapper;
-        Button btEdit;
+        Button btEdit,btDelete;
         public MyViewHolder(View itemView) {
             super(itemView);
-            tv_name = (TextView) itemView.findViewById(R.id.pitch_name);
-            tv_des = (TextView) itemView.findViewById(R.id.pitch_description);
-            tv_time = (TextView) itemView.findViewById(R.id.pitch_time);
+            tv_des = (TextView) itemView.findViewById(R.id.item_description);
+            tv_time = (TextView) itemView.findViewById(R.id.item_time);
             tv_date = (TextView) itemView.findViewById(R.id.item_date);
             tv_price = (TextView) itemView.findViewById(R.id.item_price);
             btEdit = (Button) itemView.findViewById(R.id.bt_edit);
-
+            btDelete = (Button) itemView.findViewById(R.id.bt_delete);
         }
 
 

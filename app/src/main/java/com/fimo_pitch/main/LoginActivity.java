@@ -37,9 +37,6 @@ import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
 import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.Utils;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -50,6 +47,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,6 +66,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText edt_email, edt_password;
     private SharedPreferences sharedPreferences;
     private LoginButton loginFB;
+    private String firebaseToken;
     private Dialog dialog;
     private CallbackManager callbackManager;
     private String email, password;
@@ -92,28 +91,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
-
-//        try {
-//            PackageInfo info = null;
-//            try {
-//                info = getPackageManager().getPackageInfo(
-//                        "com.fimo_pitch",
-//                        PackageManager.GET_SIGNATURES);
-//            } catch (PackageManager.NameNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//            for (android.content.pm.Signature signature : info.signatures) {
-//                MessageDigest md = MessageDigest.getInstance("SHA");
-//                md.update(signature.toByteArray());
-//                Log.d("KeyHash.", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-//            }
-//        } catch (NoSuchAlgorithmException e) {
-//
-//        }
         userModel = new UserModel();
         initGoogleAPI();
         initView();
-        googleApiClient = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
         sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
         if (sharedPreferences != null)
         {
@@ -164,6 +144,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         edt_email.setText("owner@gmail.com");
         edt_password.setText("vanduong");
 
+
+        Log.d("FCM",FirebaseInstanceId.getInstance().getToken()+" ");
         loginFB.setReadPermissions(Arrays.asList("public_profile,email,user_birthday"));
         loginFB.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -250,14 +232,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String email = sharedPreferences.getString("email", "null");
         String password = sharedPreferences.getString("password", "null");
         Log.d(TAG,email+" - "+password);
-        if (email.equals("null") && password.equals("null")) {
+        if (email.equals("null") || password.equals("null")) {
+            edt_email.setText("owner@gmail.com");
+            edt_password.setText("vanduong");
         }
         else {
             edt_email.setText(email);
             edt_password.setText(password);
             HashMap<String,String> body = new HashMap<>();
-            body.put("email",edt_email.getText().toString());
-            body.put("password",edt_email.getText().toString());
+            body.put("email",email);
+            body.put("password",password);
             new Login(body).execute();
 
         }
@@ -297,30 +281,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
-    private void loginGoogle() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-
-    }
-
-    private void signOut() {
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                    }
-                });
-    }
-
-    private void revokeAccess() {
-        Auth.GoogleSignInApi.revokeAccess(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-
-                    }
-                });
-    }
 
     @Override
     public void onClick(View v) {
@@ -335,15 +295,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             }
             case R.id.btn_login: {
+
                 if (!validate(edt_email.getText().toString(),edt_password.getText().toString())) {
                         Utils.openDialog(LoginActivity.this,"Điền đầy đủ vào thông tin đăng nhập");
                         break;
                 }
                 else
                 {
-                    HashMap<String,String> body = new HashMap<>();
-                    body.put("email",edt_email.getText().toString());
-                    body.put("password",edt_password.getText().toString());
+
+                    HashMap<String, String> body = new HashMap<>();
+                    body.put("email", edt_email.getText().toString());
+                    body.put("password", edt_password.getText().toString());
                     new Login(body).execute();
                     break;
                 }
@@ -381,7 +343,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         protected String doInBackground(String... params) {
             try {
                 Response response =
-                        okHttpClient.newCall(NetworkUtils.createPostRequest("http://118.70.72.13:3000/users/login", this.param)).execute();
+                        okHttpClient.newCall(NetworkUtils.createPostRequest(API.Login, this.param)).execute();
                 String results = response.body().string();
                 Log.d(TAG,results);
                 if(results.contains("success"))
@@ -409,6 +371,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     userModel.setPhone(result.getString("phone"));
                     userModel.setId(result.getString("id"));
                     userModel.setName(result.getString("name"));
+                    userModel.setPassword(result.getString("password"));
                     userModel.setEmail(result.getString("email"));
                     if(result.getString("type").contains("1"))
                     userModel.setUserType(UserModel.TYPE_TEAM);
@@ -476,58 +439,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onStart() {
-        super.onStart();// ATTENTION: This was auto-generated to implement the App Indexing API.
-// See https://g.co/AppIndexing/AndroidStudio for more information.
-        googleApiClient.connect();
-
-
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
-        if (opr.isDone()) {
-
-            GoogleSignInResult result = opr.get();
-            handleSignInResult(result);
-        } else {
-            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                @Override
-                public void onResult(GoogleSignInResult googleSignInResult) {
-                    handleSignInResult(googleSignInResult);
-                }
-            });
-        }
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.start(googleApiClient, getIndexApiAction());
+        super.onStart();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-        }
 
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
-    }
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Login Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
     }
 }

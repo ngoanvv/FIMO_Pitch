@@ -36,9 +36,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.DetailDialog;
@@ -50,6 +52,7 @@ import com.fimo_pitch.main.MainActivity;
 import com.fimo_pitch.model.DirectionStep;
 import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.SystemPitch;
+import com.fimo_pitch.support.NetworkUtils;
 import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
@@ -73,6 +76,7 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Random;
 
 
@@ -81,6 +85,7 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 import static android.R.layout.select_dialog_item;
 
@@ -98,7 +103,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     private ArrayList<LatLng> latLngs;
     private LatLng currentLatLng;
     private ArrayList<SystemPitch> listSystemPitch;
-    private InstantAutoComplete search_box;
+    private Spinner search_box;
     private ImageView bt_currentLocation;
     private String result,data;
     private LatLng resultLatLng;
@@ -128,7 +133,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                     (getContext(), android.R.layout.simple_dropdown_item_1line,getActivity().getResources().getStringArray(R.array.listProvince));
             resultLatLng = new LatLng(0.0,0.0);
 
-            search_box = (InstantAutoComplete) view.findViewById(R.id.search_box);
+            search_box = (Spinner) view.findViewById(R.id.search_box);
             tv_time    = (TextView) view.findViewById(R.id.tv_time);
             bt_search  =  (RoundedImageView) view.findViewById(R.id.bt_search);
             bt_currentLocation = (ImageView) view.findViewById(R.id.bt_currentLocation) ;
@@ -137,24 +142,27 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             tv_time.setOnClickListener(this);
             bt_search.setOnClickListener(this);
 
-            search_box.setThreshold(0);
             search_box.setAdapter(adapter);
-            search_box.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            search_box.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if(position==0)
+                    {
+                        resultLatLng = currentLatLng;
+                    }
+                    else
+                    {
+                        Log.d(TAG, search_box.getSelectedItem().toString() + "");
+                        String url = "http://maps.google.com/maps/api/geocode/json?address=" + search_box.getSelectedItem().toString() + "&sensor=false";
+                        if (Utils.isConnected(getContext())) new Sendrequest(url).execute();
+                        else Utils.openDialog(getContext(), getString(R.string.no_connection));
+                        location = search_box.getSelectedItem().toString();
+                    }
+                }
 
-                        if(position==0)
-                        {
-                            resultLatLng = currentLatLng;
-                        }
-                        else
-                        {
-                            Log.d(TAG, search_box.getText().toString() + "");
-                            String url = "http://maps.google.com/maps/api/geocode/json?address=" + search_box.getText().toString() + "&sensor=false";
-                            if (Utils.isConnected(getContext())) new Sendrequest(url).execute();
-                            else Utils.openDialog(getContext(), getString(R.string.no_connection));
-                            location = search_box.getText().toString();
-                        }
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
                 }
             });
 
@@ -167,7 +175,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         }
         catch (Exception e)
         {
-            Log.d(TAG,e.getMessage().toString());
+            e.printStackTrace();
             return inflater.inflate(R.layout.empty, container, false);
         }
     }
@@ -272,7 +280,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         @Override
         protected void onPostExecute(String result) {
             progressDialog.dismiss();
-            search_box.setText(result);
 
         }
 
@@ -420,11 +427,11 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             initList();
             initMapLicense();
             gps = new TrackGPS(getContext(),getActivity());
-            if(gps.canGetLocation())
-            {
-                currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
-                Utils.moveCamera(currentLatLng,"Bạn ở đây",12,map);
-            }
+//            if(gps.canGetLocation())
+//            {
+                currentLatLng = xuanthuy;
+                Utils.moveCamera(xuanthuy,"Bạn ở đây",12,map);
+//            }
 
         }
     }
@@ -467,42 +474,23 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     }
     private class SearchSystemPitch extends AsyncTask<String,Void,String> {
         ProgressDialog progressDialog;
-        String hour,minute;
-        String date;
-        String location;
-        public SearchSystemPitch(String hour, String time, String dateofweek, String locationEncoded)
+        HashMap<String,String> param;
+        public SearchSystemPitch(HashMap<String,String> param)
         {
-            this.hour =hour;
-            this.minute = time;
-            this.date = dateofweek;
-            this.location = locationEncoded;
+            this.param = param;
         }
         @Override
         protected String doInBackground(String... params) {
-            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
 
-            RequestBody formBody = new FormBody.Builder()
-                    .add("time_start", "7:00")
-                    .add("dateofweek","Mon")
-                    .add("textlocation",URLEncoder.encode("Cầu Giấy"))
-                    .build();
-            Log.d("body","time_start="+hour+"%3A"+minute+"&dateofweek="+date+"&textlocation="+location);
-            RequestBody body = RequestBody.create(mediaType,
-                                "time_start="+hour+"%3A"+minute+"&dateofweek="+date+"&textlocation="+location);
-            Request request = new Request.Builder()
-                    .url("https://pitchwebservice.herokuapp.com/pitchs/searchPitch")
-                    .post(body)
-                    .addHeader("content-type", "application/x-www-form-urlencoded")
-                    .addHeader("cache-control", "no-cache")
-                    .addHeader("postman-token", "b9494f39-8e39-7533-1896-281ee653703b")
-                    .build();
             try {
                 okHttpClient = new OkHttpClient();
-                okhttp3.Response systemPitchResponse = okHttpClient.newCall(request).execute();
-                if (systemPitchResponse.isSuccessful()) {
-                    listSystemData = systemPitchResponse.body().string().toString();
+                Response response =
+                        okHttpClient.newCall(NetworkUtils.createPostRequest(API.searcInDay, this.param)).execute();
+                if (response.isSuccessful())
+                {
+                    listSystemData = response.body().string().toString();
                     JSONObject result = new JSONObject(listSystemData);
-                    Log.d("search",listSystemData.toString()) ;
+                    Log.d(TAG,listSystemData.toString()) ;
                     if(result.getString("status").contains("success"))
                     {
                         final JSONArray data = result.getJSONArray("data");
@@ -561,48 +549,17 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            Log.d(TAG,param.toString());
             listSystemPitch = new ArrayList<>();
-
             progressDialog = new ProgressDialog(getContext());
             progressDialog.setMessage("Đang thao tác");
             progressDialog.show();
         }
     }
-    private String getDayofWeek(int dateofweek)
+    public String getDayString()
     {
-        switch (dateofweek)
-        {
-            case 1 :
-            {
-                return "Sun";
-            }
-            case 2 :
-            {
-                return "Mon";
-            }
-            case 3 :
-            {
-                return "Tue";
-            }
-            case 4 :
-            {
-                return "Wed";
-            }
-            case 5 :
-            {
-                return "Thu";
-            }
-            case 6 :
-            {
-                return "Fri";
-            }
-            case 7 :
-            {
-                return "Sat";
-            }
-        }
-        return "Mon";
-
+        String s = Calendar.getInstance().get(Calendar.YEAR)+"-"+Calendar.getInstance().get(Calendar.MONTH)+"-"+Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        return s;
     }
     @Override
     public void onClick(View v) {
@@ -651,12 +608,14 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             }
             case R.id.bt_search :
             {
-                // tim kiem
-//                initList();
                 map.clear();
                 map.addMarker(new MarkerOptions().position(currentLatLng).title("Bạn ở đây"));
                 dateofweek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-                new SearchSystemPitch(sHour+"",sMinute+"",getDayofWeek(2),URLEncoder.encode(location)).execute();
+                HashMap<String,String> body = new HashMap<>();
+                body.put("time_start",tv_time.getText().toString()+":00");
+                body.put("day", "2017-01-01");
+                body.put("textlocation",search_box.getSelectedItem().toString());
+                new SearchSystemPitch(body);
                 break;
 
 

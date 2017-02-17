@@ -16,6 +16,7 @@ public class UserModel implements Serializable {
     private String imageURL;
     private String password;
     private String token;
+    private String firebaseToken;
     @Override
     public String toString() {
         return "UserModel{" +
@@ -47,6 +48,14 @@ public class UserModel implements Serializable {
 
     public String getImageURL() {
         return imageURL;
+    }
+
+    public String getFirebaseToken() {
+        return firebaseToken;
+    }
+
+    public void setFirebaseToken(String firebaseToken) {
+        this.firebaseToken = firebaseToken;
     }
 
     public void setImageURL(String imageURL) {

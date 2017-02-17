@@ -67,6 +67,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -112,6 +113,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         setContentView(R.layout.activity_navigation);
         initView();
         getData();
+
         initNavMenu();
         initGoogleAPI();
 

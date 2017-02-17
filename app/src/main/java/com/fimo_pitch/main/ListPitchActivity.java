@@ -125,7 +125,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     Log.d("spinner", listPitches.get(position).getId() + "");
-                    pitchId = listPitches.get(position).getid();
+                    pitchId = listPitches.get(position).getId();
                     crPitch = listPitches.get(position);
                 }
 
@@ -217,7 +217,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject object = data.getJSONObject(i);
                             TimeTable p = new TimeTable();
-                            p.setId(mPitch.getid());
+                            p.setId(mPitch.getId());
                             p.setName(mPitch.getName());
                             p.setType(mPitch.getType());
                             p.setSize(mPitch.getSize());
@@ -289,7 +289,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
                         {
                             JSONObject object = data.getJSONObject(i);
                             TimeTable p = new TimeTable();
-                            p.setId(mPitch.getid());
+                            p.setId(mPitch.getId());
                             p.setName(mPitch.getName());
                             p.setType(mPitch.getType());
                             p.setSize(mPitch.getSize());
