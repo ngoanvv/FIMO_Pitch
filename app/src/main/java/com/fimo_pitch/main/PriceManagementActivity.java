@@ -18,27 +18,20 @@ import android.widget.Spinner;
 import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
-import com.fimo_pitch.adapter.PitchAdapter;
-import com.fimo_pitch.adapter.PitchManagementAdapter;
 import com.fimo_pitch.adapter.PriceAdapter;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.Price;
 import com.fimo_pitch.model.UserModel;
-import com.fimo_pitch.support.NetworkUtils;
-import com.fimo_pitch.support.ShowToast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 
 public class PriceManagementActivity extends AppCompatActivity{
     private RoundedImageView btAdd;

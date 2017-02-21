@@ -60,6 +60,8 @@ import com.fimo_pitch.fragments.SettingsFragment;
 import com.fimo_pitch.model.News;
 import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.UserModel;
+import com.fimo_pitch.support.MyAsyncTask;
+import com.fimo_pitch.support.NetworkUtils;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.auth.api.Auth;
@@ -72,10 +74,13 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 
 
 /**
@@ -107,13 +112,14 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
     private ArrayList<SystemPitch> listSystem=new ArrayList<>();
     private ArrayList<News> listNews=new ArrayList<>();
     private String listSystemData="",listNewsData="";
+    private String fcmToken ="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         initView();
         getData();
-
+        updateToken();
         initNavMenu();
         initGoogleAPI();
 
@@ -163,7 +169,18 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         }
 
     }
-    
+    // update fcm token
+    public void updateToken()
+    {
+        fcmToken = FirebaseInstanceId.getInstance().getToken();
+        if(fcmToken != null)
+        {
+            HashMap<String,String> body = new HashMap<>();
+            body.put("id",userModel.getId());
+            body.put("tokenfcm",fcmToken);
+            new UpdateToken(body).execute();
+        }
+    }
     public void replaceFragment(Fragment fragment,String tag)
     {
 
@@ -286,6 +303,49 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                 }
         });
         builder.create().show();
+    }
+    class UpdateToken extends AsyncTask<String,String,String>
+    {
+        HashMap<String,String> param;
+        ProgressDialog progressDialog;
+
+        public UpdateToken(HashMap<String,String> body)
+        {
+            this.param=body;
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                Response response = okHttpClient.newCall(NetworkUtils.createPutRequest(API.UpdateFCMToken+userModel.getId(),this.param)).execute();
+                if (response.isSuccessful()) {
+                    String results = response.body().string();
+                    Log.d("updatetoken", results);
+                    return results;
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                return "failed";
+            }
+            return "failed";
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.d(TAG,s);
+            progressDialog.dismiss();
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setMessage("Đang thao tác");
+            progressDialog.show();
+        }
+
     }
     private class MyTask extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;

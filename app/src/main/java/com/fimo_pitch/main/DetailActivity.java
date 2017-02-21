@@ -4,37 +4,24 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.akexorcist.googledirection.DirectionCallback;
-import com.akexorcist.googledirection.GoogleDirection;
-import com.akexorcist.googledirection.constant.AvoidType;
-import com.akexorcist.googledirection.constant.TransportMode;
-import com.akexorcist.googledirection.model.Direction;
-import com.akexorcist.googledirection.model.Leg;
 import com.akexorcist.googledirection.model.Route;
-import com.akexorcist.googledirection.model.Step;
-import com.akexorcist.googledirection.util.DirectionConverter;
 import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
@@ -44,32 +31,18 @@ import com.fimo_pitch.model.Price;
 import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.TrackGPS;
-import com.fimo_pitch.support.Utils;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 
 public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
     private RoundedImageView bt_call,bt_order;
@@ -146,6 +119,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             tvDes.setText(mSystemPitch.getDescription());
             tvSysName.setText(mSystemPitch.getName());
             tvPhone.setText(mSystemPitch.getPhone());
+            mSystemPitch.setPhone("092333244");
         }
 
         TableRow tr = new TableRow(this);
@@ -329,8 +303,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                             p.setType(object.getString("type"));
                             p.setSize(object.getString("size"));
                             p.setDescription(object.getString("description"));
+                            p.setPhone(mSystemPitch.getPhone()+"");
                             if(mSystemPitch.getPhone().length()>0)
                                 p.setPhone(mSystemPitch.getPhone());
+                            else
+                            p.setPhone("902932023");
                             listPitch.add(p);
                             listName.add(object.getString("name"));
                         }

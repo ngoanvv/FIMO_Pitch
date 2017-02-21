@@ -17,4 +17,8 @@ public class API {
     public static String searcInDay="http://118.70.72.13:3000/system_pitch/searchPitch";
     public static String newPrice="http://118.70.72.13:3000/system_pitch/insertmanagement";
     public static String updatePrice="http://118.70.72.13:3000/pitch/updatemanagementpitch/";
+    public static String GetOrders="http://118.70.72.13:3000/pitch/getcalendarforday";
+    public static String UpdateFCMToken ="http://118.70.72.13:3000/users/updatetockentouser/";
+
+
 }

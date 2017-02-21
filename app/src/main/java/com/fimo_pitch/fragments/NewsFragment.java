@@ -174,7 +174,26 @@ public class NewsFragment extends Fragment {
                     news.setTime(object.getString("time_start"));
                     list.add(news);
                 }
-            adapter.updateData(list);
+                adapter = new NewsFragmentAdapter(getActivity(), list);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                recyclerView.setAdapter(adapter);
+                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
+                mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                        super.onScrollStateChanged(recyclerView, newState);
+                        if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
+                            new GetNews().execute();
+                        }
+                    }
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        super.onScrolled(recyclerView, dx, dy);
+
+                    }
+                });
             }
             catch (Exception e)
             {

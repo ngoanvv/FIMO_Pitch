@@ -18,6 +18,9 @@ public class CONSTANT {
     public static String PRICE = "price";
     public static String SystemPitch_MODEL = "ssss";
     public static String LISTPITCH_DATA="LISTPITCHDATA";
+    public static String POST ="post";
+    public static String GET ="get";
+    public static String PUT ="put";
 
     public static String LISTPITCH="LISTPITCH";
     public static String PITCH_MODEL="putchModel";

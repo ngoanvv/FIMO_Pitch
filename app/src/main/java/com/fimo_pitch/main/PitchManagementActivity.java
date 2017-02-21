@@ -11,18 +11,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
-import com.fimo_pitch.adapter.PitchAdapter;
 import com.fimo_pitch.adapter.PitchManagementAdapter;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.Pitch;
-import com.fimo_pitch.model.TimeTable;
 import com.fimo_pitch.model.UserModel;
-import com.fimo_pitch.support.ShowToast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,7 +27,6 @@ import java.util.ArrayList;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 
 public class PitchManagementActivity extends AppCompatActivity {
     private RoundedImageView btAddPitch;

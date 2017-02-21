@@ -10,8 +10,7 @@ import android.widget.Button;
 
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
-import com.fimo_pitch.main.AddPitchActivity;
-import com.fimo_pitch.main.OrderActivity;
+import com.fimo_pitch.main.OrderManagementActivity;
 import com.fimo_pitch.main.PitchManagementActivity;
 import com.fimo_pitch.main.PriceManagementActivity;
 import com.fimo_pitch.main.SystemManagementActivity;
@@ -61,7 +60,7 @@ public class OwnerFragment extends Fragment implements View.OnClickListener {
             }
             case R.id.bt_manageOrder :
             {
-                Intent intent = new Intent(getActivity(), OrderActivity.class);
+                Intent intent = new Intent(getActivity(), OrderManagementActivity.class);
                 intent.putExtra(CONSTANT.KEY_USER,userModel);
                 startActivity(intent);
                 break;

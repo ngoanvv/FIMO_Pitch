@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 public class TimeTable implements Serializable {
     private int image;
-    private String name;
     private String id;
     private String type;
     private String description;
@@ -16,6 +15,33 @@ public class TimeTable implements Serializable {
     private String start_time;
     private String end_time;
     private String phone;
+    private String price;
+    private String systemId;
+    private String pitchId;
+
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
+    }
+
+    public String getPitchId() {
+        return pitchId;
+    }
+
+    public void setPitchId(String pitchId) {
+        this.pitchId = pitchId;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
     public String getPhone() {
         return phone;
@@ -74,12 +100,6 @@ public class TimeTable implements Serializable {
         this.size = size;
     }
 
-    public TimeTable(int image, String name, String id, int numberComment, float rating) {
-        this.image = image;
-        this.name = name;
-        this.id = id;
-    }
-
 
     public int getImage() {
         return image;
@@ -89,13 +109,6 @@ public class TimeTable implements Serializable {
         this.image = image;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getid() {
         return id;

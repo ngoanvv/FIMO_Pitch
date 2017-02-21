@@ -3,16 +3,15 @@ package com.fimo_pitch.main;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -24,43 +23,30 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
-import com.fimo_pitch.adapter.PitchAdapter;
+import com.fimo_pitch.adapter.OrderAdapter;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.Pitch;
-import com.fimo_pitch.model.Price;
 import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.TimeTable;
-import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
-import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-import org.w3c.dom.ls.LSInput;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 
-import static android.R.id.list;
-
-public class ListPitchActivity extends AppCompatActivity implements View.OnClickListener,PitchAdapter.OnCallEvent {
+public class ListPitchActivity extends AppCompatActivity implements View.OnClickListener,OrderAdapter.OnCallEvent {
     private RecyclerView recyclerView;
-    private PitchAdapter adapter;
+    private OrderAdapter adapter;
     private ArrayList<Pitch> listPitches;
     private TextView tv_timeFilter,tv_dateFilter;
     private Spinner spinner;
@@ -68,7 +54,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
     private static String TAG=ListPitchActivity.class.getName();
     private SystemPitch mSystemPitch;
     private OkHttpClient okHttpClient;
-    private String listpitchData="";
+    private String listPriceData="";
     private RoundedImageView btSearch;
     private String pitchId="1";
     private ArrayList<TimeTable> listTime;
@@ -88,6 +74,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
         listName = (List<String>) getIntent().getSerializableExtra(CONSTANT.LISTPITCH_DATA);
         listPitches = (ArrayList<Pitch>) getIntent().getSerializableExtra(CONSTANT.LISTPITCH);
 
+        crPitch = listPitches.get(0);
         setContentView(R.layout.activity_list_pitch);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -103,8 +90,6 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
         btSearch = (RoundedImageView) findViewById(R.id.btsearch);
         mText = (TextView) findViewById(R.id.mText);
 
-
-
         btSearch.setOnClickListener(this);
         listTime = new ArrayList<>();
 
@@ -112,7 +97,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
         LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(ListPitchActivity.this); // (Context context)
         mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
-        adapter = new PitchAdapter(ListPitchActivity.this,listTime);
+        adapter = new OrderAdapter(ListPitchActivity.this,listTime);
         adapter.setOnCallEvent(ListPitchActivity.this);
         recyclerView.setAdapter(adapter);
 
@@ -127,6 +112,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
                     Log.d("spinner", listPitches.get(position).getId() + "");
                     pitchId = listPitches.get(position).getId();
                     crPitch = listPitches.get(position);
+
                 }
 
                 @Override
@@ -136,7 +122,96 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
             });
         }
     }
+    private class GetListPrice extends AsyncTask<String,Void,String> implements OrderAdapter.OnCallEvent {
+        ProgressDialog progressDialog;
+        String id;
+        String pitchName;
+        public GetListPrice(String pitchId,String name)
+        {
+            this.pitchName=name;
+            id=pitchId;
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            Request request = new Request.Builder()
+                    .url(API.GetPrice+id)
+                    .build();
+            Log.d("url ",API.GetPrice+id+"--"+id);
+            try {
+                okHttpClient = new OkHttpClient();
+                okhttp3.Response systemPitchResponse = okHttpClient.newCall(request).execute();
+                if (systemPitchResponse.isSuccessful()) {
+                    listPriceData = systemPitchResponse.body().string().toString();
+                    return listPriceData;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "failed";
+            }
+            return "failed";
 
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+            Log.d(TAG,s);
+            if(s != "failed")
+            try {
+                JSONObject result = new JSONObject(s);
+                if (result.getString("status").contains("success")) {
+                    listTime.clear();
+                    JSONArray data = result.getJSONArray("data");
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject object = data.getJSONObject(i);
+                        TimeTable p = new TimeTable();
+                        p.setId(object.getString("id"));
+                        p.setStart_time(object.getString("time_start"));
+                        p.setEnd_time(object.getString("time_end"));
+                        p.setType(object.getString("typedate"));
+                        p.setPrice(object.getString("price"));
+                        p.setSystemId(object.getString("system_id"));
+                        p.setPitchId(id + "");
+                        p.setDescription(object.getString("description"));
+                        listTime.add(p);
+                    }
+
+                }
+                recyclerView = (RecyclerView) findViewById(R.id.list_pitch);
+                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(ListPitchActivity.this); // (Context context)
+                mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+                adapter = new OrderAdapter(ListPitchActivity.this, listTime);
+                adapter.setOnCallEvent(this);
+                recyclerView.setAdapter(adapter);
+                if(listTime.size()>0) mText.setVisibility(View.GONE);
+                else mText.setVisibility(View.VISIBLE);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(ListPitchActivity.this);
+            progressDialog.setMessage("Đang thao tác");
+            progressDialog.show();
+        }
+
+        @Override
+        public void onCallEvent(String number) {
+            if(number.contains("null"))
+                Utils.openDialog(ListPitchActivity.this,"Không có số điện thoại khả dụng");
+            else
+            {
+                phoneNumber = number;
+                ActivityCompat.requestPermissions(ListPitchActivity.this,
+                        new String[]{Manifest.permission.CALL_PHONE}, callRequest);
+            }
+        }
+    }
     @Override
     public void onCallEvent(String number) {
 
@@ -180,26 +255,6 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
         }
         @Override
         protected String doInBackground(String... params) {
-            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
-            RequestBody body = RequestBody.create(mediaType, "pitchid="+params[0]+"&systemPID="+params[1]+"&dateofweek="+params[2]);
-
-
-            Request request = new Request.Builder()
-                    .url("https://pitchwebservice.herokuapp.com/pitchs/getTimeTableOfDay/")
-                    .post(body)
-                    .addHeader("content-type", "application/x-www-form-urlencoded")
-                    .addHeader("cache-control", "no-cache")
-                    .addHeader("postman-token", "12ceab54-a66d-5b81-85d9-06b43cee4f40")
-                    .build();
-            try {
-                okHttpClient = new OkHttpClient();
-                okhttp3.Response response = okHttpClient.newCall(request).execute();
-                if (response.isSuccessful()) {
-                    listimeData = response.body().string().toString();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             return listimeData;
 
         }
@@ -207,43 +262,6 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            JSONObject result = null;
-            try {
-                result = new JSONObject(s);
-                Log.d("time table",s.toString());
-                if(result.getString("status").contains("success")) {
-                    JSONArray data = result.getJSONArray("data");
-                    if (data.length() > 0) {
-                        for (int i = 0; i < data.length(); i++) {
-                            JSONObject object = data.getJSONObject(i);
-                            TimeTable p = new TimeTable();
-                            p.setId(mPitch.getId());
-                            p.setName(mPitch.getName());
-                            p.setType(mPitch.getType());
-                            p.setSize(mPitch.getSize());
-                            p.setDescription(mPitch.getDescription());
-                            p.setEnd_time(object.getString("time_end"));
-                            p.setStart_time(object.getString("time_start"));
-                            if (mSystemPitch.getPhone().length() > 0)
-                                p.setPhone(mSystemPitch.getPhone());
-                            listTime.add(p);
-                        }
-                        progressDialog.dismiss();
-                        mText.setVisibility(View.INVISIBLE);
-                        adapter = new PitchAdapter(ListPitchActivity.this, listTime);
-                        adapter.setOnCallEvent(ListPitchActivity.this);
-                        recyclerView.setAdapter(adapter);
-                    }
-                }
-                else
-                {
-                    mText.setVisibility(View.VISIBLE);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
         }
     }
     private class BookPitchTask extends AsyncTask<String,Void,String> {
@@ -259,61 +277,19 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
             progressDialog = new ProgressDialog(ListPitchActivity.this);
             progressDialog.setMessage("Đang thao tác");
             progressDialog.show();
-
             listTime = new ArrayList<>();
         }
         @Override
         protected String doInBackground(String... params) {
-            MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
-            RequestBody body = RequestBody.create(mediaType, "pitchid="+params[0]+"&systemPID="+params[1]+"&dateofweek="+params[2]);
 
-
-            Request request = new Request.Builder()
-                    .url("https://pitchwebservice.herokuapp.com/pitchs/getTimeTableOfDay/")
-                    .post(body)
-                    .addHeader("content-type", "application/x-www-form-urlencoded")
-                    .addHeader("cache-control", "no-cache")
-                    .addHeader("postman-token", "12ceab54-a66d-5b81-85d9-06b43cee4f40")
-                    .build();
-            try {
-                okHttpClient = new OkHttpClient();
-                okhttp3.Response response = okHttpClient.newCall(request).execute();
-                if (response.isSuccessful()) {
-                    listimeData = response.body().string().toString();
-                    JSONObject result = new JSONObject(listimeData);
-                    Log.d("time table",listimeData.toString());
-                    if(result.getString("status").contains("success"))
-                    {
-                        JSONArray data = result.getJSONArray("data");
-                        for (int i=0;i<data.length();i++)
-                        {
-                            JSONObject object = data.getJSONObject(i);
-                            TimeTable p = new TimeTable();
-                            p.setId(mPitch.getId());
-                            p.setName(mPitch.getName());
-                            p.setType(mPitch.getType());
-                            p.setSize(mPitch.getSize());
-                            p.setDescription(mPitch.getDescription());
-                            p.setEnd_time(object.getString("time_end"));
-                            p.setStart_time(object.getString("time_start"));
-                            if(mSystemPitch.getPhone().length()>0)
-                                p.setPhone(mSystemPitch.getPhone());
-                            listTime.add(p);
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-
+            return "";
         }
 
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             progressDialog.dismiss();
-            adapter = new PitchAdapter(ListPitchActivity.this,listTime);
+            adapter = new OrderAdapter(ListPitchActivity.this,listTime);
             adapter.setOnCallEvent(ListPitchActivity.this);
             recyclerView.setAdapter(adapter);
         }
@@ -354,7 +330,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
             case R.id.btsearch :
             {
 //                new GetTimeTable(crPitch).execute(pitchId,mSystemPitch.getId(),"Mon");
-
+                new GetListPrice(crPitch.getId(),crPitch.getName()).execute();
                 break;
             }
         }

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fimo_pitch.main.OrderActivity">
+    tools:context="com.fimo_pitch.main.OrderManagementActivity">
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/s50dp"
+        android:layout_height="@dimen/s70dp"
         android:background="@color/com_facebook_blue"
         android:gravity="center"
         android:layout_alignParentTop="true"

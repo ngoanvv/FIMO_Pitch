@@ -91,7 +91,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".main.OrderActivity" />
+        <activity android:name=".main.OrderManagementActivity" />
         <activity android:name=".main.PitchManagementActivity"></activity>
     </application>
 
