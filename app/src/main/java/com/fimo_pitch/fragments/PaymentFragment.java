@@ -38,7 +38,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import okhttp3.OkHttpClient;
 
 /**
  * Created by Diep_Chelsea on 13/07/2016.

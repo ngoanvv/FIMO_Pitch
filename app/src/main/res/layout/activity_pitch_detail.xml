@@ -193,12 +193,12 @@
         android:layout_marginTop="@dimen/s10dp"
         android:background="@color/button_grey"></View>
 
-    <TableLayout
-        android:id="@+id/tb_pricing"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </TableLayout>
+    </android.support.v7.widget.RecyclerView>
     <Button
         android:id="@+id/bt_view"
         android:layout_width="match_parent"

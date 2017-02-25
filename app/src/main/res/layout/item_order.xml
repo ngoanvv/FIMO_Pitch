@@ -3,6 +3,7 @@
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:layout_marginLeft="@dimen/s50dp"
     android:id="@+id/ll_match"
     android:layout_height="wrap_content">
 

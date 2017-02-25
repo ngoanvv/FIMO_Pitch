@@ -45,7 +45,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.tv_des.setText(data.get(position).getDescription());
         holder.tv_time.setText(data.get(position).getStart_time().substring(0,5)+"-"+data.get(position).getEnd_time().substring(0,5));
-        holder.tv_type.setText(data.get(position).getType());
+
+        if(data.get(position).getType().contains("1"))
+        holder.tv_type.setText("Ngày nghỉ");
+        else holder.tv_type.setText("Ngày thường");
 
         holder.btCall.setOnClickListener(new View.OnClickListener() {
             @Override
