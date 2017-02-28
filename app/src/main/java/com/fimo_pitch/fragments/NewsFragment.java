@@ -15,26 +15,18 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.EditText;
 
-
 import com.fimo_pitch.API;
 import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.NewsFragmentAdapter;
+import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.News;
-import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.support.NetworkUtils;
-import com.fimo_pitch.support.ShowToast;
-import com.fimo_pitch.support.Utils;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
@@ -43,16 +35,16 @@ import okhttp3.Response;
  * Created by Diep_Chelsea on 13/07/2016.
  */
 public class NewsFragment extends Fragment {
-    public static final String TAG = "NewsFragment";
+    public  static final String TAG = "NewsFragment";
     private RecyclerView recyclerView;
     private ArrayList<String> arrayLocation, arrayTime;
     private EditText edt_input_search;
     private NewsFragmentAdapter adapter;
     private ArrayList<News> list;
     private OkHttpClient okHttpClient;
-    public String data;
+    public  String data;
     private String listNews="";
-
+    private RoundedImageView bt_refresh;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView= inflater.inflate(R.layout.fragment_news, container, false);
@@ -64,7 +56,15 @@ public class NewsFragment extends Fragment {
     public void initView(View v)
     {
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+        bt_refresh   = (RoundedImageView) v.findViewById(R.id.bt_refresh);
 
+
+        bt_refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new GetNews().execute();
+            }
+        });
         edt_input_search = (EditText) v.findViewById(R.id.edt_input);
         edt_input_search.addTextChangedListener(new TextWatcher() {
             @Override
@@ -119,7 +119,7 @@ public class NewsFragment extends Fragment {
                     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                         super.onScrollStateChanged(recyclerView, newState);
                         if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                                new GetNews().execute();
+//
                         }
                     }
                     @Override
@@ -185,7 +185,6 @@ public class NewsFragment extends Fragment {
                     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                         super.onScrollStateChanged(recyclerView, newState);
                         if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                            new GetNews().execute();
                         }
                     }
                     @Override

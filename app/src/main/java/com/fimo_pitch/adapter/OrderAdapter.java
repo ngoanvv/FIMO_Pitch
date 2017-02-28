@@ -1,7 +1,10 @@
 package com.fimo_pitch.adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +13,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fimo_pitch.API;
 import com.fimo_pitch.R;
 import com.fimo_pitch.model.TimeTable;
+import com.fimo_pitch.model.UserModel;
+import com.fimo_pitch.support.NetworkUtils;
 import com.fimo_pitch.support.ShowToast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-/**
- * Created by TranManhTien on 22/08/2016.
- */
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
+
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> implements View.OnClickListener {
 
     private Context context;
@@ -26,11 +33,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     private ArrayList<TimeTable> data;
     private LayoutInflater inflater;
     private int callRequest = 1;
+    private UserModel userModel;
 
-
-    public OrderAdapter(Context context, ArrayList<TimeTable> data) {
+    public OrderAdapter(Context context, ArrayList<TimeTable> data,UserModel u) {
         this.context = context;
         this.data = data;
+        this.userModel = u;
         this.inflater = LayoutInflater.from(context);
         setHasStableIds(true);
     }
@@ -42,7 +50,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         return holder;
     }
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.tv_des.setText(data.get(position).getDescription());
         holder.tv_time.setText(data.get(position).getStart_time().substring(0,5)+"-"+data.get(position).getEnd_time().substring(0,5));
 
@@ -65,11 +73,68 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             @Override
             public void onClick(View v) {
 
+            HashMap<String,String> param = new HashMap<String, String>();
+                param.put("user_id",userModel.getId());
+                param.put("management_id",data.get(position).getId());
+                param.put("pitch_id",data.get(position).getPitchId());
+                param.put("management_id",data.get(position).getId());
+                param.put("status","1");
+                param.put("day",data.get(position).getDay());
+            new BookPitch(param).execute();
             }
+
         });
 
     }
 
+
+    public class BookPitch extends AsyncTask<String,String,String>
+    {
+        OkHttpClient client;
+        HashMap<String,String> body;
+        private ProgressDialog progressDialog;
+
+        public BookPitch(HashMap<String,String> body)
+        {
+                this.body = body;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            client = new OkHttpClient();
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Đang thao tác");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                Response response =
+                        client.newCall(NetworkUtils.createPutRequest(API.updatePitch,
+                                this.body)).execute();
+                if (response.isSuccessful()) {
+                    String results = response.body().string();
+                    Log.d("run", results);
+                    return results;
+                }
+            }
+            catch (Exception e)
+            {
+                return "failed";
+            }
+            return "failed";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+
+        }
+    }
     public OnCallEvent mOnCallEvent;
     public void setOnCallEvent(OnCallEvent onCallEvent)
     {

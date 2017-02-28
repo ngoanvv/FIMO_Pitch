@@ -9,9 +9,43 @@ public class Order {
     String userName;
     String userAddress;
     String userPhone;
-    String timeId;
+    String time_start;
+    String time_end;
+    String userId;
+    String day;
     String pitchId;
-    String systempitchId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getTime_start() {
+        return time_start;
+    }
+
+    public void setTime_start(String time_start) {
+        this.time_start = time_start;
+    }
+
+    public String getTime_end() {
+        return time_end;
+    }
+
+    public void setTime_end(String time_end) {
+        this.time_end = time_end;
+    }
 
     public String getId() {
         return id;
@@ -45,12 +79,19 @@ public class Order {
         this.userPhone = userPhone;
     }
 
-    public String getTimeId() {
-        return timeId;
-    }
-
-    public void setTimeId(String timeId) {
-        this.timeId = timeId;
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id='" + id + '\'' +
+                ", userName='" + userName + '\'' +
+                ", userAddress='" + userAddress + '\'' +
+                ", userPhone='" + userPhone + '\'' +
+                ", time_start='" + time_start + '\'' +
+                ", time_end='" + time_end + '\'' +
+                ", userId='" + userId + '\'' +
+                ", day='" + day + '\'' +
+                ", pitchId='" + pitchId + '\'' +
+                '}';
     }
 
     public String getPitchId() {
@@ -59,13 +100,5 @@ public class Order {
 
     public void setPitchId(String pitchId) {
         this.pitchId = pitchId;
-    }
-
-    public String getSystempitchId() {
-        return systempitchId;
-    }
-
-    public void setSystempitchId(String systempitchId) {
-        this.systempitchId = systempitchId;
     }
 }

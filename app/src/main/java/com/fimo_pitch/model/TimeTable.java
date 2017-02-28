@@ -15,9 +15,18 @@ public class TimeTable implements Serializable {
     private String start_time;
     private String end_time;
     private String phone;
+    private String day;
     private String price;
     private String systemId;
     private String pitchId;
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
 
     public String getSystemId() {
         return systemId;

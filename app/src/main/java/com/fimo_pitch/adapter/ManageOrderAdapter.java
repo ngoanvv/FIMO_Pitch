@@ -1,18 +1,27 @@
 package com.fimo_pitch.adapter;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fimo_pitch.R;
 import com.fimo_pitch.model.Order;
+import com.fimo_pitch.support.NetworkUtils;
+import com.fimo_pitch.support.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
 
 /**
  * Created by TranManhTien on 22/08/2016.
@@ -24,7 +33,7 @@ public class ManageOrderAdapter extends RecyclerView.Adapter<ManageOrderAdapter.
     private ArrayList<Order> data;
     private LayoutInflater inflater;
     private int callRequest = 1;
-
+    private OkHttpClient okHttpClient;
 
     public ManageOrderAdapter(Context context, ArrayList<Order> data) {
         this.context = context;
@@ -41,20 +50,25 @@ public class ManageOrderAdapter extends RecyclerView.Adapter<ManageOrderAdapter.
     }
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
+        Log.d(TAG,data.get(position).toString());
+        holder.tv_name.setText(data.get(position).getUserName());
+        holder.tv_time.setText(data.get(position).getTime_start()+"-"+data.get(position).getTime_end());
+        holder.tv_day.setText(data.get(position).getDay());
+        holder.tv_phone.setText(data.get(position).getUserPhone());
+        holder.btCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
+        holder.btOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                okHttpClient = new OkHttpClient();
+            }
+        });
 
     }
-    public OnCallEvent mOnCallEvent;
-    public void setOnCallEvent(OnCallEvent onCallEvent)
-    {
-        this.mOnCallEvent = onCallEvent;
-    }
-    public interface OnCallEvent
-    {
-        public void onCallEvent(String number);
-    }
-
-
     @Override
     public int getItemCount() {
 
@@ -66,6 +80,54 @@ public class ManageOrderAdapter extends RecyclerView.Adapter<ManageOrderAdapter.
         return data.get(position);
     }
 
+    private class MyTask extends AsyncTask<String,String,String>
+    {
+        String mUrl;
+        HashMap<String,String> param;
+        private ProgressDialog progressDialog;
+
+        public MyTask(String url,HashMap<String,String> body)
+        {
+            this.param=body;
+            this.mUrl = url;
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                Response response = okHttpClient.newCall(NetworkUtils.createPostRequest(mUrl,this.param)).execute();
+                if (response.isSuccessful()) {
+                    String results = response.body().string();
+                    Log.d("run", results);
+                    return results;
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                return "failed";
+            }
+            return "failed";
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+            if(s != "failed") {
+
+            }
+            else
+            {
+                Utils.openDialog(context,"Đã có lỗi xảy ra ");
+            }
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Đang thao tác");
+            progressDialog.show();
+        }
+    }
 
     @Override
     public int getItemViewType(int position) {
@@ -84,18 +146,19 @@ public class ManageOrderAdapter extends RecyclerView.Adapter<ManageOrderAdapter.
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
         TextView tv_name;
-        TextView tv_address,tv_time,tv_day,tv_phone,tv_userName;
+        TextView tv_time,tv_day,tv_phone,tv_userName;
+        Button btOk,btCancel;
         LinearLayout wrapper;
         public MyViewHolder(View itemView) {
             super(itemView);
-            tv_name = (TextView) itemView.findViewById(R.id.pitch_name);
-            tv_address = (TextView) itemView.findViewById(R.id.order_address);
+            tv_name = (TextView) itemView.findViewById(R.id.order_userName);
             tv_day = (TextView) itemView.findViewById(R.id.order_day);
-            tv_time = (TextView) itemView.findViewById(R.id.pitch_time);
+            tv_time = (TextView) itemView.findViewById(R.id.order_time);
             tv_phone = (TextView) itemView.findViewById(R.id.order_phone);
-            tv_phone = (TextView) itemView.findViewById(R.id.order_userName);
+            btOk = (Button) itemView.findViewById(R.id.bt_ok);
+            btCancel = (Button) itemView.findViewById(R.id.bt_cancel);
+
 
         }
 

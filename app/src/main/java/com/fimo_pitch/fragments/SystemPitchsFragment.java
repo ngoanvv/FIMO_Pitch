@@ -6,8 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +14,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-
+import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.SystemPitchAdapter;
 import com.fimo_pitch.model.SystemPitch;
+import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.ShowToast;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -38,6 +36,7 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
     private ImageView buttonView2;
     private ImageView buttonView4;
     public static String data;
+    private UserModel userModel;
     private ArrayList<SystemPitch> listSystemPitch;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +45,7 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
         View view = inflater.inflate(R.layout.fragment_matchs, container, false);
         listSystemPitch = new ArrayList<>();
 //        Log.d(TAG,data);
+        userModel = (UserModel) getActivity().getIntent().getSerializableExtra(CONSTANT.KEY_USER);
         initView(view);
 
         return view;
@@ -129,7 +129,7 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
                 }
                 recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
                 recyclerView.setHasFixedSize(true);
-                adapter = new SystemPitchAdapter(getActivity(), listSystemPitch);
+                adapter = new SystemPitchAdapter(getActivity(), listSystemPitch,userModel);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 recyclerView.setAdapter(adapter);
                 StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new

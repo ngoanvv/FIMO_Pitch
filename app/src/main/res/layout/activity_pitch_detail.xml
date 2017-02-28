@@ -187,18 +187,6 @@
         android:layout_marginRight="@dimen/s20dp"
         android:text="Xin chào các bạn, đây là hệ thống sân bóng Trần Quốc Hoàn. Địa chỉ là cái gì đó. Sân đẹp lắm, ổn, mời bạn qua chơi"
         />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/s10dp"
-        android:background="@color/button_grey"></View>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:gravity="center_horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.RecyclerView>
     <Button
         android:id="@+id/bt_view"
         android:layout_width="match_parent"
@@ -208,5 +196,14 @@
         android:padding="@dimen/s30dp"
         android:background="@color/com_facebook_blue"
         />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/s10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
+
 </LinearLayout>
 </ScrollView>

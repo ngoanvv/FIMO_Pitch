@@ -32,6 +32,7 @@ import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.TimeTable;
+import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.Utils;
 
 import org.json.JSONArray;
@@ -64,6 +65,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
     private String phoneNumber;
     private String dateOfWeek= String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
     private Pitch crPitch;
+    private UserModel userModel;
     private TextView mText;
     private ArrayAdapter<String> dataAdapter;
 
@@ -73,7 +75,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
         mSystemPitch = (SystemPitch) getIntent().getSerializableExtra(CONSTANT.SystemPitch_MODEL);
         listName = (List<String>) getIntent().getSerializableExtra(CONSTANT.LISTPITCH_DATA);
         listPitches = (ArrayList<Pitch>) getIntent().getSerializableExtra(CONSTANT.LISTPITCH);
-
+        userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
         crPitch = listPitches.get(0);
         setContentView(R.layout.activity_list_pitch);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
@@ -97,7 +99,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
         LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(ListPitchActivity.this); // (Context context)
         mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
-        adapter = new OrderAdapter(ListPitchActivity.this,listTime);
+        adapter = new OrderAdapter(ListPitchActivity.this,listTime,userModel);
         adapter.setOnCallEvent(ListPitchActivity.this);
         recyclerView.setAdapter(adapter);
 
@@ -173,6 +175,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
                         p.setPrice(object.getString("price"));
                         p.setSystemId(object.getString("system_id"));
                         p.setPitchId(id + "");
+                        p.setDay(tv_dateFilter.getText().toString());
                         p.setDescription(object.getString("description"));
                         listTime.add(p);
                     }
@@ -182,7 +185,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
                 LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(ListPitchActivity.this); // (Context context)
                 mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
-                adapter = new OrderAdapter(ListPitchActivity.this, listTime);
+                adapter = new OrderAdapter(ListPitchActivity.this, listTime,userModel);
                 adapter.setOnCallEvent(this);
                 recyclerView.setAdapter(adapter);
                 if(listTime.size()>0) mText.setVisibility(View.GONE);
@@ -262,36 +265,6 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-        }
-    }
-    private class BookPitchTask extends AsyncTask<String,Void,String> {
-        ProgressDialog progressDialog;
-        Pitch mPitch;
-        public BookPitchTask(Pitch p)
-        {
-            this.mPitch = p;
-        }
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(ListPitchActivity.this);
-            progressDialog.setMessage("Đang thao tác");
-            progressDialog.show();
-            listTime = new ArrayList<>();
-        }
-        @Override
-        protected String doInBackground(String... params) {
-
-            return "";
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            progressDialog.dismiss();
-            adapter = new OrderAdapter(ListPitchActivity.this,listTime);
-            adapter.setOnCallEvent(ListPitchActivity.this);
-            recyclerView.setAdapter(adapter);
         }
     }
 

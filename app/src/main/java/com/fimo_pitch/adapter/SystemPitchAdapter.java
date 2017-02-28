@@ -17,6 +17,7 @@ import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.main.DetailActivity;
 import com.fimo_pitch.model.SystemPitch;
+import com.fimo_pitch.model.UserModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -32,15 +33,16 @@ public class SystemPitchAdapter extends RecyclerView.Adapter<SystemPitchAdapter.
     private Context context;
     private String TAG=SystemPitchAdapter.class.getName();
     private ArrayList<SystemPitch> data;
-
+    private UserModel userModel;
     private LayoutInflater inflater;
     private ArrayList<SystemPitch> results;
     private ArrayList<SystemPitch> list;
 
 
-    public SystemPitchAdapter(Context context, ArrayList<SystemPitch> data) {
+    public SystemPitchAdapter(Context context, ArrayList<SystemPitch> data,UserModel u) {
         this.context = context;
         this.data = data;
+        this.userModel = u;
         this.inflater = LayoutInflater.from(context);
         setHasStableIds(true);
     }
@@ -71,6 +73,7 @@ public class SystemPitchAdapter extends RecyclerView.Adapter<SystemPitchAdapter.
             public void onClick(View v) {
                 Intent intent = new Intent(context, DetailActivity.class);
                 intent.putExtra(CONSTANT.SystemPitch_MODEL,data.get(position));
+                intent.putExtra(CONSTANT.KEY_USER,userModel);
                 context.startActivity(intent);
             }
         });

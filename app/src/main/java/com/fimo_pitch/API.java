@@ -19,6 +19,7 @@ public class API {
     public static String updatePrice="http://118.70.72.13:3000/pitch/updatemanagementpitch/";
     public static String GetOrders="http://118.70.72.13:3000/pitch/getcalendarforday";
     public static String UpdateFCMToken ="http://118.70.72.13:3000/users/updatetockentouser/";
+    public static String BookPitch="http://118.70.72.13:3000/system_pitch/bookpitch";
 
 
 }

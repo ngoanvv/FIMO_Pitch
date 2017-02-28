@@ -38,6 +38,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+
 public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
     private RoundedImageView bt_call,bt_order;
     private int callRequest = 1;
@@ -98,9 +101,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         bt_order = (RoundedImageView) findViewById(R.id.bt_order);
         tvDes = (TextView) findViewById(R.id.tv_desc);
         tvSysName = (TextView) findViewById(R.id.tv_syspitch_name);
+        btView = (Button) findViewById(R.id.bt_view);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         tvPhone = (TextView) findViewById(R.id.tvPhone);
-        btView = (Button) findViewById(R.id.bt_view);
         btView.setOnClickListener(this);
 
         if(mSystemPitch !=null)
@@ -123,7 +126,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             }
             case R.id.bt_view: {
-                Log.d("listname",listPitch.size()+"");
                 Intent intent = new Intent(DetailActivity.this,ListPitchActivity.class);
                 intent.putExtra(CONSTANT.LISTPITCH_DATA, (Serializable) listName);
                 intent.putExtra(CONSTANT.LISTPITCH,  (Serializable) listPitch);

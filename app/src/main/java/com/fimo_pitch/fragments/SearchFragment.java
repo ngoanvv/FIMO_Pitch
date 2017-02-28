@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,29 +11,18 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -44,16 +32,11 @@ import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.DetailDialog;
-import com.fimo_pitch.custom.view.InstantAutoComplete;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.main.DetailActivity;
-import com.fimo_pitch.main.ListPitchActivity;
-import com.fimo_pitch.main.MainActivity;
 import com.fimo_pitch.model.DirectionStep;
-import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.support.NetworkUtils;
-import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.maps.GoogleMap;
@@ -71,23 +54,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Random;
 
-
-import okhttp3.FormBody;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import static android.R.layout.select_dialog_item;
 
 /**
  */
@@ -427,11 +401,16 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             initList();
             initMapLicense();
             gps = new TrackGPS(getContext(),getActivity());
-//            if(gps.canGetLocation())
-//            {
+            if(!gps.canGetLocation())
+            {
                 currentLatLng = xuanthuy;
                 Utils.moveCamera(xuanthuy,"Bạn ở đây",12,map);
-//            }
+            }
+            else
+            {
+                currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
+                Utils.moveCamera(currentLatLng,"Bạn ở đây",12,map);
+            }
 
         }
     }
@@ -573,6 +552,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                 else
                 {
                     Utils.openDialog(getContext(),"Không định vị được vị trí của bạn");
+
                     break;
                 }
                 break;

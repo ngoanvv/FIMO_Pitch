@@ -3,8 +3,8 @@ package com.fimo_pitch.main;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -51,6 +51,8 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
     private String listpitchData;
     private List<String> listName;
     private String pitchId,day;
+    private String TAG=OrderManagementActivity.class.getName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,12 +121,38 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
             super.onPostExecute(s);
             progressDialog.dismiss();
             if(s != "failed") {
-                manageOrderAdapter = new ManageOrderAdapter(OrderManagementActivity.this, listOrder);
-                recyclerView.setLayoutManager(new LinearLayoutManager(OrderManagementActivity.this));
-                recyclerView.setAdapter(manageOrderAdapter);
-                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(OrderManagementActivity.this); // (Context context)
-                mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
-                recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+                listOrder = new ArrayList<>();
+                try {
+                    JSONObject result = new JSONObject(s);
+                    if(result.getString("status").contains("success"))
+                    {
+                        JSONArray data = result.getJSONArray("data");
+                        for (int i=0;i<data.length();i++)
+                        {
+                            JSONObject object = data.getJSONObject(i);
+                            Order p = new Order();
+                            p.setId(object.getString("id"));
+                            p.setUserName(object.getString("name"));
+                            p.setUserPhone(object.getString("phone"));
+                            p.setTime_end(object.getString("time_end"));
+                            p.setTime_start(object.getString("time_start"));
+                            p.setUserId("user_id");
+                            p.setDay(day);
+                            Log.d(TAG,p.toString());
+                            listOrder.add(p);
+                        }
+                    }
+                    manageOrderAdapter = new ManageOrderAdapter(OrderManagementActivity.this, listOrder);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(OrderManagementActivity.this));
+                    recyclerView.setAdapter(manageOrderAdapter);
+                    LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(OrderManagementActivity.this); // (Context context)
+                    mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
+                    recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
             }
             else
             {
@@ -248,6 +276,7 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
                 HashMap<String,String> body = new HashMap<>();
                 body.put("day",day);
                 body.put("pitch_id",pitchId);
+                Log.d(TAG,day+"-"+pitchId);
                 new GetOrders(body).execute();
             }
         }

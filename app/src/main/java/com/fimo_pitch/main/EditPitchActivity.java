@@ -132,7 +132,7 @@ public class EditPitchActivity extends AppCompatActivity {
             }
             catch (Exception e)
             {
-                return null;
+                return "failed";
             }
             return "failed";
         }

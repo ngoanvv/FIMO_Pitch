@@ -11,7 +11,6 @@ import android.util.Log;
 
 import com.fimo_pitch.R;
 import com.fimo_pitch.main.FirstActivity;
-import com.fimo_pitch.support.Utils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -25,8 +24,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
-
-        makeNotification(getApplicationContext(),"Có thông báo");
+        super.onMessageReceived(remoteMessage);
+        makeNotification(getApplicationContext(),remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
 
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
@@ -36,12 +35,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
     }
-    private void makeNotification(Context context,String content)
+    private void makeNotification(Context context,String title,String content)
     {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("FIMO MSN")
+                        .setContentTitle(title)
                         .setContentText(content);
         Intent resultIntent = new Intent(context, FirstActivity.class);
         TaskStackBuilder stackBuilder = null;

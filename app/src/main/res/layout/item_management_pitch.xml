@@ -13,7 +13,7 @@
         android:orientation="horizontal">
     <LinearLayout
             android:orientation="vertical"
-            android:layout_width="@dimen/s250dp"
+            android:layout_width="@dimen/s200dp"
             android:layout_height="wrap_content">
             <!--header-->
             <TextView
@@ -118,7 +118,7 @@
             android:layout_height="@dimen/s50dp"
             android:gravity="center"
             android:layout_marginTop="@dimen/s20dp"
-            android:layout_marginLeft="@dimen/s30dp"
+            android:layout_marginLeft="@dimen/s10dp"
             android:background="@color/colorRed"
             android:textColor="@color/white"
             android:layout_gravity="center"

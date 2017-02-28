@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:layout_marginTop="@dimen/s50dp"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical">
     <LinearLayout
@@ -14,14 +15,26 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/s50dp"
             android:theme="@style/transparent_bottom_line"
-
             />
     </LinearLayout>
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/recyclerView"
+<RelativeLayout
     android:layout_width="match_parent"
-    android:background="#00000000"
-    android:clickable="true"
     android:layout_height="match_parent">
-</android.support.v7.widget.RecyclerView>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:background="#00000000"
+        android:clickable="true"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
+    <com.fimo_pitch.custom.view.RoundedImageView
+        android:layout_width="@dimen/s70dp"
+        android:layout_height="@dimen/s70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/s100dp"
+        android:layout_marginRight="@dimen/s100dp"
+        android:id="@+id/bt_refresh"
+        android:background="@drawable/ic_refresh"/>
+</RelativeLayout>
 </LinearLayout>
