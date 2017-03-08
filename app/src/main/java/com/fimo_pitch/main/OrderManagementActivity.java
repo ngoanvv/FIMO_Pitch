@@ -172,7 +172,7 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
         @Override
         protected String doInBackground(String... params) {
             Request request = new Request.Builder()
-                    .url(API.getAllPitchofSystem+1)
+                    .url(API.GetAllPitchofSystem+1)
                     .build();
             try {
                 okHttpClient = new OkHttpClient();

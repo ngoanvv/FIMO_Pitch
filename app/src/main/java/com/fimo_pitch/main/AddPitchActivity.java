@@ -3,10 +3,8 @@ package com.fimo_pitch.main;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -17,7 +15,6 @@ import android.widget.EditText;
 import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
-import com.fimo_pitch.adapter.PitchManagementAdapter;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
 
@@ -120,7 +117,7 @@ public class AddPitchActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             try {
-                Response response = client.newCall(NetworkUtils.createPostRequest(API.insertPitch, this.param)).execute();
+                Response response = client.newCall(NetworkUtils.createPostRequest(API.InsertPitch, this.param)).execute();
                 if (response.isSuccessful()) {
                     String results = response.body().string();
                     Log.d("run", results);

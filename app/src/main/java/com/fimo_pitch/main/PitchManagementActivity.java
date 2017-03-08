@@ -63,7 +63,7 @@ public class PitchManagementActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
             Request request = new Request.Builder()
-                    .url(API.getAllPitchofSystem+1)
+                    .url(API.GetAllPitchofSystem+1)
                     .addHeader("content-type", "application/x-www-form-urlencoded")
                     .addHeader("cache-control", "no-cache")
                     .addHeader("postman-token", "b9494f39-8e39-7533-1896-281ee653703b")

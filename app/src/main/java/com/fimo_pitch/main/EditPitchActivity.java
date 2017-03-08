@@ -122,7 +122,7 @@ public class EditPitchActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             try {
                 Response response =
-                        client.newCall(NetworkUtils.createPutRequest(API.updatePitch+mPitch.getId(),
+                        client.newCall(NetworkUtils.createPutRequest(API.UpdatePitch+mPitch.getId(),
                                 this.param)).execute();
                 if (response.isSuccessful()) {
                     String results = response.body().string();

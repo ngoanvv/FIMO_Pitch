@@ -50,17 +50,16 @@ import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
-import com.fimo_pitch.fragments.OwnerFragment;
-import com.fimo_pitch.fragments.SystemPitchsFragment;
 import com.fimo_pitch.fragments.NewsFragment;
 import com.fimo_pitch.fragments.NotifcationFragment;
+import com.fimo_pitch.fragments.OwnerFragment;
 import com.fimo_pitch.fragments.PostNewsFragment;
 import com.fimo_pitch.fragments.SearchFragment;
 import com.fimo_pitch.fragments.SettingsFragment;
+import com.fimo_pitch.fragments.SystemPitchsFragment;
 import com.fimo_pitch.model.News;
 import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.UserModel;
-import com.fimo_pitch.support.MyAsyncTask;
 import com.fimo_pitch.support.NetworkUtils;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
@@ -72,11 +71,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -352,10 +349,10 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         @Override
         protected String doInBackground(String... params) {
             Request newsRequest = new Request.Builder()
-                    .url(API.getNews)
+                    .url(API.GetNews)
                     .build();
             Request systemPitchRequest = new Request.Builder()
-                    .url(API.getSystemPitch)
+                    .url(API.GetSystemPitch)
                     .build();
             try {
                 okHttpClient = new OkHttpClient();

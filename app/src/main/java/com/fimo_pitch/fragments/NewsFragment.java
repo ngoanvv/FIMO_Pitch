@@ -141,7 +141,7 @@ public class NewsFragment extends Fragment {
         protected String doInBackground(String... params) {
             try {
                 okHttpClient = new OkHttpClient();
-                Response response = okHttpClient.newCall(NetworkUtils.createGetRequest(API.getNews)).execute();
+                Response response = okHttpClient.newCall(NetworkUtils.createGetRequest(API.GetNews)).execute();
                 if (response.isSuccessful())
                 {
 

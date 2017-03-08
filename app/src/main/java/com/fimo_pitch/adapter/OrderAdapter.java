@@ -76,10 +76,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             HashMap<String,String> param = new HashMap<String, String>();
                 param.put("user_id",userModel.getId());
                 param.put("management_id",data.get(position).getId());
-                param.put("pitch_id",data.get(position).getPitchId());
-                param.put("management_id",data.get(position).getId());
+                param.put("pitch_id","1");
                 param.put("status","1");
                 param.put("day",data.get(position).getDay());
+            Log.d(TAG,param.toString());
             new BookPitch(param).execute();
             }
 
@@ -113,7 +113,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         protected String doInBackground(String... params) {
             try {
                 Response response =
-                        client.newCall(NetworkUtils.createPutRequest(API.updatePitch,
+                        client.newCall(NetworkUtils.createPostRequest(API.BookPitch,
                                 this.body)).execute();
                 if (response.isSuccessful()) {
                     String results = response.body().string();
@@ -123,6 +123,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             }
             catch (Exception e)
             {
+                e.printStackTrace();
                 return "failed";
             }
             return "failed";
@@ -132,7 +133,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             progressDialog.dismiss();
-
+            Log.d(TAG,s);
         }
     }
     public OnCallEvent mOnCallEvent;

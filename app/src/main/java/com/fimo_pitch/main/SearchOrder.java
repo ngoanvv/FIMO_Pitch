@@ -33,6 +33,7 @@ import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.TimeTable;
 import com.fimo_pitch.model.UserModel;
+import com.fimo_pitch.support.NetworkUtils;
 import com.fimo_pitch.support.Utils;
 
 import org.json.JSONArray;
@@ -40,19 +41,20 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import okhttp3.Response;
 
-public class ListPitchActivity extends AppCompatActivity implements View.OnClickListener,OrderAdapter.OnCallEvent {
+public class SearchOrder extends AppCompatActivity implements View.OnClickListener,OrderAdapter.OnCallEvent {
     private RecyclerView recyclerView;
     private OrderAdapter adapter;
     private ArrayList<Pitch> listPitches;
     private TextView tv_timeFilter,tv_dateFilter;
     private Spinner spinner;
     private List<String> listName;
-    private static String TAG=ListPitchActivity.class.getName();
+    private static String TAG=SearchOrder.class.getName();
     private SystemPitch mSystemPitch;
     private OkHttpClient okHttpClient;
     private String listPriceData="";
@@ -65,6 +67,7 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
     private String phoneNumber;
     private String dateOfWeek= String.valueOf(Calendar.getInstance().get(Calendar.DAY_OF_WEEK));
     private Pitch crPitch;
+    private String crDay="2017-01-12";
     private UserModel userModel;
     private TextView mText;
     private ArrayAdapter<String> dataAdapter;
@@ -96,17 +99,17 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
         listTime = new ArrayList<>();
 
         recyclerView = (RecyclerView) findViewById(R.id.list_pitch);
-        LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(ListPitchActivity.this); // (Context context)
+        LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(SearchOrder.this); // (Context context)
         mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
-        adapter = new OrderAdapter(ListPitchActivity.this,listTime,userModel);
-        adapter.setOnCallEvent(ListPitchActivity.this);
+        adapter = new OrderAdapter(SearchOrder.this,listTime,userModel);
+        adapter.setOnCallEvent(SearchOrder.this);
         recyclerView.setAdapter(adapter);
 
         tv_dateFilter.setOnClickListener(this);
 
         if(listName.size()>0&&listPitches.size()>0) {
-            dataAdapter = new ArrayAdapter<String>(ListPitchActivity.this, android.R.layout.simple_spinner_dropdown_item, listName);
+            dataAdapter = new ArrayAdapter<String>(SearchOrder.this, android.R.layout.simple_spinner_dropdown_item, listName);
             spinner.setAdapter(dataAdapter);
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -114,7 +117,6 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
                     Log.d("spinner", listPitches.get(position).getId() + "");
                     pitchId = listPitches.get(position).getId();
                     crPitch = listPitches.get(position);
-
                 }
 
                 @Override
@@ -124,29 +126,40 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
             });
         }
     }
-    private class GetListPrice extends AsyncTask<String,Void,String> implements OrderAdapter.OnCallEvent {
+    private class GetTime extends AsyncTask<String,Void,String> implements OrderAdapter.OnCallEvent  {
         ProgressDialog progressDialog;
         String id;
         String pitchName;
-        public GetListPrice(String pitchId,String name)
+        HashMap<String,String> param;
+        public GetTime(String name,HashMap<String,String> body)
         {
+            this.param = body;
             this.pitchName=name;
             id=pitchId;
         }
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(SearchOrder.this);
+            progressDialog.setMessage("Đang thao tác");
+//            progressDialog.show();
+        }
+        @Override
         protected String doInBackground(String... params) {
-            Request request = new Request.Builder()
-                    .url(API.GetPrice+id)
-                    .build();
-            Log.d("url ",API.GetPrice+id+"--"+id);
             try {
                 okHttpClient = new OkHttpClient();
-                okhttp3.Response systemPitchResponse = okHttpClient.newCall(request).execute();
-                if (systemPitchResponse.isSuccessful()) {
-                    listPriceData = systemPitchResponse.body().string().toString();
-                    return listPriceData;
+                Response response =
+                        okHttpClient.newCall(NetworkUtils.createPostRequest(API.GetTime, this.param)).execute();
+                String results = response.body().string();
+                Log.d("run", results);
+                if (response.isSuccessful()) {
+                    Log.d("run", results);
+                    return results;
                 }
-            } catch (Exception e) {
+
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
                 return "failed";
             }
@@ -174,18 +187,18 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
                         p.setType(object.getString("typedate"));
                         p.setPrice(object.getString("price"));
                         p.setSystemId(object.getString("system_id"));
-                        p.setPitchId(id + "");
-                        p.setDay(tv_dateFilter.getText().toString());
+                        p.setPitchId(object.getString("pitch_id"));
+                        p.setDay(crDay);
                         p.setDescription(object.getString("description"));
                         listTime.add(p);
                     }
 
                 }
                 recyclerView = (RecyclerView) findViewById(R.id.list_pitch);
-                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(ListPitchActivity.this); // (Context context)
+                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(SearchOrder.this); // (Context context)
                 mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
-                adapter = new OrderAdapter(ListPitchActivity.this, listTime,userModel);
+                adapter = new OrderAdapter(SearchOrder.this, listTime,userModel);
                 adapter.setOnCallEvent(this);
                 recyclerView.setAdapter(adapter);
                 if(listTime.size()>0) mText.setVisibility(View.GONE);
@@ -195,22 +208,15 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
                 e.printStackTrace();
             }
         }
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(ListPitchActivity.this);
-            progressDialog.setMessage("Đang thao tác");
-            progressDialog.show();
-        }
 
         @Override
         public void onCallEvent(String number) {
             if(number.contains("null"))
-                Utils.openDialog(ListPitchActivity.this,"Không có số điện thoại khả dụng");
+                Utils.openDialog(SearchOrder.this,"Không có số điện thoại khả dụng");
             else
             {
                 phoneNumber = number;
-                ActivityCompat.requestPermissions(ListPitchActivity.this,
+                ActivityCompat.requestPermissions(SearchOrder.this,
                         new String[]{Manifest.permission.CALL_PHONE}, callRequest);
             }
         }
@@ -219,11 +225,11 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
     public void onCallEvent(String number) {
 
         if(number.contains("null"))
-            Utils.openDialog(ListPitchActivity.this,"Không có số điện thoại khả dụng");
+            Utils.openDialog(SearchOrder.this,"Không có số điện thoại khả dụng");
         else
         {
             phoneNumber = number;
-            ActivityCompat.requestPermissions(ListPitchActivity.this,
+            ActivityCompat.requestPermissions(SearchOrder.this,
                     new String[]{Manifest.permission.CALL_PHONE}, callRequest);
         }
     }
@@ -250,10 +256,9 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(ListPitchActivity.this);
+            progressDialog = new ProgressDialog(SearchOrder.this);
             progressDialog.setMessage("Đang thao tác");
             progressDialog.show();
-
             listTime = new ArrayList<>();
         }
         @Override
@@ -270,16 +275,17 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
 
     public void showDatePicker()
     {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(ListPitchActivity.this, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(SearchOrder.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 if (view.isShown())
                 {
                     tv_dateFilter.setText(dayOfMonth+"/"+(monthOfYear+1)+"/"+year);
                     Log.d("dateofweek",dateOfWeek.toString());
+                    crDay =year+"-"+(monthOfYear+1)+"-"+dayOfMonth;
                 }
             }
-        }, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        }, 2017,00,01);
         datePickerDialog.show();
     }
     @Override
@@ -303,7 +309,11 @@ public class ListPitchActivity extends AppCompatActivity implements View.OnClick
             case R.id.btsearch :
             {
 //                new GetTimeTable(crPitch).execute(pitchId,mSystemPitch.getId(),"Mon");
-                new GetListPrice(crPitch.getId(),crPitch.getName()).execute();
+                HashMap<String,String> params = new HashMap<>();
+                params.put("pitch_id","1");
+                params.put("day",crDay);
+                Log.d(TAG,crDay);
+                new GetTime(crPitch.getName(),params).execute();
                 break;
             }
         }

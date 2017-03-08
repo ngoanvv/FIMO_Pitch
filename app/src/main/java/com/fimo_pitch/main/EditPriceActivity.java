@@ -10,7 +10,14 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
+
 import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
@@ -19,12 +26,13 @@ import com.fimo_pitch.model.Price;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
 import com.fimo_pitch.support.Utils;
-import okhttp3.OkHttpClient;
-import okhttp3.Response;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
 
 public class EditPriceActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText edt_startTime,edt_endTime,edt_price,edt_description;
@@ -132,7 +140,7 @@ public class EditPriceActivity extends AppCompatActivity implements View.OnClick
         @Override
         protected String doInBackground(String... params) {
             try {
-                Response response = client.newCall(NetworkUtils.createPutRequest(API.updatePrice+price.getId(),this.param)).execute();
+                Response response = client.newCall(NetworkUtils.createPutRequest(API.UpdatePrice+price.getId(),this.param)).execute();
                 if (response.isSuccessful()) {
                     String results = response.body().string();
                     Log.d("run", results);

@@ -27,6 +27,7 @@ import com.fimo_pitch.adapter.PitchAdapter;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.SystemPitch;
+import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.TrackGPS;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -63,7 +64,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private List<String> listName;
     private ArrayList<Pitch> listPitch;
     private PitchAdapter adapter;
-
+    private UserModel userModel;
     public DetailActivity() {
     }
 
@@ -71,6 +72,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSystemPitch = (SystemPitch) getIntent().getSerializableExtra(CONSTANT.SystemPitch_MODEL);
+        userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
+
         listName = new ArrayList<>();
         listPitch = new ArrayList<>();
 
@@ -126,10 +129,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             }
             case R.id.bt_view: {
-                Intent intent = new Intent(DetailActivity.this,ListPitchActivity.class);
+                Intent intent = new Intent(DetailActivity.this,SearchOrder.class);
                 intent.putExtra(CONSTANT.LISTPITCH_DATA, (Serializable) listName);
                 intent.putExtra(CONSTANT.LISTPITCH,  (Serializable) listPitch);
                 intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
+                intent.putExtra(CONSTANT.KEY_USER,userModel);
                 startActivity(intent);
                 break;
             }
@@ -141,7 +145,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected String doInBackground(String... params) {
             Request request = new Request.Builder()
-                    .url(API.getAllPitchofSystem+mSystemPitch.getId())
+                    .url(API.GetAllPitchofSystem+mSystemPitch.getId())
                     .build();
             try {
                 okHttpClient = new OkHttpClient();
@@ -202,9 +206,12 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            listPitch = new ArrayList<>();
+            listName = new ArrayList<>();
             progressDialog = new ProgressDialog(DetailActivity.this);
             progressDialog.setMessage("Đang thao tác");
             progressDialog.show();
+            Log.d(TAG,"get list picch");
         }
     }
     @Override

@@ -138,24 +138,20 @@
             android:orientation="vertical">
         <Button
             android:id="@+id/bt_book"
-            android:layout_width="@dimen/s100dp"
-            android:layout_height="@dimen/s50dp"
+            android:layout_width="@dimen/s150dp"
+            android:layout_height="@dimen/s70dp"
             android:layout_marginTop="@dimen/s40dp"
-            android:background="@color/com_facebook_blue"
-            android:gravity="center"
-            android:layout_gravity="center_vertical"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:textColor="@color/white"
             android:text="Đặt sân"/>
 
             <Button
                 android:id="@+id/bt_call"
-                android:layout_width="@dimen/s100dp"
-                android:layout_height="@dimen/s50dp"
-                android:gravity="center"
+                android:layout_width="@dimen/s150dp"
+                android:layout_height="@dimen/s70dp"
                 android:layout_marginTop="@dimen/s40dp"
-                android:background="@color/colorBackGroundFragmentTabHost"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:textColor="@color/white"
-                android:layout_gravity="center"
                 android:text="Liên hệ"/>
         </LinearLayout>
     </LinearLayout>

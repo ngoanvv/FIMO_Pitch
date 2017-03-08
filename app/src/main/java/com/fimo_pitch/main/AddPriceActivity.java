@@ -23,17 +23,14 @@ import com.fimo_pitch.R;
 import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
-import com.fimo_pitch.support.ShowToast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -130,7 +127,7 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected String doInBackground(String... params) {
             Request request = new Request.Builder()
-                    .url(API.getAllPitchofSystem+1)
+                    .url(API.GetAllPitchofSystem+1)
                     .build();
             try {
                 okHttpClient = new OkHttpClient();
@@ -201,7 +198,7 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected String doInBackground(String... params) {
             try {
-                Response response = client.newCall(NetworkUtils.createPostRequest(API.newPrice,this.param)).execute();
+                Response response = client.newCall(NetworkUtils.createPostRequest(API.NewPrice,this.param)).execute();
                 if (response.isSuccessful()) {
                     String results = response.body().string();
                     Log.d("run", results);

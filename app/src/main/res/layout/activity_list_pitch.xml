@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.fimo_pitch.main.ListPitchActivity">
+    tools:context="com.fimo_pitch.main.SearchOrder">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -48,7 +48,7 @@
         android:textColor="@color/white"
         android:layout_height="@dimen/s50dp"
         android:layout_gravity="center"
-        android:text="12/12/2016"
+        android:text="2017-01-12"
         android:textStyle="bold"
         android:textSize="@dimen/s25sp"/>
         <com.fimo_pitch.custom.view.RoundedImageView

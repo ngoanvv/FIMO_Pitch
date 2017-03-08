@@ -464,7 +464,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             try {
                 okHttpClient = new OkHttpClient();
                 Response response =
-                        okHttpClient.newCall(NetworkUtils.createPostRequest(API.searcInDay, this.param)).execute();
+                        okHttpClient.newCall(NetworkUtils.createPostRequest(API.SearcInDay, this.param)).execute();
                 if (response.isSuccessful())
                 {
                     listSystemData = response.body().string().toString();

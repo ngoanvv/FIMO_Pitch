@@ -3,8 +3,8 @@ package com.fimo_pitch.main;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -17,9 +17,7 @@ import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
-import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.Utils;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -126,7 +124,7 @@ public class AddSystemPitchActivity extends AppCompatActivity implements OnMapRe
         protected String doInBackground(String... params) {
             try {
                 Response response =
-                  client.newCall(NetworkUtils.createPostRequest(API.insertSystemPitch, this.param)).execute();
+                  client.newCall(NetworkUtils.createPostRequest(API.InsertSystemPitch, this.param)).execute();
                 String results = response.body().string();
                 Log.d("run", results);
                 if (response.isSuccessful()) {
@@ -137,7 +135,7 @@ public class AddSystemPitchActivity extends AppCompatActivity implements OnMapRe
             }
             catch (Exception e)
             {
-                return e.toString();
+                return "failed";
             }
             return "failed";
         }

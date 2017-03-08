@@ -11,8 +11,15 @@
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:titleTextColor="@color/white"
+        android:layout_height="@dimen/s70dp"
+        android:background="@color/com_facebook_blue"
+        app:layout_collapseMode="pin"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,22 +27,14 @@
         <ImageView
             android:id="@+id/img_pitch"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/s150dp"
+            android:layout_height="@dimen/s250dp"
             android:background="@drawable/ic_san"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:titleTextColor="@color/white"
-            android:layout_height="@dimen/s50dp"
-            app:layout_collapseMode="pin"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_marginTop="@dimen/s120dp"
+            android:layout_marginTop="@dimen/s150dp"
             android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -49,8 +48,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="3.5"
+                android:textStyle="bold"
                 android:textColor="@color/white"
-                android:textSize="@dimen/s15dp"
+                android:textSize="@dimen/s20dp"
                 android:layout_marginLeft="@dimen/s5dp"
                 />
             <ImageView
@@ -64,8 +64,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
+                android:textStyle="bold"
                 android:textColor="@color/white"
-                android:textSize="@dimen/s15dp"
+                android:textSize="@dimen/s20dp"
                 android:text="2"
                 />
         </LinearLayout>
@@ -73,7 +74,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/s10dp"
+            android:textSize="@dimen/s15dp"
             android:layout_gravity="center_horizontal"
             android:text="Xem tất cả hình ảnh"
             android:padding="@dimen/s5dp"
@@ -92,15 +93,15 @@
             android:id="@+id/tv_syspitch_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/s17dp"
-            android:layout_gravity="center_horizontal"
+            android:textSize="@dimen/s25dp"
             android:text="Sân bóng Trần Quốc Hoàn"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:layout_alignBottom="@+id/textView4"
             android:layout_alignParentLeft="true"
+            android:layout_marginTop="@dimen/s120dp"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="@dimen/s12dp" />
+            android:layout_marginBottom="@dimen/s100dp"
+            />
     </RelativeLayout>
 
     <LinearLayout
@@ -193,8 +194,9 @@
         android:layout_height="wrap_content"
         android:text="Xem lịch sân cụ thể"
         android:textColor="@color/white"
+        android:layout_marginTop="@dimen/s10dp"
         android:padding="@dimen/s30dp"
-        android:background="@color/com_facebook_blue"
+        android:background="@color/colorGreen203"
         />
 
     <android.support.v7.widget.RecyclerView

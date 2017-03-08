@@ -3,10 +3,6 @@ package com.fimo_pitch.fragments;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
-import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,32 +18,13 @@ import android.widget.TimePicker;
 import com.fimo_pitch.API;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
-import com.fimo_pitch.main.AddSystemPitchActivity;
-import com.fimo_pitch.main.PitchManagementActivity;
 import com.fimo_pitch.support.NetworkUtils;
-import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.Utils;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
@@ -217,7 +193,7 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
         protected String doInBackground(String... params) {
             try {
                 Response response =
-                client.newCall(NetworkUtils.createPostRequest(API.createNews, this.param)).execute();
+                client.newCall(NetworkUtils.createPostRequest(API.CreateNews, this.param)).execute();
                 String results = response.body().string();
                 Log.d("run", results);
                 if (response.isSuccessful()) {
