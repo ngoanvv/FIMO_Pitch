@@ -46,7 +46,6 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
         holder.tv_hostname.setText(list.get(position).getHostName());
         holder.tv_time.setText(list.get(position).getTime());
         holder.tv_location.setText(list.get(position).getLocation());
-        holder.tv_money.setText(list.get(position).getMoney());
 
 
     }
@@ -109,7 +108,7 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
         return results;
     }
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_hostname,tv_time,tv_location,tv_money,tv_descrip;
+        TextView tv_hostname,tv_time,tv_location,tv_descrip;
         LinearLayout ll_match;
 
         public RecyclerViewHolder(View itemView) {
@@ -117,7 +116,6 @@ public class NewsFragmentAdapter extends RecyclerView.Adapter<NewsFragmentAdapte
             tv_hostname = (TextView) itemView.findViewById(R.id.items_name);
             tv_time = (TextView) itemView.findViewById(R.id.item_time);
             tv_location = (TextView) itemView.findViewById(R.id.item_location);
-            tv_money = (TextView) itemView.findViewById(R.id.item_money);
             tv_descrip = (TextView) itemView.findViewById(R.id.item_title);
             ll_match = (LinearLayout) itemView.findViewById(R.id.ll_match);
         }

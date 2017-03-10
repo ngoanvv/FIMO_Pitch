@@ -32,4 +32,13 @@
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/s30dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SKIP"
+        android:id="@+id/bt_skip"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/s200dp" />
 </RelativeLayout>

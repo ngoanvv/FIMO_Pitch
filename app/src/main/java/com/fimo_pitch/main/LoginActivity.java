@@ -247,6 +247,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor.putString("email", email);
         editor.putString("password", password);
         editor.putString("userType", userType);
+        editor.putBoolean("login",true);
         Log.d("info", email + "/" + password + "/" + userType);
         editor.commit();
 
@@ -307,7 +308,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             }
             case R.id.link_trial: {
-                moveToHomeScreen();
+
+                userModel.setPhone("098878xxx");
+                userModel.setId("id");
+                userModel.setName("Trial");
+                userModel.setEmail("Traial");
+                userModel.setUserType(UserModel.TYPE_TEAM);
+                userModel.setImageURL("img");
+                userModel.setToken("token");
+                // lưu dữ liệu đăng nhập vào máy
+//                saveUserData(userModel.getEmail(),userModel.getPassword(),userModel.getUserType());
+                //gửi dữ liệu user sang main activity
+                getSharedPreferences("data",MODE_PRIVATE).edit().putBoolean("login",false);
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.putExtra(CONSTANT.KEY_USER, userModel);
+                intent.putExtra(CONSTANT.KEY_USER,userModel);
+                startActivity(intent);
             }
         }
     }
@@ -353,7 +369,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            progressDialog.dismiss();
             if(s.contains("success")) {
                 try {
                     JSONObject jsonObject = new JSONObject(s);
@@ -389,6 +404,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             {
                 Utils.openDialog(LoginActivity.this,getString(R.string.login_failed));
             }
+            progressDialog.dismiss();
 
         }
     }

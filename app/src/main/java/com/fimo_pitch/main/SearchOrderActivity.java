@@ -106,7 +106,7 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
         adapter = new OrderAdapter(SearchOrderActivity.this,listTime,userModel);
         adapter.setOnCallEvent(SearchOrderActivity.this);
         recyclerView.setAdapter(adapter);
-
+        tv_dateFilter.setText(Calendar.getInstance().get(Calendar.YEAR)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         tv_dateFilter.setOnClickListener(this);
 
         if(listName.size()>0&&listPitches.size()>0) {

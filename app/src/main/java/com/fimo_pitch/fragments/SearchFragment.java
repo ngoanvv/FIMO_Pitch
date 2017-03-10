@@ -441,7 +441,8 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                     Double lat = Double.valueOf(object.getString("lat"));
                     Double lng = Double.valueOf(object.getString("log"));
                     options.position(new LatLng(lat,lng)).title("Sân bóng 123x");
-                    if(systemPitch.getStatus().contains("0")) options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_marker_free)));                    Marker marker = map.addMarker(options);
+                    if(systemPitch.getStatus().contains("0"))
+                        options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_marker_free)));                    Marker marker = map.addMarker(options);
 
                     marker.setTag(i);
                 }

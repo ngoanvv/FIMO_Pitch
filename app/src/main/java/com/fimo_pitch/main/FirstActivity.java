@@ -18,6 +18,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.fimo_pitch.R;
@@ -47,11 +49,56 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
     private double currentlatitude;
     private double currentlongitude;
     private double latitude,longitude;
-
+    private int countPause=0;
+    private int countResume=0;
+    private Button skip;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
+        skip = (Button) findViewById(R.id.bt_skip);
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Utils.isConnected(FirstActivity.this)) {
+                    sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            if (sharedPreferences != null) {
+                                seen = sharedPreferences.getBoolean("seen", false);
+                                if (seen == true) {
+                                    Intent intent = new Intent(FirstActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Intent intent = new Intent(FirstActivity.this, IntroductionActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        }
+                    }, 1000);
+
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(FirstActivity.this);
+                    builder.setMessage(getString(R.string.no_connection));
+                    builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+                    builder.create().show();
+                }
+
+            }
+        });
+
+
         client = new OkHttpClient();
         FirebaseApp.initializeApp(FirstActivity.this);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -60,61 +107,84 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
                 .addApi(LocationServices.API)
                 .build();
         mGoogleApiClient.connect();
-        ActivityCompat.requestPermissions(FirstActivity.this,
-                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
-        String locationProviders = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-        if (locationProviders == null || locationProviders.equals("")) {
-            Log.d("gps","disable");
-            Utils.showGpsSettingsAlert(FirstActivity.this);
-        }
-        else
-        {
-            Log.d("gps","enable");
-        }
+        createLocationRequest();
 
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(FirstActivity.this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
+        }
     }
 
+    @Override
+    protected void onPause() {
+        countPause++;
+        Log.d("first","on pause");
+        super.onPause();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        setUpMapIfNeeded();
+        countResume++;
+        if(countResume>1) {
+            Log.d("first", "on resume");
+            String locationProviders = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            if (locationProviders == null || locationProviders.equals("")) {
+                Log.d("gps", "disable");
+                Utils.showGpsSettingsAlert(FirstActivity.this);
+            } else {
+                Log.d("gps", "enable");
+                createLocationRequest();
+            }
+            if(countResume>2) {
+                if (Utils.isConnected(FirstActivity.this)) {
+                    sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            if (sharedPreferences != null) {
+                                seen = sharedPreferences.getBoolean("seen", false);
+                                if (seen == true) {
+                                    Intent intent = new Intent(FirstActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Intent intent = new Intent(FirstActivity.this, IntroductionActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        }
+                    }, 4000);
+
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(FirstActivity.this);
+                    builder.setMessage(getString(R.string.no_connection));
+                    builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+                    builder.create().show();
+                }
+            }
+        }
+        mGoogleApiClient.connect();
+
+    }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        if (Utils.isConnected(FirstActivity.this)) {
-            createLocationRequest();
-            sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    if (sharedPreferences != null) {
-                        seen = sharedPreferences.getBoolean("seen", false);
-                        if (seen == true) {
-
-                            Intent intent = new Intent(FirstActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Intent intent = new Intent(FirstActivity.this, IntroductionActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }
-                }
-            }, 1000);
-
-        } else {
-            AlertDialog.Builder builder = new AlertDialog.Builder(FirstActivity.this);
-            builder.setMessage(getString(R.string.no_connection));
-            builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    finish();
-                }
-            });
-            builder.create().show();
-        }
     }
 
     @Override
@@ -134,6 +204,9 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
                     Log.d("DEBUG", "current location: " + mCurrentLocation.toString());
                     currentlatitude = mCurrentLocation.getLatitude();
                     currentlongitude = mCurrentLocation.getLongitude();
+                    SharedPreferences sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
+                    sharedPreferences.edit().putString("lat",currentlatitude+"").commit();
+                    sharedPreferences.edit().putString("lng",currentlongitude+"").commit();
                 } else {
                     startLocationUpdates();
                 }
@@ -144,6 +217,10 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
                 Log.d("DEBUG", "current location: " + mCurrentLocation.toString());
                 currentlatitude = mCurrentLocation.getLatitude();
                 currentlongitude = mCurrentLocation.getLongitude();
+                SharedPreferences sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
+                sharedPreferences.edit().putString("lat",currentlatitude+"").commit();
+                sharedPreferences.edit().putString("lng",currentlongitude+"").commit();
+
             }
             startLocationUpdates();
         }
@@ -238,6 +315,9 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
         Log.i("TAG", "Current Location==>" + location);
         currentlatitude = location.getLatitude();
         currentlongitude = location.getLongitude();
+        SharedPreferences sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
+        sharedPreferences.edit().putString("lat",currentlatitude+"").commit();
+        sharedPreferences.edit().putString("lng",currentlongitude+"").commit();
     }
 
 
@@ -255,20 +335,6 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
             Log.e("TAG", "Location services connection failed Because of==> " + connectionResult.getErrorMessage());
         }
 
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        setUpMapIfNeeded();
-        mGoogleApiClient.connect();
     }
 
     @Override

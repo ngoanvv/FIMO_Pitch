@@ -58,7 +58,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private LatLng target;
     private RecyclerView recyclerView;
     private OkHttpClient okHttpClient;
-    private TextView tvSysName,tvDes;
+    private TextView tvSysName,tvDes,tvAddress,tvOwner;
     private TextView tvPhone;
     private Button btView;
     private String listpitchData;
@@ -105,7 +105,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         bt_call = (RoundedImageView) findViewById(R.id.bt_call);
         bt_order = (RoundedImageView) findViewById(R.id.bt_order);
         tvDes = (TextView) findViewById(R.id.tv_desc);
+        tvAddress = (TextView) findViewById(R.id.tv_address);
         tvSysName = (TextView) findViewById(R.id.tv_syspitch_name);
+        tvOwner = (TextView) findViewById(R.id.tvOwner);
+
         btView = (Button) findViewById(R.id.bt_view);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         tvPhone = (TextView) findViewById(R.id.tvPhone);
@@ -116,6 +119,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             tvDes.setText(mSystemPitch.getDescription());
             tvSysName.setText(mSystemPitch.getName());
             tvPhone.setText(mSystemPitch.getPhone());
+            tvOwner.setText(mSystemPitch.getOwnerName());
+            tvAddress.setText(mSystemPitch.getAddress());
             mSystemPitch.setPhone("092333244");
         }
 
