@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.fimo_pitch.R;
 import com.fimo_pitch.model.SystemPitch;
-import com.fimo_pitch.support.ShowToast;
 
 
 /**
@@ -46,7 +45,7 @@ public class DetailDialog extends DialogFragment implements View.OnClickListener
 
         view.findViewById(R.id.id_dialog_ok).setOnClickListener(this);
         view.findViewById(R.id.id_more).setOnClickListener(this);
-
+        view.findViewById(R.id.id_route).setOnClickListener(this);
         dialog.setCanceledOnTouchOutside(false);
         dialog.setContentView(view);
         return dialog;
@@ -63,6 +62,10 @@ public class DetailDialog extends DialogFragment implements View.OnClickListener
                 handleMoreEvent();
                 break;
             }
+            case R.id.id_route: {
+                handleRouteEvent();
+                break;
+            }
             default:
                 break;
         }
@@ -72,7 +75,11 @@ public class DetailDialog extends DialogFragment implements View.OnClickListener
         dismiss();
         mEvent.onConfirmed(true);
     }
-
+    private void handleRouteEvent()
+    {
+        dismiss();
+        mEvent.onConfirmed(false);
+    }
 
     private void handleOkEvent() {
         dismiss();

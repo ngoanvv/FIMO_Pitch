@@ -82,6 +82,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
         userModel = new UserModel();
+
+
+
         initGoogleAPI();
         initView();
         sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
@@ -98,7 +101,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void login() {
     }
-
     public void initGoogleAPI() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()

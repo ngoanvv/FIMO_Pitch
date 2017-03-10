@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/rounded_border_white"
     android:orientation="vertical">
 
 
@@ -10,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/s10dp"
-        android:gravity="center"
         android:maxLines="2"
         android:textStyle="bold"
         android:text="Hệ thống sân bóng 123"
@@ -49,6 +49,16 @@
             android:layout_weight="1"
             android:background="@drawable/border"
             android:text="Xem chi tiết"
+            android:textAllCaps="false"
+            android:textColor="@color/blueGray"
+            android:textSize="@dimen/s20dp" />
+        <Button
+            android:id="@+id/id_route"
+            android:layout_width="@dimen/s0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/border"
+            android:text="Tìm đường"
             android:textAllCaps="false"
             android:textColor="@color/blueGray"
             android:textSize="@dimen/s20dp" />

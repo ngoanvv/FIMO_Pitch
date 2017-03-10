@@ -1,11 +1,9 @@
 package com.fimo_pitch.fragments;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,8 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -78,7 +74,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     private LatLng currentLatLng;
     private ArrayList<SystemPitch> listSystemPitch;
     private Spinner search_box;
-    private ImageView bt_currentLocation;
+    private ImageView bt_currentLocation,bt_clear;
     private String result,data;
     private LatLng resultLatLng;
     private OkHttpClient okHttpClient;
@@ -93,6 +89,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     private String sMinute="00";
     private String location="Cầu Giấy";
     private int dateofweek=1;
+    private LatLng chooseLatlng;
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
         try {
@@ -111,8 +108,12 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             tv_time    = (TextView) view.findViewById(R.id.tv_time);
             bt_search  =  (RoundedImageView) view.findViewById(R.id.bt_search);
             bt_currentLocation = (ImageView) view.findViewById(R.id.bt_currentLocation) ;
+            bt_clear = (ImageView) view.findViewById(R.id.bt_clear) ;
 
+            bt_clear.setOnClickListener(this);
             bt_currentLocation.setOnClickListener(this);
+
+
             tv_time.setOnClickListener(this);
             bt_search.setOnClickListener(this);
 
@@ -232,6 +233,19 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         }
         return url;
     }
+    public void reDrawMarker()
+    {
+        for(int i=0;i<listSystemPitch.size();i++)
+        {
+            MarkerOptions options = new MarkerOptions();
+            Double lat = Double.valueOf(listSystemPitch.get(i).getLat());
+            Double lng = Double.valueOf(listSystemPitch.get(i).getLng());
+            options.position(new LatLng(lat,lng)).title("Sân bóng 123x");
+            if(listSystemPitch.get(i).getStatus().contains("0")) options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_marker_free)));                    Marker marker = map.addMarker(options);
+
+            marker.setTag(i);
+        }
+    }
     public void drawLine(int index,LatLng start,LatLng end,String distance,String des)
     {
         map.addPolyline(new PolylineOptions().add(start,end).color(Color.BLUE).width(8));
@@ -299,6 +313,14 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     public void initMapLicense() {
         if (map != null)
         {
+            double lat = Double.parseDouble(getContext().getSharedPreferences("data", Context.MODE_PRIVATE).getString("lat","0.0"));
+            double lng = Double.parseDouble(getContext().getSharedPreferences("data", Context.MODE_PRIVATE).getString("lng","0.0"));
+            currentLatLng = new LatLng(lat,lng);
+            Log.d("latlng",lat+":"+lng);
+            if(lat != 0.0 && lng != 0.0)
+            {
+                Utils.moveCamera(new LatLng(lat,lng),"Bạn đang ở đây",12,map);
+            }
             map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
@@ -312,20 +334,13 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                         int position = (int) marker.getTag();
                         Log.d("pos",marker.getTag()+"");
                         SystemPitch systemPitch = listSystemPitch.get(position);
-                        if(currentLatLng != null) {
-                            map.clear();
-                            map.addMarker(new MarkerOptions().title("Bạn ở đây").position(currentLatLng));
-                            map.addMarker(new MarkerOptions().position(marker.getPosition()).title(listSystemPitch.get(0).getName()));
-                            new GetDirections().execute(marker.getPosition(), currentLatLng);
-                            DetailDialog dialog = new DetailDialog(getContext(), systemPitch,position);
-                            dialog.setOnArrivalDeliverListener(SearchFragment.this);
-                            dialog.show(getFragmentManager(), TAG);
-                            choosePostition = position;
-                        }
-                        else
-                        {
-                            return true;
-                        }
+                        map.addMarker(new MarkerOptions().title("Bạn ở đây").position(currentLatLng));
+                        map.addMarker(new MarkerOptions().position(marker.getPosition()).title(listSystemPitch.get(0).getName()));
+                        DetailDialog dialog = new DetailDialog(getContext(), systemPitch,position);
+                        dialog.setOnArrivalDeliverListener(SearchFragment.this);
+                        dialog.show(getFragmentManager(), TAG);
+                        choosePostition = position;
+                        chooseLatlng = marker.getPosition();
 
                     }
                      return true;
@@ -340,12 +355,28 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             });
         }
     }
+    // xu ly thao tac tu dialog
     @Override
     public void onConfirmed(boolean confirm) {
-                    Intent intent =new Intent(getActivity(),DetailActivity.class);
-                    intent.putExtra(CONSTANT.SystemPitch_MODEL,listSystemPitch.get(choosePostition));
-                    startActivity(intent);
+        // xem chi tiet
+        if (confirm) {
+            Intent intent = new Intent(getActivity(), DetailActivity.class);
+            intent.putExtra(CONSTANT.SystemPitch_MODEL, listSystemPitch.get(choosePostition));
+            startActivity(intent);
+        }
+        // nhan chi duong
+        else
+        {
+            if(currentLatLng != null) {
+                map.clear();
+                map.addMarker(new MarkerOptions().position(chooseLatlng));
+                map.addMarker(new MarkerOptions().position(currentLatLng));
+                new GetDirections().execute(chooseLatlng, currentLatLng);
+                bt_clear.setVisibility(View.VISIBLE);
+            }
+        }
     }
+
     public SearchFragment() {}
     public static SearchFragment newInstance(String mdata, String param2) {
         SearchFragment fragment = new SearchFragment();
@@ -356,6 +387,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         fragment.setArguments(args);
         return fragment;
     }
+
     private Bitmap getMarkerBitmapFromView(@DrawableRes int resId) {
 
         View customMarkerView = ((LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker, null);
@@ -381,25 +413,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             initList();
             initMapLicense();
         }
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode==permissionCode)
-        {
-            if(grantResults[0]==PackageManager.PERMISSION_GRANTED) {
-                gps = new TrackGPS(getContext(),getActivity());
-                if(gps.canGetLocation()){
-                    double longitude = gps.getLongitude();
-                    double latitude = gps .getLatitude();
-                    Log.d("SearchFragment","lat : " + latitude +" lng :"+longitude);
-                    currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
-                    map.addMarker(new MarkerOptions().position(currentLatLng));
-//                    Utils.moveCamera(currentLatLng,"Bạn ở đây",13,map);
-                }
-            }
-        }
-        else
-            Utils.openDialog(getContext(),"Không định vị được vị trí của bạn");
     }
 
     public void initList() {
@@ -531,15 +544,22 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     @Override
     public void onClick(View v) {
         int id=v.getId();
-        switch (id)
-        {
+        switch (id) {
+            case R.id.bt_clear:
+            {
+                map.clear();
+                reDrawMarker();
+                bt_clear.setVisibility(View.GONE);
+            }
             case R.id.bt_currentLocation :
             {
-                if(currentLatLng !=null) Utils.moveCamera(currentLatLng,"Bạn ở đây",13,map);
-                else
+                double lat = Double.parseDouble(getContext().getSharedPreferences("data", Context.MODE_PRIVATE).getString("lat","0.0"));
+                double lng = Double.parseDouble(getContext().getSharedPreferences("data", Context.MODE_PRIVATE).getString("lng","0.0"));
+                Log.d("latlng",lat+":"+lng);
+                currentLatLng = new LatLng(lat,lng);
+                if(lat != 0.0 && lng != 0.0)
                 {
-                    Utils.openDialog(getContext(),"Không định vị được vị trí của bạn");
-                    break;
+                    Utils.moveCamera(new LatLng(lat,lng),"Bạn đang ở đây",13,map);
                 }
                 break;
             }

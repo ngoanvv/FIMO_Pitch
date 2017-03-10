@@ -21,7 +21,7 @@ public class CONSTANT {
     public static String POST ="post";
     public static String GET ="get";
     public static String PUT ="put";
-
+    public static String CurrentLatLng="currentLatlng";
     public static String LISTPITCH="LISTPITCH";
     public static String PITCH_MODEL="putchModel";
 }

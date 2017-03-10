@@ -1,36 +1,39 @@
 package com.fimo_pitch.main;
 
 import android.Manifest;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Vibrator;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.fimo_pitch.R;
+import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.firebase.FirebaseApp;
 
 import okhttp3.OkHttpClient;
 
-public class FirstActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class FirstActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,LocationListener {
     SharedPreferences sharedPreferences;
     Boolean seen;
     private OkHttpClient client;
@@ -39,6 +42,11 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
     private int permissionCode = 1111;
     private Location location;
     private Location mLastLocation;
+    private TrackGPS gps;
+    private LocationRequest mLocationRequest;
+    private double currentlatitude;
+    private double currentlongitude;
+    private double latitude,longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,44 +54,33 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
         setContentView(R.layout.activity_first);
         client = new OkHttpClient();
         FirebaseApp.initializeApp(FirstActivity.this);
-
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
         mGoogleApiClient.connect();
+        ActivityCompat.requestPermissions(FirstActivity.this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
+        String locationProviders = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        if (locationProviders == null || locationProviders.equals("")) {
+            Log.d("gps","disable");
+            Utils.showGpsSettingsAlert(FirstActivity.this);
+        }
+        else
+        {
+            Log.d("gps","enable");
+        }
+
     }
 
-    private void makeNotification(Context context, String content) {
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("FIMO MSN")
-                        .setContentText(content);
-        Intent resultIntent = new Intent(context, FirstActivity.class);
-        TaskStackBuilder stackBuilder = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            stackBuilder = TaskStackBuilder.create(context);
-            stackBuilder.addParentStack(FirstActivity.class);
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-            mBuilder.setContentIntent(resultPendingIntent);
-            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(10, mBuilder.build());
-        } else {
-            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(10, mBuilder.build());
-            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            v.vibrate(1000);
-        }
-    }
 
     @Override
     protected void onStart() {
         super.onStart();
 
         if (Utils.isConnected(FirstActivity.this)) {
+            createLocationRequest();
             sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
             final Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -93,6 +90,7 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
                     if (sharedPreferences != null) {
                         seen = sharedPreferences.getBoolean("seen", false);
                         if (seen == true) {
+
                             Intent intent = new Intent(FirstActivity.this, LoginActivity.class);
                             startActivity(intent);
                             finish();
@@ -120,30 +118,144 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                    mGoogleApiClient);
-            Log.d(TAG,mLastLocation.toString());
-            return;
-        }
+    public void onConnected(Bundle bundle) {
+        Location mCurrentLocation;
 
+        Log.i("TAG", "OnConnected");
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ContextCompat.checkSelfPermission(FirstActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(FirstActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+                // Note that this can be NULL if last location isn't already known.
+                if (mCurrentLocation != null) {
+                    // Print current location if not null
+                    Log.d("DEBUG", "current location: " + mCurrentLocation.toString());
+                    currentlatitude = mCurrentLocation.getLatitude();
+                    currentlongitude = mCurrentLocation.getLongitude();
+                } else {
+                    startLocationUpdates();
+                }
+            }
+        } else {
+            mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            if (mCurrentLocation != null) {
+                Log.d("DEBUG", "current location: " + mCurrentLocation.toString());
+                currentlatitude = mCurrentLocation.getLatitude();
+                currentlongitude = mCurrentLocation.getLongitude();
+            }
+            startLocationUpdates();
+        }
+    }
+    private void createLocationRequest() {
+        Log.i("TAG", "CreateLocationRequest");
+        mLocationRequest = new LocationRequest();
+        long UPDATE_INTERVAL = 10 * 1000;
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        long FASTEST_INTERVAL = 10000;
+        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(mLocationRequest);
+        builder.setAlwaysShow(true); //this is the key ingredient
+
+    }
+    private void startLocationUpdates() {
+
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ContextCompat.checkSelfPermission(FirstActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    && ContextCompat.checkSelfPermission(FirstActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
+                        mLocationRequest, this);
+
+            }
+        } else {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient,
+                    mLocationRequest, this);
+        }
+    }
+    private void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
 
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.d(TAG,mLastLocation.toString());
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mGoogleApiClient != null)
+            mGoogleApiClient.disconnect();
+    }
+    private void turnGPSOn(){
+        String provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        if(!provider.contains("gps")){ //if gps is disabled
+            final Intent poke = new Intent();
+            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
+            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+            poke.setData(Uri.parse("3"));
+            sendBroadcast(poke);
+        }
     }
 
+    private void turnGPSOff(){
+        String provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+
+        if(provider.contains("gps")){ //if gps is enabled
+            final Intent poke = new Intent();
+            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
+            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+            poke.setData(Uri.parse("3"));
+            sendBroadcast(poke);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(grantResults[0]== PackageManager.PERMISSION_GRANTED) {
+            Log.d("TAG","permission granted");
+            gps = new TrackGPS(FirstActivity.this,FirstActivity.this);
+            if(gps.canGetLocation()){
+                longitude = gps.getLongitude();
+                latitude = gps .getLatitude();
+                Log.d("gps","lattt: " + currentlatitude +" lng :"+currentlongitude);
+                SharedPreferences sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
+                sharedPreferences.edit().putString("lat",currentlatitude+"").commit();
+                sharedPreferences.edit().putString("lng",currentlongitude+"").commit();
+
+            }
+            else
+            {
+                SharedPreferences sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
+                sharedPreferences.edit().remove("lat").remove("lng").commit();
+//                Utils.openDialog(FirstActivity.this,"Không định vị được vị trí của bạn");
+            }
+        }
+    }
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.i("TAG", "OnLocationChanged");
+        Log.i("TAG", "Current Location==>" + location);
+        currentlatitude = location.getLatitude();
+        currentlongitude = location.getLongitude();
+    }
+
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (connectionResult.hasResolution()) {
+            try {
+                // Start an Activity that tries to resolve the error
+                connectionResult.startResolutionForResult(FirstActivity.this, connectionResult.RESOLUTION_REQUIRED);
+            } catch (IntentSender.SendIntentException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.e("TAG", "Location services connection failed with code==>" + connectionResult.getErrorCode());
+            Log.e("TAG", "Location services connection failed Because of==> " + connectionResult.getErrorMessage());
+        }
+
+    }
     @Override
     protected void onPause() {
         super.onPause();
@@ -161,12 +273,13 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.i(TAG, "Location services suspended. Please reconnect.");
-
+        Log.i("TAG", "onConnectionSuspended");
+        if (i == CAUSE_SERVICE_DISCONNECTED) {
+            Toast.makeText(FirstActivity.this, "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
+        } else if (i == CAUSE_NETWORK_LOST) {
+            Toast.makeText(FirstActivity.this, "Network lost. Please re-connect.", Toast.LENGTH_SHORT).show();
+        }
+        mGoogleApiClient.connect();
     }
 
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
 }
