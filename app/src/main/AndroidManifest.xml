@@ -73,7 +73,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".main.AddSystemPitchActivity" />
-        <activity android:name=".main.SearchOrder" />
+        <activity android:name=".main.SearchOrderActivity" />
         <activity android:name=".main.PaymentActivity" />
         <activity android:name=".main.PriceManagementActivity" />
         <activity android:name=".main.AddPriceActivity" />

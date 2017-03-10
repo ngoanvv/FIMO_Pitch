@@ -47,14 +47,14 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
-public class SearchOrder extends AppCompatActivity implements View.OnClickListener,OrderAdapter.OnCallEvent {
+public class SearchOrderActivity extends AppCompatActivity implements View.OnClickListener,OrderAdapter.OnCallEvent {
     private RecyclerView recyclerView;
     private OrderAdapter adapter;
     private ArrayList<Pitch> listPitches;
     private TextView tv_timeFilter,tv_dateFilter;
     private Spinner spinner;
     private List<String> listName;
-    private static String TAG=SearchOrder.class.getName();
+    private static String TAG=SearchOrderActivity.class.getName();
     private SystemPitch mSystemPitch;
     private OkHttpClient okHttpClient;
     private String listPriceData="";
@@ -99,17 +99,17 @@ public class SearchOrder extends AppCompatActivity implements View.OnClickListen
         listTime = new ArrayList<>();
 
         recyclerView = (RecyclerView) findViewById(R.id.list_pitch);
-        LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(SearchOrder.this); // (Context context)
+        LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(SearchOrderActivity.this); // (Context context)
         mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
-        adapter = new OrderAdapter(SearchOrder.this,listTime,userModel);
-        adapter.setOnCallEvent(SearchOrder.this);
+        adapter = new OrderAdapter(SearchOrderActivity.this,listTime,userModel);
+        adapter.setOnCallEvent(SearchOrderActivity.this);
         recyclerView.setAdapter(adapter);
 
         tv_dateFilter.setOnClickListener(this);
 
         if(listName.size()>0&&listPitches.size()>0) {
-            dataAdapter = new ArrayAdapter<String>(SearchOrder.this, android.R.layout.simple_spinner_dropdown_item, listName);
+            dataAdapter = new ArrayAdapter<String>(SearchOrderActivity.this, android.R.layout.simple_spinner_dropdown_item, listName);
             spinner.setAdapter(dataAdapter);
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -140,7 +140,7 @@ public class SearchOrder extends AppCompatActivity implements View.OnClickListen
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(SearchOrder.this);
+            progressDialog = new ProgressDialog(SearchOrderActivity.this);
             progressDialog.setMessage("Đang thao tác");
 //            progressDialog.show();
         }
@@ -195,10 +195,10 @@ public class SearchOrder extends AppCompatActivity implements View.OnClickListen
 
                 }
                 recyclerView = (RecyclerView) findViewById(R.id.list_pitch);
-                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(SearchOrder.this); // (Context context)
+                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(SearchOrderActivity.this); // (Context context)
                 mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
-                adapter = new OrderAdapter(SearchOrder.this, listTime,userModel);
+                adapter = new OrderAdapter(SearchOrderActivity.this, listTime,userModel);
                 adapter.setOnCallEvent(this);
                 recyclerView.setAdapter(adapter);
                 if(listTime.size()>0) mText.setVisibility(View.GONE);
@@ -212,11 +212,11 @@ public class SearchOrder extends AppCompatActivity implements View.OnClickListen
         @Override
         public void onCallEvent(String number) {
             if(number.contains("null"))
-                Utils.openDialog(SearchOrder.this,"Không có số điện thoại khả dụng");
+                Utils.openDialog(SearchOrderActivity.this,"Không có số điện thoại khả dụng");
             else
             {
                 phoneNumber = number;
-                ActivityCompat.requestPermissions(SearchOrder.this,
+                ActivityCompat.requestPermissions(SearchOrderActivity.this,
                         new String[]{Manifest.permission.CALL_PHONE}, callRequest);
             }
         }
@@ -225,11 +225,11 @@ public class SearchOrder extends AppCompatActivity implements View.OnClickListen
     public void onCallEvent(String number) {
 
         if(number.contains("null"))
-            Utils.openDialog(SearchOrder.this,"Không có số điện thoại khả dụng");
+            Utils.openDialog(SearchOrderActivity.this,"Không có số điện thoại khả dụng");
         else
         {
             phoneNumber = number;
-            ActivityCompat.requestPermissions(SearchOrder.this,
+            ActivityCompat.requestPermissions(SearchOrderActivity.this,
                     new String[]{Manifest.permission.CALL_PHONE}, callRequest);
         }
     }
@@ -256,7 +256,7 @@ public class SearchOrder extends AppCompatActivity implements View.OnClickListen
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = new ProgressDialog(SearchOrder.this);
+            progressDialog = new ProgressDialog(SearchOrderActivity.this);
             progressDialog.setMessage("Đang thao tác");
             progressDialog.show();
             listTime = new ArrayList<>();
@@ -275,7 +275,7 @@ public class SearchOrder extends AppCompatActivity implements View.OnClickListen
 
     public void showDatePicker()
     {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(SearchOrder.this, new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(SearchOrderActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 if (view.isShown())
@@ -285,7 +285,8 @@ public class SearchOrder extends AppCompatActivity implements View.OnClickListen
                     crDay =year+"-"+(monthOfYear+1)+"-"+dayOfMonth;
                 }
             }
-        }, 2017,00,01);
+        }, 2017,Calendar.getInstance().get(Calendar.MONTH),Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
     }
     @Override

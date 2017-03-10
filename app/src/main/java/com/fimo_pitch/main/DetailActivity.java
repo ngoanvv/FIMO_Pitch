@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.fimo_pitch.API;
@@ -65,6 +66,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private ArrayList<Pitch> listPitch;
     private PitchAdapter adapter;
     private UserModel userModel;
+    private ListView listView;
     public DetailActivity() {
     }
 
@@ -129,7 +131,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             }
             case R.id.bt_view: {
-                Intent intent = new Intent(DetailActivity.this,SearchOrder.class);
+                Intent intent = new Intent(DetailActivity.this,SearchOrderActivity.class);
                 intent.putExtra(CONSTANT.LISTPITCH_DATA, (Serializable) listName);
                 intent.putExtra(CONSTANT.LISTPITCH,  (Serializable) listPitch);
                 intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
@@ -195,6 +197,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                     recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
                     adapter = new PitchAdapter(DetailActivity.this, listPitch);
                     recyclerView.setAdapter(adapter);
+
                 }
                 catch (Exception e)
                 {

@@ -16,6 +16,7 @@
 
 package com.fimo_pitch.main;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -29,6 +30,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.graphics.drawable.VectorDrawableCompat;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -116,10 +118,13 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         setContentView(R.layout.activity_navigation);
         initView();
         getData();
+        ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
+
         updateToken();
         initNavMenu();
         initGoogleAPI();
 
+        Log.d(TAG,userModel.getUserType());
     }
     private void getData() {
         listSystem = new ArrayList<>();
@@ -146,6 +151,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         tv_email = (TextView) navHeader.findViewById(R.id.user_email);
         tv_userName = (TextView) navHeader.findViewById(R.id.user_name);
         userAvatar = (RoundedImageView) navHeader.findViewById(R.id.user_avatar);
+
         Picasso.with(MainActivity.this).load(R.drawable.ic_avatar).fit().centerCrop().into(userAvatar);
 
         ActionBar supportActionBar = getSupportActionBar();
@@ -198,61 +204,109 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
     public void initNavMenu()
     {
         if (navigationView != null) {
-            navigationView.setNavigationItemSelectedListener(
-                    new NavigationView.OnNavigationItemSelectedListener() {
-                        // This method will trigger on item Click of navigation menu
-                        @Override
-                        public boolean onNavigationItemSelected(MenuItem menuItem) {
+            if(userModel.getUserType()==UserModel.TYPE_OWNER) {
+                navigationView.setNavigationItemSelectedListener(
+                        new NavigationView.OnNavigationItemSelectedListener() {
+                            // This method will trigger on item Click of navigation menu
+                            @Override
+                            public boolean onNavigationItemSelected(MenuItem menuItem) {
 //                            ShowToast.showToastLong(MainActivity.this,mSystemPitchArrayList.size()+"");
-                            menuItem.setChecked(true);
-                            navigationView.setCheckedItem(menuItem.getItemId());
+                                menuItem.setChecked(true);
+                                navigationView.setCheckedItem(menuItem.getItemId());
 
-                            switch (menuItem.getItemId()) {
-                                case R.id.menu_home :
-                                {
-                                    frameLayout.setVisibility(View.GONE);
-                                    viewPager.setVisibility(View.VISIBLE);
-                                    tabs.setVisibility(View.VISIBLE);
-                                    mDrawerLayout.closeDrawers();
-                                    break;
-                                }
-                                case R.id.menu_notification :
-                                {
-                                    replaceFragment(NotifcationFragment.newInstance("",""),NotifcationFragment.class.getName());
-                                    mDrawerLayout.closeDrawers();
-                                    break;
-                                }
-                                case R.id.menu_search :
-                                {
+                                switch (menuItem.getItemId()) {
+                                    case R.id.menu_home: {
+                                        frameLayout.setVisibility(View.GONE);
+                                        viewPager.setVisibility(View.VISIBLE);
+                                        tabs.setVisibility(View.VISIBLE);
+                                        mDrawerLayout.closeDrawers();
+                                        break;
+                                    }
+                                    case R.id.menu_notification: {
+                                        replaceFragment(NotifcationFragment.newInstance("", ""), NotifcationFragment.class.getName());
+                                        mDrawerLayout.closeDrawers();
+                                        break;
+                                    }
+                                    case R.id.menu_search: {
 //                                    Log.d(TAG,);
-                                    mSearchFragment = SearchFragment.newInstance(listSystemData,"");
-                                    replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());
-                                    mDrawerLayout.closeDrawers();
-                                    break;
-                                }
-                                case R.id.menu_manage :
-                                {
-                                    replaceFragment(new OwnerFragment().newInstance("",""),OwnerFragment.class.getName());
-                                    mDrawerLayout.closeDrawers();
-                                    break;
-                                }
-                                case R.id.menu_settings :
-                                {
-                                    replaceFragment(new SettingsFragment().newInstance("",""),NotifcationFragment.class.getName());
-                                    mDrawerLayout.closeDrawers();
-                                    break;
-                                }
-                                case R.id.menu_logout :
-                                {
-                                    logoutDialog();
-                                    mDrawerLayout.closeDrawers();
-                                    break;
-                                }
+                                        mSearchFragment = SearchFragment.newInstance(listSystemData, "");
+                                        replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());
+                                        mDrawerLayout.closeDrawers();
+                                        break;
+                                    }
+                                    case R.id.menu_manage: {
+                                        replaceFragment(new OwnerFragment().newInstance("", ""), OwnerFragment.class.getName());
+                                        mDrawerLayout.closeDrawers();
+                                        break;
+                                    }
+                                    case R.id.menu_settings: {
+                                        replaceFragment(new SettingsFragment().newInstance("", ""), NotifcationFragment.class.getName());
+                                        mDrawerLayout.closeDrawers();
+                                        break;
+                                    }
+                                    case R.id.menu_logout: {
+                                        logoutDialog();
+                                        mDrawerLayout.closeDrawers();
+                                        break;
+                                    }
 
+                                }
+                                return true;
                             }
-                            return true;
-                        }
-                    });
+                        });
+            }
+            else
+            {
+                navigationView.setNavigationItemSelectedListener(
+                        new NavigationView.OnNavigationItemSelectedListener() {
+                            // This method will trigger on item Click of navigation menu
+                            @Override
+                            public boolean onNavigationItemSelected(MenuItem menuItem) {
+//                            ShowToast.showToastLong(MainActivity.this,mSystemPitchArrayList.size()+"");
+                                menuItem.setChecked(true);
+                                navigationView.setCheckedItem(menuItem.getItemId());
+
+                                switch (menuItem.getItemId()) {
+                                    case R.id.menu_home: {
+                                        frameLayout.setVisibility(View.GONE);
+                                        viewPager.setVisibility(View.VISIBLE);
+                                        tabs.setVisibility(View.VISIBLE);
+                                        mDrawerLayout.closeDrawers();
+                                        break;
+                                    }
+                                    case R.id.menu_notification: {
+                                        replaceFragment(NotifcationFragment.newInstance("", ""), NotifcationFragment.class.getName());
+                                        mDrawerLayout.closeDrawers();
+                                        break;
+                                    }
+                                    case R.id.menu_search: {
+//                                    Log.d(TAG,);
+                                        mSearchFragment = SearchFragment.newInstance(listSystemData, "");
+                                        replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());
+                                        mDrawerLayout.closeDrawers();
+                                        break;
+                                    }
+                                    case R.id.menu_manage: {
+                                        replaceFragment(new OwnerFragment().newInstance("", ""), OwnerFragment.class.getName());
+                                        mDrawerLayout.closeDrawers();
+                                        break;
+                                    }
+                                    case R.id.menu_settings: {
+                                        replaceFragment(new SettingsFragment().newInstance("", ""), NotifcationFragment.class.getName());
+                                        mDrawerLayout.closeDrawers();
+                                        break;
+                                    }
+                                    case R.id.menu_logout: {
+                                        logoutDialog();
+                                        mDrawerLayout.closeDrawers();
+                                        break;
+                                    }
+
+                                }
+                                return true;
+                            }
+                        });
+            }
         }
     }
     private void signOut() {
@@ -446,11 +500,10 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(grantResults[0]== PackageManager.PERMISSION_GRANTED) {
             gps = new TrackGPS(MainActivity.this,MainActivity.this);
-
             if(gps.canGetLocation()){
                 double longitude = gps.getLongitude();
                 double latitude = gps .getLatitude();
-                Log.d(TAG,"lat : " + latitude +" lng :"+longitude);
+                Log.d("gps","lat : " + latitude +" lng :"+longitude);
                 currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
             }
             else

@@ -21,6 +21,7 @@ public class API {
     public static String UpdateFCMToken ="http://118.70.72.13:3000/users/updatetockentouser/";
     public static String BookPitch="http://118.70.72.13:3000/system_pitch/bookpitch";
     public static String GetTime="http://118.70.72.13:3000/pitch/getlistmanagementpitchforday";
-
+    public static String UpdateOrder="http://118.70.72.13:3000/pitch/updateorder";
+    public static String SignUp="http://118.70.72.13:3000/users/createNew";
 
 }

@@ -22,4 +22,5 @@ public class GpsService extends Service {
 
         return super.onStartCommand(intent, flags, startId);
     }
+
 }

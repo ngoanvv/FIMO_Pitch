@@ -10,12 +10,10 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.widget.Toast;
 
 
 /**
@@ -41,7 +39,6 @@ public class TrackGPS {
     protected LocationManager locationManager;
     private LocationListener locationListener;
     private String TAG=TrackGPS.class.getName();
-
     public TrackGPS(Context mContext, Activity activityCompat) {
         this.activity = activityCompat;
         this.mContext = mContext;
@@ -135,7 +132,7 @@ public class TrackGPS {
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, new LocationListener() {
                                     @Override
                                     public void onLocationChanged(Location location) {
-
+                                            loc = location;
                                     }
 
                                     @Override

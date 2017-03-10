@@ -28,12 +28,12 @@
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
     <com.fimo_pitch.custom.view.RoundedImageView
-        android:layout_width="@dimen/s70dp"
-        android:layout_height="@dimen/s70dp"
+        android:layout_width="@dimen/s60dp"
+        android:layout_height="@dimen/s60dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/s100dp"
-        android:layout_marginRight="@dimen/s100dp"
+        android:layout_marginBottom="@dimen/s70dp"
+        android:layout_marginRight="@dimen/s20dp"
         android:id="@+id/bt_refresh"
         android:background="@drawable/ic_refresh"/>
 </RelativeLayout>

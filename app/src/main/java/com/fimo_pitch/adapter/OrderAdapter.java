@@ -80,7 +80,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                 param.put("status","1");
                 param.put("day",data.get(position).getDay());
             Log.d(TAG,param.toString());
-            new BookPitch(param).execute();
+            new BookPitch(param,position).execute();
             }
 
         });
@@ -93,10 +93,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         OkHttpClient client;
         HashMap<String,String> body;
         private ProgressDialog progressDialog;
-
-        public BookPitch(HashMap<String,String> body)
+        int position;
+        public BookPitch(HashMap<String, String> body, int position)
         {
                 this.body = body;
+                this.position = position;
         }
 
         @Override
@@ -134,6 +135,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             super.onPostExecute(s);
             progressDialog.dismiss();
             Log.d(TAG,s);
+            data.remove(position);
+            notifyDataSetChanged();
+            notifyItemRemoved(position);
+            notifyItemRangeRemoved(position,data.size());
         }
     }
     public OnCallEvent mOnCallEvent;

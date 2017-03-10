@@ -55,7 +55,7 @@
             android:layout_gravity="center"
             android:paddingLeft="@dimen/s20dp"
             android:gravity="center"
-            android:text="12/12/2016"
+            android:text="2017-13-03"
             android:textStyle="bold"
             android:textSize="@dimen/s25dp"/>
         <com.fimo_pitch.custom.view.RoundedImageView

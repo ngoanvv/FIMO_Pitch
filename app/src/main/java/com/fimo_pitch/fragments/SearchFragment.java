@@ -295,29 +295,10 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             return result;
         }
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode==permissionCode)
-        {
-            if(grantResults[0]==PackageManager.PERMISSION_GRANTED) {
-                gps = new TrackGPS(getContext(),getActivity());
-                if(gps.canGetLocation()){
-                    double longitude = gps.getLongitude();
-                    double latitude = gps .getLatitude();
-                    Log.d("SearchFragment","lat : " + latitude +" lng :"+longitude);
-                    currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
-//                    map.addMarker(new MarkerOptions().position(currentLatLng));
-                    Utils.moveCamera(currentLatLng,"Bạn ở đây",13,map);
-                }
-            }
-        }
-        else
-            Utils.openDialog(getContext(),"Không định vị được vị trí của bạn");
-    }
+
     public void initMapLicense() {
         if (map != null)
         {
-//            getData();
             map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
@@ -397,23 +378,30 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     public void onMapReady(GoogleMap googleMap) {
         if(googleMap !=null) {
             map = googleMap;
-            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
             initList();
             initMapLicense();
-            gps = new TrackGPS(getContext(),getActivity());
-            if(!gps.canGetLocation())
-            {
-                currentLatLng = xuanthuy;
-                Utils.moveCamera(xuanthuy,"Bạn ở đây",12,map);
-            }
-            else
-            {
-                currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
-                Utils.moveCamera(currentLatLng,"Bạn ở đây",12,map);
-            }
-
         }
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode==permissionCode)
+        {
+            if(grantResults[0]==PackageManager.PERMISSION_GRANTED) {
+                gps = new TrackGPS(getContext(),getActivity());
+                if(gps.canGetLocation()){
+                    double longitude = gps.getLongitude();
+                    double latitude = gps .getLatitude();
+                    Log.d("SearchFragment","lat : " + latitude +" lng :"+longitude);
+                    currentLatLng = new LatLng(gps.getLatitude(),gps.getLongitude());
+                    map.addMarker(new MarkerOptions().position(currentLatLng));
+//                    Utils.moveCamera(currentLatLng,"Bạn ở đây",13,map);
+                }
+            }
+        }
+        else
+            Utils.openDialog(getContext(),"Không định vị được vị trí của bạn");
+    }
+
     public void initList() {
         Log.d(TAG,data);
         listSystemPitch = new ArrayList<>();
@@ -547,12 +535,10 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         {
             case R.id.bt_currentLocation :
             {
-                if(currentLatLng !=null)
-                Utils.moveCamera(currentLatLng,"Bạn ở đây",13,map);
+                if(currentLatLng !=null) Utils.moveCamera(currentLatLng,"Bạn ở đây",13,map);
                 else
                 {
                     Utils.openDialog(getContext(),"Không định vị được vị trí của bạn");
-
                     break;
                 }
                 break;

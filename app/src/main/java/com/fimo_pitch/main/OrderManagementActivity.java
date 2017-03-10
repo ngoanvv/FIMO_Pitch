@@ -31,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -52,7 +53,9 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
     private List<String> listName;
     private String pitchId,day;
     private String TAG=OrderManagementActivity.class.getName();
-
+    private String crDay=Calendar.getInstance().get(Calendar.YEAR)+"-"+
+                         Calendar.getInstance().get(Calendar.MONTH)+"-"+
+                         Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +97,7 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
     {
         HashMap<String,String> param;
         ProgressDialog progressDialog;
-
+        int position;
         public GetOrders(HashMap<String,String> body)
         {
             this.param=body;
@@ -265,16 +268,17 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
                             public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
                                     day = year+"-"+monthOfYear+"-"+dayOfMonth;
                                     dayFilter.setText(day);
-
+                                    crDay=day;
                             }
-                        },2017,01,01);
+                        },2017, Calendar.getInstance().get(Calendar.MONTH),Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.show();
+
                 break;
             }
             case R.id.btSearch:
             {
                 HashMap<String,String> body = new HashMap<>();
-                body.put("day",day);
+                body.put("day",crDay);
                 body.put("pitch_id",pitchId);
                 Log.d(TAG,day+"-"+pitchId);
                 new GetOrders(body).execute();

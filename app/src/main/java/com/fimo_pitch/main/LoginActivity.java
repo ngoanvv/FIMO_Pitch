@@ -4,14 +4,10 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -31,11 +27,8 @@ import com.facebook.login.widget.LoginButton;
 import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
-import com.fimo_pitch.adapter.SystemPitchAdapter;
-import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
-import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -44,9 +37,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
@@ -385,6 +375,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     intent.putExtra(CONSTANT.KEY_USER, userModel);
                     intent.putExtra(CONSTANT.KEY_USER,userModel);
                     startActivity(intent);
+                    finish();
 
                 }
                 catch (Exception e)

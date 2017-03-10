@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -15,15 +16,20 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.UserModel;
+import com.fimo_pitch.support.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
 
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
@@ -256,7 +262,70 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private void createAccount(final String email, final String password,final  String name,
                                final String phone, final String userType,final String imgURL)
     {
+        if(validate())
+        {
+            return;
+        }
+        else
+        {
+            HashMap<String,String> body = new HashMap<>();
+            body.put("email",email);
+            body.put("password",password);
+            body.put("name",name);
+            body.put("phone",phone);
+            body.put("type",userType);
+            body.put("password",password);
 
+
+        }
+    }
+    public class SignUp extends AsyncTask<String,String,String>
+    {
+        OkHttpClient client;
+        HashMap<String,String> body;
+        private ProgressDialog progressDialog;
+
+        public SignUp(HashMap<String,String> body)
+        {
+            this.body = body;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            client = new OkHttpClient();
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(SignUpActivity.this);
+            progressDialog.setMessage("Đang thao tác");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                Response response =
+                        client.newCall(NetworkUtils.createPostRequest(API.SignUp,
+                                this.body)).execute();
+                if (response.isSuccessful()) {
+                    String results = response.body().string();
+                    Log.d("run", results);
+                    return results;
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                return "failed";
+            }
+            return "failed";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+            Log.d(TAG,s);
+        }
     }
     private void showProgressDialog() {
     }

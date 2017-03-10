@@ -17,7 +17,7 @@
             android:id="@+id/img_avatar"
             android:layout_width="@dimen/s60dp"
             android:layout_height="@dimen/s60dp"
-            android:src="@drawable/ic_avatar"
+            android:src="@mipmap/ic_launcher"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/s25dp"
             >

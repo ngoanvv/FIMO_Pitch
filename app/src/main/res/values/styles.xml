@@ -36,8 +36,8 @@
     </style>
 
     <style name="item_contact">
-        <item name="android:layout_width">@dimen/s60dp</item>
-        <item name="android:layout_height">@dimen/s60dp</item>
+        <item name="android:layout_width">@dimen/s90dp</item>
+        <item name="android:layout_height">@dimen/s90dp</item>
     </style>
 
     <style name="item_detail">
