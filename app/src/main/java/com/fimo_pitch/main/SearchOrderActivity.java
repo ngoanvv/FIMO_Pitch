@@ -79,6 +79,7 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
         listName = (List<String>) getIntent().getSerializableExtra(CONSTANT.LISTPITCH_DATA);
         listPitches = (ArrayList<Pitch>) getIntent().getSerializableExtra(CONSTANT.LISTPITCH);
         userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
+        if(listPitches != null && listPitches.size()>0)
         crPitch = listPitches.get(0);
         setContentView(R.layout.activity_list_pitch);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
