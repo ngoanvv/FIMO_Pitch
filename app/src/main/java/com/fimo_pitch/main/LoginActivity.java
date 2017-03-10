@@ -351,7 +351,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            Log.d(TAG,s);
             progressDialog.dismiss();
             if(s.contains("success")) {
                 try {
@@ -363,9 +362,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     userModel.setName(result.getString("name"));
                     userModel.setPassword(result.getString("password"));
                     userModel.setEmail(result.getString("email"));
-                    if(result.getString("type").contains("1"))
+                    if(result.getString("type").equals("1"))
                     userModel.setUserType(UserModel.TYPE_TEAM);
-                    else  userModel.setUserType(UserModel.TYPE_OWNER);
+                    if(result.getString("type").equals("0")) userModel.setUserType(UserModel.TYPE_OWNER);
                     userModel.setImageURL("img");
                     userModel.setToken(jsonObject.getString("token"));
                     // lưu dữ liệu đăng nhập vào máy
@@ -393,7 +392,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             Log.d(TAG, "email:" + acct.getEmail());

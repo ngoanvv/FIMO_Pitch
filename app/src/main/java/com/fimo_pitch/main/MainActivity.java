@@ -124,7 +124,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         initNavMenu();
         initGoogleAPI();
 
-        Log.d(TAG,userModel.getUserType());
+        Log.d("TYPE",userModel.getUserType());
     }
     private void getData() {
         listSystem = new ArrayList<>();
@@ -204,13 +204,12 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
     public void initNavMenu()
     {
         if (navigationView != null) {
-            if(userModel.getUserType()==UserModel.TYPE_OWNER) {
+            if(userModel.getUserType().equals(UserModel.TYPE_OWNER)) {
                 navigationView.setNavigationItemSelectedListener(
                         new NavigationView.OnNavigationItemSelectedListener() {
                             // This method will trigger on item Click of navigation menu
                             @Override
                             public boolean onNavigationItemSelected(MenuItem menuItem) {
-//                            ShowToast.showToastLong(MainActivity.this,mSystemPitchArrayList.size()+"");
                                 menuItem.setChecked(true);
                                 navigationView.setCheckedItem(menuItem.getItemId());
 
@@ -257,6 +256,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
             }
             else
             {
+                navigationView.getMenu().removeItem(R.id.menu_manage);
                 navigationView.setNavigationItemSelectedListener(
                         new NavigationView.OnNavigationItemSelectedListener() {
                             // This method will trigger on item Click of navigation menu
