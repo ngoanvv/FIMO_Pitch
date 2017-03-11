@@ -17,7 +17,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -36,7 +35,6 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +58,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private OkHttpClient okHttpClient;
     private TextView tvSysName,tvDes,tvAddress,tvOwner;
     private TextView tvPhone;
-    private Button btView;
     private String listpitchData;
     private List<String> listName;
     private ArrayList<Pitch> listPitch;
@@ -110,10 +107,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         tvSysName = (TextView) findViewById(R.id.tv_syspitch_name);
         tvOwner = (TextView) findViewById(R.id.tvOwner);
 
-        btView = (Button) findViewById(R.id.bt_view);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         tvPhone = (TextView) findViewById(R.id.tvPhone);
-        btView.setOnClickListener(this);
 
         if(mSystemPitch !=null)
         {
@@ -134,15 +129,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.bt_call: {
                 ActivityCompat.requestPermissions(DetailActivity.this,
                         new String[]{Manifest.permission.CALL_PHONE}, callRequest);
-                break;
-            }
-            case R.id.bt_view: {
-                Intent intent = new Intent(DetailActivity.this,SearchOrderActivity.class);
-                intent.putExtra(CONSTANT.LISTPITCH_DATA, (Serializable) listName);
-                intent.putExtra(CONSTANT.LISTPITCH,  (Serializable) listPitch);
-                intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
-                intent.putExtra(CONSTANT.KEY_USER,userModel);
-                startActivity(intent);
                 break;
             }
         }
@@ -201,7 +187,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                     LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(DetailActivity.this);
                     mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
                     recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
-                    adapter = new PitchAdapter(DetailActivity.this, listPitch);
+                    adapter = new PitchAdapter(DetailActivity.this, listPitch,listName,mSystemPitch,userModel);
                     recyclerView.setAdapter(adapter);
 
                 }
