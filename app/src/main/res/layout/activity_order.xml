@@ -29,6 +29,7 @@
 
         <Spinner
             android:id="@+id/pitch_filter"
+
             android:layout_width="@dimen/s200dp"
             android:layout_height="@dimen/s70dp"
             android:text="Sân số 1"
