@@ -6,13 +6,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.EditText;
 
 import com.fimo_pitch.API;
@@ -65,21 +62,7 @@ public class NewsFragment extends Fragment {
                 new GetNews().execute();
             }
         });
-        edt_input_search = (EditText) v.findViewById(R.id.edt_input);
-        edt_input_search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
     }
 
     @Override
@@ -137,8 +120,9 @@ public class NewsFragment extends Fragment {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                return "failed";
             }
-            return null;
+            return "failed";
 
         }
 
@@ -146,11 +130,12 @@ public class NewsFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             list = new ArrayList<>();
-            progressDialog.dismiss();
+            if(!s.equals("failed"))
             try {
+                Log.d("news",s);
                 JSONObject jsonObject = new JSONObject(s);
                 JSONArray data = jsonObject.getJSONArray("data");
-                for (int i = 0; i < data.length() - 1; i++) {
+                for (int i = 0; i < data.length(); i++) {
                     JSONObject object = data.getJSONObject(i);
                     News news = new News();
                     news.setDescription(object.getString("description"));
@@ -168,19 +153,9 @@ public class NewsFragment extends Fragment {
                 LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
                 mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
-                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                        super.onScrollStateChanged(recyclerView, newState);
-                        if (newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {
-                        }
-                    }
-                    @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        super.onScrolled(recyclerView, dx, dy);
 
-                    }
-                });
+                progressDialog.dismiss();
+
             }
             catch (Exception e)
             {

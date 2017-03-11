@@ -23,51 +23,44 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/s70dp"
-        android:background="@color/com_facebook_blue"
-        android:gravity="center"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:weightSum="2">
 
         <Spinner
             android:id="@+id/pitch_filter"
-            android:padding="@dimen/s10dp"
             android:layout_width="@dimen/s200dp"
-            android:layout_height="@dimen/s50dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textColor="@color/white"
+            android:layout_height="@dimen/s70dp"
             android:text="Sân số 1"
+            android:layout_weight="1"
             android:textStyle="bold"
-            android:textSize="@dimen/s25dp"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/date_filter"
-            android:layout_toEndOf="@+id/date_filter"
-            android:layout_marginLeft="@dimen/s10dp"
-            android:layout_marginStart="@dimen/s10dp" />
-
-        <TextView
-            android:id="@+id/date_filter"
-            android:padding="@dimen/s10dp"
-            android:layout_width="@dimen/s150dp"
-            android:textColor="@color/white"
-            android:layout_height="@dimen/s50dp"
-            android:layout_gravity="center"
-            android:paddingLeft="@dimen/s20dp"
-            android:gravity="center"
-            android:text="2017-13-03"
-            android:textStyle="bold"
-            android:textSize="@dimen/s20dp"/>
-        <com.fimo_pitch.custom.view.RoundedImageView
-            android:id="@+id/btSearch"
-            android:layout_marginLeft="@dimen/s20dp"
-            android:layout_width="@dimen/s40dp"
-            android:layout_gravity="center_vertical"
-            android:layout_height="@dimen/s40dp"
-            android:visibility="invisible"
-            android:background="@drawable/places_ic_search"
+            android:textSize="@dimen/s30sp"
             />
-
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/date_filter"
+                android:layout_width="@dimen/s150dp"
+                android:textColor="@color/white"
+                android:layout_height="@dimen/s70dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="2017-13-03"
+                android:textStyle="bold"
+                android:textSize="@dimen/s20dp"/>
+            <com.fimo_pitch.custom.view.RoundedImageView
+                android:id="@+id/btSearch"
+                android:layout_width="@dimen/s40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="@dimen/s40dp"
+                android:layout_toRightOf="@+id/date_filter"
+                android:layout_marginTop="@dimen/s20dp"
+                android:visibility="invisible"
+                android:background="@drawable/ic_down_arrow"
+                />
+        </RelativeLayout>
     </LinearLayout>
 
 

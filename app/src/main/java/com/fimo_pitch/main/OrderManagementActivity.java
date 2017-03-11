@@ -89,9 +89,6 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
         dayFilter = (TextView) findViewById(R.id.date_filter);
         btSearch = (RoundedImageView) findViewById(R.id.btSearch);
         pitchFilter = (Spinner) findViewById(R.id.pitch_filter) ;
-
-
-
         dayFilter.setOnClickListener(this);
         btSearch.setOnClickListener(this);
     }
@@ -154,6 +151,8 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
                         LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(OrderManagementActivity.this); // (Context context)
                         mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
                         recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
+                        Utils.openDialog(OrderManagementActivity.this,"Có "+listOrder.size()+" kết quả");
+
                     }
                     else {
                         Utils.openDialog(OrderManagementActivity.this,"Không có yêu cầu nào !");
@@ -225,7 +224,7 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
                     }
                     if(listPitch.size()>0) {
                         pitchId = listPitch.get(0).getId();
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(OrderManagementActivity.this, android.R.layout.simple_list_item_1, listName);
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(OrderManagementActivity.this, R.layout.spinner_item2, listName);
                         pitchFilter.setAdapter(adapter);
                         pitchFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override

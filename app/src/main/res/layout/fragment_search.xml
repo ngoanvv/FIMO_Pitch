@@ -48,33 +48,25 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/s120dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:paddingLeft="@dimen/s10dp"
-            android:paddingRight="@dimen/s10dp"
-            android:textStyle="bold"
-            android:textSize="@dimen/s30dp"
+            android:textColor="@color/colorBlack"
+            android:background="@color/medium_grey"
+            android:textSize="@dimen/s25dp"
             android:text="17:00"
             android:id="@+id/tv_time" />
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/s43dp">
 
-            <com.fimo_pitch.custom.view.RoundedImageView
-            android:id="@+id/bt_search"
-            android:layout_centerVertical="true"
-            android:layout_width="@dimen/s30dp"
-            android:layout_marginRight="@dimen/s20dp"
-            android:layout_height="@dimen/s30dp"
-            android:background="@drawable/ic_search_inactive"
-            android:layout_alignParentRight="true"/>
-
             <Spinner
                 android:id="@+id/search_box"
+                android:layout_marginRight="@dimen/s50dp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/s43dp"
                 android:hint="Khu vực tìm kiếm"
+                android:gravity="center"
                 android:textColor="@color/color_myaccount_title_bg"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"

@@ -79,7 +79,7 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
         listName = (List<String>) getIntent().getSerializableExtra(CONSTANT.LISTPITCH_DATA);
         listPitches = (ArrayList<Pitch>) getIntent().getSerializableExtra(CONSTANT.LISTPITCH);
         userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
-        if(listPitches != null && listPitches.size()>0) crPitch = listPitches.get(0);
+        if(listPitches != null && listPitches.size()>0) crPitch = listPitches.get(getIntent().getIntExtra("pos",0));
         setContentView(R.layout.activity_list_pitch);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -108,7 +108,7 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
         params.put("day", crDay);
         params.put("typedate", "1");
         Log.d(TAG, crDay + "-" + crPitch.getId());
-        new GetTime(crPitch.getName(), params).execute();
+//        new GetTime(crPitch.getName(), params).execute();
         listTime = new ArrayList<>();
 
         recyclerView = (RecyclerView) findViewById(R.id.list_pitch);
@@ -120,7 +120,7 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
         tv_dateFilter.setOnClickListener(this);
 
         if(listName.size()>0&&listPitches.size()>0) {
-            dataAdapter = new ArrayAdapter<String>(SearchOrderActivity.this, android.R.layout.simple_spinner_dropdown_item, listName);
+            dataAdapter = new ArrayAdapter<String>(SearchOrderActivity.this,R.layout.spinner_item, listName);
             spinner.setAdapter(dataAdapter);
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -177,11 +177,11 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
         @Override
         protected String doInBackground(String... params) {
             try {
+                Log.d("params",param.toString());
                 okHttpClient = new OkHttpClient();
                 Response response =
                         okHttpClient.newCall(NetworkUtils.createPostRequest(API.GetTime, this.param)).execute();
                 String results = response.body().string();
-                Log.d("run", results);
                 if (response.isSuccessful()) {
                     Log.d("run", results);
                     return results;
@@ -211,7 +211,7 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject object = data.getJSONObject(i);
                         TimeTable p = new TimeTable();
-                        p.setManagement_id(object.getString("management_id"));
+                        p.setManagement_id(object.getString("management_it"));
                         p.setStart_time(object.getString("time_start"));
                         p.setEnd_time(object.getString("time_end"));
                         p.setType(object.getString("typedate"));
@@ -231,7 +231,12 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
                 recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
                 adapter = new OrderAdapter(SearchOrderActivity.this, listTime,userModel);
                 recyclerView.setAdapter(adapter);
-                if(listTime.size()>0) mText.setVisibility(View.GONE);
+                if(listTime.size()>0)
+                {
+                    mText.setVisibility(View.GONE);
+                    Utils.openDialog(SearchOrderActivity.this,"Có "+listTime.size()+" kết quả");
+
+                }
                 else
                 {
                     mText.setVisibility(View.VISIBLE);

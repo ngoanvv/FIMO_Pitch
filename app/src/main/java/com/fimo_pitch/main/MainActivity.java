@@ -118,8 +118,9 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         initView();
         getData();
         ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
-
-        updateToken();
+        fcmToken = FirebaseInstanceId.getInstance().getToken();
+        if(fcmToken != null)
+        updateToken(fcmToken);
         initNavMenu();
         initGoogleAPI();
 
@@ -172,14 +173,14 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
 
     }
     // update fcm token
-    public void updateToken()
+    public void updateToken(String token)
     {
         fcmToken = FirebaseInstanceId.getInstance().getToken();
         if(fcmToken != null)
         {
             HashMap<String,String> body = new HashMap<>();
             body.put("id",userModel.getId());
-            body.put("tokenfcm",fcmToken);
+            body.put("tokenfcm",token);
             new UpdateToken(body).execute();
         }
     }
@@ -349,6 +350,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                 signOut();
                 startActivity(new Intent(MainActivity.this,LoginActivity.class));
                 dialog.dismiss();
+                updateToken(" ");
                 }
         });
         builder.create().show();

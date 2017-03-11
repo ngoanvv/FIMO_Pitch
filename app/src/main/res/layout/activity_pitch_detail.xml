@@ -13,12 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:titleTextColor="@color/white"
             android:layout_height="@dimen/s70dp"
+            app:titleTextColor="@color/white"
+            app:title="Thông tin Sân bóng"
             android:background="@color/com_facebook_blue"
             app:layout_collapseMode="pin"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
@@ -26,8 +27,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-
             <ImageView
                 android:id="@+id/img_pitch"
                 android:layout_width="match_parent"
@@ -65,7 +64,6 @@
                     android:layout_marginLeft="@dimen/s15dp"
                     android:src="@drawable/ic_comment"
                     android:id="@+id/imageView2" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -76,7 +74,6 @@
                     android:text="2"
                     />
             </LinearLayout>
-
             <TextView
                 android:id="@+id/tv_syspitch_name"
                 android:layout_width="wrap_content"
@@ -89,9 +86,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginTop="@dimen/s100dp"
                 android:layout_alignParentStart="true"
-                android:layout_marginBottom="@dimen/s100dp"
                 />
-
         </RelativeLayout>
 
         <LinearLayout
@@ -131,7 +126,7 @@
                     android:id="@+id/bt_order"
                     style="@style/item_contact"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/ic_manager"
+                    android:background="@drawable/ic_owner"
                     />
 
                 <TextView
@@ -173,7 +168,7 @@
             android:id="@+id/tv_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="2"
+            android:maxLines="1"
             android:textSize="@dimen/s20dp"
             android:layout_marginLeft="@dimen/s20dp"
             android:layout_marginRight="@dimen/s20dp"

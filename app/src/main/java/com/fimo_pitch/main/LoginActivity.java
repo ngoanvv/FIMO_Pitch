@@ -82,9 +82,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
         userModel = new UserModel();
-
-
-
         initGoogleAPI();
         initView();
         sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);

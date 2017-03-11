@@ -51,7 +51,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -106,7 +105,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
 
             search_box = (Spinner) view.findViewById(R.id.search_box);
             tv_time    = (TextView) view.findViewById(R.id.tv_time);
-            bt_search  =  (RoundedImageView) view.findViewById(R.id.bt_search);
+//            bt_search  =  (RoundedImageView) view.findViewById(R.id.bt_search);
             bt_currentLocation = (ImageView) view.findViewById(R.id.bt_currentLocation) ;
             bt_clear = (ImageView) view.findViewById(R.id.bt_clear) ;
 
@@ -115,7 +114,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
 
 
             tv_time.setOnClickListener(this);
-            bt_search.setOnClickListener(this);
+//            bt_search.setOnClickListener(this);
 
             search_box.setAdapter(adapter);
             search_box.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -246,7 +245,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             Double lat = Double.valueOf(listSystemPitch.get(i).getLat());
             Double lng = Double.valueOf(listSystemPitch.get(i).getLng());
             options.position(new LatLng(lat,lng)).title("Sân bóng 123x");
-            options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_marker_free)));                    Marker marker = map.addMarker(options);
+            options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_location2)));                    Marker marker = map.addMarker(options);
             marker.setTag(i);
         }
     }
@@ -339,7 +338,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                         Log.d("pos",marker.getTag()+"");
                         SystemPitch systemPitch = listSystemPitch.get(position);
                         map.addMarker(new MarkerOptions().title("Bạn ở đây").position(currentLatLng));
-                        map.addMarker(new MarkerOptions().position(marker.getPosition()).title(listSystemPitch.get(0).getName()));
+//                        map.addMarker(new MarkerOptions().position(marker.getPosition()).title(listSystemPitch.get(0).getName()));
                         DetailDialog dialog = new DetailDialog(getContext(), systemPitch,position);
                         dialog.setOnArrivalDeliverListener(SearchFragment.this);
                         dialog.show(getFragmentManager(), TAG);
@@ -667,20 +666,20 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                 dialog.show();
                 break;
             }
-            case R.id.bt_search :
-            {
-                map.clear();
-                map.addMarker(new MarkerOptions().position(currentLatLng).title("Bạn ở đây"));
-                dateofweek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
-                HashMap<String,String> body = new HashMap<>();
-                body.put("time_start",tv_time.getText().toString()+":00");
-                body.put("day", "2017-01-01");
-                body.put("textlocation",search_box.getSelectedItem().toString());
-                new SearchSystemPitch(body);
-                break;
-
-
-            }
+//            case R.id.bt_search :
+//            {
+//                map.clear();
+//                map.addMarker(new MarkerOptions().position(currentLatLng).title("Bạn ở đây"));
+//                dateofweek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+//                HashMap<String,String> body = new HashMap<>();
+//                body.put("time_start",tv_time.getText().toString()+":00");
+//                body.put("day", "2017-01-01");
+//                body.put("textlocation",search_box.getSelectedItem().toString());
+//                new SearchSystemPitch(body);
+//                break;
+//
+//
+//            }
         }
     }
 

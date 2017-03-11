@@ -67,6 +67,7 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.MyViewHolder
                 intent.putExtra(CONSTANT.LISTPITCH,  (Serializable) data);
                 intent.putExtra(CONSTANT.SystemPitch_MODEL,systemPitch);
                 intent.putExtra(CONSTANT.KEY_USER,userModel);
+                intent.putExtra("pos",position);
                 context.startActivity(intent);
             }
         });

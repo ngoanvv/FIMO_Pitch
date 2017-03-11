@@ -82,9 +82,8 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
     private void initView(final View rootView)
     {
         menuView = (RelativeLayout) rootView.findViewById(R.id.menu_view);
-        buttonView2 = (ImageView) rootView.findViewById(R.id.view2);
-        buttonView4 = (ImageView) rootView.findViewById(R.id.view4);
         spinner_location = (Spinner) rootView.findViewById(R.id.spn_location);
+
         spinner_location.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -100,36 +99,15 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
         });
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (getContext(), android.R.layout.simple_dropdown_item_1line,getActivity().getResources().getStringArray(R.array.listProvince));
+                (getContext(),R.layout.spinner_item2,getActivity().getResources().getStringArray(R.array.listProvince));
         spinner_location.setAdapter(adapter);
-        addListenerOnButton(rootView);
+        Log.d("tag",spinner_location.getCount()+"");
 
 
-    }
-    private void addListenerOnButton(View v) {
 
-        buttonView2.setOnClickListener(this);
-        buttonView4 .setOnClickListener(this);
     }
     @Override
     public void onClick(View v) {
-        int id = v.getId();
-        switch (id) {
-            case R.id.view2:
-            {
-                Log.d(TAG,listSystemPitch.size()+"");
-                LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(getActivity()); // (Context context)
-                mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
-                recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
-                break;
-            }
-            case R.id.view4:
-            {
-                StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
-                recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
-                break;
-            }
-        }
     }
     class MyTask extends AsyncTask<String,String,String>
     {

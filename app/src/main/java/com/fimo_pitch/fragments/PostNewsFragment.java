@@ -58,11 +58,6 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
         edt_location = (EditText) view.findViewById(R.id.edt_location);
         img_send = (RoundedImageView) view.findViewById(R.id.img_send);
 
-        edt_title.setText("Tiêu đề");
-        edt_description.setText("Mô tả");
-        edt_location.setText("Xung quanh Cầu Giấy");
-        edt_time.setText("17h ngày 20-1-2016");
-
 
         edt_time.setOnClickListener(this);
         img_send.setOnClickListener(this);
@@ -219,7 +214,6 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
             {
                 if(validate()) {
                     HashMap<String, String> param = new HashMap<>();
-
                     param.put("time_start", edt_time.getText().toString());
                     param.put("title", edt_title.getText().toString());
                     param.put("address", edt_location.getText().toString());
