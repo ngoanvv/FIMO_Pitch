@@ -134,7 +134,7 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
                         {
                             JSONObject object = data.getJSONObject(i);
                             Order p = new Order();
-                            p.setId(object.getString("id"));
+                            p.setId(object.getString("order_id"));
                             p.setUserName(object.getString("name"));
                             p.setUserPhone(object.getString("phone"));
                             p.setTime_end(object.getString("time_end"));
@@ -266,12 +266,14 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                                    day = year+"-"+monthOfYear+"-"+dayOfMonth;
+                                    day = year+"-"+(monthOfYear+1)+"-"+dayOfMonth;
                                     dayFilter.setText(day);
                                     crDay=day;
                             }
                         },2017, Calendar.getInstance().get(Calendar.MONTH),Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 datePickerDialog.show();
+
 
                 break;
             }

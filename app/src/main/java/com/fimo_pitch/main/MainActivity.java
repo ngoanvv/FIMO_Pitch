@@ -255,7 +255,6 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
             }
             else
             {
-                navigationView.getMenu().removeItem(R.id.menu_manage);
                 navigationView.setNavigationItemSelectedListener(
                         new NavigationView.OnNavigationItemSelectedListener() {
                             // This method will trigger on item Click of navigation menu
@@ -366,6 +365,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         @Override
         protected String doInBackground(String... params) {
             try {
+                okHttpClient = new OkHttpClient();
                 Response response = okHttpClient.newCall(NetworkUtils.createPutRequest(API.UpdateFCMToken+userModel.getId(),this.param)).execute();
                 if (response.isSuccessful()) {
                     String results = response.body().string();
@@ -400,24 +400,23 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
     private class MyTask extends AsyncTask<String, Void, String> {
         ProgressDialog progressDialog;
         @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(MainActivity.this);
+            progressDialog.setMessage(getString(R.string.processing));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+        }
+
+        @Override
         protected String doInBackground(String... params) {
             Request newsRequest = new Request.Builder()
                     .url(API.GetNews)
-                    .build();
-            Request systemPitchRequest = new Request.Builder()
-                    .url(API.GetSystemPitch)
                     .build();
             try {
                 okHttpClient = new OkHttpClient();
                 okhttp3.Response newsResponse = okHttpClient.newCall(newsRequest).execute();
                 if(newsResponse.isSuccessful()) listNewsData = newsResponse.body().string();
 
-                okhttp3.Response systemPitchResponse = okHttpClient.newCall(systemPitchRequest).execute();
-                Log.d(TAG,systemPitchResponse.body().toString()+"");
-                if(systemPitchResponse.isSuccessful())
-                {
-                    listSystemData = systemPitchResponse.body().string();
-                }
             } catch (Exception e) {
 
                 e.printStackTrace();
@@ -448,13 +447,6 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
             }
         }
 
-        @Override
-        protected void onPreExecute() {
-            progressDialog = new ProgressDialog(MainActivity.this);
-            progressDialog.setMessage(getString(R.string.processing));
-            progressDialog.setCancelable(false);
-            progressDialog.show();
-        }
 
         @Override
         protected void onProgressUpdate(Void... values) {

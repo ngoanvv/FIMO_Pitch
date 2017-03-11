@@ -19,31 +19,31 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
-        <EditText
-            android:id="@+id/edt_search"
+        <Spinner
+            android:id="@+id/spn_location"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/s40dp"
-            android:hint="Nhập bất kỳ từ khóa"
-            android:gravity="center_vertical"
-            android:layout_marginRight="@dimen/s80dp"
-            android:layout_alignParentLeft="true"
+            android:layout_height="@dimen/s50dp"
+            
+            android:gravity="center"
+            android:layout_marginRight="@dimen/s100dp"
             android:background="@android:color/transparent"
             />
         <ImageView
             android:id="@+id/view2"
-            android:layout_width="@dimen/s40dp"
-            android:layout_height="@dimen/s40dp"
+            android:layout_width="@dimen/s50dp"
+            android:layout_height="@dimen/s50dp"
             android:background="@drawable/ic_list"
             android:layout_alignParentRight="true"
             android:onClick="addListenerOnButton"/>
 
         <ImageView
             android:id="@+id/view4"
-            android:layout_width="@dimen/s40dp"
-            android:layout_height="@dimen/s40dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/s40dp"
+            android:layout_width="@dimen/s50dp"
+            android:layout_height="@dimen/s50dp"
             android:background="@drawable/ic_grid"
-            android:onClick="addListenerOnButton"/>
+            android:onClick="addListenerOnButton"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/view2"
+            android:layout_toStartOf="@+id/view2" />
     </RelativeLayout>
 </RelativeLayout>

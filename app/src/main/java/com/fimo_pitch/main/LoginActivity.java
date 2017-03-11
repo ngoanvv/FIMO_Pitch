@@ -235,6 +235,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             body.put("email",email);
             body.put("password",password);
             new Login(body).execute();
+            Log.d("Login","login by flash");
 
         }
 
@@ -300,6 +301,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     body.put("email", edt_email.getText().toString());
                     body.put("password", edt_password.getText().toString());
                     new Login(body).execute();
+                    Log.d("Login","login by button");
                     break;
                 }
             }

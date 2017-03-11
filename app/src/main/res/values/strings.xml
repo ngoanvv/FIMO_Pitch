@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">On The Pitch</string>
+    <string name="app_name">Book Pitch</string>
     <string name="drawer_open">Menu opened</string>
     <string name="drawer_close">Menu closed</string>
     <string name="action_settings">Cài đặt</string>
@@ -9,7 +9,9 @@
     <string name="giovang">Sân đẹp giờ vàng</string>
     <string name="themsan">Thêm sân</string>
     <string name="dangtintimdoi">Đăng tin tìm đối</string>
-
+    <string name="booksuccesss1">Bạn đã gửi đi yêu cầu đặt sân bóng </string>
+    <string name="booksuccesss2"> lúc </string>
+    <string name="booksuccess3">Hãy đợi chủ sân duyệt yêu cầu dặt sân nhé !</string>
     <string name="mypitch">Quản lý sân bóng</string>
     <string name="book">Đặt sân</string>
     <string name="vs">Tìm đối thủ</string>

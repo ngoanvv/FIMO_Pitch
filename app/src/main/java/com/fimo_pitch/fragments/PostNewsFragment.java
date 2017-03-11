@@ -191,23 +191,24 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
         }
         @Override
         protected String doInBackground(String... params) {
-            try {
-                Response response =
-                client.newCall(NetworkUtils.createPostRequest(API.CreateNews, this.param)).execute();
-                String results = response.body().string();
-                Log.d("run", results);
-                if (response.isSuccessful()) {
+                try {
+                    Response response =
+                            client.newCall(NetworkUtils.createPostRequest(API.CreateNews, this.param)).execute();
+                    String results = response.body().string();
                     Log.d("run", results);
-                    return results;
+                    if (response.isSuccessful()) {
+                        Log.d("run", results);
+                        return results;
+                    }
+
+                } catch (Exception e) {
+                    return e.toString();
                 }
 
+                return "failed";
             }
-            catch (Exception e)
-            {
-                return e.toString();
-            }
-            return "failed";
-        }
+
+
     }
 
     @Override
@@ -216,14 +217,17 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
         switch (id) {
             case R.id.img_send :
             {
+                if(validate()) {
+                    HashMap<String, String> param = new HashMap<>();
 
-                HashMap<String,String> param =new HashMap<>();
-                param.put("time_start",edt_time.getText().toString());
-                param.put("title",edt_title.getText().toString());
-                param.put("address",edt_location.getText().toString());
-                param.put("user_id","1");
-                param.put("description",edt_description.getText().toString());
-                new MyTask(param).execute();
+                    param.put("time_start", edt_time.getText().toString());
+                    param.put("title", edt_title.getText().toString());
+                    param.put("address", edt_location.getText().toString());
+                    param.put("user_id", "1");
+                    param.put("description", edt_description.getText().toString());
+                    new MyTask(param).execute();
+                }
+
                 break;
             }
             case R.id.edt_time :

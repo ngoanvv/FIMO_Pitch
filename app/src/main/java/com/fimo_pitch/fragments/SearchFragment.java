@@ -121,6 +121,9 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             search_box.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    HashMap<String,String> body = new HashMap<String, String>();
+                    body.put("location",search_box.getSelectedItem().toString());
+                    new MyTask(getContext(),body).execute();
                     if(position==0)
                     {
                         resultLatLng = currentLatLng;
@@ -235,14 +238,15 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     }
     public void reDrawMarker()
     {
+        map.clear();
+        map.addMarker(new MarkerOptions().position(currentLatLng));
         for(int i=0;i<listSystemPitch.size();i++)
         {
             MarkerOptions options = new MarkerOptions();
             Double lat = Double.valueOf(listSystemPitch.get(i).getLat());
             Double lng = Double.valueOf(listSystemPitch.get(i).getLng());
             options.position(new LatLng(lat,lng)).title("Sân bóng 123x");
-            if(listSystemPitch.get(i).getStatus().contains("0")) options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_marker_free)));                    Marker marker = map.addMarker(options);
-
+            options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_marker_free)));                    Marker marker = map.addMarker(options);
             marker.setTag(i);
         }
     }
@@ -410,7 +414,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     public void onMapReady(GoogleMap googleMap) {
         if(googleMap !=null) {
             map = googleMap;
-            initList();
+//            initList();
             initMapLicense();
         }
     }
@@ -537,11 +541,81 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             progressDialog.show();
         }
     }
-    public String getDayString()
+
+
+
+    class MyTask extends AsyncTask<String,String,String>
     {
-        String s = Calendar.getInstance().get(Calendar.YEAR)+"-"+Calendar.getInstance().get(Calendar.MONTH)+"-"+Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-        return s;
+        Context context;
+        HashMap<String,String> param;
+        ProgressDialog progressDialog;
+        OkHttpClient client;
+        public MyTask(Context ct,HashMap<String,String> body)
+        {
+            client = new OkHttpClient();
+            this.context = ct;
+            this.param=body;
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Đang thao tác");
+            progressDialog.show();
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                Response response =
+                        client.newCall(NetworkUtils.createPostRequest(API.GetSystemByLocation, this.param)).execute();
+                String results = response.body().string();
+                Log.d("run", results);
+                if (response.isSuccessful()) {
+                    return results;
+                }
+
+            }
+            catch (Exception e)
+            {
+                return "failed";
+            }
+            return "failed";
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(!s.contains("failed")) {
+                listSystemPitch = new ArrayList<>();
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    JSONArray data = jsonObject.getJSONArray("data");
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject object = data.getJSONObject(i);
+                        SystemPitch systemPitch = new SystemPitch();
+                        systemPitch.setDescription(object.getString("description"));
+                        systemPitch.setId(object.getString("id"));
+                        systemPitch.setOwnerName("Tiến TM");
+                        systemPitch.setOwnerID(object.getString("user_id"));
+                        systemPitch.setName(object.getString("name"));
+                        systemPitch.setAddress(object.getString("address"));
+                        systemPitch.setId(object.getString("id"));
+                        systemPitch.setPhone(object.getString("phone"));
+                        systemPitch.setLat(object.getString("lat"));
+                        systemPitch.setLng(object.getString("log"));
+                        listSystemPitch.add(systemPitch);
+                    }
+                    reDrawMarker();
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            progressDialog.dismiss();
+
+        }
     }
+
     @Override
     public void onClick(View v) {
         int id=v.getId();

@@ -88,15 +88,16 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         initView();
+        bt_order.setOnClickListener(this);
+        bt_call.setOnClickListener(this);
+
+        new GetListPitch().execute();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        bt_order.setOnClickListener(this);
-        bt_call.setOnClickListener(this);
 
-        new GetListPitch().execute();
 
 //        bt_now.setOnClickListener(this);
 
@@ -197,7 +198,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                             listName.add(object.getString("name"));
                         }
                     }
-                    LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(DetailActivity.this); // (Context context)
+                    LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(DetailActivity.this);
                     mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
                     recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
                     adapter = new PitchAdapter(DetailActivity.this, listPitch);

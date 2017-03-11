@@ -1,7 +1,6 @@
 package com.fimo_pitch.support;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -12,18 +11,16 @@ import android.graphics.Color;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Vibrator;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.view.inputmethod.InputMethodManager;
 
 import com.fimo_pitch.R;
+import com.fimo_pitch.custom.view.MyCustomDialog;
 import com.fimo_pitch.main.FirstActivity;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -36,17 +33,11 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 public class Utils {
         public static void openDialog(Context context, String content)
         {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage(content);
-            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                }
-            });
-            builder.create().show();
 
+            MyCustomDialog dialog = new MyCustomDialog(context,content);
+            dialog.show();
         }
+
     public static void makeNotification(Context context,Activity activity,String content)
     {
         NotificationCompat.Builder mBuilder =
@@ -116,16 +107,8 @@ public class Utils {
         return isConnected;
     }
 
-        public static  void showDialog(Context context,String content,DialogInterface.OnClickListener yesClick,
-                                       DialogInterface.OnClickListener cancelClick)
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage(content);
-            builder.setPositiveButton(context.getString(R.string.ok),yesClick);
-            builder.setNegativeButton(context.getString(R.string.cancel),cancelClick);
-            builder.create().show();
-        }
-    public static  void showGpsSettingsAlert(final  Context context){
+
+    public static  void showGpsSettingsAlert(final  Context context, DialogInterface.OnClickListener clickListener){
         android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(context);
 
         alertDialog.setTitle("GPS is not enabled");
@@ -139,18 +122,10 @@ public class Utils {
         });
 
         // on pressing cancel button
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        alertDialog.setNegativeButton("Cancel",clickListener);
 
         // Showing Alert Message
         alertDialog.show();
-    }
-    public static void getCurrentLocation(GoogleMap map,TrackGPS gps,Context context,String tag)
-    {
-
     }
 
     public static void showInternetSettingsAlert(final Context context){
@@ -208,7 +183,13 @@ public class Utils {
             if(network_enabled == false) Utils.showInternetSettingsAlert(context);
             else
             {
-                if(gps_enabled==false) Utils.showGpsSettingsAlert(context);
+                if(gps_enabled==false) Utils.showGpsSettingsAlert(context, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+
+                    }
+                });
                 else
                 {
                     return true;

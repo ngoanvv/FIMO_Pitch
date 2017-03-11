@@ -25,7 +25,6 @@
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <Button
             android:id="@+id/id_dialog_ok"
             android:layout_width="@dimen/s0dp"
@@ -35,6 +34,17 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:background="@color/com_facebook_blue"
+            android:textAllCaps="false"
+            android:textSize="@dimen/s20dp" />
+        <Button
+            android:id="@+id/id_cancel"
+            android:layout_width="@dimen/s0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Hủy"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:background="@color/button_grey"
             android:textAllCaps="false"
             android:textSize="@dimen/s20dp" />
 

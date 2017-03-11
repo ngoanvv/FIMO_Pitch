@@ -7,7 +7,6 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -55,6 +54,7 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseApp.initializeApp(FirstActivity.this);
         setContentView(R.layout.activity_first);
         skip = (Button) findViewById(R.id.bt_skip);
         skip.setOnClickListener(new View.OnClickListener() {
@@ -98,9 +98,7 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
 
-
         client = new OkHttpClient();
-        FirebaseApp.initializeApp(FirstActivity.this);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -130,17 +128,54 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
         super.onResume();
 //        setUpMapIfNeeded();
         countResume++;
-        if(countResume>1) {
+        if(countResume>0) {
             Log.d("first", "on resume");
             String locationProviders = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
             if (locationProviders == null || locationProviders.equals("")) {
                 Log.d("gps", "disable");
-                Utils.showGpsSettingsAlert(FirstActivity.this);
+                Utils.showGpsSettingsAlert(FirstActivity.this, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (Utils.isConnected(FirstActivity.this)) {
+                            sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    if (sharedPreferences != null) {
+                                        seen = sharedPreferences.getBoolean("seen", false);
+                                        if (seen == true) {
+                                            Intent intent = new Intent(FirstActivity.this, LoginActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        } else {
+                                            Intent intent = new Intent(FirstActivity.this, IntroductionActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }
+                                }
+                            }, 1000);
+
+                        } else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(FirstActivity.this);
+                            builder.setMessage(getString(R.string.no_connection));
+                            builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            });
+                            builder.create().show();
+                        }
+                    }
+                });
             } else {
                 Log.d("gps", "enable");
                 createLocationRequest();
-            }
-            if(countResume>2) {
                 if (Utils.isConnected(FirstActivity.this)) {
                     sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
                     final Handler handler = new Handler();
@@ -161,7 +196,43 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
                                 }
                             }
                         }
-                    }, 4000);
+                    }, 1000);
+
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(FirstActivity.this);
+                    builder.setMessage(getString(R.string.no_connection));
+                    builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+                    builder.create().show();
+                }
+            }
+            if(countResume>1) {
+                if (Utils.isConnected(FirstActivity.this)) {
+                    sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            if (sharedPreferences != null) {
+                                seen = sharedPreferences.getBoolean("seen", false);
+                                if (seen == true) {
+                                    Intent intent = new Intent(FirstActivity.this, LoginActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    Intent intent = new Intent(FirstActivity.this, IntroductionActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        }
+                    }, 1000);
 
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(FirstActivity.this);
@@ -264,28 +335,6 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
         super.onDestroy();
         if (mGoogleApiClient != null)
             mGoogleApiClient.disconnect();
-    }
-    private void turnGPSOn(){
-        String provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-        if(!provider.contains("gps")){ //if gps is disabled
-            final Intent poke = new Intent();
-            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
-            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-            poke.setData(Uri.parse("3"));
-            sendBroadcast(poke);
-        }
-    }
-
-    private void turnGPSOff(){
-        String provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-
-        if(provider.contains("gps")){ //if gps is enabled
-            final Intent poke = new Intent();
-            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
-            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-            poke.setData(Uri.parse("3"));
-            sendBroadcast(poke);
-        }
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

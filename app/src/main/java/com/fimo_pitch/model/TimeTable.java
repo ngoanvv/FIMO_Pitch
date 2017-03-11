@@ -17,8 +17,26 @@ public class TimeTable implements Serializable {
     private String phone;
     private String day;
     private String price;
+    private String pitchName;
+    private String management_id;
     private String systemId;
     private String pitchId;
+
+    public String getManagement_id() {
+        return management_id;
+    }
+
+    public void setManagement_id(String management_id) {
+        this.management_id = management_id;
+    }
+
+    public String getPitchName() {
+        return pitchName;
+    }
+
+    public void setPitchName(String pitchName) {
+        this.pitchName = pitchName;
+    }
 
     public String getDay() {
         return day;

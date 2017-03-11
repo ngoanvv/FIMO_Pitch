@@ -57,13 +57,14 @@
             android:gravity="center"
             android:text="2017-13-03"
             android:textStyle="bold"
-            android:textSize="@dimen/s25dp"/>
+            android:textSize="@dimen/s20dp"/>
         <com.fimo_pitch.custom.view.RoundedImageView
             android:id="@+id/btSearch"
             android:layout_marginLeft="@dimen/s20dp"
             android:layout_width="@dimen/s40dp"
             android:layout_gravity="center_vertical"
             android:layout_height="@dimen/s40dp"
+            android:visibility="invisible"
             android:background="@drawable/places_ic_search"
             />
 

@@ -88,14 +88,14 @@ public class AddSystemPitchActivity extends AppCompatActivity implements OnMapRe
 
         return true;
     }
-    class MyTask extends AsyncTask<String,String,String>
+    class GetSystemByLocation extends AsyncTask<String,String,String>
     {
 
 
         HashMap<String,String> param;
         ProgressDialog progressDialog;
 
-        public MyTask(HashMap<String,String> body)
+        public GetSystemByLocation(HashMap<String,String> body)
         {
             this.param=body;
         }
@@ -185,7 +185,7 @@ public class AddSystemPitchActivity extends AppCompatActivity implements OnMapRe
                     param.put("description",edt_des.getText().toString());
                     param.put("phone",edt_phone.getText().toString());
                     param.put("user_id","3");
-                    new MyTask(param).execute();
+                    new GetSystemByLocation(param).execute();
                 }
                 else
                 {

@@ -47,7 +47,7 @@ import java.util.List;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
-public class SearchOrderActivity extends AppCompatActivity implements View.OnClickListener,OrderAdapter.OnCallEvent {
+public class SearchOrderActivity extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView recyclerView;
     private OrderAdapter adapter;
     private ArrayList<Pitch> listPitches;
@@ -71,7 +71,7 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
     private UserModel userModel;
     private TextView mText;
     private ArrayAdapter<String> dataAdapter;
-
+    private String typeDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,8 +79,7 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
         listName = (List<String>) getIntent().getSerializableExtra(CONSTANT.LISTPITCH_DATA);
         listPitches = (ArrayList<Pitch>) getIntent().getSerializableExtra(CONSTANT.LISTPITCH);
         userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
-        if(listPitches != null && listPitches.size()>0)
-        crPitch = listPitches.get(0);
+        if(listPitches != null && listPitches.size()>0) crPitch = listPitches.get(0);
         setContentView(R.layout.activity_list_pitch);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -88,15 +87,28 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
         getSupportActionBar().setTitle("Tìm kiếm sân trống");
         initView();
     }
+    public boolean isWeekend(int day)
+    {
+        if(day>6) return true;
+        return false;
+    }
+
+
     public void initView()
     {
 
         tv_dateFilter = (TextView) findViewById(R.id.date_filter);
         spinner = (Spinner) findViewById(R.id.pitch_filter);
-        btSearch = (RoundedImageView) findViewById(R.id.btsearch);
         mText = (TextView) findViewById(R.id.mText);
-
-        btSearch.setOnClickListener(this);
+        tv_dateFilter.setText(Calendar.getInstance().get(Calendar.YEAR)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        if(isWeekend(Calendar.DAY_OF_WEEK)) typeDate="1";
+        else typeDate="0";
+        HashMap<String, String> params = new HashMap<>();
+        params.put("pitch_id", crPitch.getId());
+        params.put("day", crDay);
+        params.put("typedate", "1");
+        Log.d(TAG, crDay + "-" + crPitch.getId());
+        new GetTime(crPitch.getName(), params).execute();
         listTime = new ArrayList<>();
 
         recyclerView = (RecyclerView) findViewById(R.id.list_pitch);
@@ -104,9 +116,7 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
         mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
         adapter = new OrderAdapter(SearchOrderActivity.this,listTime,userModel);
-        adapter.setOnCallEvent(SearchOrderActivity.this);
         recyclerView.setAdapter(adapter);
-        tv_dateFilter.setText(Calendar.getInstance().get(Calendar.YEAR)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         tv_dateFilter.setOnClickListener(this);
 
         if(listName.size()>0&&listPitches.size()>0) {
@@ -116,8 +126,27 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     Log.d("spinner", listPitches.get(position).getId() + "");
+
                     pitchId = listPitches.get(position).getId();
                     crPitch = listPitches.get(position);
+
+                    Calendar calendar = Calendar.getInstance();
+                    tv_dateFilter.setText(calendar.get(Calendar.YEAR)+"/"+(calendar.get(Calendar.MONTH)+1)+"/"+calendar.get(Calendar.DAY_OF_MONTH));
+                    crDay =calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
+
+                    Log.d("tag",calendar.get(Calendar.DAY_OF_WEEK)+"");
+                    if(isWeekend(calendar.get(Calendar.DAY_OF_WEEK))) typeDate="1";
+                    else typeDate="0";
+                    if(crPitch!=null) {
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("pitch_id", crPitch.getId());
+                        params.put("day", crDay);
+                        params.put("typedate", "1");
+                        Log.d(TAG, crDay + "-" + crPitch.getId());
+                        new GetTime(crPitch.getName(), params).execute();
+                        listTime = new ArrayList<>();
+                    }
+
                 }
 
                 @Override
@@ -127,7 +156,7 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
             });
         }
     }
-    private class GetTime extends AsyncTask<String,Void,String> implements OrderAdapter.OnCallEvent  {
+    private class GetTime extends AsyncTask<String,Void,String>   {
         ProgressDialog progressDialog;
         String id;
         String pitchName;
@@ -182,10 +211,11 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject object = data.getJSONObject(i);
                         TimeTable p = new TimeTable();
-                        p.setId(object.getString("id"));
+                        p.setManagement_id(object.getString("management_id"));
                         p.setStart_time(object.getString("time_start"));
                         p.setEnd_time(object.getString("time_end"));
                         p.setType(object.getString("typedate"));
+                        p.setPitchName(pitchName);
                         p.setPrice(object.getString("price"));
                         p.setSystemId(object.getString("system_id"));
                         p.setPitchId(object.getString("pitch_id"));
@@ -200,40 +230,22 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
                 mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
                 recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
                 adapter = new OrderAdapter(SearchOrderActivity.this, listTime,userModel);
-                adapter.setOnCallEvent(this);
                 recyclerView.setAdapter(adapter);
                 if(listTime.size()>0) mText.setVisibility(View.GONE);
-                else mText.setVisibility(View.VISIBLE);
+                else
+                {
+                    mText.setVisibility(View.VISIBLE);
+                    mText.setText("Không có khung giờ trống trong ngày");
+                    Utils.openDialog(SearchOrderActivity.this,"Không có khung giờ trống trong ngày");
+                }
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
         }
 
-        @Override
-        public void onCallEvent(String number) {
-            if(number.contains("null"))
-                Utils.openDialog(SearchOrderActivity.this,"Không có số điện thoại khả dụng");
-            else
-            {
-                phoneNumber = number;
-                ActivityCompat.requestPermissions(SearchOrderActivity.this,
-                        new String[]{Manifest.permission.CALL_PHONE}, callRequest);
-            }
-        }
     }
-    @Override
-    public void onCallEvent(String number) {
 
-        if(number.contains("null"))
-            Utils.openDialog(SearchOrderActivity.this,"Không có số điện thoại khả dụng");
-        else
-        {
-            phoneNumber = number;
-            ActivityCompat.requestPermissions(SearchOrderActivity.this,
-                    new String[]{Manifest.permission.CALL_PHONE}, callRequest);
-        }
-    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -247,33 +259,6 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
             }
     }
 
-    private class GetTimeTable extends AsyncTask<String,Void,String> {
-        ProgressDialog progressDialog;
-        Pitch mPitch;
-        public GetTimeTable(Pitch p)
-        {
-            this.mPitch = p;
-        }
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(SearchOrderActivity.this);
-            progressDialog.setMessage("Đang thao tác");
-            progressDialog.show();
-            listTime = new ArrayList<>();
-        }
-        @Override
-        protected String doInBackground(String... params) {
-            return listimeData;
-
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-        }
-    }
-
     public void showDatePicker()
     {
         DatePickerDialog datePickerDialog = new DatePickerDialog(SearchOrderActivity.this, new DatePickerDialog.OnDateSetListener() {
@@ -281,9 +266,23 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 if (view.isShown())
                 {
-                    tv_dateFilter.setText(dayOfMonth+"/"+(monthOfYear+1)+"/"+year);
-                    Log.d("dateofweek",dateOfWeek.toString());
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(year,monthOfYear,dayOfMonth);
+                    tv_dateFilter.setText(year+"/"+(monthOfYear+1)+"/"+dayOfMonth);
                     crDay =year+"-"+(monthOfYear+1)+"-"+dayOfMonth;
+
+                    Log.d("tag",calendar.get(Calendar.DAY_OF_WEEK)+"");
+                    if(isWeekend(calendar.get(Calendar.DAY_OF_WEEK))) typeDate="1";
+                    else typeDate="0";
+                    if(crPitch!=null) {
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("pitch_id", crPitch.getId());
+                        params.put("day", crDay);
+                        params.put("typedate", "1");
+                        Log.d(TAG, crDay + "-" + crPitch.getId());
+                        new GetTime(crPitch.getName(), params).execute();
+                    }
+
                 }
             }
         }, 2017,Calendar.getInstance().get(Calendar.MONTH),Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
@@ -306,16 +305,6 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
             case R.id.date_filter :
             {
                 showDatePicker();
-                break;
-            }
-            case R.id.btsearch :
-            {
-//                new GetTimeTable(crPitch).execute(pitchId,mSystemPitch.getId(),"Mon");
-                HashMap<String,String> params = new HashMap<>();
-                params.put("pitch_id","1");
-                params.put("day",crDay);
-                Log.d(TAG,crDay);
-                new GetTime(crPitch.getName(),params).execute();
                 break;
             }
         }

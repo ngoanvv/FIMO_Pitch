@@ -37,11 +37,9 @@ public class DetailDialog extends DialogFragment implements View.OnClickListener
         View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_detail, null);
         TextView name = (TextView) view.findViewById(R.id.id_sName);
         TextView address = (TextView) view.findViewById(R.id.id_address);
-        TextView des = (TextView) view.findViewById(R.id.id_des);
 
         name.setText(mSystemPitch.getName());
         address.setText(mSystemPitch.getAddress());
-        des.setText(mSystemPitch.getDescription());
 
         view.findViewById(R.id.id_dialog_ok).setOnClickListener(this);
         view.findViewById(R.id.id_more).setOnClickListener(this);

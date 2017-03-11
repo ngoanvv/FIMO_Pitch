@@ -41,7 +41,7 @@
                         android:layout_height="@dimen/s20dp">
                         <com.fimo_pitch.custom.view.RoundedImageView
                             android:layout_width="@dimen/s20dp"
-                            android:background="@drawable/ic_ball"
+                            android:background="@drawable/ic_manager"
                             android:layout_gravity="center_vertical"
                             android:layout_height="@dimen/s20dp"/>
 
@@ -64,7 +64,7 @@
                         <com.fimo_pitch.custom.view.RoundedImageView
                             android:layout_width="@dimen/s20dp"
                             android:layout_gravity="center_vertical"
-                            android:background="@drawable/ic_ball"
+                            android:background="@drawable/ic_stadium"
                             android:layout_height="@dimen/s20dp"/>
                         <TextView
                             android:layout_width="wrap_content"
@@ -84,7 +84,7 @@
                     android:layout_height="@dimen/s30dp">
                     <com.fimo_pitch.custom.view.RoundedImageView
                         android:layout_width="@dimen/s20dp"
-                        android:background="@drawable/ic_ball"
+                        android:background="@drawable/ic_note"
                         android:layout_gravity="center_vertical"
                         android:layout_height="@dimen/s20dp"/>
                     <TextView
@@ -99,7 +99,20 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="match_parent">
+        <Button
+            android:layout_width="@dimen/s150dp"
+            android:layout_height="@dimen/s70dp"
+            android:gravity="center"
+            style="@style/Base.Widget.AppCompat.Button.Colored"
+            android:text="Đặt ngay"
+            />
+        </RelativeLayout>
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

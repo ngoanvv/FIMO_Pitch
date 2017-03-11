@@ -13,6 +13,8 @@
         android:layout_height="@dimen/s50dp"
         android:titleTextColor="@color/white"
         app:layout_collapseMode="pin"
+        android:subtitleTextColor="@color/white"
+        app:titleTextColor="@color/white"
         android:background="@color/com_facebook_blue"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
@@ -48,17 +50,17 @@
         android:textColor="@color/white"
         android:layout_height="@dimen/s50dp"
         android:layout_gravity="center"
-        android:text="2017-01-12"
+        android:text=""
         android:textStyle="bold"
         android:textSize="@dimen/s25sp"/>
-        <com.fimo_pitch.custom.view.RoundedImageView
-            android:id="@+id/btsearch"
-            android:layout_width="@dimen/s40dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/s20dp"
-            android:layout_height="@dimen/s40dp"
-            android:background="@drawable/places_ic_search"
-            />
+        <!--<com.fimo_pitch.custom.view.RoundedImageView-->
+            <!--android:id="@+id/btsearch"-->
+            <!--android:layout_width="@dimen/s40dp"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--android:layout_marginLeft="@dimen/s20dp"-->
+            <!--android:layout_height="@dimen/s40dp"-->
+            <!--android:background="@drawable/places_ic_search"-->
+            <!--/>-->
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"

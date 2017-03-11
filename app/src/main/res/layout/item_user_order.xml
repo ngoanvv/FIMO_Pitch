@@ -112,7 +112,6 @@
                         android:layout_marginTop="@dimen/s10dp"
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
-                        android:padding="@dimen/s5dp"
                         android:layout_height="wrap_content">
                         <com.fimo_pitch.custom.view.RoundedImageView
                             android:layout_width="@dimen/s10dp"
@@ -139,17 +138,15 @@
             android:layout_width="@dimen/s100dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:paddingBottom="@dimen/s10dp"
             android:orientation="vertical">
         <Button
             android:id="@+id/bt_book"
-            android:layout_width="@dimen/s150dp"
-            android:layout_height="@dimen/s70dp"
-            android:layout_marginTop="@dimen/s40dp"
+            android:layout_width="@dimen/s300dp"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:textColor="@color/white"
-            android:text="Đặt sân"/>
-
+            android:layout_height="@dimen/s70dp"
+            android:textSize="@dimen/s12dp"
+            android:layout_marginTop="@dimen/s40dp"
+            android:text="Hủy yêu cầu"/>
 
         </LinearLayout>
     </LinearLayout>

@@ -1,11 +1,13 @@
 package com.fimo_pitch.services;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Vibrator;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -14,9 +16,7 @@ import com.fimo_pitch.main.FirstActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-/**
- * Created by diep1 on 2/16/2017.
- */
+
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
@@ -37,10 +37,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
     private void makeNotification(Context context,String title,String content)
     {
+        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setContentTitle(title)
+                        .setSound(uri)
+                        .setPriority(Notification.PRIORITY_HIGH)
                         .setContentText(content);
         Intent resultIntent = new Intent(context, FirstActivity.class);
         TaskStackBuilder stackBuilder = null;
@@ -52,13 +56,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             mBuilder.setContentIntent(resultPendingIntent);
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.notify(10, mBuilder.build());
+//            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+//            v.vibrate(500);
         }
         else
         {
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.notify(10, mBuilder.build());
-            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            v.vibrate(1000);
+//            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+//            v.vibrate(500);
         }
     }
+
 }

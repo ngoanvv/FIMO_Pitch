@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/rounded_border_white"
     android:orientation="vertical">
 
 
@@ -13,27 +12,29 @@
         android:layout_margin="@dimen/s10dp"
         android:maxLines="2"
         android:textStyle="bold"
+        android:gravity="center"
         android:text="Hệ thống sân bóng 123"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/stext_size_30sp" />
+        android:textColor="@color/com_facebook_blue"
+        android:textSize="@dimen/s25dp" />
     <TextView
         android:id="@+id/id_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/s10dp"
         android:maxLines="2"
+        android:gravity="center"
         android:text="144 Xuân thủy - Cầu Giấy - Hà Nội"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/s20dp" />
-    <TextView
-    android:id="@+id/id_des"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/s10dp"
-    android:maxLines="2"
-    android:text=""
-    android:textColor="@color/colorBlack"
-    android:textSize="@dimen/s20dp" />
+        <TextView
+            android:id="@+id/tv_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:text="0989782921"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/s20dp" />
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/s1dp"
@@ -42,35 +43,37 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <Button
             android:id="@+id/id_more"
             android:layout_width="@dimen/s0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/border"
+            android:background="@color/com_facebook_blue"
             android:text="Xem chi tiết"
             android:textAllCaps="false"
-            android:textColor="@color/blueGray"
+            android:textColor="@color/white"
             android:textSize="@dimen/s20dp" />
+
         <Button
             android:id="@+id/id_route"
             android:layout_width="@dimen/s0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/border"
+            android:background="@color/com_facebook_blue"
             android:text="Tìm đường"
             android:textAllCaps="false"
-            android:textColor="@color/blueGray"
+            android:textColor="@color/white"
             android:textSize="@dimen/s20dp" />
         <Button
             android:id="@+id/id_dialog_ok"
             android:layout_width="@dimen/s0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/border"
+            android:background="@color/com_facebook_blue"
             android:text="Hủy"
+            android:textColor="@color/white"
             android:textAllCaps="false"
-            android:textColor="@color/blueGray"
             android:textSize="@dimen/s20dp" />
 
         <View

@@ -1,16 +1,13 @@
 package com.fimo_pitch.adapter;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +19,7 @@ import com.fimo_pitch.custom.view.MyCustomDialog;
 import com.fimo_pitch.model.TimeTable;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
+import com.fimo_pitch.support.ShowToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,16 +27,16 @@ import java.util.HashMap;
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
-public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder> implements View.OnClickListener {
+public class UserOrderAdapter extends RecyclerView.Adapter<UserOrderAdapter.MyViewHolder> implements View.OnClickListener {
 
     private Context context;
-    private String TAG=OrderAdapter.class.getName();
+    private String TAG=UserOrderAdapter.class.getName();
     private ArrayList<TimeTable> data;
     private LayoutInflater inflater;
     private int callRequest = 1;
     private UserModel userModel;
-    ChoiceDialog dialog;
-    public OrderAdapter(Context context, ArrayList<TimeTable> data,UserModel u) {
+
+    public UserOrderAdapter(Context context, ArrayList<TimeTable> data, UserModel u) {
         this.context = context;
         this.data = data;
         this.userModel = u;
@@ -47,8 +45,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     }
 
     @Override
-    public OrderAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.item_order, parent, false);
+    public UserOrderAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = inflater.inflate(R.layout.item_user_order, parent, false);
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
     }
@@ -61,65 +59,24 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         holder.tv_type.setText("Ngày nghỉ");
         else holder.tv_type.setText("Ngày thường");
 
+        holder.btCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               if(data.get(position).getPhone()!=null) {
+                   ShowToast.showToastLong(context,data.get(position).getPhone()+" ");
+                   mOnCallEvent.onCallEvent(data.get(position).getPhone());
+               }
+               else mOnCallEvent.onCallEvent("null");
+
+            }
+        });
         holder.btBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String,String> body = new HashMap<String, String>();
-                body.put("user_id",userModel.getId());
-                body.put("pitch_id",data.get(position).getPitchId());
-                body.put("management_id",data.get(position).getManagement_id());
-                body.put("status","2");
-                body.put("day",data.get(position).getDay());
 
-                dialog = new ChoiceDialog(context,"Bạn có muốn đặt sân này không ?",data.get(position),body,position);
-                dialog.show();            }
-        });
-
-    }
-    class ChoiceDialog extends Dialog implements View.OnClickListener {
-        String title;
-        Context mContext;
-        TimeTable timeTable;
-        HashMap<String,String> params;
-        int position;
-        public ChoiceDialog(Context context, String content,TimeTable a,HashMap<String,String> bd,int p)
-        {
-
-            super(context);
-            this.position=p;
-            this.params=bd;
-            this.timeTable=a;
-            this.title = content;
-            this.mContext = context;
-        }
-        OnClickListener clickYes;
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            requestWindowFeature(Window.FEATURE_NO_TITLE);
-            setContentView(R.layout.dialog_choice_image);
-            TextView msg = (TextView) findViewById(R.id.id_message);
-            msg.setText(title);
-            Button yes = (Button) findViewById(R.id.id_dialog_ok);
-            yes.setOnClickListener(this);
-            Button no = (Button) findViewById(R.id.id_cancel);
-            no.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.id_dialog_ok:
-                    new BookPitch(this.params,position).execute();
-                    dismiss();
-                    break;
-                case R.id.id_cancel:
-                    dismiss();
-                    break;
-                default:
-                    break;
             }
-        }
+
+        });
 
     }
 
@@ -188,6 +145,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         }
 
     }
+    public OnCallEvent mOnCallEvent;
+    public void setOnCallEvent(OnCallEvent onCallEvent)
+    {
+        this.mOnCallEvent = onCallEvent;
+    }
+    public interface OnCallEvent
+    {
+        public void onCallEvent(String number);
+    }
 
 
     @Override
@@ -215,10 +181,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if(id==R.id.bt_book)
-        {
-
-        }
 
     }
 
@@ -226,14 +188,16 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         ImageView imageView;
         TextView tv_time,tv_des,tv_size,tv_type,tv_price;
         LinearLayout wrapper;
-        Button btBook;
+        Button btBook,btCall;
         public MyViewHolder(View itemView) {
             super(itemView);
             tv_des = (TextView) itemView.findViewById(R.id.pitch_description);
             tv_time = (TextView) itemView.findViewById(R.id.pitch_time);
             tv_price = (TextView) itemView.findViewById(R.id.item_price);
+
             tv_type = (TextView) itemView.findViewById(R.id.item_typeDate);
             btBook = (Button) itemView.findViewById(R.id.bt_book);
+            btCall = (Button) itemView.findViewById(R.id.bt_call);
 
         }
 
