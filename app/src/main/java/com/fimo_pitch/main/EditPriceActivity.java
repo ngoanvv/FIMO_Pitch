@@ -190,7 +190,11 @@ public class EditPriceActivity extends AppCompatActivity implements View.OnClick
                 TimePickerDialog dialog = new TimePickerDialog(EditPriceActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            edt_startTime.setText(hourOfDay+":"+minute);
+                        String h="",m="";
+                        if(hourOfDay>9) h=hourOfDay+""; else h="0"+""+hourOfDay;
+                        if(minute>9) m=minute+""; else m="0"+""+minute;
+                        edt_startTime.setText(h+":"+m);
+                        Log.d("time",h+":"+m);
                     }
                 },0,0,true);
                 dialog.setTitle("Chọn giờ bắt đầu");
@@ -202,7 +206,11 @@ public class EditPriceActivity extends AppCompatActivity implements View.OnClick
                 TimePickerDialog dialog = new TimePickerDialog(EditPriceActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        edt_startTime.setText(hourOfDay+":"+minute);
+                        String h="",m="";
+                        if(hourOfDay>9) h=hourOfDay+""; else h="0"+""+hourOfDay;
+                        if(minute>9) m=minute+""; else m="0"+""+minute;
+                        edt_endTime.setText(h+":"+m);
+                        Log.d("time",h+":"+m);
 
                     }
                 },0,0,true);
@@ -216,8 +224,8 @@ public class EditPriceActivity extends AppCompatActivity implements View.OnClick
                 body.put("id",price.getId());
                 body.put("system_id",price.getSystemId());
                 body.put("pitch_id",price.getPitchId());
-                body.put("time_start","15:30"+":00");
-                body.put("time_end","17:30"+":00");
+                body.put("time_start",edt_startTime.getText().toString());
+                body.put("time_end",edt_endTime.getText().toString());
                 body.put("price",edt_price.getText().toString());
                 body.put("typedate",typeofDate);
                 body.put("description",edt_description.getText().toString());

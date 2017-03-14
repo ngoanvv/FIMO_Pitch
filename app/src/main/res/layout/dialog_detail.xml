@@ -9,7 +9,6 @@
         android:id="@+id/id_sName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/s10dp"
         android:maxLines="2"
         android:textStyle="bold"
         android:gravity="center"
@@ -17,10 +16,20 @@
         android:textColor="@color/com_facebook_blue"
         android:textSize="@dimen/s25dp" />
     <TextView
+        android:id="@+id/id_pName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:gravity="center"
+        android:text="Hệ thống sân bóng 123"
+        android:textColor="@color/com_facebook_blue"
+        android:textSize="@dimen/s20dp" />
+    <TextView
         android:id="@+id/id_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/s10dp"
+        android:layout_marginTop="@dimen/s10dp"
         android:maxLines="2"
         android:gravity="center"
         android:text="144 Xuân thủy - Cầu Giấy - Hà Nội"
@@ -28,11 +37,11 @@
         android:textSize="@dimen/s20dp" />
         <TextView
             android:id="@+id/tv_phone"
+            android:layout_marginTop="@dimen/s10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="2"
             android:text="0989782921"
-            android:gravity="center"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/s20dp" />
     <View
@@ -61,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/com_facebook_blue"
-            android:text="Tìm đường"
+            android:text="Chỉ đường "
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/s20dp" />

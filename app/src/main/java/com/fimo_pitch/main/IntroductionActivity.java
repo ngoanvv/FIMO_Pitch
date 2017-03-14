@@ -27,13 +27,13 @@ public class IntroductionActivity extends AppIntro {
             else
             {
                 addSlide(AppIntroFragment.newInstance("Tìm kiếm sân bóng qua bản đồ", "Tìm kiếm sân bóng nhanh, hiệu quả",
-                        R.drawable.intro_3,getResources().getColor(R.color.colorPrimary)));
+                        R.drawable.img_demo2,getResources().getColor(R.color.colorPrimary)));
                 addSlide(AppIntroFragment.newInstance("Tìm kiếm sân bóng theo danh sách ", "Tìm kiếm sân bóng nhanh, hiệu quả",
                         R.drawable.intro_1,getResources().getColor(R.color.colorPrimary)));
                 addSlide(AppIntroFragment.newInstance("Bảng tin giao hữu, tìm đối", "Giao lưu, đăng tin tức và tìm đối thủ tiện lợi",
                         R.drawable.intro_2,getResources().getColor(R.color.colorPrimary)));
-                addSlide(AppIntroFragment.newInstance("Thông tin chi tiết", "Bảng giá, thông tin liên hệ, vị trí....",
-                        R.drawable.intro_4,getResources().getColor(R.color.colorPrimary)));
+                addSlide(AppIntroFragment.newInstance("Quản lý chi tiết", "Bảng giá, thông tin liên hệ....",
+                        R.drawable.img_demo3,getResources().getColor(R.color.colorPrimary)));
                 showSkipButton(true);
             }
         }

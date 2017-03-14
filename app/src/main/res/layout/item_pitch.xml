@@ -89,7 +89,8 @@
                         android:layout_height="@dimen/s20dp"/>
                     <TextView
                         android:id="@+id/pitch_description"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/s250dp"
+                        android:maxLines="3"
                         android:text="Sân 7 người"
                         android:textSize="@dimen/s20dp"
                         android:layout_marginLeft="@dimen/s20dp"
@@ -117,7 +118,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="@dimen/s20dp"
+        android:layout_marginTop="@dimen/s40dp"
         android:layout_marginBottom="@dimen/s5dp"
         android:background="@color/Grey"></View>
 

@@ -79,7 +79,7 @@ public class NewsFragment extends Fragment {
             try {
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray data = jsonObject.getJSONArray("data");
-                for (int i = 0; i < data.length() - 1; i++) {
+                for (int i = 0; i < data.length(); i++) {
                     JSONObject object = data.getJSONObject(i);
                     News news = new News();
                     news.setDescription(object.getString("description"));

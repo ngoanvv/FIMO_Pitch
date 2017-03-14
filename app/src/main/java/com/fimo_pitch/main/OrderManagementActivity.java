@@ -54,7 +54,7 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
     private String pitchId,day;
     private String TAG=OrderManagementActivity.class.getName();
     private String crDay=Calendar.getInstance().get(Calendar.YEAR)+"-"+
-                         Calendar.getInstance().get(Calendar.MONTH)+"-"+
+            (Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+
                          Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,9 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Quản lý yêu cầu đặt sân");
+        crDay=Calendar.getInstance().get(Calendar.YEAR)+"-"+
+                (Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+
+                Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         initView();
         initList();
 
@@ -73,7 +76,6 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
     public void initList()
@@ -90,6 +92,7 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
         btSearch = (RoundedImageView) findViewById(R.id.btSearch);
         pitchFilter = (Spinner) findViewById(R.id.pitch_filter) ;
         dayFilter.setOnClickListener(this);
+        dayFilter.setText(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)+"-"+(Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+Calendar.getInstance().get(Calendar.YEAR));
         btSearch.setOnClickListener(this);
     }
     class GetOrders extends AsyncTask<String,String,String>
@@ -233,7 +236,8 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
                                 HashMap<String, String> body = new HashMap<>();
                                 body.put("day", crDay);
                                 body.put("pitch_id", pitchId);
-                                Log.d(TAG, day + "-" + pitchId);
+                                Log.d(TAG,"spinner  "+ crDay + "-" + pitchId);
+
                                 new GetOrders(body).execute();
                             }
 
@@ -242,19 +246,16 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
 
                             }
                         });
-                        if (listPitch.size() > 0) {
-                            pitchId = listPitch.get(0).getId();
-                            HashMap<String, String> body = new HashMap<>();
-                            body.put("day", crDay);
-                            body.put("pitch_id", pitchId);
-                            Log.d(TAG, day + "-" + pitchId);
-                            new GetOrders(body).execute();
-                        }
-                    }
-                    else
-                    {
-                        Utils.openDialog(OrderManagementActivity.this,"Không có yêu cầu nào !");
-                    }
+//                        pitchId = listPitch.get(0).getId();
+//                        HashMap<String, String> body = new HashMap<>();
+//                        crDay=Calendar.getInstance().get(Calendar.YEAR)+"-"+
+//                                Calendar.getInstance().get(Calendar.MONTH)+"-"+
+//                                Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+//                        body.put("day", crDay);
+//                        body.put("pitch_id", pitchId);
+//                        Log.d(TAG, crDay + "-" + pitchId);
+//                        new GetOrders(body).execute();
+                }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Utils.openDialog(OrderManagementActivity.this,"Đã có lỗi xảy ra, thử lại sau");
@@ -294,14 +295,14 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                                    day = year+"-"+(monthOfYear+1)+"-"+dayOfMonth;
-                                    dayFilter.setText(day);
-                                    crDay=day;
 
+                                day = year+"-"+(monthOfYear+1)+"-"+dayOfMonth;
+                                dayFilter.setText(dayOfMonth+"-"+(monthOfYear+1)+"-"+year);
+                                crDay=day;
                                 HashMap<String,String> body = new HashMap<>();
                                 body.put("day",crDay);
                                 body.put("pitch_id",pitchId);
-                                Log.d(TAG,day+"-"+pitchId);
+                                Log.d(TAG,crDay+"-"+pitchId);
                                 new GetOrders(body).execute();
                             }
                         },2017, Calendar.getInstance().get(Calendar.MONTH),Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
@@ -311,14 +312,7 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
 
                 break;
             }
-            case R.id.btSearch:
-            {
-                HashMap<String,String> body = new HashMap<>();
-                body.put("day",crDay);
-                body.put("pitch_id",pitchId);
-                Log.d(TAG,day+"-"+pitchId);
-                new GetOrders(body).execute();
-            }
+
         }
     }
 }

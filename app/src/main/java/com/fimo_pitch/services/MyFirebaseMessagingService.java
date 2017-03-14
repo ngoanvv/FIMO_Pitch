@@ -57,7 +57,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             mNotificationManager.notify(10, mBuilder.build());
 //            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-//            v.vibrate(500);
+//            v.vibrate(ZAQ500);
         }
         else
         {

@@ -29,24 +29,22 @@
 
         <Spinner
             android:id="@+id/pitch_filter"
-
             android:layout_width="@dimen/s200dp"
             android:layout_height="@dimen/s70dp"
             android:text="Sân số 1"
-            android:layout_weight="1"
+            android:layout_weight="1.4"
             android:textStyle="bold"
-            android:textSize="@dimen/s30sp"
+            android:textSize="@dimen/s25dp"
             />
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="0.6"
             android:layout_height="match_parent">
             <TextView
                 android:id="@+id/date_filter"
                 android:layout_width="@dimen/s150dp"
-                android:textColor="@color/white"
+                android:textColor="@color/com_facebook_blue"
                 android:layout_height="@dimen/s70dp"
-                android:layout_gravity="center"
                 android:gravity="center"
                 android:text="2017-13-03"
                 android:textStyle="bold"

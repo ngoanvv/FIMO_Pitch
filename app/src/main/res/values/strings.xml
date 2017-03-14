@@ -96,7 +96,7 @@
     <string name="trial">Dùng thử ứng dụng</string>
     <string name="title_activity_pitch_detail2">PitchDetailActivity2</string>
     <string name="title_activity_pricing">PricingActivity</string>
-    <string name="login_failed">Đăng nhập thất bại, kiểm tra lại kết nối mạng và thử lại</string>
+    <string name="login_failed">Đăng nhập thất bại,sai tài khoản hoặc mật khẩu</string>
     <string name="load_failed">Không thể tài, vui lòng thử lại sau</string>
     <string name="no_connection">Không có kết nối mạng, vui lòng thử lại sau</string>
     <string name="success">Đặt sân thành công, hãy đợi chủ sân liên hệ lại!</string>

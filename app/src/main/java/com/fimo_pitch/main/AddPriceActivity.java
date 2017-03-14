@@ -89,8 +89,6 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
         edt_startTime.setOnClickListener(this);
         edt_endTime.setOnClickListener(this);
 
-        edt_description.setText("Nothing to say");
-        edt_price.setText("300");
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(AddPriceActivity.this,android.R.layout.simple_list_item_1,listDate);
         spinnerDate.setAdapter(arrayAdapter);
@@ -244,7 +242,11 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
                 TimePickerDialog dialog = new TimePickerDialog(AddPriceActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                            edt_startTime.setText(hourOfDay+":"+minute);
+                        String h="",m="";
+                        if(hourOfDay>9) h=hourOfDay+""; else h="0"+""+hourOfDay;
+                        if(minute>9) m=minute+""; else m="0"+""+minute;
+                        edt_startTime.setText(h+":"+m);
+                        Log.d("time",h+":"+m);
                     }
                 },0,0,true);
                 dialog.setTitle("Chọn giờ bắt đầu");
@@ -256,8 +258,11 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
                 TimePickerDialog dialog = new TimePickerDialog(AddPriceActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        edt_startTime.setText(hourOfDay+":"+minute);
-
+                        String h="",m="";
+                        if(hourOfDay>9) h=hourOfDay+""; else h="0"+""+hourOfDay;
+                        if(minute>9) m=minute+""; else m="0"+""+minute;
+                        edt_endTime.setText(h+":"+m);
+                        Log.d("time",h+":"+m);
                     }
                 },0,0,true);
                 dialog.setTitle("Chọn giờ kết thúc");
@@ -270,8 +275,8 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
                 body.put("system_id","1");
                 body.put("pitch_id",idPitch);
                 Log.d("add price",idPitch+":"+typeofDate+":"+edt_description.getText().toString());
-                body.put("time_start","17:30"+":00");
-                body.put("time_end","19:30"+":00");
+                body.put("time_start",edt_startTime.getText().toString());
+                body.put("time_end",edt_endTime.getText().toString());
                 body.put("price",edt_price.getText().toString());
                 body.put("typedate",typeofDate);
                 body.put("description",edt_description.getText().toString());

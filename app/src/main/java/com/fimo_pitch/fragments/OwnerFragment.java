@@ -13,8 +13,8 @@ import com.fimo_pitch.R;
 import com.fimo_pitch.main.OrderManagementActivity;
 import com.fimo_pitch.main.PitchManagementActivity;
 import com.fimo_pitch.main.PriceManagementActivity;
-import com.fimo_pitch.main.SystemManagementActivity;
 import com.fimo_pitch.model.UserModel;
+import com.fimo_pitch.support.Utils;
 
 /**
  * Created by Diep_Chelsea on 13/07/2016.
@@ -67,9 +67,10 @@ public class OwnerFragment extends Fragment implements View.OnClickListener {
             }
             case R.id.bt_manageSystem :
             {
-                Intent intent = new Intent(getActivity(), SystemManagementActivity.class);
-                intent.putExtra(CONSTANT.KEY_USER,userModel);
-                startActivity(intent);
+//                Intent intent = new Intent(getActivity(), SystemManagementActivity.class);
+//                intent.putExtra(CONSTANT.KEY_USER,userModel);
+//                startActivity(intent);
+                Utils.openDialog(getContext(),"Chức năng này chưa khả dụng");
                 break;
             }
             case R.id.bt_managerPrice :

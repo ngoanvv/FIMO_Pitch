@@ -47,14 +47,12 @@
                     android:id="@+id/edt_startTime"
                     android:layout_height="@dimen/s70dp"
                     android:layout_marginLeft="@dimen/s30dp"
-                    android:enabled="false"
                     android:layout_width="@dimen/s200dp"
                     android:hint="Giờ bắt đầu" />
 
                 <EditText
                     android:layout_height="@dimen/s70dp"
                     android:layout_width="@dimen/s200dp"
-                    android:enabled="false"
                     android:id="@+id/edt_endTime"
                     android:hint="Giờ kết thúc" />
             </LinearLayout>

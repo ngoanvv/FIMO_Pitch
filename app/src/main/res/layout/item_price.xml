@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:paddingTop="@dimen/s20dp"
+    android:gravity="center"
     android:id="@+id/ll_match"
     android:layout_height="wrap_content">
 
@@ -11,6 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="@dimen/s10dp"
         android:paddingBottom="@dimen/s20dp"
         android:orientation="horizontal">
         <LinearLayout
@@ -26,7 +28,7 @@
                 android:layout_marginLeft="@dimen/s20dp"
                 android:maxLines="2"
                 android:layout_marginTop="@dimen/s5dp"
-                android:textStyle="italic"
+                android:textStyle="bold"
                 android:gravity="center_vertical"
                 android:textColor="@android:color/holo_green_dark"
                 android:layout_alignBottom="@+id/view"/>
@@ -109,28 +111,29 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+        <Button
+            android:id="@+id/bt_edit"
+            android:layout_width="@dimen/s100dp"
+            android:layout_height="@dimen/s50dp"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="Sửa"/>
+
             <Button
-                android:id="@+id/bt_edit"
+                android:id="@+id/bt_delete"
                 android:layout_width="@dimen/s100dp"
                 android:layout_height="@dimen/s50dp"
                 android:gravity="center"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_marginTop="@dimen/s20dp"
-                android:background="@color/colorBackGroundFragmentTabHost"
                 android:textColor="@color/white"
-                android:layout_gravity="center"
-                android:text="Sửa"/>
-
-        <Button
-            android:id="@+id/bt_delete"
-            android:layout_width="@dimen/s100dp"
-            android:layout_height="@dimen/s50dp"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/s20dp"
-            android:layout_marginLeft="@dimen/s30dp"
-            android:background="@color/colorRed"
-            android:textColor="@color/white"
-            android:layout_gravity="center"
-            android:text="Xóa"/>
+                android:text="Xóa"/>
+        </LinearLayout>
     </LinearLayout>
 
     <View

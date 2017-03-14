@@ -31,7 +31,7 @@
             android:layout_marginLeft="@dimen/s10dp"
             android:textColor="@color/white"
             android:text="Sân bóng FECON"
-            android:textSize="@dimen/s15dp"
+            android:textSize="@dimen/s20dp"
             android:textStyle="bold"
 
             />
@@ -44,7 +44,7 @@
         android:textColor="@color/white"
         android:layout_marginLeft="@dimen/s10dp"
         android:text="144 Xuân Thủy, Cầu Giấy"
-        android:textSize="@dimen/s10dp"
+        android:textSize="@dimen/s15dp"
 
         />
     <LinearLayout

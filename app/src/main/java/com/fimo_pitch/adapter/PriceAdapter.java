@@ -16,7 +16,7 @@ import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.main.EditPriceActivity;
 import com.fimo_pitch.model.Price;
-import com.fimo_pitch.model.TimeTable;
+import com.fimo_pitch.support.Utils;
 
 import java.util.ArrayList;
 
@@ -46,7 +46,12 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.tv_des.setText(data.get(position).getDescription());
-        holder.tv_date.setText(data.get(position).getDayOfWeek());
+
+        if(data.get(position).getDayOfWeek().equals("1"))
+        holder.tv_date.setText("Ngày nghỉ");
+        else holder.tv_date.setText("Ngày thường");
+
+
         holder.tv_time.setText(data.get(position).getTime());
         holder.tv_price.setText(data.get(position).getPrice());
         holder.btEdit.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +67,7 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.MyViewHolder
         holder.btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Utils.openDialog(context,"Chức năng hiện chưa khả dụng");
             }
         });
 

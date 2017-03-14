@@ -1,9 +1,6 @@
 package com.fimo_pitch.support;
 
 import android.app.Activity;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,12 +9,9 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
-import android.support.v4.app.NotificationCompat;
 import android.view.inputmethod.InputMethodManager;
 
-import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.MyCustomDialog;
-import com.fimo_pitch.main.FirstActivity;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,29 +32,6 @@ public class Utils {
             dialog.show();
         }
 
-    public static void makeNotification(Context context,Activity activity,String content)
-    {
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .setContentTitle("FIMO MSN")
-                        .setContentText(content);
-        Intent resultIntent = new Intent(context, FirstActivity.class);
-        TaskStackBuilder stackBuilder = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            stackBuilder = TaskStackBuilder.create(context);
-            stackBuilder.addParentStack(activity);
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT  );
-            mBuilder.setContentIntent(resultPendingIntent);
-            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            mNotificationManager.notify(10, mBuilder.build());
-        }
-        else
-        {
-
-        }
-    }
     public static String getDayofWeek(int dateofweek)
     {
         switch (dateofweek)

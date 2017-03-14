@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textSize="@dimen/s25dp"
+    android:textSize="@dimen/s20dp"
     android:gravity="center"
     android:textColor="@color/com_facebook_blue"
     android:padding="5dip"

@@ -17,7 +17,6 @@ import android.widget.TimePicker;
 
 import com.fimo_pitch.API;
 import com.fimo_pitch.R;
-import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.support.NetworkUtils;
 import com.fimo_pitch.support.Utils;
 
@@ -38,7 +37,7 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
     private EditText edt_time,edt_title,edt_description,edt_location;
     private Button bt_post;
     // 144 xuan thuy : lat : 21.036654, lng 105.781218
-    private RoundedImageView img_send;
+    private Button img_send;
     private OkHttpClient client;
     private String time=" ";
 
@@ -56,7 +55,7 @@ public class PostNewsFragment extends Fragment implements View.OnClickListener {
         edt_time = (EditText) view.findViewById(R.id.edt_time);
         edt_title = (EditText) view.findViewById(R.id.edt_title);
         edt_location = (EditText) view.findViewById(R.id.edt_location);
-        img_send = (RoundedImageView) view.findViewById(R.id.img_send);
+        img_send = (Button) view.findViewById(R.id.img_send);
 
 
         edt_time.setOnClickListener(this);

@@ -52,7 +52,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="@color/colorBlack"
-            android:background="@color/medium_grey"
+            android:background="@color/Grey"
             android:textSize="@dimen/s25dp"
             android:text="17:00"
             android:id="@+id/tv_time" />

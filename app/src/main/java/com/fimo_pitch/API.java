@@ -24,5 +24,7 @@ public class API {
     public static String GetTime=API+"pitch/getlistmanagementpitchforday";
     public static String UpdateOrder=API+"pitch/updateorder";
     public static String SignUp=API+"users/createNew";
+    public static String GetOrderbyUser=API+"users/getorderbyuserid/";
+    public static String SearchPitch=API+"system_pitch/searchPitch";
     public static String GetSystemByLocation=API+"system_pitch/getsystempitchbylocation";
 }

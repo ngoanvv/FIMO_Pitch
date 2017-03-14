@@ -58,9 +58,15 @@ public class SystemPitchAdapter extends RecyclerView.Adapter<SystemPitchAdapter.
 
         Random random =new Random();
         int x = random.nextInt(10 - 1 + 1) + 1;
-        if(x%2==0)  Picasso.with(context).load(R.drawable.ic_pitch).resize(0,300).into(holder.imageView);
-        else Picasso.with(context).load(R.drawable.ic_pitch2).resize(0,600).into(holder.imageView);
-
+        if(position%2==0) {
+            Picasso.with(context).load(R.drawable.ic_pitch2).resize(0,600).into(holder.imageView);
+        }
+        if(position%7==0)
+            Picasso.with(context).load(R.drawable.ic_pitch).resize(0, 600).into(holder.imageView);
+        if(position%3==0)
+            Picasso.with(context).load(R.drawable.ic_stadium3).resize(0, 600).into(holder.imageView);
+        if(position%5==0)
+            Picasso.with(context).load(R.drawable.ic_stadium4).resize(0, 300).into(holder.imageView);
         holder.textviewaddress.setText(data.get(position).getAddress());
         holder.textviewname.setText(data.get(position).getName());
         holder.textviewComment.setText(data.get(position).getComment());

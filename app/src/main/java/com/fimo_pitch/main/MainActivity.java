@@ -58,10 +58,12 @@ import com.fimo_pitch.fragments.PostNewsFragment;
 import com.fimo_pitch.fragments.SearchFragment;
 import com.fimo_pitch.fragments.SettingsFragment;
 import com.fimo_pitch.fragments.SystemPitchsFragment;
+import com.fimo_pitch.fragments.UserOrderManagement;
 import com.fimo_pitch.model.News;
 import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
+import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.auth.api.Auth;
@@ -124,7 +126,16 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         initNavMenu();
         initGoogleAPI();
 
+        Log.d("Startup","Main Acitivty");
         Log.d("TYPE",userModel.getUserType());
+
+        // neu mo ung dung tu thong bao
+        if(getIntent().getBooleanExtra(CONSTANT.FROM_NOTIFICATION,false))
+        {
+            ShowToast.showToastLong(MainActivity.this,"from noticaiton");
+            replaceFragment(NotifcationFragment.newInstance("", ""), NotifcationFragment.class.getName());
+            mDrawerLayout.closeDrawers();
+        }
     }
     private void getData() {
         listSystem = new ArrayList<>();
@@ -222,8 +233,8 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                                         break;
                                     }
                                     case R.id.menu_notification: {
-                                        replaceFragment(NotifcationFragment.newInstance("", ""), NotifcationFragment.class.getName());
-                                        mDrawerLayout.closeDrawers();
+                                        Utils.openDialog(MainActivity.this,"Chức năng hiện tại không khả dụng");
+
                                         break;
                                     }
                                     case R.id.menu_search: {
@@ -274,8 +285,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                                         break;
                                     }
                                     case R.id.menu_notification: {
-                                        replaceFragment(NotifcationFragment.newInstance("", ""), NotifcationFragment.class.getName());
-                                        mDrawerLayout.closeDrawers();
+                                        Utils.openDialog(MainActivity.this,"Chức năng hiện tại không khả dụng");
                                         break;
                                     }
                                     case R.id.menu_search: {
@@ -286,7 +296,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                                         break;
                                     }
                                     case R.id.menu_manage: {
-                                        replaceFragment(new OwnerFragment().newInstance("", ""), OwnerFragment.class.getName());
+                                        replaceFragment(new UserOrderManagement(""), OwnerFragment.class.getName());
                                         mDrawerLayout.closeDrawers();
                                         break;
                                     }
@@ -418,13 +428,12 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                 okHttpClient = new OkHttpClient();
                 okhttp3.Response newsResponse = okHttpClient.newCall(newsRequest).execute();
                 if(newsResponse.isSuccessful()) listNewsData = newsResponse.body().string();
-
+                return "success";
             } catch (Exception e) {
 
                 e.printStackTrace();
                 return "failed";
             }
-            return "success";
         }
 
         @Override

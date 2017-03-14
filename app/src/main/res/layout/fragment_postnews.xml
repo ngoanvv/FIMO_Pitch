@@ -2,13 +2,13 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_marginTop="@dimen/s120dp"
     android:layout_height="fill_parent">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/s100dp"
         android:orientation="vertical"
         android:layout_gravity="center_vertical"
         android:layout_alignParentTop="true"
@@ -112,14 +112,16 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="@dimen/s30dp"
             android:layout_height="wrap_content">
-            <com.fimo_pitch.custom.view.RoundedImageView
+            <Button
                 android:id="@+id/img_send"
-                android:layout_width="@dimen/s100dp"
-                android:layout_height="@dimen/s100dp"
-
+                android:layout_width="@dimen/s200dp"
+                android:layout_height="@dimen/s80dp"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_centerInParent="true"
+                android:text="Đăng tin"
+                android:textSize="@dimen/s30dp"
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="@dimen/s70dp"
                 android:layout_marginEnd="@dimen/s70dp" />

@@ -22,6 +22,7 @@ import com.fimo_pitch.custom.view.MyCustomDialog;
 import com.fimo_pitch.model.TimeTable;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
+import com.fimo_pitch.support.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,6 +57,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.tv_des.setText(data.get(position).getDescription());
         holder.tv_time.setText(data.get(position).getStart_time().substring(0,5)+"-"+data.get(position).getEnd_time().substring(0,5));
+        holder.tv_price.setText(data.get(position).getPrice());
 
         if(data.get(position).getType().contains("1"))
         holder.tv_type.setText("Ngày nghỉ");
@@ -69,6 +71,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                 body.put("pitch_id",data.get(position).getPitchId());
                 body.put("management_id",data.get(position).getManagement_id());
                 body.put("status","2");
+                body.put("token",userModel.getToken());
+                Log.d("token",userModel.getToken());
                 body.put("day",data.get(position).getDay());
 
                 dialog = new ChoiceDialog(context,"Bạn có muốn đặt sân này không ?",data.get(position),body,position);
@@ -170,20 +174,23 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             progressDialog.dismiss();
-            Log.d(TAG,s);
-            if(s.contains("success"))
-            {
+            Log.d(TAG, s);
+            if (s.contains("success")) {
                 data.remove(position);
                 notifyDataSetChanged();
                 notifyItemRemoved(position);
-                notifyItemRangeRemoved(position,data.size());
-                MyCustomDialog dialog = new MyCustomDialog(context,context.getString(R.string.booksuccesss1)
-                                                                +" "
-                                                               +data.get(position).getPitchName()
-                                                               +context.getString(R.string.booksuccesss2)+" "
-                                                               +data.get(position).getStart_time()+" "
-                                                               +context.getString(R.string.booksuccess3));
+                notifyItemRangeRemoved(position, data.size());
+                MyCustomDialog dialog = new MyCustomDialog(context, context.getString(R.string.booksuccesss1)
+                        + " "
+                        + data.get(position).getPitchName()
+                        + context.getString(R.string.booksuccesss2) + " "
+                        + data.get(position).getStart_time() + " "
+                        + context.getString(R.string.booksuccess3));
                 dialog.show();
+            }
+            else
+            {
+                Utils.openDialog(context,"Thao tác không thành công. Hãy thử lại !");
             }
         }
 

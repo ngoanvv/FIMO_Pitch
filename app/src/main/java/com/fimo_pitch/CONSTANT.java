@@ -8,6 +8,7 @@ public class CONSTANT {
     // ypedate : 1 ngày nghỉ - 0 ngày thường
 //    status (orders) : 1 ok - 0 wait
 
+    public static String FROM_NOTIFICATION="from_notification";
     public static String KEY_USER = "userModel";
     public static String USER_TYPE = "usertype";
     public static String MATCH = "match";

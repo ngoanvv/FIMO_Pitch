@@ -32,12 +32,12 @@
         android:layout_alignParentStart="true">
         </android.support.v7.widget.RecyclerView>
         <com.fimo_pitch.custom.view.RoundedImageView
-        android:layout_width="@dimen/s70dp"
-        android:layout_height="@dimen/s70dp"
+        android:layout_width="@dimen/s50dp"
+        android:layout_height="@dimen/s50dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/s100dp"
-        android:layout_marginRight="@dimen/s100dp"
+        android:layout_marginBottom="@dimen/s50dp"
+        android:layout_marginRight="@dimen/s20dp"
         android:id="@+id/bt_addPitch"
         android:background="@drawable/bt_add"/>
     </RelativeLayout>

@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d("Startup","LoginActivity");
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         okHttpClient = new OkHttpClient();
@@ -130,8 +130,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tv_forgot.setOnClickListener(this);
         tv_trial.setOnClickListener(this);
 
-        edt_email.setText("owner@gmail.com");
-        edt_password.setText("vanduong");
 
 
         Log.d("FCM",FirebaseInstanceId.getInstance().getToken()+" ");
@@ -222,8 +220,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String password = sharedPreferences.getString("password", "null");
         Log.d(TAG,email+" - "+password);
         if (email.equals("null") || password.equals("null")) {
-            edt_email.setText("owner@gmail.com");
-            edt_password.setText("vanduong");
         }
         else {
             edt_email.setText(email);
@@ -389,6 +385,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra(CONSTANT.KEY_USER, userModel);
                     intent.putExtra(CONSTANT.KEY_USER,userModel);
+                    if(getIntent().getBooleanExtra(CONSTANT.FROM_NOTIFICATION,false)) intent.putExtra(CONSTANT.FROM_NOTIFICATION,true);
                     startActivity(intent);
                     finish();
 
