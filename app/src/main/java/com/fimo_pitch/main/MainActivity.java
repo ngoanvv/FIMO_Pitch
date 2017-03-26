@@ -421,6 +421,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
             progressDialog.show();
         }
 
+
         @Override
         protected String doInBackground(String... params) {
             Request newsRequest = new Request.Builder()
