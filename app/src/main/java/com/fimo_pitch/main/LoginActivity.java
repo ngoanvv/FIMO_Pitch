@@ -78,9 +78,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         okHttpClient = new OkHttpClient();
+
+
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        Utils.setupAnimations(this);
+
+
         setContentView(R.layout.activity_login);
+        overridePendingTransition(R.anim.wipe_in_right,R.anim.wipe_out_left);
+
         userModel = new UserModel();
         initGoogleAPI();
         initView();
@@ -96,8 +104,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        moveToHomeScreen();
     }
 
-    private void login() {
-    }
     public void initGoogleAPI() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -387,6 +393,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     intent.putExtra(CONSTANT.KEY_USER,userModel);
                     if(getIntent().getBooleanExtra(CONSTANT.FROM_NOTIFICATION,false)) intent.putExtra(CONSTANT.FROM_NOTIFICATION,true);
                     startActivity(intent);
+
                     finish();
 
                 }

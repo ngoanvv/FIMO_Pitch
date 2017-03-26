@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
+import com.fimo_pitch.db.MyDatabaseHelper;
+import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.common.ConnectionResult;
@@ -58,8 +60,10 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
         FirebaseApp.initializeApp(FirstActivity.this);
         setContentView(R.layout.activity_first);
 
-        from_notification = getIntent().getBooleanExtra(CONSTANT.FROM_NOTIFICATION,false);
+        Utils.setupAnimations(this);
 
+        from_notification = getIntent().getBooleanExtra(CONSTANT.FROM_NOTIFICATION,false);
+        
         client = new OkHttpClient();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -73,6 +77,9 @@ public class FirstActivity extends AppCompatActivity implements GoogleApiClient.
             ActivityCompat.requestPermissions(FirstActivity.this,
                     new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
         }
+
+
+
     }
 
     @Override

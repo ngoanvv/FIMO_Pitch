@@ -29,6 +29,7 @@ import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.TrackGPS;
+import com.fimo_pitch.support.Utils;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -81,6 +82,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             target = new LatLng(Double.valueOf(mSystemPitch.getLat()), Double.valueOf(mSystemPitch.getLng()));
         }
         setContentView(R.layout.activity_pitch_detail);
+        Utils.setupAnimations(this);
+
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);

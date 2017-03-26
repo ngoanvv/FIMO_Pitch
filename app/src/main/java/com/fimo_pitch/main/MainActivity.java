@@ -51,6 +51,7 @@ import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.RoundedImageView;
+import com.fimo_pitch.db.MyDatabaseHelper;
 import com.fimo_pitch.fragments.NewsFragment;
 import com.fimo_pitch.fragments.NotifcationFragment;
 import com.fimo_pitch.fragments.OwnerFragment;
@@ -117,6 +118,9 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+        Utils.setupAnimations(this);
+        MyDatabaseHelper db = new MyDatabaseHelper(this);
+
         initView();
         getData();
         ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
@@ -125,8 +129,6 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         updateToken(fcmToken);
         initNavMenu();
         initGoogleAPI();
-
-        Log.d("Startup","Main Acitivty");
         Log.d("TYPE",userModel.getUserType());
 
         // neu mo ung dung tu thong bao
@@ -424,11 +426,17 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
             Request newsRequest = new Request.Builder()
                     .url(API.GetNews)
                     .build();
+            Request systemRequest = new Request.Builder()
+                    .url(API.GetSystemPitch)
+                    .build();
             try {
                 okHttpClient = new OkHttpClient();
                 okhttp3.Response newsResponse = okHttpClient.newCall(newsRequest).execute();
                 if(newsResponse.isSuccessful()) listNewsData = newsResponse.body().string();
+                okhttp3.Response reponse = okHttpClient.newCall(systemRequest).execute();
+                if(reponse.isSuccessful()) listSystemData = reponse.body().string();
                 return "success";
+
             } catch (Exception e) {
 
                 e.printStackTrace();
@@ -457,8 +465,6 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
 //            replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());
             }
         }
-
-
         @Override
         protected void onProgressUpdate(Void... values) {
         }

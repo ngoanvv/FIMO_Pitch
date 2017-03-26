@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="listProvince">
+        <item>Tất cả</item>
         <item>Cầu Giấy</item>
         <item>Đống Đa</item>
         <item>Hai Bà Trưng</item>

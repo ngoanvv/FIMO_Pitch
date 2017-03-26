@@ -82,6 +82,8 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
         if(listPitches != null && listPitches.size()>0) crPitch = listPitches.get(getIntent().getIntExtra("pos",0));
 
         setContentView(R.layout.activity_list_pitch);
+        Utils.setupAnimations(this);
+
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);

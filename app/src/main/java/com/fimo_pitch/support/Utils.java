@@ -8,9 +8,16 @@ import android.graphics.Color;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.provider.Settings;
+import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 
+import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.MyCustomDialog;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,7 +38,27 @@ public class Utils {
             MyCustomDialog dialog = new MyCustomDialog(context,content);
             dialog.show();
         }
+    public static void setupExitAnimations(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Transition trans = TransitionInflater.from(activity).inflateTransition(R.transition.explode);
+            activity.getWindow().setExitTransition(trans);
+        }
+    }
+    public static void hideViews(Toolbar mToolbar) {
+        mToolbar.animate().translationY(-mToolbar.getHeight()).setInterpolator(new AccelerateInterpolator(2));
+    }
 
+    public static void showViews(Toolbar mToolbar) {
+        mToolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator(2));
+    }
+    public static void setupAnimations(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Transition trans = TransitionInflater.from(activity).inflateTransition(R.transition.slide);
+            activity.getWindow().setEnterTransition(trans);
+            Transition transition = TransitionInflater.from(activity).inflateTransition(R.transition.explode);
+            activity.getWindow().setExitTransition(transition);
+        }
+    }
     public static String getDayofWeek(int dateofweek)
     {
         switch (dateofweek)
