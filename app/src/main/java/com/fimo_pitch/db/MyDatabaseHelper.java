@@ -104,7 +104,8 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<SystemPitch> getSystemByName(String inputAddress)
     {
         ArrayList<SystemPitch> list = new ArrayList<>();
-        String sql = "Select * from "+CONSTANT.SYSTEM_TABLE +" where "+address+" like %"+inputAddress+"%;";
+        String sql = "Select * from "+CONSTANT.SYSTEM_TABLE +" where "+address+" like '%"+inputAddress+"%'";
+        Log.d("sql ",sql);
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(sql,null);
         if (cursor.moveToFirst()) {

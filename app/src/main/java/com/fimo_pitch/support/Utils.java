@@ -1,6 +1,7 @@
 package com.fimo_pitch.support;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.widget.Toolbar;
 import android.transition.Transition;
@@ -53,10 +55,13 @@ public class Utils {
     }
     public static void setupAnimations(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
             Transition trans = TransitionInflater.from(activity).inflateTransition(R.transition.slide);
             activity.getWindow().setEnterTransition(trans);
             Transition transition = TransitionInflater.from(activity).inflateTransition(R.transition.explode);
             activity.getWindow().setExitTransition(transition);
+            Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(activity).toBundle();
+
         }
     }
     public static String getDayofWeek(int dateofweek)

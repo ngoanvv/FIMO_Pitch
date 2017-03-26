@@ -399,7 +399,6 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
             super.onPostExecute(s);
             Log.d(TAG,s);
             progressDialog.dismiss();
-
         }
 
         @Override
@@ -418,7 +417,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
             progressDialog = new ProgressDialog(MainActivity.this);
             progressDialog.setMessage(getString(R.string.processing));
             progressDialog.setCancelable(false);
-            progressDialog.show();
+//            progressDialog.show();
         }
 
 
@@ -514,15 +513,6 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-
-
-            return true;
-        }
-        else if (id == android.R.id.home) {
-            mDrawerLayout.openDrawer(Gravity.LEFT);
-        }
-
         return super.onOptionsItemSelected(item);
     }
 }

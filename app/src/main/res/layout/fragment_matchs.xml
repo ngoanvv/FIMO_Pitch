@@ -26,7 +26,6 @@
             android:id="@+id/spn_location"
             android:layout_width="match_parent"
             android:layout_height="@dimen/s50dp"
-            android:hint="Khu vực tìm kiếm"
             android:layout_weight="2"
             android:textColor="@color/color_myaccount_title_bg"
             android:layout_alignParentTop="true"
@@ -34,7 +33,9 @@
             android:layout_alignParentStart="true" />
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
+            android:id="@+id/edt_search"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
             android:hint="Tên sân bóng, địa chỉ...."
             android:layout_height="match_parent" />
     </LinearLayout>

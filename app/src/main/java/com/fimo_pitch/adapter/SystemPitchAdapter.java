@@ -37,11 +37,12 @@ public class SystemPitchAdapter extends RecyclerView.Adapter<SystemPitchAdapter.
     private LayoutInflater inflater;
     private ArrayList<SystemPitch> results;
     private ArrayList<SystemPitch> list;
-
+    private ArrayList<SystemPitch> copyData;
 
     public SystemPitchAdapter(Context context, ArrayList<SystemPitch> data,UserModel u) {
         this.context = context;
         this.data = data;
+        this.copyData = data;
         this.userModel = u;
         this.inflater = LayoutInflater.from(context);
         setHasStableIds(true);
@@ -59,14 +60,10 @@ public class SystemPitchAdapter extends RecyclerView.Adapter<SystemPitchAdapter.
         Random random =new Random();
         int x = random.nextInt(10 - 1 + 1) + 1;
         if(position%2==0) {
-            Picasso.with(context).load(R.drawable.ic_pitch2).resize(0,600).into(holder.imageView);
+            Picasso.with(context).load(R.drawable.ic_pitch2).resize(0,400).into(holder.imageView);
         }
-        if(position%7==0)
-            Picasso.with(context).load(R.drawable.ic_pitch).resize(0, 600).into(holder.imageView);
-        if(position%3==0)
-            Picasso.with(context).load(R.drawable.ic_stadium3).resize(0, 600).into(holder.imageView);
-        if(position%5==0)
-            Picasso.with(context).load(R.drawable.ic_stadium4).resize(0, 300).into(holder.imageView);
+        else
+            Picasso.with(context).load(R.drawable.ic_pitch).resize(0, 400).into(holder.imageView);
         holder.textviewaddress.setText(data.get(position).getAddress());
         holder.textviewname.setText(data.get(position).getName());
         holder.textviewComment.setText(data.get(position).getComment());
@@ -88,7 +85,7 @@ public class SystemPitchAdapter extends RecyclerView.Adapter<SystemPitchAdapter.
 
     @Override
     public int getItemCount() {
-
+        if(data == null) return 0;
         return data.size();
     }
 
@@ -133,22 +130,19 @@ public class SystemPitchAdapter extends RecyclerView.Adapter<SystemPitchAdapter.
 
         return filter;
     }
-    public void initList() {
 
-    }
     private ArrayList<SystemPitch> getFilteredResults(CharSequence constraint) {
         Log.d(TAG,"constraint "+constraint.toString());
 
         int count=0;
         results = new ArrayList<>();
         constraint=constraint.toString().toLowerCase();
-        for(int i =0;i<list.size();i++)
+        for(int i =0;i<copyData.size();i++)
         {
-            if(list.get(i).getAddress().toLowerCase().contains(constraint) ||
-                    list.get(i).getName().toLowerCase().contains(constraint)
-                    )
+            if(copyData.get(i).getAddress().toLowerCase().contains(constraint) ||
+                    copyData.get(i).getName().toLowerCase().contains(constraint))
             {
-                results.add(list.get(i));
+                results.add(copyData.get(i));
                 count++;
             }
         }

@@ -6,7 +6,7 @@ package com.fimo_pitch;
 
 public class API {
     public static String API = "http://118.70.72.13:3000/";
-    public static String GetSystemPitch="system_pitch/getallsystempitch";
+    public static String GetSystemPitch=API+"system_pitch/getallsystempitch";
     public static String GetNews=API+"find_teams/getfindteams/1";
     public static String GetPrice=API+"pitch/getmanagementpitchforpitch/";
     public static String CreateNews=API+"find_teams/createNews";
