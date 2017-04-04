@@ -26,5 +26,6 @@ public class API {
     public static String SignUp=API+"users/createNew";
     public static String GetOrderbyUser=API+"users/getorderbyuserid/";
     public static String SearchPitch=API+"system_pitch/searchPitch";
+    public static String GetListSystemById=API+"system_pitch/getsystempitchbyuserid/";
     public static String GetSystemByLocation=API+"system_pitch/getsystempitchbylocation";
 }

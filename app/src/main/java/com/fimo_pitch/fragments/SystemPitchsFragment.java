@@ -247,7 +247,6 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
                 systemPitch.setLng(object.getString("log"));
                 listSystemPitch.add(systemPitch);
             }
-            rootList = listSystemPitch;
             recyclerView.setHasFixedSize(true);
             adapter = new SystemPitchAdapter(getActivity(), listSystemPitch,userModel);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -262,8 +261,6 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
             e.printStackTrace();
         }
     }
-
-
     public SystemPitchsFragment(String s)
     {
         data=s;

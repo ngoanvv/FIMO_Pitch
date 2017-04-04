@@ -16,8 +16,13 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary" />
     </android.support.design.widget.AppBarLayout>
-
+    <android.support.v7.widget.AppCompatSpinner
+        android:id="@+id/spn_system"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/s50dp">
+    </android.support.v7.widget.AppCompatSpinner>
     <RelativeLayout
+        android:layout_marginTop="@dimen/s10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -26,7 +31,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/s20dp"
-        android:layout_marginBottom="@dimen/s30dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">

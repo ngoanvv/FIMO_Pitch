@@ -3,14 +3,17 @@ package com.fimo_pitch.main;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
@@ -18,16 +21,20 @@ import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.PitchManagementAdapter;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.Pitch;
+import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.UserModel;
+import com.fimo_pitch.support.NetworkUtils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.Response;
 
 public class PitchManagementActivity extends AppCompatActivity {
     private RoundedImageView btAddPitch;
@@ -37,33 +44,42 @@ public class PitchManagementActivity extends AppCompatActivity {
     private OkHttpClient okHttpClient;
     private String listpitchData;
     private UserModel userModel;
+    private Spinner spn_listSystem;
+    private String TAG="PitchManagementActivity";
+    private ArrayList<SystemPitch> listSystem;
+    private List<String> listName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pitch_management);
         userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
-
+        initView();
+        listSystem = new ArrayList();
+        listName = new ArrayList<>();
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Quản lý sân ");
-        initView();
         initList();
     }
     public void initList()
     {
         listPitch = new ArrayList<>();
-        new GetListPitch().execute();
+        new GetListSytembyId(userModel.getId()).execute();
     }
     private class GetListPitch extends AsyncTask<String,Void,String> {
         ProgressDialog progressDialog;
+        String sId;
+        public GetListPitch(String id)
+        {
+            this.sId = id;
+        }
 
         @Override
         protected String doInBackground(String... params) {
             MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
             Request request = new Request.Builder()
-                    .url(API.GetAllPitchofSystem+1)
+                    .url(API.GetAllPitchofSystem+sId)
                     .addHeader("content-type", "application/x-www-form-urlencoded")
                     .addHeader("cache-control", "no-cache")
                     .addHeader("postman-token", "b9494f39-8e39-7533-1896-281ee653703b")
@@ -77,13 +93,14 @@ public class PitchManagementActivity extends AppCompatActivity {
                     JSONObject result = new JSONObject(listpitchData);
                     if(result.getString("status").contains("success"))
                     {
+                        listPitch.clear();
                         JSONArray data = result.getJSONArray("data");
                         for (int i=0;i<data.length();i++)
                         {
                             JSONObject object = data.getJSONObject(i);
                             Pitch p = new Pitch();
                             if(!object.getString("id").equals(null))
-                            p.setId(object.getString("id"));
+                                p.setId(object.getString("id"));
                             if(!object.getString("name").equals(null))
                                 p.setName(object.getString("name"));
                             if(!object.getString("type").equals(null))
@@ -127,16 +144,93 @@ public class PitchManagementActivity extends AppCompatActivity {
             progressDialog.show();
         }
     }
+
+    private class GetListSytembyId extends AsyncTask<String,Void,String> {
+        String id;
+        public  GetListSytembyId(String userId)
+        {
+            this.id= userId;
+        }
+        ProgressDialog progressDialog;
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                okHttpClient = new OkHttpClient();
+                Request request = NetworkUtils.createGetRequest(API.GetListSystemById+this.id);
+                Response systemPitchResponse = okHttpClient.newCall(request).execute();
+                if (systemPitchResponse.isSuccessful()) {
+                    String data = systemPitchResponse.body().string().toString();
+                    Log.d("hello",data.toString());
+                return data;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "failed";
+            }
+            return "failed";
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(!s.contains("failed"))
+            {
+                try {
+                    JSONObject result = new JSONObject(s);
+                    if (result.getString("status").contains("success")) {
+                        listSystem.clear();
+                        JSONArray data = result.getJSONArray("data");
+                        for (int i = 0; i < data.length(); i++)
+                        {
+                            JSONObject object = data.getJSONObject(i);
+                            SystemPitch p = new SystemPitch();
+                            listName.add(object.getString("name"));
+                            p.setId(object.getString("id"));
+                            p.setId(object.getString("id"));
+                            listSystem.add(p);
+                        }
+                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(PitchManagementActivity.this,android.R.layout.simple_list_item_1,listName);
+                        spn_listSystem.setAdapter(adapter);
+                        spn_listSystem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                new GetListPitch(listSystem.get(position).getId()).execute();
+                            }
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+                            }
+                        });
+                    }
+//                    if(listSystem.size()>0) new GetListPitch(listSystem.get(0).getId()).execute();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            progressDialog.dismiss();
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(PitchManagementActivity.this);
+            progressDialog.setMessage("Đang thao tác");
+            progressDialog.show();
+        }
+    }
     public void initView()
     {
+        setContentView(R.layout.activity_pitch_management);
         btAddPitch = (RoundedImageView) findViewById(R.id.bt_addPitch);
+        spn_listSystem = (Spinner) findViewById(R.id.spn_system);
         btAddPitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PitchManagementActivity.this,AddPitchActivity.class);
                 intent.putExtra(CONSTANT.KEY_USER,userModel);
                 startActivity(intent);
-                finish();
             }
         });
     }

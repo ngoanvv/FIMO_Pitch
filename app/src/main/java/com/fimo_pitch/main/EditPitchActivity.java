@@ -105,6 +105,7 @@ public class EditPitchActivity extends AppCompatActivity {
             progressDialog.dismiss();
             if(s.contains("success")) {
                 Intent intent = new Intent(EditPitchActivity.this,PitchManagementActivity.class);
+                intent.putExtra(CONSTANT.KEY_USER,userModel);
                 startActivity(intent);
                 finish();
             }
@@ -143,6 +144,7 @@ public class EditPitchActivity extends AppCompatActivity {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
             Intent intent = new Intent(EditPitchActivity.this,PitchManagementActivity.class);
+            intent.putExtra(CONSTANT.KEY_USER,userModel);
             startActivity(intent);
             finish();
         }

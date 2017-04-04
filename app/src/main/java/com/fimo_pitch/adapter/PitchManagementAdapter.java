@@ -1,13 +1,12 @@
 package com.fimo_pitch.adapter;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,8 +14,6 @@ import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.main.EditPitchActivity;
 import com.fimo_pitch.model.Pitch;
-import com.fimo_pitch.model.TimeTable;
-import com.fimo_pitch.support.ShowToast;
 
 import java.util.ArrayList;
 
@@ -25,17 +22,17 @@ import java.util.ArrayList;
  */
 public class PitchManagementAdapter extends RecyclerView.Adapter<PitchManagementAdapter.MyViewHolder> implements View.OnClickListener {
 
-    private Context context;
+    private Activity activity;
     private String TAG=PitchManagementAdapter.class.getName();
     private ArrayList<Pitch> data;
     private LayoutInflater inflater;
     private int callRequest = 1;
 
 
-    public PitchManagementAdapter(Context context, ArrayList<Pitch> data) {
-        this.context = context;
+    public PitchManagementAdapter(Activity context, ArrayList<Pitch> data) {
+        this.activity = context;
         this.data = data;
-        this.inflater = LayoutInflater.from(context);
+        this.inflater = LayoutInflater.from(activity.getApplicationContext());
         setHasStableIds(true);
     }
 
@@ -60,9 +57,10 @@ public class PitchManagementAdapter extends RecyclerView.Adapter<PitchManagement
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, EditPitchActivity.class);
+                Intent intent = new Intent(activity, EditPitchActivity.class);
                 intent.putExtra(CONSTANT.PITCH_MODEL,data.get(position));
-                context.startActivity(intent);
+                intent.putExtra(CONSTANT.KEY_USER,activity.getIntent().getSerializableExtra(CONSTANT.KEY_USER));
+                activity.startActivity(intent);
 
             }
         });
