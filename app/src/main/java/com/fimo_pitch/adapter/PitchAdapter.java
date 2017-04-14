@@ -3,6 +3,7 @@ package com.fimo_pitch.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,7 @@ public class PitchAdapter extends RecyclerView.Adapter<PitchAdapter.MyViewHolder
                 intent.putExtra(CONSTANT.SystemPitch_MODEL,systemPitch);
                 intent.putExtra(CONSTANT.KEY_USER,userModel);
                 intent.putExtra("pos",position);
+                Log.d("list",data.toString());
                 context.startActivity(intent);
             }
         });

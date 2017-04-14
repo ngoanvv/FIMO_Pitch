@@ -38,6 +38,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -65,6 +66,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private PitchAdapter adapter;
     private UserModel userModel;
     private ListView listView;
+    private RoundedImageView bt_location;
+
     public DetailActivity() {
     }
 
@@ -88,8 +91,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         initView();
-        bt_order.setOnClickListener(this);
-        bt_call.setOnClickListener(this);
+
 
         new GetListPitch().execute();
     }
@@ -105,6 +107,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     public void initView() {
         bt_call = (RoundedImageView) findViewById(R.id.bt_call);
         bt_order = (RoundedImageView) findViewById(R.id.bt_order);
+        bt_location = (RoundedImageView) findViewById(R.id.bt_location);
+
+
         tvDes = (TextView) findViewById(R.id.tv_desc);
         tvAddress = (TextView) findViewById(R.id.tv_address);
         tvSysName = (TextView) findViewById(R.id.tv_syspitch_name);
@@ -112,6 +117,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         tvPhone = (TextView) findViewById(R.id.tvPhone);
+
+
+        bt_location.setOnClickListener(this);
+        bt_order.setOnClickListener(this);
+        bt_call.setOnClickListener(this);
 
         if(mSystemPitch !=null)
         {
@@ -132,6 +142,12 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.bt_call: {
                 ActivityCompat.requestPermissions(DetailActivity.this,
                         new String[]{Manifest.permission.CALL_PHONE}, callRequest);
+                break;
+            }
+            case R.id.bt_location: {
+                String uri = String.format(Locale.ENGLISH, "geo:%f,%f", Float.valueOf(mSystemPitch.getLat()), Float.valueOf(mSystemPitch.getLng()));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:<" + mSystemPitch.getLat()  + ">,<" + mSystemPitch.getLng() + ">?q=<" + mSystemPitch.getLat()  + ">,<" + mSystemPitch.getLng() + ">(" + mSystemPitch.getName() + ")"));
+                startActivity(intent);
                 break;
             }
         }
@@ -166,6 +182,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             progressDialog.dismiss();
             if(s != "failed")
             {
+                Log.d("list pitch",s);
                 try {
                     JSONObject result = new JSONObject(s);
                     if (result.getString("status").contains("success")) {

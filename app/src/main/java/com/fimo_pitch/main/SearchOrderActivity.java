@@ -121,13 +121,15 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
             dataAdapter = new ArrayAdapter<String>(SearchOrderActivity.this,R.layout.spinner_item, listName);
             spinner.setAdapter(dataAdapter);
             spinner.setSelection(getIntent().getIntExtra("pos",0));
+            Log.d("spinner 1", spinner.getSelectedItem().toString()+ "");
+            Log.d("list",listPitches.toString());
             Calendar calendar = Calendar.getInstance();
             crDay =calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
 
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Log.d("spinner", listPitches.get(position).getId() + "");
+                    Log.d("spinner 2", listPitches.get(position).getId() + "");
 
                     pitchId = listPitches.get(position).getId();
                     crPitch = listPitches.get(position);
@@ -135,7 +137,6 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
                     Calendar calendar = Calendar.getInstance();
                     tv_dateFilter.setText(calendar.get(Calendar.DAY_OF_MONTH)+"/"+(calendar.get(Calendar.MONTH)+1)+"/"+calendar.get(Calendar.YEAR));
 
-                    Log.d("tag",calendar.get(Calendar.DAY_OF_WEEK)+"");
                     if(isWeekend(calendar.get(Calendar.DAY_OF_WEEK))) typeDate="1";
                     else typeDate="0";
                     if(crPitch!=null) {

@@ -2,7 +2,6 @@ package com.fimo_pitch.fragments;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -31,7 +30,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
@@ -59,7 +57,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -80,7 +77,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     private int permissionCode=9999;
     private ArrayList<LatLng> latLngs;
     private LatLng currentLatLng;
-    private ArrayList<SystemPitch> listSystemPitch;
+    private ArrayList<SystemPitch> listSystemPitch,tmpList;
     private ArrayList<SearchPitchModel> listSearch;
     private String currentTime="07:00";
     private Spinner search_box;
@@ -112,6 +109,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             directionSteps = new ArrayList<>();
             polylines = new ArrayList<>();
             listSystemPitch = new ArrayList<>();
+            tmpList =  new ArrayList<>();
             resultLatLng = new LatLng(0.0,0.0);
 
 //            bt_search  =  (RoundedImageView) view.findViewById(R.id.bt_search);
@@ -130,6 +128,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     drawMarker(filterByText(s.toString()));
+                    tmpList = filterByAddress(s.toString());
                 }
                 @Override
                 public void afterTextChanged(Editable s) {
@@ -153,7 +152,10 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if(position != 0)
-                            drawMarker(filterByAddress(spinner_location.getItemAtPosition(position).toString()));
+                    {
+                    drawMarker(filterByAddress(spinner_location.getItemAtPosition(position).toString()));
+                    tmpList = filterByAddress(spinner_location.getItemAtPosition(position).toString());
+                    }
                     else    drawMarker(listSystemPitch);
                 }
 
@@ -262,7 +264,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     }
     public void drawMarker(String  data) throws Exception
     {
-        listSystemPitch = new ArrayList<>();
+             listSystemPitch = new ArrayList<>();
             JSONObject jsonObject = new JSONObject(data);
             JSONArray array = jsonObject.getJSONArray("data");
             for (int i = 0; i < array.length(); i++) {
@@ -282,6 +284,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             }
 
         map.clear();
+        map.addMarker(new MarkerOptions().position(currentLatLng).title("Bạn ở đây"));
         for(int i=0;i<listSystemPitch.size();i++)
         {
             MarkerOptions options = new MarkerOptions();
@@ -290,6 +293,9 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             options.position(new LatLng(lat,lng));
             options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_marker_free)));
             Marker marker = map.addMarker(options);
+            marker.setTitle(listSystemPitch.get(i).getName());
+            options.title(listSystemPitch.get(i).getName());
+            marker.showInfoWindow();
             marker.setTag(i);
             map.addMarker(options);
         }
@@ -298,6 +304,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     {
 
         map.clear();
+        map.addMarker(new MarkerOptions().position(currentLatLng).title("Bạn ở đây"));
         for(int i=0;i<data.size();i++)
         {
             MarkerOptions options = new MarkerOptions();
@@ -306,6 +313,9 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             options.position(new LatLng(lat,lng));
             options.icon(BitmapDescriptorFactory.fromBitmap(getMarkerBitmapFromView(R.drawable.ic_marker_free)));
             Marker marker = map.addMarker(options);
+            marker.setTitle(data.get(i).getName());
+            options.title(data.get(i).getName());
+            marker.showInfoWindow();
             marker.setTag(i);
             map.addMarker(options);
         }
@@ -315,8 +325,8 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
 
         Polyline polyline = map.addPolyline(new PolylineOptions()
                 .add(new LatLng(start.latitude, start.longitude), new LatLng(end.latitude, end.longitude))
-                .width(4)
-                .color(Color.DKGRAY));
+                .width(8)
+                .color(Color.BLUE));
         polylines.add(polyline);
     }
 
@@ -426,10 +436,8 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                 public boolean onMarkerClick(Marker marker) {
                     if(marker.getTag() != null) {
                         int position = (int) marker.getTag();
-
                         SystemPitch systemPitch = listSystemPitch.get(position);
                         map.addMarker(new MarkerOptions().title("Bạn ở đây").position(currentLatLng));
-//                        map.addMarker(new MarkerOptions().position(marker.getPosition()).title(listSystemPitch.get(0).getName()));
                         DetailDialog dialog = new DetailDialog(getContext(), systemPitch,position);
                         dialog.setOnArrivalDeliverListener(SearchFragment.this);
                         dialog.show(getFragmentManager(), TAG);
@@ -467,13 +475,17 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         {
 //             ActivityCompat.requestPermissions(getActivity(),
 //                new String[]{Manifest.permission.CALL_PHONE}, callRequest);
-            if(currentLatLng != null) {
-                map.clear();
-                map.addMarker(new MarkerOptions().position(chooseLatlng));
-                map.addMarker(new MarkerOptions().position(currentLatLng));
-                new GetDirections().execute(chooseLatlng, currentLatLng);
-                bt_clear.setVisibility(View.VISIBLE);
-            }
+            String uri = "http://maps.google.com/maps?saddr="+currentLatLng.latitude+","+currentLatLng.longitude+"&daddr="+
+                    chooseLatlng.latitude+","+chooseLatlng.longitude;
+            Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                    Uri.parse(uri));
+            startActivity(intent);
+//            if(currentLatLng != null) {
+//                map.addMarker(new MarkerOptions().position(chooseLatlng));
+//                map.addMarker(new MarkerOptions().position(currentLatLng));
+//                new GetDirections().execute(chooseLatlng, currentLatLng);
+//                bt_clear.setVisibility(View.VISIBLE);
+//            }
         }
     }
     @Override
@@ -620,15 +632,11 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         switch (id) {
             case R.id.bt_clear:
             {
-                for(Polyline line : polylines)
-                {
-                    line.remove();
-                }
-                polylines.clear();
-                map.clear();
+                Log.d(TAG,"tmp list "+tmpList.size());
+                drawMarker(tmpList);
 
-                Log.d("size",polylines.size()+"");
                 bt_clear.setVisibility(View.GONE);
+                break;
             }
             case R.id.bt_currentLocation :
             {
@@ -642,43 +650,44 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                 }
                 break;
             }
-            case R.id.tv_time :
-            {
-                mHour = 0;
-                mMinute=0;
-                TimePickerDialog dialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        mHour = hourOfDay;
-                        mMinute = minute;
-                        sHour = mHour+"";
-                        sMinute= mMinute+"";
-                        if(mHour<10&&mMinute<10)
-                        {
-                            tv_time.setText("0"+mHour+":"+"0"+mMinute);
-                        }
-                        if(mHour<10&&mMinute>10)
-                        {
-                            tv_time.setText("0"+mHour+":"+""+mMinute);
-                        }
-                        if(mHour>10&&mMinute<10)
-                        {
-                            tv_time.setText(""+mHour+":"+"0"+mMinute);
-                        }
-                        currentTime = tv_time.getText().toString();
-                        HashMap<String, String> map = new HashMap<String, String>();
-                        map.put("day", Calendar.getInstance().get(Calendar.YEAR) + "-" +
-                                (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-                        map.put("time_start", currentTime);
-                        map.put("textlocation", search_box.getSelectedItem().toString());
 
-                        new SearchSystemPitch(map).execute();
-                    }
-                },7,00,true);
-                dialog.setTitle("Chọn giờ bắt đầu bạn muốn");
-                dialog.show();
-                break;
-            }
+//            case R.id.tv_time :
+//            {
+//                mHour = 0;
+//                mMinute=0;
+//                TimePickerDialog dialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+//                    @Override
+//                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+//                        mHour = hourOfDay;
+//                        mMinute = minute;
+//                        sHour = mHour+"";
+//                        sMinute= mMinute+"";
+//                        if(mHour<10&&mMinute<10)
+//                        {
+//                            tv_time.setText("0"+mHour+":"+"0"+mMinute);
+//                        }
+//                        if(mHour<10&&mMinute>10)
+//                        {
+//                            tv_time.setText("0"+mHour+":"+""+mMinute);
+//                        }
+//                        if(mHour>10&&mMinute<10)
+//                        {
+//                            tv_time.setText(""+mHour+":"+"0"+mMinute);
+//                        }
+//                        currentTime = tv_time.getText().toString();
+//                        HashMap<String, String> map = new HashMap<String, String>();
+//                        map.put("day", Calendar.getInstance().get(Calendar.YEAR) + "-" +
+//                                (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+//                        map.put("time_start", currentTime);
+//                        map.put("textlocation", search_box.getSelectedItem().toString());
+//
+//                        new SearchSystemPitch(map).execute();
+//                    }
+//                },7,00,true);
+//                dialog.setTitle("Chọn giờ bắt đầu bạn muốn");
+//                dialog.show();
+//                break;
+//            }
 //            case R.id.bt_search :
 //            {
 //                map.clear();

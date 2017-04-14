@@ -176,7 +176,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             progressDialog.dismiss();
             Log.d(TAG, s);
             if (s.contains("success")) {
-                data.remove(position);
                 notifyDataSetChanged();
                 notifyItemRemoved(position);
                 notifyItemRangeRemoved(position, data.size());
@@ -187,6 +186,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                         + data.get(position).getStart_time() + " "
                         + context.getString(R.string.booksuccess3));
                 dialog.show();
+                data.remove(position);
+
             }
             else
             {

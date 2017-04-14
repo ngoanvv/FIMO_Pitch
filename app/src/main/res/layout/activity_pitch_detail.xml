@@ -148,7 +148,8 @@
                     style="@style/item_contact"
                     android:background="@drawable/ic_location"
                     android:layout_gravity="center_horizontal"
-                    android:id="@+id/roundedImageView2"
+                    android:id="@+id/bt_location"
+
                      />
 
                 <TextView
