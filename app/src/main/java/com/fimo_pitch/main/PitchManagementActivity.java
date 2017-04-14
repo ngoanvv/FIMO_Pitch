@@ -60,14 +60,19 @@ public class PitchManagementActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Quản lý sân ");
-        initList();
+        try {
+            initList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    public void initList()
+    public void initList() throws Exception
     {
         listPitch = new ArrayList<>();
+
         new GetListSytembyId(userModel.getId()).execute();
     }
-    private class GetListPitch extends AsyncTask<String,Void,String> {
+    private class GetListPitch extends AsyncTask<String,Void,String>{
         ProgressDialog progressDialog;
         String sId;
         public GetListPitch(String id)

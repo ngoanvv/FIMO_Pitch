@@ -17,12 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
@@ -43,7 +38,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 import okhttp3.OkHttpClient;
@@ -139,40 +133,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         Log.d("FCM",FirebaseInstanceId.getInstance().getToken()+" ");
-        loginFB.setReadPermissions(Arrays.asList("public_profile,email,user_birthday"));
-        loginFB.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-
-                String accessToken = loginResult.getAccessToken().getToken();
-                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) {
-                        Log.d(TAG, "onCOmplete :" + object.toString());
-                        getFacebookData(object);
-                        saveUserData(email, password, UserModel.TYPE_TEAM);
-                        moveToHomeScreen();
-
-                    }
-                });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id, first_name, last_name, email,gender, birthday, location"); // Parámetros que pedimos a facebook
-                request.setParameters(parameters);
-                request.executeAsync();
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-
-            Utils.openDialog(LoginActivity.this,getString(R.string.login_failed));
-
-            }
-        });
+//        loginFB.setReadPermissions(Arrays.asList("public_profile,email,user_birthday"));
+//        loginFB.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+//            @Override
+//            public void onSuccess(LoginResult loginResult) {
+//
+//                String accessToken = loginResult.getAccessToken().getToken();
+//                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+//                    @Override
+//                    public void onCompleted(JSONObject object, GraphResponse response) {
+//                        Log.d(TAG, "onCOmplete :" + object.toString());
+//                        getFacebookData(object);
+//                        saveUserData(email, password, UserModel.TYPE_TEAM);
+//                        moveToHomeScreen();
+//
+//                    }
+//                });
+//                Bundle parameters = new Bundle();
+//                parameters.putString("fields", "id, first_name, last_name, email,gender, birthday, location"); // Parámetros que pedimos a facebook
+//                request.setParameters(parameters);
+//                request.executeAsync();
+//            }
+//
+//            @Override
+//            public void onCancel() {
+//
+//            }
+//
+//            @Override
+//            public void onError(FacebookException error) {
+//
+//            Utils.openDialog(LoginActivity.this,getString(R.string.login_failed));
+//
+//            }
+//        });
 
     }
 
@@ -322,7 +316,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //gửi dữ liệu user sang main activity
                 getSharedPreferences("data",MODE_PRIVATE).edit().putBoolean("login",false);
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra(CONSTANT.KEY_USER, userModel);
                 intent.putExtra(CONSTANT.KEY_USER,userModel);
                 startActivity(intent);
             }
@@ -390,10 +383,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //gửi dữ liệu user sang main activity
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra(CONSTANT.KEY_USER, userModel);
-                    intent.putExtra(CONSTANT.KEY_USER,userModel);
-                    if(getIntent().getBooleanExtra(CONSTANT.FROM_NOTIFICATION,false)) intent.putExtra(CONSTANT.FROM_NOTIFICATION,true);
                     startActivity(intent);
-
                     finish();
 
                 }
@@ -434,7 +424,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             email = acct.getEmail();
             password = acct.getId();
             saveUserData(email, password, UserModel.TYPE_TEAM);
-
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             intent.putExtra("data", bundle);
             intent.putExtra(CONSTANT.KEY_USER,userModel);

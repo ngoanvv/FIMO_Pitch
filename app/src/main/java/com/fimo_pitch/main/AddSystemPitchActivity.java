@@ -88,14 +88,14 @@ public class AddSystemPitchActivity extends AppCompatActivity implements OnMapRe
 
         return true;
     }
-    class GetSystemByLocation extends AsyncTask<String,String,String>
+    class AddSystem extends AsyncTask<String,String,String>
     {
 
 
         HashMap<String,String> param;
         ProgressDialog progressDialog;
 
-        public GetSystemByLocation(HashMap<String,String> body)
+        public AddSystem(HashMap<String,String> body)
         {
             this.param=body;
         }
@@ -105,10 +105,14 @@ public class AddSystemPitchActivity extends AppCompatActivity implements OnMapRe
             super.onPostExecute(s);
             Log.d(TAG,s);
             progressDialog.dismiss();
-            if(s.contains("success")) {
+            if(!s.contains("status:fail")) {
                 Intent intent = new Intent(AddSystemPitchActivity.this,PitchManagementActivity.class);
                 startActivity(intent);
                 finish();
+            }
+            else
+            {
+                if (s.contains("Name System Pitch Already Exists")) Utils.openDialog(AddSystemPitchActivity.this,"Tên Hệ thống sân bị trùng, chọn tên khác");
             }
 
         }
@@ -151,7 +155,7 @@ public class AddSystemPitchActivity extends AppCompatActivity implements OnMapRe
                 public void onMapClick(LatLng latLng) {
                     mMap.clear();
                     mMap.addMarker(new MarkerOptions().position(latLng));
-                    Utils.moveCamera(latLng,"",12,mMap);
+                    Utils.moveCamera(latLng,"",11,mMap);
                     edt_lat.setText(latLng.latitude+"");
                     edt_lng.setText(latLng.longitude+"");
                 }
@@ -184,8 +188,8 @@ public class AddSystemPitchActivity extends AppCompatActivity implements OnMapRe
                     param.put("log",edt_lng.getText().toString());
                     param.put("description",edt_des.getText().toString());
                     param.put("phone",edt_phone.getText().toString());
-                    param.put("user_id","3");
-                    new GetSystemByLocation(param).execute();
+                    param.put("user_id",userModel.getId());
+                    new AddSystem(param).execute();
                 }
                 else
                 {

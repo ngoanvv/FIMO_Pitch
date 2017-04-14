@@ -123,6 +123,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         setContentView(R.layout.activity_navigation);
         Utils.setupAnimations(this);
         MyDatabaseHelper db = new MyDatabaseHelper(this);
+        userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
 
         initView();
         getData();
@@ -147,7 +148,6 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         listNews = new ArrayList<>();
         new MyTask().execute();
 
-        userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
         data = getIntent().getBundleExtra("data");
         if (userModel != null) {
             tv_email.setText(userModel.getEmail());
