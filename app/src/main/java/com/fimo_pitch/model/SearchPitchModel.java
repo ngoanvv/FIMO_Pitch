@@ -4,7 +4,7 @@ package com.fimo_pitch.model;
  * Created by diep1 on 3/12/2017.
  */
 
-public class SearchPitchModel {
+public class SearchPitchModel extends SystemPitch{
     String system_id;
     String pitch_id;
     String user_id;

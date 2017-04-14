@@ -16,15 +16,6 @@
         android:textColor="@color/com_facebook_blue"
         android:textSize="@dimen/s25dp" />
     <TextView
-        android:id="@+id/id_pName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="2"
-        android:gravity="center"
-        android:text="Hệ thống sân bóng 123"
-        android:textColor="@color/com_facebook_blue"
-        android:textSize="@dimen/s20dp" />
-    <TextView
         android:id="@+id/id_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,6 +31,7 @@
             android:layout_marginTop="@dimen/s10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:maxLines="2"
             android:text="0989782921"
             android:textColor="@color/colorBlack"

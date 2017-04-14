@@ -57,6 +57,7 @@ import com.fimo_pitch.fragments.NotifcationFragment;
 import com.fimo_pitch.fragments.OwnerFragment;
 import com.fimo_pitch.fragments.PostNewsFragment;
 import com.fimo_pitch.fragments.SearchFragment;
+import com.fimo_pitch.fragments.SearchSystemFragment;
 import com.fimo_pitch.fragments.SettingsFragment;
 import com.fimo_pitch.fragments.SystemPitchsFragment;
 import com.fimo_pitch.fragments.UserOrderManagement;
@@ -114,6 +115,8 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
     private ArrayList<News> listNews=new ArrayList<>();
     private String listSystemData="",listNewsData="";
     private String fcmToken ="";
+    private SearchSystemFragment mSearchSytem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -246,6 +249,13 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                                         mDrawerLayout.closeDrawers();
                                         break;
                                     }
+                                    case R.id.menu_searchSysttem: {
+//                                    Log.d(TAG,);
+                                        mSearchSytem = SearchSystemFragment.newInstance(listSystemData, "");
+                                        replaceFragment(mSearchSytem, mSearchSytem.getClass().getName());
+                                        mDrawerLayout.closeDrawers();
+                                        break;
+                                    }
                                     case R.id.menu_manage: {
                                         replaceFragment(new OwnerFragment().newInstance("", ""), OwnerFragment.class.getName());
                                         mDrawerLayout.closeDrawers();
@@ -294,6 +304,13 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
 //                                    Log.d(TAG,);
                                         mSearchFragment = SearchFragment.newInstance(listSystemData, "");
                                         replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());
+                                        mDrawerLayout.closeDrawers();
+                                        break;
+                                    }
+                                    case R.id.menu_searchSysttem: {
+//                                    Log.d(TAG,);
+                                        mSearchSytem = SearchSystemFragment.newInstance(listSystemData, "");
+                                        replaceFragment(mSearchSytem, mSearchSytem.getClass().getName());
                                         mDrawerLayout.closeDrawers();
                                         break;
                                     }

@@ -126,9 +126,9 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
     private void initView(final View rootView)
     {
         menuView = (LinearLayout) rootView.findViewById(R.id.menu_view);
-        spinner_location = (Spinner) rootView.findViewById(R.id.spn_location);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         edt_search = (EditText) rootView.findViewById(R.id.edt_search);
+        spinner_location = (Spinner) rootView.findViewById(R.id.spn_location);
 
         edt_search.addTextChangedListener(new TextWatcher() {
             @Override

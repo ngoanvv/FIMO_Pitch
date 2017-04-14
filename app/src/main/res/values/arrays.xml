@@ -9,4 +9,13 @@
         <item>Thanh Xuân</item>
         <item>Tây Hồ</item>
     </string-array>
+    <string-array name="listProvince1">
+        <item>Tất cả</item>
+        <item>Cầu Giấy</item>
+        <item>Đống Đa</item>
+        <item>Hai Bà Trưng</item>
+        <item>Hoàng Mai</item>
+        <item>Thanh Xuân</item>
+        <item>Tây Hồ</item>
+    </string-array>
 </resources>

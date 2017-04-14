@@ -36,7 +36,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="@dimen/s100dp"
-            android:layout_marginRight="@dimen/s100dp"
+            android:layout_marginRight="@dimen/s20dp"
             android:id="@+id/bt_addSystem"
             android:background="@drawable/bt_add"/>
 

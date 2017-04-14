@@ -39,6 +39,8 @@
     <string name="link_login">Đã có tài khoản ? Đăng nhập ngay</string>
 
     <string name="search">Tìm kiếm</string>
+    <string name="search_system">Tìm kiếm sân trống</string>
+
     <string name="action_search">Tìm kiếm</string>
     <string name="action_info">Thông tin</string>
     <string name="title_activity_maps">Sân bóng của tôi</string>
