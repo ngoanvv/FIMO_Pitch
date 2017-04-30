@@ -53,10 +53,10 @@ public class AddPitchActivity extends AppCompatActivity {
     }
     public void initView()
     {
-        edtName = (EditText) findViewById(R.id.edt_name);
-        edtType = (EditText) findViewById(R.id.edt_type);
-        edtSize = (EditText) findViewById(R.id.edt_size);
-        edtDes = (EditText) findViewById(R.id.edt_des);
+        edtName = (EditText) findViewById(R.id.edtname);
+        edtType = (EditText) findViewById(R.id.edttype);
+        edtSize = (EditText) findViewById(R.id.edtsize);
+        edtDes = (EditText) findViewById(R.id.edtdes);
         btAdd = (Button) findViewById(R.id.bt_addPitch);
 
         edtName.setText("Sân Demo");

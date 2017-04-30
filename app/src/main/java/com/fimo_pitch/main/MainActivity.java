@@ -50,6 +50,7 @@ import android.widget.TextView;
 import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
+import com.fimo_pitch.custom.view.ChoiceDialog;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.db.MyDatabaseHelper;
 import com.fimo_pitch.fragments.NewsFragment;
@@ -88,7 +89,7 @@ import okhttp3.Response;
 /**
  * Provides UI for the main screen.
  */
-public class MainActivity extends ActionBarActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends ActionBarActivity implements GoogleApiClient.OnConnectionFailedListener, ChoiceDialog.HandleEvent {
     private String TAG="MainActivity";
     private DrawerLayout mDrawerLayout;
     private TabLayout tabs;
@@ -116,6 +117,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
     private String listSystemData="",listNewsData="";
     private String fcmToken ="";
     private SearchSystemFragment mSearchSytem;
+    private ChoiceDialog choiceDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -384,6 +386,18 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         });
         builder.create().show();
     }
+
+    @Override
+    public void ClickOk() {
+        choiceDialog.dismiss();
+        finish();
+    }
+
+    @Override
+    public void ClickCancel() {
+            choiceDialog.dismiss();
+    }
+
     class UpdateToken extends AsyncTask<String,String,String>
     {
         HashMap<String,String> param;
@@ -525,6 +539,13 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        choiceDialog = new ChoiceDialog(this,"Bạn có muốn đóng ứng dụng không ? ");
+        choiceDialog.setmHandleEvent(this);
+        choiceDialog.show();
     }
 
     @Override

@@ -28,12 +28,12 @@
         android:orientation="vertical">
         <EditText
             android:layout_height="@dimen/s70dp"
-            android:id="@+id/edt_name"
+            android:id="@+id/edtname"
             style="@style/item_addPitch"
             android:hint="Tên sân bóng" />
 
         <EditText
-            android:id="@+id/edt_size"
+            android:id="@+id/edtsize"
             android:inputType="number"
             android:layout_marginTop="@dimen/s30dp"
             android:layout_height="@dimen/s70dp"
@@ -41,20 +41,20 @@
             android:hint="Kích cỡ sân" />
 
         <EditText
-            android:id="@+id/edt_type"
+            android:id="@+id/edttype"
             android:layout_height="@dimen/s70dp"
             android:layout_marginTop="@dimen/s30dp"
             style="@style/item_addPitch"
             android:hint="Loại sân: Cỏ nhân tạo/Cỏ"/>
 
         <EditText
-            android:id="@+id/edt_des"
+            android:id="@+id/edtdes"
             android:layout_height="@dimen/s70dp"
             android:layout_marginTop="@dimen/s30dp"
             style="@style/item_addPitch"
             android:hint="Mô tả"/>
         <Button
-            android:id="@+id/bt_addPitch"
+            android:id="@+id/btaddPitch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"

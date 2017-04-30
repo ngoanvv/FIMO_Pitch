@@ -48,14 +48,19 @@ public class PitchManagementActivity extends AppCompatActivity {
     private String TAG="PitchManagementActivity";
     private ArrayList<SystemPitch> listSystem;
     private List<String> listName;
-
+    private SystemPitch mSystemPitch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
-        initView();
+        mSystemPitch = (SystemPitch) getIntent().getSerializableExtra(CONSTANT.SystemPitch_MODEL);
         listSystem = new ArrayList();
         listName = new ArrayList<>();
+        try {
+            initView();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -70,7 +75,7 @@ public class PitchManagementActivity extends AppCompatActivity {
     {
         listPitch = new ArrayList<>();
 
-        new GetListSytembyId(userModel.getId()).execute();
+        new GetListPitch(mSystemPitch.getId()).execute();
     }
     private class GetListPitch extends AsyncTask<String,Void,String>{
         ProgressDialog progressDialog;
@@ -84,7 +89,7 @@ public class PitchManagementActivity extends AppCompatActivity {
         protected String doInBackground(String... params) {
             MediaType mediaType = MediaType.parse("application/x-www-form-urlencoded");
             Request request = new Request.Builder()
-                    .url(API.GetAllPitchofSystem+sId)
+                    .url(API.GetAllPitchofSystem+mSystemPitch.getId())
                     .addHeader("content-type", "application/x-www-form-urlencoded")
                     .addHeader("cache-control", "no-cache")
                     .addHeader("postman-token", "b9494f39-8e39-7533-1896-281ee653703b")
@@ -207,7 +212,7 @@ public class PitchManagementActivity extends AppCompatActivity {
                             }
                         });
                     }
-//                    if(listSystem.size()>0) new GetListPitch(listSystem.get(0).getId()).execute();
+                    if(listSystem.size()>0) new GetListPitch(listSystem.get(0).getId()).execute();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -225,7 +230,7 @@ public class PitchManagementActivity extends AppCompatActivity {
             progressDialog.show();
         }
     }
-    public void initView()
+    public void initView() throws Exception
     {
         setContentView(R.layout.activity_pitch_management);
         btAddPitch = (RoundedImageView) findViewById(R.id.bt_addPitch);
@@ -236,6 +241,19 @@ public class PitchManagementActivity extends AppCompatActivity {
                 Intent intent = new Intent(PitchManagementActivity.this,AddPitchActivity.class);
                 intent.putExtra(CONSTANT.KEY_USER,userModel);
                 startActivity(intent);
+            }
+        });
+        listName.add(mSystemPitch.getName());
+        listSystem.add(mSystemPitch);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(PitchManagementActivity.this,android.R.layout.simple_list_item_1,listName);
+        spn_listSystem.setAdapter(adapter);
+        spn_listSystem.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                new GetListPitch(listSystem.get(position).getId()).execute();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
             }
         });
     }

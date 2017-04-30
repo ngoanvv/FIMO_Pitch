@@ -1,24 +1,37 @@
 package com.fimo_pitch.adapter;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.main.EditPriceActivity;
 import com.fimo_pitch.model.Price;
+import com.fimo_pitch.support.NetworkUtils;
 import com.fimo_pitch.support.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
 
 /**
  * Created by TranManhTien on 22/08/2016.
@@ -29,6 +42,7 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.MyViewHolder
     private String TAG=PriceAdapter.class.getName();
     private ArrayList<Price> data;
     private LayoutInflater inflater;
+    private OkHttpClient okHttpClient;
 
     public PriceAdapter(Context context, ArrayList<Price> data) {
         this.context = context;
@@ -67,7 +81,10 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.MyViewHolder
         holder.btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Utils.openDialog(context,"Chức năng hiện chưa khả dụng");
+
+                ChoiceDialog dialog = new ChoiceDialog(context,"Bạn có muốn xóa Khung giờ này này hay không ?",position);
+                dialog.show();
+
             }
         });
 
@@ -84,7 +101,108 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.MyViewHolder
 
         return data.get(position);
     }
+    public class UpdateOrder extends AsyncTask<String,String,String> {
+        OkHttpClient client;
+        HashMap<String, String> body;
+        private ProgressDialog progressDialog;
+        int position;
+        String id;
 
+        public UpdateOrder(String id, HashMap<String, String> body, int position) {
+            this.id = id;
+            this.position = position;
+            this.body = body;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            progressDialog.dismiss();
+            if(s.contains("failed")) Utils.openDialog(context,"Thao tác thất bại. Hãy thử lại");
+            else
+            {
+                Utils.openDialog(context,"Thao tác thành công");
+                data.remove(position);
+                notifyDataSetChanged();
+                notifyItemRemoved(position);
+                notifyItemRangeRemoved(position,data.size()-1);
+            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            client = new OkHttpClient();
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Đang thao tác");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                Response response =
+                        client.newCall(NetworkUtils.createPutRequest(API.UpdateOrder + "/" + id,
+                                this.body)).execute();
+                if (response.isSuccessful()) {
+                    String results = response.body().string();
+                    Log.d("run", results);
+                    return results;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "failed";
+            }
+            return "failed";
+        }
+
+    }
+    class ChoiceDialog extends Dialog implements View.OnClickListener {
+        String title;
+        Context mContext;
+        int pos ;
+        public ChoiceDialog(Context context, String content,int position) {
+            super(context);
+            this.pos = position;
+            this.title = content;
+            this.mContext = context;
+        }
+        DialogInterface.OnClickListener clickYes;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.dialog_choice_image);
+            TextView msg = (TextView) findViewById(R.id.id_message);
+            msg.setText(title);
+            Button yes = (Button) findViewById(R.id.id_dialog_ok);
+            yes.setOnClickListener(this);
+            Button no = (Button) findViewById(R.id.id_cancel);
+            no.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.id_dialog_ok:
+                    okHttpClient = new OkHttpClient();
+                    HashMap<String, String> body = new HashMap<String, String>();
+                    body.put("id", data.get(pos).getId());
+                    body.put("status", "0");
+
+                    dismiss();
+
+                    break;
+                case R.id.id_cancel:
+                    dismiss();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
 
     @Override
     public int getItemViewType(int position) {

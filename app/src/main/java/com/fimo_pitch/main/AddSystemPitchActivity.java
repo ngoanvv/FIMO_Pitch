@@ -33,7 +33,7 @@ public class AddSystemPitchActivity extends AppCompatActivity implements OnMapRe
 
     private SupportMapFragment mapFragment;
     private GoogleMap mMap;
-    private EditText edt_name,edt_phone,edt_address,edt_lat,edt_lng,edt_des;
+    private EditText edtname,edtphone,edtaddress,edtlat,edtlng,edtdes;
     private Button bt_addSystem;
     private String TAG="AddSystemPitchActivity";
     private OkHttpClient client;
@@ -54,21 +54,21 @@ public class AddSystemPitchActivity extends AppCompatActivity implements OnMapRe
     }
     public void initView()
     {
-        edt_name = (EditText) findViewById(R.id.edt_name);
-        edt_phone = (EditText) findViewById(R.id.edt_phone);
-        edt_address = (EditText) findViewById(R.id.edt_address);
-        edt_lat = (EditText) findViewById(R.id.edt_lat);
-        edt_lng = (EditText) findViewById(R.id.edt_lng);
-        edt_des = (EditText) findViewById(R.id.edt_des);
-        bt_addSystem = (Button) findViewById(R.id.bt_addSystem);
+        edtname = (EditText) findViewById(R.id.edtname);
+        edtphone = (EditText) findViewById(R.id.edtphone);
+        edtaddress = (EditText) findViewById(R.id.edtaddress);
+        edtlat = (EditText) findViewById(R.id.edtlat);
+        edtlng = (EditText) findViewById(R.id.edtlng);
+        edtdes = (EditText) findViewById(R.id.edtdes);
+        bt_addSystem = (Button) findViewById(R.id.btaddSystem);
 
 
-        edt_name.setText("Demo");
-        edt_phone.setText("Demo");
-        edt_address.setText("Demo");
-        edt_lat.setText("21.09090");
-        edt_lng.setText("108.233");
-        edt_des.setText("Demo");
+        edtname.setText("Demo");
+        edtphone.setText("Demo");
+        edtaddress.setText("Demo");
+        edtlat.setText("21.09090");
+        edtlng.setText("108.233");
+        edtdes.setText("Demo");
 
 
         bt_addSystem.setOnClickListener(this);
@@ -81,9 +81,9 @@ public class AddSystemPitchActivity extends AppCompatActivity implements OnMapRe
     }
     public boolean isFilled()
     {
-        if(edt_name.getText().toString().length()==0 || edt_phone.getText().toString().length()==0 ||
-                edt_address.getText().toString().length()==0 || edt_lat.getText().toString().length()==0 ||
-                edt_lng.getText().toString().length()==0 ||edt_des.getText().toString().length()==0  )
+        if(edtname.getText().toString().length()==0 || edtphone.getText().toString().length()==0 ||
+                edtaddress.getText().toString().length()==0 || edtlat.getText().toString().length()==0 ||
+                edtlng.getText().toString().length()==0 ||edtdes.getText().toString().length()==0  )
             return false;
 
         return true;
@@ -156,8 +156,8 @@ public class AddSystemPitchActivity extends AppCompatActivity implements OnMapRe
                     mMap.clear();
                     mMap.addMarker(new MarkerOptions().position(latLng));
                     Utils.moveCamera(latLng,"",11,mMap);
-                    edt_lat.setText(latLng.latitude+"");
-                    edt_lng.setText(latLng.longitude+"");
+                    edtlat.setText(latLng.latitude+"");
+                    edtlng.setText(latLng.longitude+"");
                 }
             });
         }
@@ -177,17 +177,17 @@ public class AddSystemPitchActivity extends AppCompatActivity implements OnMapRe
     public void onClick(View v) {
         switch(v.getId())
         {
-            case R.id.bt_addSystem :
+            case R.id.btaddSystem :
             {
                 if(isFilled())
                 {
                     HashMap<String,String> param = new HashMap<String, String>();
-                    param.put("name",edt_name.getText().toString());
-                    param.put("address",edt_address.getText().toString());
-                    param.put("lat",edt_lat.getText().toString());
-                    param.put("log",edt_lng.getText().toString());
-                    param.put("description",edt_des.getText().toString());
-                    param.put("phone",edt_phone.getText().toString());
+                    param.put("name",edtname.getText().toString());
+                    param.put("address",edtaddress.getText().toString());
+                    param.put("lat",edtlat.getText().toString());
+                    param.put("log",edtlng.getText().toString());
+                    param.put("description",edtdes.getText().toString());
+                    param.put("phone",edtphone.getText().toString());
                     param.put("user_id",userModel.getId());
                     new AddSystem(param).execute();
                 }

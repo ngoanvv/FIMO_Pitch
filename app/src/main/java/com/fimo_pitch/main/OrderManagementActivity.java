@@ -18,11 +18,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.fimo_pitch.API;
+import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.adapter.ManageOrderAdapter;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.Order;
 import com.fimo_pitch.model.Pitch;
+import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.support.NetworkUtils;
 import com.fimo_pitch.support.Utils;
 
@@ -52,6 +54,7 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
     private String listpitchData;
     private List<String> listName;
     private String pitchId,day;
+    private SystemPitch mSystemPitch;
     private String TAG=OrderManagementActivity.class.getName();
     private String crDay=Calendar.getInstance().get(Calendar.YEAR)+"-"+
             (Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+
@@ -60,7 +63,7 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
-
+        mSystemPitch = (SystemPitch) getIntent().getSerializableExtra(CONSTANT.SystemPitch_MODEL);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -68,8 +71,13 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
         crDay=Calendar.getInstance().get(Calendar.YEAR)+"-"+
                 (Calendar.getInstance().get(Calendar.MONTH)+1)+"-"+
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-        initView();
-        initList();
+        try {
+            initView();
+            initList();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -78,14 +86,14 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
         super.onStart();
     }
 
-    public void initList()
+    public void initList() throws Exception
     {
         listOrder = new ArrayList<>();
         listPitch = new ArrayList<>();
         listName = new ArrayList<>();
         new GetListPitch().execute();
     }
-    public void initView()
+    public void initView() throws Exception
     {
         recyclerView = (RecyclerView) findViewById(R.id.list_manage);
         dayFilter = (TextView) findViewById(R.id.date_filter);
@@ -185,7 +193,7 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
         @Override
         protected String doInBackground(String... params) {
             Request request = new Request.Builder()
-                    .url(API.GetAllPitchofSystem+1)
+                    .url(API.GetAllPitchofSystem+mSystemPitch.getId())
                     .build();
             try {
                 okHttpClient = new OkHttpClient();

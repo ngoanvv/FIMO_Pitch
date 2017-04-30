@@ -22,6 +22,7 @@ import com.fimo_pitch.adapter.PriceAdapter;
 import com.fimo_pitch.custom.view.RoundedImageView;
 import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.Price;
+import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.UserModel;
 
 import org.json.JSONArray;
@@ -45,19 +46,28 @@ public class PriceManagementActivity extends AppCompatActivity{
     private List<String> listName;
     private ArrayList<Pitch> listPitch;
     private String idPitch;
+    private SystemPitch mSystemPitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_price_management);
-        userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
+        try {
+            userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
+            mSystemPitch = (SystemPitch) getIntent().getSerializableExtra(CONSTANT.SystemPitch_MODEL);
 
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("Quản lý giá tiền, khung giờ ");
-        initList();
-        initView();
+            setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setTitle("Quản lý giá tiền, khung giờ ");
+
+            initList();
+            initView();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -168,7 +178,7 @@ public class PriceManagementActivity extends AppCompatActivity{
         @Override
         protected String doInBackground(String... params) {
             Request request = new Request.Builder()
-                    .url(API.GetAllPitchofSystem+1)
+                    .url(API.GetAllPitchofSystem+mSystemPitch.getId())
                     .build();
             try {
                 okHttpClient = new OkHttpClient();

@@ -21,23 +21,79 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list_system_pitch"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/s20dp"
+            android:orientation="vertical"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
+            android:layout_marginTop="@dimen/s50dp"
             android:layout_alignParentStart="true">
-        </android.support.v7.widget.RecyclerView>
+            <TextView
+                android:id="@+id/tv_name"
+                style="@style/item_detailsystem"
+                android:textStyle="bold"
+                android:text="Hệ thống sân ĐH GTVT"
+           />
+            <TextView
+                android:id="@+id/tv_address"
+                style="@style/item_detailsystem"
+                android:text="144 xuân thủy"
+                />
+
+            <TextView
+                android:id="@+id/tv_phone"
+                style="@style/item_detailsystem"
+                android:text="098123809"
+                android:inputType="phone" />
+
+            <TextView
+                android:id="@+id/tv_des"
+                style="@style/item_detailsystem"
+                android:layout_height="100dp"
+                android:gravity="bottom"
+                android:text="Mô tả"
+                android:maxLines="3" />
+
+            <Button
+                android:id="@+id/bt_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                
+                android:layout_marginLeft="@dimen/s20dp"
+                android:layout_marginRight="@dimen/s20dp"
+                android:layout_marginTop="@dimen/s50dp"
+                android:text="Chỉnh sửa"
+                android:paddingTop="@dimen/s30dp"
+                android:paddingBottom="@dimen/s30dp"
+                android:textSize="@dimen/s25dp"
+                android:background="@color/com_facebook_blue"/>
+            <Button
+                android:id="@+id/bt_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_marginLeft="@dimen/s20dp"
+                android:layout_marginRight="@dimen/s20dp"
+                android:layout_marginTop="@dimen/s10dp"
+                android:text="Xóa"
+                android:paddingTop="@dimen/s30dp"
+                android:paddingBottom="@dimen/s30dp"
+                android:textSize="@dimen/s25dp"
+                android:background="@color/colorRed"/>
+        </LinearLayout>
+        
         <com.fimo_pitch.custom.view.RoundedImageView
+            android:id="@+id/bt_addSystem2"
             android:layout_width="@dimen/s70dp"
             android:layout_height="@dimen/s70dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="@dimen/s100dp"
+            android:visibility="gone"
             android:layout_marginRight="@dimen/s20dp"
-            android:id="@+id/bt_addSystem"
             android:background="@drawable/bt_add"/>
 
 

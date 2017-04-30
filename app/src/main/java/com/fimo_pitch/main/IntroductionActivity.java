@@ -23,6 +23,7 @@ public class IntroductionActivity extends AppIntro {
             {
                 Intent intent = new Intent(IntroductionActivity.this,LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
             else
             {
@@ -48,6 +49,7 @@ public class IntroductionActivity extends AppIntro {
         }
         Intent intent = new Intent(IntroductionActivity.this,LoginActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
@@ -59,6 +61,7 @@ public class IntroductionActivity extends AppIntro {
         }
         Intent intent = new Intent(IntroductionActivity.this,LoginActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override

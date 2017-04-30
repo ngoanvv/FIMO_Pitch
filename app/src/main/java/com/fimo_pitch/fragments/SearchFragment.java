@@ -284,6 +284,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             }
 
         map.clear();
+        if(currentLatLng != null)
         map.addMarker(new MarkerOptions().position(currentLatLng).title("Bạn ở đây"));
         for(int i=0;i<listSystemPitch.size();i++)
         {

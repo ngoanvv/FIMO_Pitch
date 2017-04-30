@@ -41,7 +41,7 @@ public class ChoiceDialog extends Dialog implements View.OnClickListener {
     {
         this.mHandleEvent = e;
     }
-    interface HandleEvent
+    public interface HandleEvent
     {
         void ClickOk();
         void ClickCancel();

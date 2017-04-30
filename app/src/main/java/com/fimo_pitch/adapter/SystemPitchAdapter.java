@@ -3,7 +3,6 @@ package com.fimo_pitch.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,7 +131,6 @@ public class SystemPitchAdapter extends RecyclerView.Adapter<SystemPitchAdapter.
     }
 
     private ArrayList<SystemPitch> getFilteredResults(CharSequence constraint) {
-        Log.d(TAG,"constraint "+constraint.toString());
 
         int count=0;
         results = new ArrayList<>();
@@ -146,8 +144,6 @@ public class SystemPitchAdapter extends RecyclerView.Adapter<SystemPitchAdapter.
                 count++;
             }
         }
-        Log.d(TAG,"count "+count);
-        Log.d(TAG,"result size: "+results.size());
         return results;
     }
     class MyViewHolder extends RecyclerView.ViewHolder {

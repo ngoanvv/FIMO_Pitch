@@ -26,6 +26,16 @@
         <item name="android:layout_marginRight">@dimen/s30dp</item>
         <item name="android:layout_marginLeft">@dimen/s30dp</item>
     </style>
+    <style name="item_detailsystem">
+
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/com_facebook_blue</item>
+        <item name="android:textSize">@dimen/s25dp</item>
+        <item name="android:padding">@dimen/s10dp</item>
+        <item name="android:layout_marginLeft">@dimen/s20dp</item>
+        <item name="android:layout_marginTop">@dimen/s10dp</item>
+    </style>
 
     <style name="item_news">
         <item name="android:layout_width">match_parent</item>
