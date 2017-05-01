@@ -43,6 +43,7 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.MyViewHolder
     private ArrayList<Price> data;
     private LayoutInflater inflater;
     private OkHttpClient okHttpClient;
+    private OkHttpClient client;
 
     public PriceAdapter(Context context, ArrayList<Price> data) {
         this.context = context;
@@ -81,10 +82,7 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.MyViewHolder
         holder.btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                ChoiceDialog dialog = new ChoiceDialog(context,"Bạn có muốn xóa Khung giờ này này hay không ?",position);
-                dialog.show();
-
+                new DeletePrice(data.get(position).getId(),position).execute();
             }
         });
 
@@ -219,7 +217,56 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.MyViewHolder
         int id = v.getId();
 
     }
+    class DeletePrice extends AsyncTask<String,String,String>
+    {
+        ProgressDialog progressDialog;
+        String id;
+        int position;
+        public DeletePrice(String id,int position)
+        {
+            this.position = position;
+            this.id = id;
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(context);
+            progressDialog.setMessage("Đang thao tác");
+            progressDialog.show();
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                client = new OkHttpClient();
+                Response response =
+                        client.newCall(NetworkUtils.createDeleteRequest(API.DeletePrice+this.id)).execute();
+                String results = response.body().string();
+                Log.d("delete", results);
+                if (response.isSuccessful()) {
+                    return results;
+                }
 
+            }
+            catch (Exception e)
+            {
+                return "failed";
+            }
+            return "failed";
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if(s.contains("success")) {
+                data.remove(position);
+                notifyDataSetChanged();
+                notifyItemRemoved(position);
+                notifyItemRangeRemoved(position,data.size());
+            }
+            progressDialog.dismiss();
+
+        }
+
+    }
     class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView tv_name;

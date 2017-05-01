@@ -138,42 +138,7 @@ public class SearchSystemFragment extends Fragment implements View.OnClickListen
             Log.d("searchPitch",s);
             listSearch = new ArrayList<>();
             initRecyclerView(s);
-//            try {
-//                JSONObject jsonObject = new JSONObject(s);
-//                JSONArray data = jsonObject.getJSONArray("data");
-//                for (int i = 0; i < data.length(); i++) {
-//                    JSONObject object = data.getJSONObject(i);
-//                    SearchPitchModel systemPitch = new SearchPitchModel();
-//                    systemPitch.setPitch_description(object.getString("description"));
-//                    systemPitch.setSystem_id(object.getString("system_id"));
-//                    systemPitch.setUser_id("1");
-//                    systemPitch.setUser_name("Owner");
-//                    systemPitch.setSystem_name(object.getString("name"));
-//                    systemPitch.setAddress(object.getString("address"));
-//                    systemPitch.setPitch_name(object.getString("pitch_name"));
-//                    systemPitch.setPitch_id(object.getString("pitch_id"));
-//                    systemPitch.setPhone(object.getString("phone"));
-//                    systemPitch.setLat(object.getString("lat"));
-//                    systemPitch.setLog(object.getString("log"));
-//                    systemPitch.setTime_start(object.getString("time_start"));
-//                    systemPitch.setTime_end(object.getString("time_end"));
-//                    listSearch.add(systemPitch);
-//                }
-//                if(listSearch.size()>0)
-//                {
 //
-//                }
-//                else
-//                {
-//                    Utils.openDialog(getContext(),"Không có sân bóng khả dụng trong ngày với khu vực lựa chọn. Hãy thử với khu vực khác");
-//                }
-                progressDialog.dismiss();
-//
-//            }
-//            catch (Exception e)
-//            {
-//                e.printStackTrace();
-//            }
         }
 
         @Override

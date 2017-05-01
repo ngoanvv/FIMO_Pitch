@@ -133,7 +133,7 @@ public class PriceManagementActivity extends AppCompatActivity{
                             JSONObject object = data.getJSONObject(i);
                             Price p = new Price();
                             p.setId(object.getString("id"));
-                            p.setTime(object.getString("time_start").substring(0,4)+"-"+object.getString("time_end").substring(0,4));
+                            p.setTime(object.getString("time_start").substring(0,5)+"-"+object.getString("time_end").substring(0,5));
                             p.setDayOfWeek(object.getString("typedate"));
                             p.setPrice(object.getString("price"));
                             p.setSystemId(object.getString("system_id"));

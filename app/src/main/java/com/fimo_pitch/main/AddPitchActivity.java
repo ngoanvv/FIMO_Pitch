@@ -57,7 +57,7 @@ public class AddPitchActivity extends AppCompatActivity {
         edtType = (EditText) findViewById(R.id.edttype);
         edtSize = (EditText) findViewById(R.id.edtsize);
         edtDes = (EditText) findViewById(R.id.edtdes);
-        btAdd = (Button) findViewById(R.id.bt_addPitch);
+        btAdd = (Button) findViewById(R.id.btaddPitch);
 
         edtName.setText("Sân Demo");
         edtType.setText("Sân Cỏ");
@@ -79,6 +79,7 @@ public class AddPitchActivity extends AppCompatActivity {
                 param.put("system_id","2");
                 param.put("image","image");
                 new MyTask(param).execute();
+
             }
         });
     }

@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/ll_layout"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/s50dp"
+        android:layout_marginTop="@dimen/s70dp"
         android:orientation="horizontal"
         android:background="@drawable/rounded_border_white"
         android:layout_height="wrap_content"
@@ -20,7 +20,7 @@
             android:gravity="center"
             android:textColor="@color/colorBlack"
             android:background="@color/Grey"
-            android:textSize="@dimen/s25dp"
+            android:textSize="@dimen/s30dp"
             android:text="17:00"
             android:id="@+id/tv_time" />
         <RelativeLayout
@@ -30,7 +30,7 @@
             <Spinner
                 android:id="@+id/spn_location"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/s43dp"
+                android:layout_height="@dimen/s50dp"
                 android:hint="Khu vực tìm kiếm"
                 android:gravity="center"
                 android:textColor="@color/color_myaccount_title_bg"

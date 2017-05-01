@@ -1,14 +1,10 @@
 package com.fimo_pitch.support;
 
-import android.util.Log;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.FormBody;
 import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * Created by diep1 on 1/10/2017.
@@ -42,6 +38,11 @@ public class NetworkUtils {
     public static Request createGetRequest(String url)
     {
         Request request = new Request.Builder().url(url).build();
+        return request;
+    }
+    public static Request createDeleteRequest(String url)
+    {
+        Request request = new Request.Builder().delete().url(url).build();
         return request;
     }
 }

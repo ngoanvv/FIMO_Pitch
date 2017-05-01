@@ -39,6 +39,7 @@ public class SystemManagementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_system_management);
         userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
 
+        tvname = (TextView) findViewById(R.id.tv_name);
         tvaddress = (TextView) findViewById(R.id.tv_address);
         tvphone = (TextView) findViewById(R.id.tv_phone);
         tvaddress = (TextView) findViewById(R.id.tv_address);
@@ -116,6 +117,7 @@ public class SystemManagementActivity extends AppCompatActivity {
                             systemPitch.setPhone(object.getString("phone"));
                             systemPitch.setLat(object.getString("lat"));
                             systemPitch.setLng(object.getString("log"));
+
                             tvaddress.setText(systemPitch.getAddress());
                             tvname.setText(systemPitch.getName());
                             tvdes.setText(systemPitch.getDescription());

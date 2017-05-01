@@ -27,5 +27,8 @@ public class API {
     public static String GetOrderbyUser=API+"users/getorderbyuserid/";
     public static String SearchPitch=API+"system_pitch/searchPitch";
     public static String GetListSystemById=API+"system_pitch/getsystempitchbyuserid/";
+    public static String DeletePitch=API+"pitch/pitch/";
+    public static String DeletePrice=API+"pitch/managementpitch/";
+
     public static String GetSystemByLocation=API+"system_pitch/getsystempitchbylocation";
 }
