@@ -29,6 +29,7 @@ public class API {
     public static String GetListSystemById=API+"system_pitch/getsystempitchbyuserid/";
     public static String DeletePitch=API+"pitch/pitch/";
     public static String DeletePrice=API+"pitch/managementpitch/";
+    public static String UpdateSystemPitch=API+"system_pitch/updatesystempitch/";
 
     public static String GetSystemByLocation=API+"system_pitch/getsystempitchbylocation";
 }

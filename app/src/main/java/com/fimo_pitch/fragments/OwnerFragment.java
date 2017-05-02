@@ -99,9 +99,17 @@ public class OwnerFragment extends Fragment implements View.OnClickListener {
                     if (result.getString("status").contains("success")) {
                         JSONArray data = result.getJSONArray("data");
                             JSONObject object = data.getJSONObject(0);
-                            mSystemPitch = new SystemPitch();
-                            mSystemPitch.setId(object.getString("id"));
-                            mSystemPitch.setName(object.getString("name"));
+                        mSystemPitch = new SystemPitch();
+                        mSystemPitch.setDescription(object.getString("description"));
+                        mSystemPitch.setId(object.getString("id"));
+                        mSystemPitch.setOwnerName("Tiến TM");
+                        mSystemPitch.setOwnerID(object.getString("user_id"));
+                        mSystemPitch.setName(object.getString("name"));
+                        mSystemPitch.setAddress(object.getString("address"));
+                        mSystemPitch.setId(object.getString("id"));
+                        mSystemPitch.setPhone(object.getString("phone"));
+                        mSystemPitch.setLat(object.getString("lat"));
+                        mSystemPitch.setLng(object.getString("log"));
                     }
 
                 } catch (Exception e) {

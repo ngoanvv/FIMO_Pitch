@@ -95,6 +95,7 @@ public class PriceManagementActivity extends AppCompatActivity{
             public void onClick(View v) {
                 Intent intent = new Intent(PriceManagementActivity.this,AddPriceActivity.class);
                 intent.putExtra(CONSTANT.KEY_USER,userModel);
+                intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
                 startActivity(intent);
                 finish();
             }

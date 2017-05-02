@@ -15,8 +15,10 @@ import android.widget.EditText;
 import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
+import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
+import com.fimo_pitch.support.Utils;
 
 import java.util.HashMap;
 
@@ -30,13 +32,13 @@ public class AddPitchActivity extends AppCompatActivity {
     private OkHttpClient client;
     private String TAG="AddPitchActivity";
     private UserModel userModel;
-
+    private SystemPitch mSystemPitch;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pitch);
         userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
-
+        mSystemPitch = (SystemPitch) getIntent().getSerializableExtra(CONSTANT.SystemPitch_MODEL);
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -76,7 +78,7 @@ public class AddPitchActivity extends AppCompatActivity {
                 param.put("type",edtType.getText().toString());
                 param.put("size",edtSize.getText().toString());
                 param.put("description",edtDes.getText().toString());
-                param.put("system_id","2");
+                param.put("system_id",mSystemPitch.getId());
                 param.put("image","image");
                 new MyTask(param).execute();
 
@@ -102,10 +104,17 @@ public class AddPitchActivity extends AppCompatActivity {
             progressDialog.dismiss();
             if(s.contains("success")) {
                 Intent intent = new Intent(AddPitchActivity.this,PitchManagementActivity.class);
+                intent.putExtra(CONSTANT.KEY_USER,userModel);
+                intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
                 startActivity(intent);
                 finish();
             }
-
+            else
+            {
+                if(s.contains("Name Pitch Already Exists")) Utils.openDialog(AddPitchActivity.this,"Tên sân bóng bị trùng, nhập tên khác");
+                else
+                    Utils.openDialog(AddPitchActivity.this,"Thêm sân bóng thất bại");
+            }
         }
 
         @Override
@@ -139,9 +148,19 @@ public class AddPitchActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             Intent intent = new Intent(AddPitchActivity.this,PitchManagementActivity.class);
             intent.putExtra(CONSTANT.KEY_USER,userModel);
+            intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
             startActivity(intent);
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(AddPitchActivity.this,PitchManagementActivity.class);
+        intent.putExtra(CONSTANT.KEY_USER,userModel);
+        intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
+        startActivity(intent);
+        finish();
     }
 }

@@ -21,6 +21,7 @@ import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.model.Pitch;
+import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
 
@@ -49,12 +50,15 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
     private List<String> listName;
     private String idPitch;
     private String typeofDate="0";
+    private SystemPitch mSystemPitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_price);
         userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
+        mSystemPitch = (SystemPitch) getIntent().getSerializableExtra(CONSTANT.SystemPitch_MODEL);
+
         okHttpClient = new OkHttpClient();
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -125,7 +129,7 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected String doInBackground(String... params) {
             Request request = new Request.Builder()
-                    .url(API.GetAllPitchofSystem+1)
+                    .url(API.GetAllPitchofSystem+mSystemPitch.getId())
                     .build();
             try {
                 okHttpClient = new OkHttpClient();
@@ -216,8 +220,9 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
             Log.d(TAG,s);
             progressDialog.dismiss();
             if(s != null) {
-                Intent intent = new Intent(AddPriceActivity.this,PitchManagementActivity.class);
+                Intent intent = new Intent(AddPriceActivity.this,PriceManagementActivity.class);
                 intent.putExtra(CONSTANT.KEY_USER,userModel);
+                intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
                 startActivity(intent);
                 finish();
             }
@@ -233,6 +238,16 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
         }
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(AddPriceActivity.this,PriceManagementActivity.class);
+        intent.putExtra(CONSTANT.KEY_USER,userModel);
+        intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId())

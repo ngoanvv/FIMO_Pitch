@@ -240,7 +240,9 @@ public class PitchManagementActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PitchManagementActivity.this,AddPitchActivity.class);
                 intent.putExtra(CONSTANT.KEY_USER,userModel);
+                intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
                 startActivity(intent);
+                finish();
             }
         });
         listName.add(mSystemPitch.getName());

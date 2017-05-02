@@ -67,7 +67,10 @@
             android:name=".main.ManageActivity"
             android:label="Quản lý "
             android:theme="@style/AppTheme" />
-
+        <activity
+            android:name=".main.EditSystemPitchActivity"
+            android:label="Cập nhật hệ thống sân"
+            android:theme="@style/AppTheme" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.

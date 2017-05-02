@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.fimo_pitch.API;
@@ -32,12 +33,15 @@ public class SystemManagementActivity extends AppCompatActivity {
     private TextView tvname,tvphone,tvaddress,tvlat,tvlng,tvdes;
     private RoundedImageView btAdd;
     private OkHttpClient okHttpClient;
+    private Button btEdit,btDelete;
+    private SystemPitch mSystemPitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_management);
         userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
+        mSystemPitch = (SystemPitch) getIntent().getSerializableExtra(CONSTANT.SystemPitch_MODEL);
 
         tvname = (TextView) findViewById(R.id.tv_name);
         tvaddress = (TextView) findViewById(R.id.tv_address);
@@ -45,6 +49,25 @@ public class SystemManagementActivity extends AppCompatActivity {
         tvaddress = (TextView) findViewById(R.id.tv_address);
         tvdes = (TextView) findViewById(R.id.tv_des);
         btAdd = (RoundedImageView) findViewById(R.id.bt_addSystem2);
+        btEdit = (Button) findViewById(R.id.bt_edit);
+        btDelete = (Button) findViewById(R.id.bt_delete);
+
+        btEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SystemManagementActivity.this,EditSystemPitchActivity.class);
+                intent.putExtra(CONSTANT.KEY_USER,userModel);
+                intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
+                startActivity(intent);
+                finish();
+            }
+        });
+        btDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         btAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
