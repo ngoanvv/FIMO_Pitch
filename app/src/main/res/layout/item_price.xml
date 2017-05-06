@@ -12,127 +12,137 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/s10dp"
+        android:orientation="horizontal"
         android:paddingBottom="@dimen/s20dp"
-        android:orientation="horizontal">
+        android:paddingTop="@dimen/s10dp">
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="@dimen/s250dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/item_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="19:00 - 21:00"
-                android:textSize="@dimen/s25dp"
+                android:layout_alignBottom="@+id/view"
                 android:layout_marginLeft="@dimen/s20dp"
-                android:maxLines="2"
                 android:layout_marginTop="@dimen/s5dp"
-                android:textStyle="bold"
                 android:gravity="center_vertical"
+                android:maxLines="2"
+                android:text="19:00 - 21:00"
                 android:textColor="@android:color/holo_green_dark"
-                android:layout_alignBottom="@+id/view"/>
+                android:textSize="@dimen/s25dp"
+                android:textStyle="bold" />
             <!--//body-->
             <LinearLayout
-                android:layout_marginTop="1dp"
-                android:layout_marginLeft="@dimen/s20dp"
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/s20dp"
+                android:layout_marginTop="1dp"
+                android:orientation="vertical">
 
                 <!--money-->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
+                    android:layout_height="@dimen/s20dp"
                     android:layout_marginTop="@dimen/s5dp"
-                    android:layout_height="@dimen/s20dp">
+                    android:orientation="horizontal">
+
                     <com.fimo_pitch.custom.view.RoundedImageView
                         android:layout_width="@dimen/s15dp"
-                        android:background="@drawable/ic_money"
+                        android:layout_height="@dimen/s15dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_height="@dimen/s15dp"/>
+                        android:background="@drawable/ic_money" />
 
                     <TextView
                         android:id="@+id/item_price"
                         android:layout_width="wrap_content"
-                        android:text="300.000vnđ"
-                        android:textSize="@dimen/s15dp"
-                        android:layout_marginLeft="@dimen/s15dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/s15dp"
+                        android:text="300.000vnđ"
                         android:textColor="@color/accent_material_light"
-                        android:layout_height="wrap_content"/>
+                        android:textSize="@dimen/s15dp" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="@dimen/s5dp"
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/s5dp"
+                    android:orientation="horizontal">
+
                     <com.fimo_pitch.custom.view.RoundedImageView
                         android:layout_width="@dimen/s15dp"
+                        android:layout_height="@dimen/s15dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/ic_clock"
-                        android:layout_height="@dimen/s15dp"/>
+                        android:background="@drawable/ic_clock" />
 
                     <TextView
-                        android:layout_width="wrap_content"
                         android:id="@+id/item_date"
-                        android:text="Ngày thường"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/s15dp"
-                        android:textSize="@dimen/s15dp"
-                        android:layout_gravity="center_vertical"
+                        android:text="Ngày thường"
                         android:textColor="@color/accent_material_light"
-                        android:layout_height="wrap_content"/>
+                        android:textSize="@dimen/s15dp" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:layout_marginBottom="@dimen/s5dp"
                     android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/s5dp"
                     android:layout_marginTop="@dimen/s5dp"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
+                    android:orientation="horizontal">
+
                     <com.fimo_pitch.custom.view.RoundedImageView
-                        android:layout_gravity="center_vertical"
                         android:layout_width="@dimen/s15dp"
-                        android:background="@drawable/ic_location"
-                        android:layout_height="@dimen/s15dp"/>
+                        android:layout_height="@dimen/s15dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/ic_location" />
 
                     <TextView
                         android:id="@+id/item_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxLines="3"
-                        android:textSize="@dimen/s15dp"
-                        android:text="Chả có gì mô tả"
-                        android:layout_marginLeft="@dimen/s15dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/s15dp"
                         android:inputType="textMultiLine"
+                        android:maxLines="3"
+                        android:text="Chả có gì mô tả"
                         android:textColor="@color/accent_material_light"
-                        />
+                        android:textSize="@dimen/s15dp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/s10dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/s100dp"
             android:orientation="vertical">
-        <Button
-            android:id="@+id/bt_edit"
-            android:layout_width="@dimen/s100dp"
-            android:layout_height="@dimen/s50dp"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:text="Sửa"/>
 
             <Button
-                android:id="@+id/bt_delete"
+                android:id="@+id/bt_edit"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="@dimen/s100dp"
                 android:layout_height="@dimen/s50dp"
                 android:gravity="center"
+                android:text="Sửa"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/bt_delete"
                 style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="@dimen/s100dp"
+                android:layout_height="@dimen/s50dp"
                 android:layout_marginTop="@dimen/s20dp"
-                android:textColor="@color/white"
-                android:text="Xóa"/>
+                android:gravity="center"
+                android:text="Xóa"
+                android:textColor="@color/white" />
         </LinearLayout>
     </LinearLayout>
 

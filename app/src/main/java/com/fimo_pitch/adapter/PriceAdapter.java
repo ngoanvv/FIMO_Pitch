@@ -82,7 +82,7 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.MyViewHolder
         holder.btDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DeletePrice(data.get(position).getId(),position).execute();
+                    new ChoiceDialog(context,"Bạn có muốn xóa không ? ",position).show();
             }
         });
 
@@ -156,7 +156,7 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.MyViewHolder
         }
 
     }
-    class ChoiceDialog extends Dialog implements View.OnClickListener {
+    class ChoiceDialog extends Dialog{
         String title;
         Context mContext;
         int pos ;
@@ -175,29 +175,25 @@ public class PriceAdapter extends RecyclerView.Adapter<PriceAdapter.MyViewHolder
             TextView msg = (TextView) findViewById(R.id.id_message);
             msg.setText(title);
             Button yes = (Button) findViewById(R.id.id_dialog_ok);
-            yes.setOnClickListener(this);
-            Button no = (Button) findViewById(R.id.id_cancel);
-            no.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.id_dialog_ok:
+            yes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     okHttpClient = new OkHttpClient();
                     HashMap<String, String> body = new HashMap<String, String>();
                     body.put("id", data.get(pos).getId());
                     body.put("status", "0");
-
+                    new UpdateOrder(body.get("id").toString(),body,pos).execute();
                     dismiss();
 
-                    break;
-                case R.id.id_cancel:
+                }
+            });
+            Button no = (Button) findViewById(R.id.id_cancel);
+            no.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                     dismiss();
-                    break;
-                default:
-                    break;
-            }
+                }
+            });
         }
 
     }

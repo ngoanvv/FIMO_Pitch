@@ -18,10 +18,17 @@ package com.fimo_pitch.main;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -33,6 +40,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -52,7 +60,6 @@ import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
 import com.fimo_pitch.custom.view.ChoiceDialog;
 import com.fimo_pitch.custom.view.RoundedImageView;
-import com.fimo_pitch.db.MyDatabaseHelper;
 import com.fimo_pitch.fragments.NewsFragment;
 import com.fimo_pitch.fragments.NotifcationFragment;
 import com.fimo_pitch.fragments.OwnerFragment;
@@ -66,7 +73,6 @@ import com.fimo_pitch.model.News;
 import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
-import com.fimo_pitch.support.ShowToast;
 import com.fimo_pitch.support.TrackGPS;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.auth.api.Auth;
@@ -118,15 +124,13 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
     private String fcmToken ="";
     private SearchSystemFragment mSearchSytem;
     private ChoiceDialog choiceDialog;
-
+    private NotifcationFragment mNotifcationFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         Utils.setupAnimations(this);
-        MyDatabaseHelper db = new MyDatabaseHelper(this);
         userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
-
         initView();
         getData();
         ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
@@ -136,14 +140,8 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         initNavMenu();
         initGoogleAPI();
         Log.d("TYPE",userModel.getUserType());
-
         // neu mo ung dung tu thong bao
-        if(getIntent().getBooleanExtra(CONSTANT.FROM_NOTIFICATION,false))
-        {
-            ShowToast.showToastLong(MainActivity.this,"from noticaiton");
-            replaceFragment(NotifcationFragment.newInstance("", ""), NotifcationFragment.class.getName());
-            mDrawerLayout.closeDrawers();
-        }
+
     }
     private void getData() {
         listSystem = new ArrayList<>();
@@ -157,11 +155,81 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    private UserModel getUserModel()
+    {
+        sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
+        if (sharedPreferences != null)
+        {
+            String email = sharedPreferences.getString("email", "null");
+            String password = sharedPreferences.getString("password", "null");
+            String userType = sharedPreferences.getString("userType", "null");
+            String phone = sharedPreferences.getString("phone", "null");
+            String name = sharedPreferences.getString("password", "null");
+            String id = sharedPreferences.getString("id", "null");
+
+            Log.d(TAG,email+" - "+password);
+            if (email.equals("null") || password.equals("null")) {
+                return new UserModel();
+            }
+            else
+            {
+                userModel = new UserModel();
+                userModel.setName(name);
+                userModel.setEmail(email);
+                userModel.setPassword(password);
+                userModel.setUserType(userType);
+                userModel.setPhone(phone);
+                userModel.setId(id);
+                return  userModel;
+            }
+        }
+        else return new UserModel();
+    }
+
+    private void makeNotification(Context context,String title,String content) {
+        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context)
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle(title)
+                        .setSound(uri)
+                        .setPriority(Notification.PRIORITY_HIGH)
+                        .setContentText(content);
+        Intent resultIntent = new Intent(context, MainActivity.class);
+        userModel = getUserModel();
+        resultIntent.putExtra(CONSTANT.KEY_USER, userModel);
+        resultIntent.putExtra(CONSTANT.FROM_NOTIFICATION,"true");
+        TaskStackBuilder stackBuilder = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addParentStack(FirstActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            mBuilder.setContentIntent(resultPendingIntent);
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(10, mBuilder.build());
+//            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+//            v.vibrate(ZAQ500);
+        } else {
+            NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(10, mBuilder.build());
+//            Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+//            v.vibrate(500);
+        }
+    }
     public void initView()
     {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        tabs = (TabLayout) findViewById(R.id.tabs);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         frameLayout = (FrameLayout) findViewById(R.id.container);
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -210,6 +278,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         frameLayout.setVisibility(View.VISIBLE);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container,fragment,tag).commit();
+        mDrawerLayout.closeDrawers();
     }
     public void backToFragment(final Fragment fragment) {
 
@@ -240,8 +309,9 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                                         break;
                                     }
                                     case R.id.menu_notification: {
-                                        Utils.openDialog(MainActivity.this,"Chức năng hiện tại không khả dụng");
-
+//                                        Utils.openDialog(MainActivity.this,"Chức năng hiện tại không khả dụng");
+                                        mNotifcationFragment = NotifcationFragment.newInstance("1","");
+                                        replaceFragment(mNotifcationFragment,mNotifcationFragment.getClass().getName());
                                         break;
                                     }
                                     case R.id.menu_search: {
@@ -337,6 +407,17 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                             }
                         });
             }
+        }
+        String fromNotification = getIntent().getStringExtra(CONSTANT.FROM_NOTIFICATION);
+
+        if(fromNotification.contains("true"))
+        {
+            tabs.setVisibility(View.GONE);
+            viewPager.setVisibility(View.GONE);
+            frameLayout.setVisibility(View.VISIBLE);
+            mNotifcationFragment = NotifcationFragment.newInstance("1","1");
+            getSupportFragmentManager().beginTransaction().replace(R.id.container,mNotifcationFragment,mNotifcationFragment.getClass().getName()).commit();
+            mDrawerLayout.closeDrawers();
         }
     }
     private void signOut() {
@@ -482,8 +563,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
             }
             else {
                 progressDialog.dismiss();
-                tabs = (TabLayout) findViewById(R.id.tabs);
-                viewPager = (ViewPager) findViewById(R.id.viewpager);
+
                 Adapter adapter = new Adapter(getSupportFragmentManager());
                 adapter.addFragment(new SystemPitchsFragment(listSystemData), "Tìm nhanh");
                 adapter.addFragment(new NewsFragment(listNewsData), "Tin tức");
@@ -491,6 +571,8 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                 viewPager.setAdapter(adapter);
                 viewPager.setOffscreenPageLimit(3);
                 tabs.setupWithViewPager(viewPager);
+
+//                makeNotification(MainActivity.this,"COntnt ","tiele");
 //            Log.d(TAG,listSystemData);
 //            mSearchFragment = SearchFragment.newInstance(listSystemData,"");
 //            replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());

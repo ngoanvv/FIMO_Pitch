@@ -64,24 +64,25 @@
                 android:layout_marginLeft="@dimen/s20dp"
                 android:layout_marginRight="@dimen/s20dp"
                 android:layout_marginTop="@dimen/s50dp"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:text="Chỉnh sửa"
                 android:paddingTop="@dimen/s30dp"
                 android:paddingBottom="@dimen/s30dp"
                 android:textSize="@dimen/s25dp"
-                android:background="@color/com_facebook_blue"/>
+                />
             <Button
                 android:id="@+id/bt_delete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
                 android:layout_marginLeft="@dimen/s20dp"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_marginRight="@dimen/s20dp"
                 android:layout_marginTop="@dimen/s10dp"
                 android:text="Xóa"
                 android:paddingTop="@dimen/s30dp"
                 android:paddingBottom="@dimen/s30dp"
                 android:textSize="@dimen/s25dp"
-                android:background="@color/colorRed"/>
+                />
         </LinearLayout>
         
         <com.fimo_pitch.custom.view.RoundedImageView

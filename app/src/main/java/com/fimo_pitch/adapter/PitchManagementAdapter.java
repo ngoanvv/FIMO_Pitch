@@ -1,14 +1,19 @@
 package com.fimo_pitch.adapter;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,6 +26,7 @@ import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.support.NetworkUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
@@ -36,6 +42,7 @@ public class PitchManagementAdapter extends RecyclerView.Adapter<PitchManagement
     private LayoutInflater inflater;
     private int callRequest = 1;
     private OkHttpClient client;
+    private OkHttpClient okHttpClient;
 
 
     public PitchManagementAdapter(Activity context, ArrayList<Pitch> data) {
@@ -60,7 +67,9 @@ public class PitchManagementAdapter extends RecyclerView.Adapter<PitchManagement
         holder.del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DeletePitch(data.get(position).getId(),position).execute();
+
+                new ChoiceDialog(activity,"Bạn có muốn xóa không ? ",position).show();
+
             }
         });
         holder.edit.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +82,47 @@ public class PitchManagementAdapter extends RecyclerView.Adapter<PitchManagement
 
             }
         });
+    }
+    class ChoiceDialog extends Dialog {
+        String title;
+        Context mContext;
+        int pos ;
+        public ChoiceDialog(Context context, String content,int position) {
+            super(context);
+            this.pos = position;
+            this.title = content;
+            this.mContext = context;
+        }
+        DialogInterface.OnClickListener clickYes;
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            setContentView(R.layout.dialog_choice_image);
+            TextView msg = (TextView) findViewById(R.id.id_message);
+            msg.setText(title);
+            Button yes = (Button) findViewById(R.id.id_dialog_ok);
+            yes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    okHttpClient = new OkHttpClient();
+                    HashMap<String, String> body = new HashMap<String, String>();
+                    body.put("id", data.get(pos).getId());
+                    body.put("status", "0");
+                    new DeletePitch(data.get(pos).getId(),pos).execute();
+                    dismiss();
+
+                }
+            });
+            Button no = (Button) findViewById(R.id.id_cancel);
+            no.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dismiss();
+                }
+            });
+        }
+
     }
 
 

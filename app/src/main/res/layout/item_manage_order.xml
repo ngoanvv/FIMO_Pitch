@@ -153,9 +153,10 @@
             android:id="@+id/bt_ok"
             android:layout_marginTop="@dimen/s20dp"
             android:layout_width="100dp"
-            android:background="@color/com_facebook_blue"
+            android:paddingBottom="@dimen/s10dp"
             android:gravity="center"
             android:layout_height="@dimen/s50dp"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:textColor="@color/white"
             android:layout_gravity="center_vertical"
             android:text="Duyệt"/>
@@ -165,8 +166,9 @@
                 android:layout_width="100dp"
                 android:gravity="center"
                 android:layout_marginTop="@dimen/s20dp"
-                android:background="@color/colorRed"
                 android:layout_height="@dimen/s50dp"
+                android:paddingBottom="@dimen/s10dp"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:textColor="@color/white"
                 android:layout_gravity="center"
                 android:text="Từ chối"/>

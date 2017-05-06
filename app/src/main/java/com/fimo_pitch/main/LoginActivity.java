@@ -26,9 +26,7 @@ import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
 import com.fimo_pitch.support.Utils;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -235,12 +233,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    public void saveUserData(String email, String password, String userType) {
+    public void saveUserData(String id, String email, String password, String userType,String name,String phone) {
         sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("email", email);
         editor.putString("password", password);
         editor.putString("userType", userType);
+        editor.putString("phone", phone);
+        editor.putString("name", name);
+        editor.putString("id", id);
         editor.putBoolean("login",true);
         Log.d("info", email + "/" + password + "/" + userType);
         editor.commit();
@@ -379,10 +380,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     userModel.setImageURL("img");
                     userModel.setToken(jsonObject.getString("token"));
                     // lưu dữ liệu đăng nhập vào máy
-                    saveUserData(userModel.getEmail(),userModel.getPassword(),userModel.getUserType());
+                    saveUserData(userModel.getId(),userModel.getEmail(),userModel.getPassword(),userModel.getUserType(),userModel.getName(),userModel.getPhone());
                     //gửi dữ liệu user sang main activity
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra(CONSTANT.KEY_USER, userModel);
+                    intent.putExtra(CONSTANT.FROM_NOTIFICATION,"false");
                     startActivity(intent);
                     finish();
 
@@ -402,39 +404,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void handleSignInResult(GoogleSignInResult result) {
-        if (result.isSuccess()) {
-            GoogleSignInAccount acct = result.getSignInAccount();
-            Log.d(TAG, "email:" + acct.getEmail());
-            Log.d(TAG, "id " + acct.getId());
-            Log.d(TAG, "token " + acct.getIdToken());
-            Log.d(TAG, "photo " + acct.getPhotoUrl().toString());
-            Bundle bundle = new Bundle();
-            bundle.putString("email", acct.getEmail());
-            bundle.putString("id", acct.getId());
-            bundle.putString("token", acct.getIdToken());
-            bundle.putString("photo", acct.getPhotoUrl().toString());
-            bundle.putString("name", acct.getGivenName().toString());
-
-            userModel.setPhone("");
-            userModel.setId("1");
-            userModel.setName(acct.getGivenName().toString());
-            userModel.setEmail(acct.getEmail());
-            userModel.setImageURL("img");
-            email = acct.getEmail();
-            password = acct.getId();
-            saveUserData(email, password, UserModel.TYPE_TEAM);
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.putExtra("data", bundle);
-            intent.putExtra(CONSTANT.KEY_USER,userModel);
-            startActivity(intent);
-
-
-        }
-        else {
-
-        }
-    }
+//    private void handleSignInResult(GoogleSignInResult result) {
+//        if (result.isSuccess()) {
+//            GoogleSignInAccount acct = result.getSignInAccount();
+//            Log.d(TAG, "email:" + acct.getEmail());
+//            Log.d(TAG, "id " + acct.getId());
+//            Log.d(TAG, "token " + acct.getIdToken());
+//            Log.d(TAG, "photo " + acct.getPhotoUrl().toString());
+//            Bundle bundle = new Bundle();
+//            bundle.putString("email", acct.getEmail());
+//            bundle.putString("id", acct.getId());
+//            bundle.putString("token", acct.getIdToken());
+//            bundle.putString("photo", acct.getPhotoUrl().toString());
+//            bundle.putString("name", acct.getGivenName().toString());
+//
+//            userModel.setPhone("");
+//            userModel.setId("1");
+//            userModel.setName(acct.getGivenName().toString());
+//            userModel.setEmail(acct.getEmail());
+//            userModel.setImageURL("img");
+//            email = acct.getEmail();
+//            password = acct.getId();
+//            saveUserData(email, password, UserModel.TYPE_TEAM);
+//            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//            intent.putExtra("data", bundle);
+//            intent.putExtra(CONSTANT.KEY_USER,userModel);
+//            startActivity(intent);
+//
+//
+//        }
+//        else {
+//
+//        }
+//    }
 
     @Override
     public void onStart() {
