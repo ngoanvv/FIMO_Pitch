@@ -139,6 +139,7 @@ public class SearchSystemFragment extends Fragment implements View.OnClickListen
             listSearch = new ArrayList<>();
             initRecyclerView(s);
 //
+            progressDialog.dismiss();
         }
 
         @Override

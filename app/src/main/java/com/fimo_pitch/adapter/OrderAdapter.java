@@ -72,11 +72,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                 body.put("management_id",data.get(position).getManagement_id());
                 body.put("status","2");
                 body.put("token",userModel.getToken());
-                Log.d("token",userModel.getToken());
                 body.put("day",data.get(position).getDay());
 
+                Log.d("pitch id",data.get(position).getPitchId()+"-"+data.get(position).getManagement_id());
                 dialog = new ChoiceDialog(context,"Bạn có muốn đặt sân này không ?",data.get(position),body,position);
-                dialog.show();            }
+                dialog.show();
+            }
         });
 
     }

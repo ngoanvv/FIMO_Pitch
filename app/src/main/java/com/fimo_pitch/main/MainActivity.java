@@ -172,6 +172,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
             String phone = sharedPreferences.getString("phone", "null");
             String name = sharedPreferences.getString("password", "null");
             String id = sharedPreferences.getString("id", "null");
+            String token = sharedPreferences.getString("token", "null");
 
             Log.d(TAG,email+" - "+password);
             if (email.equals("null") || password.equals("null")) {
@@ -186,6 +187,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                 userModel.setUserType(userType);
                 userModel.setPhone(phone);
                 userModel.setId(id);
+                userModel.setToken(token);
                 return  userModel;
             }
         }

@@ -30,10 +30,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         super.onMessageReceived(remoteMessage);
-
-        if (remoteMessage.getData().size() > 0 && remoteMessage.getNotification() != null ) {
             makeNotification(getApplicationContext(),remoteMessage.getNotification().getTitle(),remoteMessage.getNotification().getBody());
-        }
     }
     private UserModel getUserModel()
     {
@@ -79,6 +76,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Intent resultIntent = new Intent(context, MainActivity.class);
         userModel = getUserModel();
         resultIntent.putExtra(CONSTANT.KEY_USER, userModel);
+        resultIntent.putExtra(CONSTANT.FROM_NOTIFICATION,"true");
         TaskStackBuilder stackBuilder = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
             stackBuilder = TaskStackBuilder.create(context);

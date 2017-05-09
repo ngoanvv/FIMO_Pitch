@@ -130,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-        Log.d("FCM",FirebaseInstanceId.getInstance().getToken()+" ");
+        Log.d("FCM",FirebaseInstanceId.getInstance().getToken()+"");
 //        loginFB.setReadPermissions(Arrays.asList("public_profile,email,user_birthday"));
 //        loginFB.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
 //            @Override
@@ -233,7 +233,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    public void saveUserData(String id, String email, String password, String userType,String name,String phone) {
+    public void saveUserData(String id, String token, String email, String password, String userType,String name,String phone) {
         sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("email", email);
@@ -243,6 +243,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         editor.putString("name", name);
         editor.putString("id", id);
         editor.putBoolean("login",true);
+        editor.putString("token",token);
         Log.d("info", email + "/" + password + "/" + userType);
         editor.commit();
 
@@ -380,7 +381,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     userModel.setImageURL("img");
                     userModel.setToken(jsonObject.getString("token"));
                     // lưu dữ liệu đăng nhập vào máy
-                    saveUserData(userModel.getId(),userModel.getEmail(),userModel.getPassword(),userModel.getUserType(),userModel.getName(),userModel.getPhone());
+                    saveUserData(userModel.getId(),userModel.getToken(),userModel.getEmail(),userModel.getPassword(),userModel.getUserType(),userModel.getName(),userModel.getPhone());
                     //gửi dữ liệu user sang main activity
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra(CONSTANT.KEY_USER, userModel);
