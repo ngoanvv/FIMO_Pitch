@@ -167,7 +167,12 @@ public class OrderManagementActivity extends AppCompatActivity implements View.O
                     }
                     else {
                         Utils.openDialog(OrderManagementActivity.this,"Không có yêu cầu nào !");
-
+                        manageOrderAdapter = new ManageOrderAdapter(OrderManagementActivity.this,new ArrayList<Order>());
+                        recyclerView.setLayoutManager(new LinearLayoutManager(OrderManagementActivity.this));
+                        recyclerView.setAdapter(manageOrderAdapter);
+                        LinearLayoutManager mLinearLayoutManagerVertical = new LinearLayoutManager(OrderManagementActivity.this); // (Context context)
+                        mLinearLayoutManagerVertical.setOrientation(LinearLayoutManager.VERTICAL);
+                        recyclerView.setLayoutManager(mLinearLayoutManagerVertical);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

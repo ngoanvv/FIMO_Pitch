@@ -116,24 +116,20 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
         adapter = new OrderAdapter(SearchOrderActivity.this,listTime,userModel);
         recyclerView.setAdapter(adapter);
         tv_dateFilter.setOnClickListener(this);
-
+        Calendar calendar = Calendar.getInstance();
+        crDay =calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
         if(listName.size()>0&&listPitches.size()>0) {
             dataAdapter = new ArrayAdapter<String>(SearchOrderActivity.this,R.layout.spinner_item, listName);
             spinner.setAdapter(dataAdapter);
             spinner.setSelection(getIntent().getIntExtra("pos",0));
-            Log.d("spinner 1", spinner.getSelectedItem().toString()+ "");
-            Log.d("list",listPitches.toString());
-            Calendar calendar = Calendar.getInstance();
+            calendar = Calendar.getInstance();
             crDay =calendar.get(Calendar.YEAR)+"-"+(calendar.get(Calendar.MONTH)+1)+"-"+calendar.get(Calendar.DAY_OF_MONTH);
 
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    Log.d("spinner 2", listPitches.get(position).getId() + "");
-
                     pitchId = listPitches.get(position).getId();
                     crPitch = listPitches.get(position);
-
                     Calendar calendar = Calendar.getInstance();
                     tv_dateFilter.setText(calendar.get(Calendar.DAY_OF_MONTH)+"/"+(calendar.get(Calendar.MONTH)+1)+"/"+calendar.get(Calendar.YEAR));
 
@@ -236,7 +232,6 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
                 {
                     mText.setVisibility(View.GONE);
                     Utils.openDialog(SearchOrderActivity.this,"Có "+listTime.size()+" kết quả");
-
                 }
                 else
                 {
@@ -276,17 +271,16 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
                 {
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(year,monthOfYear,dayOfMonth);
-                    tv_dateFilter.setText(year+"/"+(monthOfYear+1)+"/"+dayOfMonth);
+                    tv_dateFilter.setText(dayOfMonth+"/"+(monthOfYear+1)+"/"+year);
                     crDay =year+"-"+(monthOfYear+1)+"-"+dayOfMonth;
 
-                    Log.d("tag",calendar.get(Calendar.DAY_OF_WEEK)+"");
                     if(isWeekend(calendar.get(Calendar.DAY_OF_WEEK))) typeDate="1";
                     else typeDate="0";
                     if(crPitch!=null) {
                         HashMap<String, String> params = new HashMap<>();
                         params.put("pitch_id", crPitch.getId());
                         params.put("day", crDay);
-                        params.put("typedate", "1");
+                        params.put("typedate", typeDate);
                         Log.d(TAG, crDay + "-" + crPitch.getId());
                         new GetTime(crPitch.getName(), params).execute();
                     }
@@ -294,7 +288,6 @@ public class SearchOrderActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         }, 2017,Calendar.getInstance().get(Calendar.MONTH),Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
         datePickerDialog.show();
     }
     @Override

@@ -103,5 +103,9 @@
     <string name="no_connection">Không có kết nối mạng, vui lòng thử lại sau</string>
     <string name="success">Đặt sân thành công, hãy đợi chủ sân liên hệ lại!</string>
     <string name="title_activity_system_management">SystemManagementActivity</string>
+    <string name="title_activity_nav">Nav</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 
 </resources>

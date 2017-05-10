@@ -105,12 +105,14 @@ public class UserOrderManagement extends Fragment implements View.OnClickListene
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject object = data.getJSONObject(i);
                             TimeTable t = new TimeTable();
-                            t.setManagement_id(object.getString("management_id"));
+//                            t.setManagement_id(object.getString("management_id"));
                             t.setType(object.getString("status"));
-                            t.setId(object.getString("id"));
-                            t.setPitchId(object.getString("pitch_id"));
+                            t.setId(object.getString("order_id"));
+                            t.setPrice(object.getString("price"));
+//                            t.setPitchId(object.getString("pitch_id"));
                             t.setDay(object.getString("day").substring(0,10));
-                            t.setStart_time(object.getString("day").substring(11,16));
+                            t.setStart_time(object.getString("time_start").substring(0,5));
+                            t.setEnd_time(object.getString("time_end").substring(0,5));
                             listTimes.add(t);
                         }
 

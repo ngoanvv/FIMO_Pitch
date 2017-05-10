@@ -104,7 +104,6 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
         try {
             View view = inflater.inflate(R.layout.fragment_search, container, false);
-
             okHttpClient = new OkHttpClient();
             directionSteps = new ArrayList<>();
             polylines = new ArrayList<>();
@@ -127,7 +126,11 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                 }
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    drawMarker(filterByText(s.toString()));
+                    try {
+                        drawMarker(filterByText(s.toString()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     tmpList = filterByAddress(s.toString());
                 }
                 @Override
@@ -153,10 +156,20 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if(position != 0)
                     {
-                    drawMarker(filterByAddress(spinner_location.getItemAtPosition(position).toString()));
-                    tmpList = filterByAddress(spinner_location.getItemAtPosition(position).toString());
+                        try {
+                            drawMarker(filterByAddress(spinner_location.getItemAtPosition(position).toString()));
+                        } catch (Exception e) {
+                            Utils.openDialog(getContext(),"Đã có lỗi xảy ra. Vui lòng thử lại sau");
+                            e.printStackTrace();
+                        }
+                        tmpList = filterByAddress(spinner_location.getItemAtPosition(position).toString());
                     }
-                    else    drawMarker(listSystemPitch);
+                    else try {
+                        drawMarker(listSystemPitch);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Utils.openDialog(getContext(),"Đã có lỗi xảy ra. Vui lòng thử lại sau");
+                    }
                 }
 
                 @Override
@@ -173,6 +186,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         }
         catch (Exception e)
         {
+            Utils.openDialog(getContext(),"Đã có lỗi xảy ra. Vui lòng thử lại sau");
             e.printStackTrace();
             return inflater.inflate(R.layout.empty, container, false);
         }
@@ -198,7 +212,12 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             }
             for (int i=0;i<directionSteps.size();i++)
             {
-                drawLine(i,directionSteps.get(i).getStart(),directionSteps.get(i).getEnd(),"","");
+                try {
+                    drawLine(i,directionSteps.get(i).getStart(),directionSteps.get(i).getEnd(),"","");
+                } catch (Exception e) {
+                    Utils.openDialog(getContext(),"Đã có lỗi xảy ra. Vui lòng thử lại sau");
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -258,6 +277,8 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                 Utils.openDialog(getContext(),"Không tìm thấy đường đi khả dụng");
             }
         } catch (Exception e) {
+            Utils.openDialog(getContext(),"Đã có lỗi xảy ra. Vui lòng thử lại sau");
+
             e.printStackTrace();
         }
         return url;
@@ -301,7 +322,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             map.addMarker(options);
         }
     }
-    public void drawMarker(ArrayList<SystemPitch> data)
+    public void drawMarker(ArrayList<SystemPitch> data) throws Exception
     {
 
         map.clear();
@@ -321,7 +342,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             map.addMarker(options);
         }
     }
-    public void drawLine(int index,LatLng start,LatLng end,String distance,String des)
+    public void drawLine(int index,LatLng start,LatLng end,String distance,String des) throws Exception
     {
 
         Polyline polyline = map.addPolyline(new PolylineOptions()
@@ -386,7 +407,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
                     }
                 }
             } catch (Exception e) {
-                Log.d(TAG,"error");
+                Utils.openDialog(getContext(),"Đã có lỗi xảy ra. Vui lòng thử lại sau");
                 e.printStackTrace();
                 return null;
             }
@@ -415,7 +436,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         }
         return result;
     }
-    public void initMapLicense() {
+    public void initMapLicense() throws Exception{
         if (map != null)
         {
             double lat = Double.parseDouble(getContext().getSharedPreferences("data", Context.MODE_PRIVATE).getString("lat","0.0"));
@@ -535,7 +556,12 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         if(googleMap !=null) {
             map = googleMap;
             initList();
-            initMapLicense();
+            try {
+                initMapLicense();
+            } catch (Exception e) {
+                Utils.openDialog(getContext(),"Đã có lỗi xảy ra. Vui lòng thử lại sau");
+                e.printStackTrace();
+            }
         }
     }
 
@@ -544,6 +570,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
         try {
             drawMarker(this.data);
         } catch (Exception e) {
+            Utils.openDialog(getContext(),"Đã có lỗi xảy ra. Vui lòng thử lại sau");
             e.printStackTrace();
         }
     }
@@ -567,6 +594,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
 
                 }
             } catch (Exception e) {
+                Utils.openDialog(getContext(),"Đã có lỗi xảy ra. Vui lòng thử lại sau");
                 e.printStackTrace();
                 return "failed";
             }
@@ -610,6 +638,7 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             }
             catch (Exception e)
             {
+                Utils.openDialog(getContext(),"Đã có lỗi xảy ra. Vui lòng thử lại sau");
                 e.printStackTrace();
             }
         }
@@ -634,7 +663,12 @@ public class SearchFragment extends Fragment implements OnMapReadyCallback, View
             case R.id.bt_clear:
             {
                 Log.d(TAG,"tmp list "+tmpList.size());
-                drawMarker(tmpList);
+                try {
+                    drawMarker(tmpList);
+                } catch (Exception e) {
+                    Utils.openDialog(getContext(),"Đã có lỗi xảy ra. Vui lòng thử lại sau");
+                    e.printStackTrace();
+                }
 
                 bt_clear.setVisibility(View.GONE);
                 break;

@@ -24,6 +24,7 @@ import com.fimo_pitch.model.Pitch;
 import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
+import com.fimo_pitch.support.Utils;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -84,7 +85,9 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
         edt_startTime = (EditText) findViewById(R.id.edt_startTime);
         edt_endTime = (EditText) findViewById(R.id.edt_endTime);
         edt_price = (EditText) findViewById(R.id.edt_price);
+        edt_price.setText("900000");
         edt_description = (EditText) findViewById(R.id.edt_des);
+        edt_description.setText("Mô tả, giờ đẹp");
         spinnerDate = (Spinner) findViewById(R.id.spnDate);
         spinnerPitch = (Spinner) findViewById(R.id.spnPitch);
         button = (Button) findViewById(R.id.button);
@@ -92,6 +95,8 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
 
         edt_startTime.setOnClickListener(this);
         edt_endTime.setOnClickListener(this);
+        edt_startTime.setText("07:30");
+        edt_endTime.setText("09:30");
 
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(AddPriceActivity.this,android.R.layout.simple_list_item_1,listDate);
@@ -214,17 +219,23 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
             }
             return "failed";
         }
+
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.d(TAG,s);
             progressDialog.dismiss();
-            if(s != null) {
+            if(!s.equals("failed")) {
                 Intent intent = new Intent(AddPriceActivity.this,PriceManagementActivity.class);
                 intent.putExtra(CONSTANT.KEY_USER,userModel);
                 intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
                 startActivity(intent);
                 finish();
+            }
+            else
+            {
+                Log.d("error",s.toString());
+                Utils.openDialog(AddPriceActivity.this,"Đã có lỗi xảy ra. Vui lòng thử lại sau ");
             }
 
         }
@@ -287,9 +298,8 @@ public class AddPriceActivity extends AppCompatActivity implements View.OnClickL
             case R.id.button :
             {
                 HashMap<String,String> body = new HashMap<>();
-                body.put("system_id","1");
+                body.put("system_id",mSystemPitch.getId());
                 body.put("pitch_id",idPitch);
-                Log.d("add price",idPitch+":"+typeofDate+":"+edt_description.getText().toString());
                 body.put("time_start",edt_startTime.getText().toString());
                 body.put("time_end",edt_endTime.getText().toString());
                 body.put("price",edt_price.getText().toString());

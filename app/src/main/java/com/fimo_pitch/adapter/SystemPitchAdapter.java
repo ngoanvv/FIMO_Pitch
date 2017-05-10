@@ -137,8 +137,8 @@ public class SystemPitchAdapter extends RecyclerView.Adapter<SystemPitchAdapter.
         constraint=constraint.toString().toLowerCase();
         for(int i =0;i<copyData.size();i++)
         {
-            if(copyData.get(i).getAddress().toLowerCase().contains(constraint) ||
-                    copyData.get(i).getName().toLowerCase().contains(constraint))
+            if(copyData.get(i).getAddress().toLowerCase().contains(constraint.toString().toLowerCase()) ||
+                    copyData.get(i).getName().toLowerCase().contains(constraint.toString().toLowerCase()))
             {
                 results.add(copyData.get(i));
                 count++;

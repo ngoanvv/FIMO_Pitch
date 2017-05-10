@@ -97,7 +97,6 @@ public class PriceManagementActivity extends AppCompatActivity{
                 intent.putExtra(CONSTANT.KEY_USER,userModel);
                 intent.putExtra(CONSTANT.SystemPitch_MODEL,mSystemPitch);
                 startActivity(intent);
-                finish();
             }
         });
 

@@ -57,9 +57,11 @@ public class UserOrderAdapter extends RecyclerView.Adapter<UserOrderAdapter.MyVi
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         holder.tv_day.setText(data.get(position).getDay());
 //        holder.tv_price.setText(data.get(position).getPrice());
-        holder.tv_time.setText(data.get(position).getStart_time());
-        if(data.get(position).getType().equals("1"))
-        holder.tv_des.setText("Đã được chấp nhận");
+        holder.tv_time.setText(data.get(position).getStart_time()+"-"+data.get(position).getEnd_time());
+        if(data.get(position).getType().equals("1")) {
+            holder.tv_des.setText("Đã được chấp nhận");
+            holder.btCancel.setVisibility(View.INVISIBLE);
+        }
         else holder.tv_des.setText("Đang đợi");
 
         holder.btCancel.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +149,7 @@ public class UserOrderAdapter extends RecyclerView.Adapter<UserOrderAdapter.MyVi
                 data.remove(position);
                 notifyDataSetChanged();
                 notifyItemRemoved(position);
-                notifyItemRangeRemoved(position,data.size()-1);
+                notifyItemRangeRemoved(position,data.size());
             }
         }
 

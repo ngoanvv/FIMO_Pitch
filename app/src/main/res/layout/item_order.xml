@@ -10,8 +10,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="@dimen/s15dp"
-        android:layout_marginBottom="@dimen/s15dp"
         android:background="@color/Grey"></View>
 
     <LinearLayout
@@ -20,15 +18,14 @@
         android:orientation="horizontal">
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="@dimen/s250dp"
+            android:layout_width="@dimen/s300dp"
             android:layout_height="wrap_content">
-
             <!--header-->
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/s15dp"
+                android:layout_marginTop="@dimen/s10dp"
                 android:layout_height="wrap_content">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -39,15 +36,15 @@
                         android:id="@+id/pitch_time"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="19:00 - 21:00"
-                        android:textSize="@dimen/s25dp"
+                        android:layout_alignBottom="@+id/view"
                         android:layout_marginLeft="@dimen/s15dp"
-                        android:maxLines="2"
                         android:layout_marginTop="@dimen/s15dp"
-                        android:textStyle="italic|bold"
                         android:gravity="center_vertical"
+                        android:maxLines="2"
+                        android:text="19:00 - 21:00"
                         android:textColor="@android:color/holo_green_dark"
-                        android:layout_alignBottom="@+id/view"/>
+                        android:textSize="@dimen/s25dp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
             <!--//body-->
@@ -68,16 +65,17 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/s15dp"
+                        android:layout_marginTop="@dimen/s10dp"
                         android:layout_height="@dimen/s40dp">
                         <com.fimo_pitch.custom.view.RoundedImageView
-                            android:layout_width="@dimen/s15dp"
-                            android:background="@drawable/ic_money"
+                            android:layout_width="@dimen/s25dp"
+                            android:background="@drawable/ic_dollars"
                             android:layout_gravity="center_vertical"
-                            android:layout_height="@dimen/s15dp"/>
+                            android:layout_height="@dimen/s25dp"/>
                         <TextView
                             android:id="@+id/item_price"
                             android:layout_width="wrap_content"
+                            android:textStyle="bold"
                             android:text="300.000vnđ"
                             android:textSize="@dimen/s20sp"
                             android:layout_marginLeft="@dimen/s15dp"
@@ -87,50 +85,52 @@
                     </LinearLayout>
                     <!--time-->
                     <LinearLayout
-                        android:layout_marginTop="@dimen/s15dp"
                         android:layout_width="match_parent"
-                        android:orientation="horizontal"
-                        android:layout_height="@dimen/s40dp">
+                        android:layout_height="@dimen/s40dp"
+                        android:layout_marginTop="@dimen/s10dp"
+                        android:orientation="horizontal">
+
                         <com.fimo_pitch.custom.view.RoundedImageView
-                            android:layout_width="@dimen/s15dp"
+                            android:layout_width="@dimen/s25dp"
+                            android:layout_height="@dimen/s25dp"
                             android:layout_gravity="center_vertical"
-                            android:background="@drawable/ic_calendar"
-                            android:layout_height="@dimen/s15dp"/>
+                            android:background="@drawable/ic_cld" />
 
                         <TextView
-                            android:layout_width="wrap_content"
                             android:id="@+id/item_typeDate"
-                            android:text="Ngày nghỉ"
-                            android:layout_marginLeft="@dimen/s15dp"
-                            android:textSize="@dimen/s20sp"
+                            android:layout_width="wrap_content"
+                            android:textStyle="bold"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/s15dp"
+                            android:text="Ngày nghỉ"
                             android:textColor="@color/accent_material_light"
-                            android:layout_height="wrap_content"/>
+                            android:textSize="@dimen/s20sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_marginTop="@dimen/s15dp"
                         android:layout_width="match_parent"
                         android:orientation="horizontal"
-                        android:layout_height="@dimen/s40dp">
+                        android:layout_height="@dimen/s60dp">
 
                         <com.fimo_pitch.custom.view.RoundedImageView
-                            android:layout_width="@dimen/s15dp"
+                            android:layout_width="@dimen/s25dp"
                             android:layout_gravity="center_vertical"
-                            android:background="@drawable/ic_note"
-                            android:layout_height="@dimen/s15dp"
+                            android:background="@drawable/ic_deal"
+                            android:layout_height="@dimen/s25dp"
                             android:id="@+id/roundedImageView4" />
 
                         <TextView
-                            android:layout_width="@dimen/s200dp"
+                            android:layout_width="@dimen/s250dp"
                             android:id="@+id/pitch_description"
                             android:text="Mô tả"
                             android:maxLines="2"
+                            android:textStyle="bold"
                             android:layout_marginLeft="@dimen/s15dp"
                             android:textSize="@dimen/s20sp"
-                            android:layout_gravity="center_vertical"
                             android:textColor="@color/accent_material_light"
-                            android:layout_height="@dimen/s2dp"/>
+                            android:layout_height="@dimen/s60dp"/>
                     </LinearLayout>
 
                     <!--location-->
@@ -150,7 +150,6 @@
             android:layout_height="@dimen/s70dp"
             android:layout_marginTop="@dimen/s40dp"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:textColor="@color/white"
             android:text="Đặt sân"/>
 
 

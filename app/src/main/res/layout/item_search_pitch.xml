@@ -6,6 +6,13 @@
     android:id="@+id/ll_match"
     android:layout_height="wrap_content">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/s20dp"
+        android:layout_marginBottom="@dimen/s5dp"
+        android:background="@color/Grey"></View>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -13,7 +20,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="@dimen/s250dp"
+            android:layout_width="@dimen/s300dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <!--header-->
@@ -24,63 +31,63 @@
                 android:layout_alignBottom="@+id/view"
                 android:layout_marginTop="@dimen/s5dp"
                 android:gravity="center_vertical"
+                android:maxLines="2"
                 android:text="Sân bóng sô 1"
                 android:textColor="@color/colorBlack"
-                android:textSize="@dimen/s25dp"
+                android:textSize="@dimen/s20dp"
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:layout_width="@dimen/s200dp"
+                android:layout_width="@dimen/s300dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="5"
                 android:orientation="vertical">
                 <!--money-->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/s20dp"
+                    android:layout_height="@dimen/s50dp"
                     android:layout_marginTop="@dimen/s20dp"
                     android:orientation="horizontal">
 
                     <com.fimo_pitch.custom.view.RoundedImageView
-                        android:layout_width="@dimen/s25dp"
-                        android:layout_height="@dimen/s25dp"
+                        android:layout_width="@dimen/s20dp"
+                        android:layout_height="@dimen/s20dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/ic_manager" />
+                        android:background="@drawable/ic_ball" />
 
                     <TextView
                         android:id="@+id/pitch_size"
-                        android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/s20dp"
                         android:text="Sân 7 người"
                         android:textColor="@color/accent_material_light"
-                        android:textSize="@dimen/s20dp" />
+                        android:textSize="@dimen/s20dp"
+                        android:textStyle="bold" />
                 </LinearLayout>
                 <!--time-->
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/s50dp"
                     android:layout_marginTop="@dimen/s20dp"
                     android:orientation="horizontal">
 
                     <com.fimo_pitch.custom.view.RoundedImageView
-                        android:layout_width="@dimen/s25dp"
-                        android:layout_height="@dimen/s25dp"
+                        android:layout_width="@dimen/s20dp"
+                        android:layout_height="@dimen/s20dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/ic_stadium" />
+                        android:background="@drawable/ic_phone" />
 
                     <TextView
                         android:id="@+id/pitch_type"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/s20dp"
-                        android:text="Sân cỏ nhân tạo"
+                        android:text="0982383723"
                         android:textColor="@color/accent_material_light"
-                        android:textSize="@dimen/s20dp" />
+                        android:textSize="@dimen/s20dp"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -90,45 +97,43 @@
                     android:orientation="horizontal">
 
                     <com.fimo_pitch.custom.view.RoundedImageView
-                        android:layout_width="@dimen/s25dp"
-                        android:layout_height="@dimen/s25dp"
+                        android:layout_width="@dimen/s20dp"
+                        android:layout_height="@dimen/s20dp"
                         android:layout_gravity="center_vertical"
-                        android:background="@drawable/ic_note" />
+                        android:background="@drawable/ic_location" />
 
                     <TextView
                         android:id="@+id/pitch_description"
-                        android:layout_width="@dimen/s300dp"
+                        android:layout_width="match_parent"
                         android:layout_height="@dimen/s60dp"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/s20dp"
-                        android:textStyle="bold"
                         android:maxLines="2"
-                        android:text="Sân 7 người sádsadasdasdsadasdasdsad"
+                        android:text="144 Xuân Thủy, Cầu Giấy"
                         android:textColor="@color/accent_material_light"
-                        android:textSize="@dimen/s20dp" />
+                        android:textSize="@dimen/s20dp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
 
             <Button
-                android:id="@+id/btShow"
-                style="@style/Base.Widget.AppCompat.Button.Colored"
-                android:layout_width="@dimen/s150dp"
+                android:id="@+id/bt_edit"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="@dimen/s100dp"
                 android:layout_height="@dimen/s70dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/s20dp"
                 android:gravity="center"
-                android:text="Xem lịch" />
-        </RelativeLayout>
+                android:text="Liên Hệ"
+                android:textColor="@color/white" />
+        </LinearLayout>
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/s40dp"
-        android:layout_marginBottom="@dimen/s5dp"
-        android:background="@color/Grey"></View>
 
 </LinearLayout>

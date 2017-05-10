@@ -66,33 +66,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("Startup","LoginActivity");
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
-        okHttpClient = new OkHttpClient();
-
-
-
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        Utils.setupAnimations(this);
-
-
-        setContentView(R.layout.activity_login);
-        overridePendingTransition(R.anim.wipe_in_right,R.anim.wipe_out_left);
-
-        userModel = new UserModel();
-        initGoogleAPI();
-        initView();
-        sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
-        if (sharedPreferences != null)
-        {
-         flash();
+        try {
+            Log.d("Startup","LoginActivity");
+            FacebookSdk.sdkInitialize(getApplicationContext());
+            callbackManager = CallbackManager.Factory.create();
+            okHttpClient = new OkHttpClient();
+            requestWindowFeature(Window.FEATURE_NO_TITLE);
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            Utils.setupAnimations(this);
+            setContentView(R.layout.activity_login);
+            overridePendingTransition(R.anim.wipe_in_right,R.anim.wipe_out_left);
+            userModel = new UserModel();
+            initGoogleAPI();
+            initView();
+            sharedPreferences = getSharedPreferences("data", MODE_PRIVATE);
+            if (sharedPreferences != null)
+            {
+                flash();
+            }
+            else
+            {
+                Log.d(TAG,"shared null");
+            }
         }
-        else
+        catch (Exception e)
         {
-            Log.d(TAG,"shared null");
+            e.printStackTrace();
+            setContentView(R.layout.empty);
         }
+
 //        moveToHomeScreen();
     }
 

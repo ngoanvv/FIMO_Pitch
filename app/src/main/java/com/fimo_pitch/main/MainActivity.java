@@ -128,21 +128,28 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_navigation);
-        Utils.setupAnimations(this);
-        userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
-        initView();
-        getData();
-        ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},permissionCode);
-        fcmToken = FirebaseInstanceId.getInstance().getToken();
-        if(fcmToken != null)
-        updateToken(fcmToken);
-        initNavMenu();
-        initGoogleAPI();
-        Log.d("TYPE",userModel.getUserType());
-        // neu mo ung dung tu thong bao
-
+        try {
+            setContentView(R.layout.activity_navigation);
+            Utils.setupAnimations(this);
+            userModel = (UserModel) getIntent().getSerializableExtra(CONSTANT.KEY_USER);
+            initView();
+            getData();
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, permissionCode);
+            fcmToken = FirebaseInstanceId.getInstance().getToken();
+            if (fcmToken != null)
+                updateToken(fcmToken);
+            initNavMenu();
+            initGoogleAPI();
+            Log.d("TYPE", userModel.getUserType());
+            // neu mo ung dung tu thong bao
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            setContentView(R.layout.empty);
+        }
     }
+
     private void getData() {
         listSystem = new ArrayList<>();
         listNews = new ArrayList<>();
@@ -252,9 +259,6 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                 @Override
                 public void onClick(View v) {
                     mDrawerLayout.openDrawer(Gravity.LEFT);
-//                    Log.d(TAG,listSystemData);
-//                    Log.d(TAG,listNewsData);
-
                 }
             });
         }
@@ -376,10 +380,16 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                                     }
                                     case R.id.menu_search: {
 //                                    Log.d(TAG,);
-                                        mSearchFragment = SearchFragment.newInstance(listSystemData, "");
-                                        replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());
-                                        mDrawerLayout.closeDrawers();
-                                        break;
+                                        try {
+                                            mSearchFragment = SearchFragment.newInstance(listSystemData, "");
+                                            replaceFragment(mSearchFragment, mSearchFragment.getClass().getName());
+                                            mDrawerLayout.closeDrawers();
+                                            break;
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            e.printStackTrace();
+                                        }
                                     }
                                     case R.id.menu_searchSysttem: {
 //                                    Log.d(TAG,);
@@ -420,14 +430,12 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
             mNotifcationFragment = NotifcationFragment.newInstance("1","1");
             getSupportFragmentManager().beginTransaction().replace(R.id.container,mNotifcationFragment,mNotifcationFragment.getClass().getName()).commit();
             mDrawerLayout.closeDrawers();
+//            Intent intent = new Intent(MainActivity.this,OrderManagementActivity.class);
+//            startActivity(intent);
         }
     }
     private void signOut() {
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.clearDefaultAccountAndReconnect();
-            mGoogleApiClient.disconnect();
-            mGoogleApiClient.connect();
-        }
+
         sharedPreferences = getSharedPreferences("data",MODE_PRIVATE);
         if(sharedPreferences !=null)
         {
@@ -465,6 +473,7 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
                 startActivity(new Intent(MainActivity.this,LoginActivity.class));
                 dialog.dismiss();
                 updateToken(" ");
+                finish();
                 }
         });
         builder.create().show();
@@ -562,17 +571,24 @@ public class MainActivity extends ActionBarActivity implements GoogleApiClient.O
         protected void onPostExecute(String result) {
             if (result.equals(null) || result.contains("failed")) {
                 Utils.openDialog(MainActivity.this,"Đã có lỗi xảy ra, vui lòng thử lại sau");
+                progressDialog.dismiss();
             }
             else {
                 progressDialog.dismiss();
-
-                Adapter adapter = new Adapter(getSupportFragmentManager());
-                adapter.addFragment(new SystemPitchsFragment(listSystemData), "Tìm nhanh");
-                adapter.addFragment(new NewsFragment(listNewsData), "Tin tức");
-                adapter.addFragment(PostNewsFragment.newInstance("", ""), "Đăng tin");
-                viewPager.setAdapter(adapter);
-                viewPager.setOffscreenPageLimit(3);
-                tabs.setupWithViewPager(viewPager);
+                try {
+                    Adapter adapter = new Adapter(getSupportFragmentManager());
+                    adapter.addFragment(new SystemPitchsFragment(listSystemData), "Tìm nhanh");
+                    adapter.addFragment(new NewsFragment(listNewsData), "Tin tức");
+                    adapter.addFragment(PostNewsFragment.newInstance("", ""), "Đăng tin");
+                    viewPager.setAdapter(adapter);
+                    viewPager.setOffscreenPageLimit(3);
+                    tabs.setupWithViewPager(viewPager);
+                }
+              catch (Exception e)
+              {
+                  e.printStackTrace();
+                  Utils.openDialog(MainActivity.this,"Đã có lỗi xảy ra, vui lòng thử lại sau");
+              }
 
 //                makeNotification(MainActivity.this,"COntnt ","tiele");
 //            Log.d(TAG,listSystemData);

@@ -83,7 +83,7 @@
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:layout_marginTop="@dimen/s20dp"
-                    android:layout_height="@dimen/s30dp">
+                    android:layout_height="@dimen/s60dp">
                     <com.fimo_pitch.custom.view.RoundedImageView
                         android:layout_width="@dimen/s20dp"
                         android:background="@drawable/ic_ball"
@@ -97,9 +97,8 @@
                         android:textSize="@dimen/s20dp"
                         android:layout_marginLeft="@dimen/s20dp"
                         android:textStyle="bold"
-                        android:layout_gravity="center_vertical"
                         android:textColor="@color/accent_material_light"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="@dimen/s60dp"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

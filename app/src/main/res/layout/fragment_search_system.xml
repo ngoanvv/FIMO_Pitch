@@ -41,9 +41,9 @@
     </LinearLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
+        android:layout_marginTop="@dimen/s20dp"
         android:layout_below="@+id/menu_view"
         android:layout_width="match_parent"
-        android:background="@color/Grey"
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
 </LinearLayout>

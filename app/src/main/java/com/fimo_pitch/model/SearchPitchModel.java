@@ -12,6 +12,7 @@ public class SearchPitchModel extends SystemPitch{
     String pitch_name;
     String address;
     String phone;
+    String management_id;
     String pitch_description;
     String lat;
     String log;

@@ -86,7 +86,7 @@ public class SystemPitchsFragment extends Fragment implements View.OnClickListen
         ArrayList result = new ArrayList();
         for(int i=0;i<rootList.size();i++)
         {
-            if(rootList.get(i).getAddress().contains(s))
+            if(rootList.get(i).getAddress().toLowerCase().contains(s.toLowerCase()))
                 result.add(rootList.get(i));
         }
         return result;

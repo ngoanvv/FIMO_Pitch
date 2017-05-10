@@ -14,20 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.fimo_pitch.API;
 import com.fimo_pitch.CONSTANT;
 import com.fimo_pitch.R;
-import com.fimo_pitch.adapter.SystemPitchAdapter;
-import com.fimo_pitch.db.MyDatabaseHelper;
+import com.fimo_pitch.adapter.SearchSystemAdapter;
 import com.fimo_pitch.model.SearchPitchModel;
-import com.fimo_pitch.model.SystemPitch;
 import com.fimo_pitch.model.UserModel;
 import com.fimo_pitch.support.NetworkUtils;
 import com.fimo_pitch.support.Utils;
@@ -56,20 +51,15 @@ public class SearchSystemFragment extends Fragment implements View.OnClickListen
     private String sMinute="00";
     private String location="Cầu Giấy";
     private int dateofweek=1;
-    private LinearLayout menuView;
-    private SystemPitchAdapter adapter;
-    private ImageView buttonView2;
-    private EditText edt_search;
+    private SearchSystemAdapter adapter;
     private ImageView buttonView4;
     private TextView tv_time;
     public static String data;
     public OkHttpClient okHttpClient;
-    public MyDatabaseHelper myDatabaseHelper;
-    private ArrayList<SystemPitch> rootList;
-    private ArrayList<SystemPitch> listSystemPitch;
     private ArrayList<SearchPitchModel> listSearch;
     private String currentTime="07:00";
     private UserModel userModel;
+    private String currentSpinner="Cầu Giấy";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView= inflater.inflate(R.layout.fragment_search_system, container, false);
@@ -87,17 +77,20 @@ public class SearchSystemFragment extends Fragment implements View.OnClickListen
                 getActivity().getResources().getStringArray(R.array.listProvince1));
         spinner_location.setAdapter(adapter);
         tv_time = (TextView) rootView.findViewById(R.id.tv_time);
+        tv_time.setText("06:30");
         tv_time.setOnClickListener(this);
 
         spinner_location.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currentSpinner=spinner_location.getItemAtPosition(position).toString();
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("day", Calendar.getInstance().get(Calendar.YEAR) + "-" +
                         (Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
                 map.put("time_start", currentTime);
                 map.put("textlocation", spinner_location.getItemAtPosition(position).toString());
-                new SearchSystemPitch(map).execute();
+                new SearchSystemPitch().execute();
+
             }
 
             @Override
@@ -105,25 +98,28 @@ public class SearchSystemFragment extends Fragment implements View.OnClickListen
 
             }
         });
+        new SearchSystemPitch().execute();
+
     }
     private class SearchSystemPitch extends AsyncTask<String,Void,String> {
         ProgressDialog progressDialog;
         HashMap<String,String> param;
-        public SearchSystemPitch(HashMap<String,String> param)
-        {
-            this.param = param;
-        }
+        private Response response;
+
         @Override
         protected String doInBackground(String... params) {
 
             try {
                 okHttpClient = new OkHttpClient();
-                Response response =
-                        okHttpClient.newCall(NetworkUtils.createPostRequest(API.SearchPitch, this.param)).execute();
+                if(currentSpinner.contains("Cầu")||currentSpinner.contains("cả"))
+                    response = okHttpClient.newCall(NetworkUtils.createGetRequest("http://118.70.72.13:3000/system_pitch/searchPitch?day=2017-3-11&textlocation=C%E1%BA%A7u%20Gi%E1%BA%A5y&time_start=6:30:00")).execute();
+                else
+                {
+                    response = okHttpClient.newCall(NetworkUtils.createGetRequest("http://118.70.72.13:3000/system_pitch/searchPitch?day=2017-3-11&textlocation=C%A7u%20Gi%E1%BA%A5y&time_start=7:30:00")).execute();
+                }
                 if (response.isSuccessful())
                 {
                     return response.body().string().toString();
-
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -145,8 +141,6 @@ public class SearchSystemFragment extends Fragment implements View.OnClickListen
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Log.d(TAG,param.toString());
-            listSystemPitch = new ArrayList<>();
             progressDialog = new ProgressDialog(getContext());
             progressDialog.setMessage("Đang thao tác");
             progressDialog.show();
@@ -162,75 +156,54 @@ public class SearchSystemFragment extends Fragment implements View.OnClickListen
         fragment.setArguments(args);
         return fragment;
     }
-    private ArrayList<SystemPitch> filterByAddress(String s)
-    {
-        ArrayList result = new ArrayList();
-        for(int i=0;i<rootList.size();i++)
-        {
-            if(rootList.get(i).getAddress().contains(s))
-                result.add(rootList.get(i));
-        }
-        return result;
-    }
-    public void initRecyclerView(ArrayList<SystemPitch> list)
-    {
-        recyclerView.setHasFixedSize(true);
-        adapter = new SystemPitchAdapter(getActivity(), list,userModel);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adapter);
-        StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
-        recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
 
-    }
     public void initRecyclerView(String data)
     {
-        listSystemPitch = new ArrayList<>();
+        listSearch = new ArrayList<>();
         try {
             JSONObject jsonObject = new JSONObject(data);
             JSONArray array = jsonObject.getJSONArray("data");
             if(array.length()>0) {
-                for (int i = 0; i < array.length(); i++) {
+                for (int i = 0; i < 1; i++) {
                     JSONObject object = array.getJSONObject(i);
-                    SystemPitch systemPitch = new SystemPitch();
-                    systemPitch.setDescription(object.getString("description"));
-                    systemPitch.setId(object.getString("id"));
-                    systemPitch.setOwnerName("Tiến TM");
-                    systemPitch.setOwnerID(object.getString("user_id"));
+                    SearchPitchModel systemPitch = new SearchPitchModel();
+                    systemPitch.setSystem_id(object.getString("system_id"));
+                    systemPitch.setPitch_id(object.getString("pitch_id"));
+                    systemPitch.setPitch_name(object.getString("pitch_name"));
                     systemPitch.setName(object.getString("name"));
                     systemPitch.setAddress(object.getString("address"));
-                    systemPitch.setId(object.getString("id"));
+                    systemPitch.setPitch_description(object.getString("description"));
                     systemPitch.setPhone(object.getString("phone"));
                     systemPitch.setLat(object.getString("lat"));
                     systemPitch.setLng(object.getString("log"));
-                    listSystemPitch.add(systemPitch);
+                    systemPitch.setTime_end(object.getString("time_end"));
+                    systemPitch.setTime_start(object.getString("time_start"));
+                    listSearch.add(systemPitch);
                 }
                 recyclerView.setHasFixedSize(true);
-                adapter = new SystemPitchAdapter(getActivity(), listSystemPitch, userModel);
+                adapter = new SearchSystemAdapter(getActivity(), listSearch);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 recyclerView.setAdapter(adapter);
 
                 StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new
-                        StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
+                        StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
                 recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
             }
             else
             {
                 Utils.openDialog(getContext(),"Không có sân bóng khả dụng trong ngày với khu vực lựa chọn. Hãy thử với khu vực khác");
                 recyclerView.setHasFixedSize(true);
-                adapter = new SystemPitchAdapter(getActivity(), listSystemPitch, userModel);
+                adapter = new SearchSystemAdapter(getActivity(),  listSearch);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 recyclerView.setAdapter(adapter);
-
                 StaggeredGridLayoutManager mStaggeredVerticalLayoutManager = new
-                        StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
+                        StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL); // (int spanCount, int orientation)
                 recyclerView.setLayoutManager(mStaggeredVerticalLayoutManager);
             }
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            Log.d(TAG,"bug");
         }
     }
     @Override
@@ -263,7 +236,7 @@ public class SearchSystemFragment extends Fragment implements View.OnClickListen
                         map.put("time_start", currentTime);
                         map.put("textlocation", spinner_location.getSelectedItem().toString());
 
-                        new SearchSystemPitch(map).execute();
+                        new SearchSystemPitch().execute();
                     }
                 }, 7, 00, true);
                 dialog.setTitle("Chọn giờ bắt đầu bạn muốn");
